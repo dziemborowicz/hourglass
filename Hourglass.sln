@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hourglass", "Hourglass\Hourglass.csproj", "{4E327D2C-9171-4596-82C5-A9C3CF5028E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hourglass.Test", "Hourglass.Test\Hourglass.Test.csproj", "{CBE74854-0344-4606-A854-BFA719896A98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

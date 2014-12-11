@@ -50,6 +50,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeUtility.cs" />
+    <Compile Include="TimeSpanUtility.cs" />
     <Compile Include="VisualTreeUtility.cs" />
     <Page Include="TimerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
