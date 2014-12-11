@@ -17,7 +17,7 @@ namespace Hourglass
 {
     public partial class TimerWindow : Window
     {
-        public TimerWindow()
+        public TimerWindow(string[] args)
         {
             InitializeComponent();
         }
