@@ -159,5 +159,44 @@ namespace Hourglass
 
             return sb.ToString();
         }
+
+        public static string ToShortNaturalString(TimeSpan timeSpan)
+        {
+            // Reject negative values
+            if (timeSpan.Ticks < 0)
+                throw new ArgumentOutOfRangeException("timeSpan", "timeSpan must be at least zero.");
+
+            // Breakdown time interval
+            long totalSeconds = timeSpan.Ticks / 10000000L;
+            long days = totalSeconds / 60 / 60 / 24;
+            long hours = totalSeconds / 60 / 60 - days * 24;
+            long minutes = totalSeconds / 60 - days * 24 * 60 - hours * 60;
+            long seconds = totalSeconds % 60;
+
+            // Build string
+            StringBuilder sb = new StringBuilder();
+            if (days == 1)
+                sb.Append("1 day ");
+            else if (days != 0)
+                sb.AppendFormat("{0} days ", days);
+
+            if (hours == 1)
+                sb.Append("1 hour ");
+            else if (hours != 0)
+                sb.AppendFormat("{0} hours ", hours);
+
+            if (minutes == 1)
+                sb.Append("1 minute ");
+            else if (minutes != 0)
+                sb.AppendFormat("{0} minutes ", minutes);
+
+            if (seconds == 1)
+                sb.Append("1 second ");
+            else if (seconds != 0 || (days == 0 && hours == 0 && minutes == 0))
+                sb.AppendFormat("{0} seconds ", seconds);
+
+            sb.Remove(sb.Length - 1, 1);
+            return sb.ToString();
+        }
     }
 }

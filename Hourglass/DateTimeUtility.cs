@@ -32,5 +32,15 @@ namespace Hourglass
 
             throw new FormatException();
         }
+
+        public static string ToNaturalString(DateTime dateTime)
+        {
+            if (dateTime.Second != 0)
+                return dateTime.ToString("d MMMM yyyy h:mm:ss tt");
+            else if (dateTime.Minute != 0 || dateTime.Hour != 0)
+                return dateTime.ToString("d MMMM yyyy h:mm tt");
+            else
+                return dateTime.ToString("d MMMM yyyy");
+        }
     }
 }
