@@ -20,7 +20,7 @@ namespace Hourglass
             this.contentPresenter = new ContentPresenter();
             this.contentPresenter.Content = watermark;
             this.contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
-            this.contentPresenter.Opacity = 0.25;
+            this.contentPresenter.Opacity = 0.5;
             this.IsHitTestVisible = false;
         }
 
