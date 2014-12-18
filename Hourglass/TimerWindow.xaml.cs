@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -95,7 +96,7 @@ namespace Hourglass
 
         #region Logic
 
-        private DispatcherTimer timer;
+        private Timer timer;
 
         private TimerMode mode = TimerMode.None;
         private TimerState state = TimerState.Stopped;
@@ -147,10 +148,11 @@ namespace Hourglass
             // Start timer
             if (timer == null)
             {
-                timer = new DispatcherTimer(DispatcherPriority.Send);
-                timer.Tick += (s, e) => Tick();
+                timer = new Timer();
+                timer.AutoReset = false;
+                timer.Elapsed += (s, e) => AsyncTick();
             }
-            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Interval = 1;
             timer.Start();
 
             // Update interface
@@ -277,6 +279,15 @@ namespace Hourglass
 
                 // TODO Play notification sound
             }
+        }
+
+        private void AsyncTick()
+        {
+            Dispatcher.BeginInvoke(new Action(() => Tick())).Wait();
+            if (mode == TimerMode.TimeSpan)
+                timer.Interval = Math.Max(Math.Min(1000 * totalTime.TotalSeconds / ActualWidth / 2, 1000), 10);
+            else
+                timer.Interval = 1000;
         }
 
         private object GetInput()
