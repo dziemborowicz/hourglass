@@ -23,17 +23,14 @@ namespace Hourglass
 {
     public partial class TimerWindow : Window, INotifyPropertyChanged
     {
-        #region User Interface
-
-        private static readonly FontFamily RegularFontFamily = new FontFamily("Segoe UI");
-        private static readonly FontFamily LightFontFamily = new FontFamily("Segoe UI Light, Segoe UI");
-
         public TimerWindow(string[] args)
         {
             InitializeComponent();
 
             // Keep track of keyboard focus
             InputTextBox.GotKeyboardFocus += (s, e) => isEditing = true;
+
+            // Focus input on start-up
             InputTextBox.Loaded += (s, e) =>
             {
                 InputTextBox.Focus();
@@ -42,53 +39,78 @@ namespace Hourglass
 
             // Make the interface scalable
             SizeChanged += (s, e) => UpdateScale();
-            UpdateScale();
+        }
+
+        #region Interface Scaling
+
+        private static readonly FontFamily RegularFontFamily = new FontFamily("Segoe UI");
+        private static readonly FontFamily LightFontFamily = new FontFamily("Segoe UI Light, Segoe UI");
+        private static readonly FormattedText[] ReferenceText = new FormattedText[3];
+
+        private const double BaseButtonMargin = 7;
+        private const double BaseControlsGridMargin = 10;
+        private const double BaseFontSize = 12;
+        private const double BaseInputFontSize = 18;
+        private const double BaseInputTopMargin = 1;
+        private const double BaseInputBottomMargin = 4;
+        private const double BaseWindowHeight = 150;
+        private const double MinLightFontSize = 14;
+
+        private double lastInputScaleFactor = Double.NaN;
+        private double lastOtherScaleFactor = Double.NaN;
+
+        private double GetInputScaleFactor()
+        {
+            return Math.Min(this.ActualHeight / BaseWindowHeight, 0.8 * InputTextBox.ActualWidth / GetReferenceTextWidth());
+        }
+
+        private double GetOtherScaleFactor(double inputScaleFactor)
+        {
+            return Math.Max(1, 1 + Math.Log(inputScaleFactor));
+        }
+
+        private double GetReferenceTextWidth()
+        {
+            if (ReferenceText[0] == null)
+            {
+                ReferenceText[0] = new FormattedText("88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(RegularFontFamily, InputTextBox.FontStyle, InputTextBox.FontWeight, InputTextBox.FontStretch), BaseInputFontSize, InputTextBox.Foreground);
+                ReferenceText[1] = new FormattedText("88 hours 88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(RegularFontFamily, InputTextBox.FontStyle, InputTextBox.FontWeight, InputTextBox.FontStretch), BaseInputFontSize, InputTextBox.Foreground);
+                ReferenceText[2] = new FormattedText("888 days 88 hours 88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(RegularFontFamily, InputTextBox.FontStyle, InputTextBox.FontWeight, InputTextBox.FontStretch), BaseInputFontSize, InputTextBox.Foreground);
+            }
+
+            if (InputTextBox.Text.Contains(" day"))
+                return ReferenceText[2].Width;
+            else if (InputTextBox.Text.Contains(" hour"))
+                return ReferenceText[1].Width;
+            else
+                return ReferenceText[0].Width;
         }
 
         private void UpdateScale()
         {
-            // Base measurements
-            const double baseButtonMargin = 7;
-            const double baseControlsGridMargin = 10;
-            const double baseFontSize = 12;
-            const double baseInputFontSize = 18;
-            const double baseInputTopMargin = 1;
-            const double baseInputBottomMargin = 4;
-            const double baseWindowHeight = 150;
-            const double minLightFontSize = 14;
+            double inputScaleFactor = GetInputScaleFactor();
+            double otherScaleFactor = GetOtherScaleFactor(inputScaleFactor);
 
-            // Use reference text to prevent resizing on every tick
-            string inputText;
-            if (Regex.IsMatch(InputTextBox.Text, @"^\d+ days? \d+ hours? \d+ minutes? \d+ seconds?$"))
-                inputText = "888 days 88 hours 88 minutes 88 seconds";
-            else if (Regex.IsMatch(InputTextBox.Text, @"^\d+ hours? \d+ minutes? \d+ seconds?$"))
-                inputText = "88 hours 88 minutes 88 seconds";
-            else
-                inputText = "88 minutes 88 seconds";
-
-            // Calculate scale factors
-            FormattedText inputFormattedText = new FormattedText(inputText, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(InputTextBox.FontFamily, InputTextBox.FontStyle, InputTextBox.FontWeight, InputTextBox.FontStretch), baseInputFontSize, InputTextBox.Foreground);
-            double inputScaleFactor = Math.Min(this.ActualHeight / baseWindowHeight, 0.8 * InputTextBox.ActualWidth / inputFormattedText.Width);
-            double otherScaleFactor = Math.Max(1, 1 + Math.Log(inputScaleFactor));
-
-            // Resize elements (but do not shrink them below base measurements)
-            if (inputScaleFactor > 0)
+            if (inputScaleFactor > 0 && (inputScaleFactor != lastInputScaleFactor || otherScaleFactor != lastOtherScaleFactor))
             {
-                ControlsGrid.Margin = new Thickness(otherScaleFactor * baseControlsGridMargin);
+                ControlsGrid.Margin = new Thickness(otherScaleFactor * BaseControlsGridMargin);
 
-                InputTextBox.FontSize = inputScaleFactor * baseInputFontSize;
-                InputTextBox.FontFamily = InputTextBox.FontSize < minLightFontSize ? RegularFontFamily : LightFontFamily;
-                InputTextBox.Margin = new Thickness(0, inputScaleFactor * baseInputTopMargin, 0, inputScaleFactor * baseInputBottomMargin);
+                InputTextBox.FontSize = inputScaleFactor * BaseInputFontSize;
+                InputTextBox.FontFamily = InputTextBox.FontSize < MinLightFontSize ? RegularFontFamily : LightFontFamily;
+                InputTextBox.Margin = new Thickness(0, inputScaleFactor * BaseInputTopMargin, 0, inputScaleFactor * BaseInputBottomMargin);
 
-                TitleTextBox.FontSize = otherScaleFactor * baseFontSize;
-                TitleTextBox.FontFamily = TitleTextBox.FontSize < minLightFontSize ? RegularFontFamily : LightFontFamily;
+                TitleTextBox.FontSize = otherScaleFactor * BaseFontSize;
+                TitleTextBox.FontFamily = TitleTextBox.FontSize < MinLightFontSize ? RegularFontFamily : LightFontFamily;
 
                 foreach (Button button in VisualTreeUtility.GetVisualChildren<Button>(this))
                 {
-                    button.FontSize = otherScaleFactor * baseFontSize;
-                    button.FontFamily = button.FontSize < minLightFontSize ? RegularFontFamily : LightFontFamily;
-                    button.Margin = new Thickness(otherScaleFactor * otherScaleFactor * baseButtonMargin, 0, otherScaleFactor * otherScaleFactor * baseButtonMargin, 0);
+                    button.FontSize = otherScaleFactor * BaseFontSize;
+                    button.FontFamily = button.FontSize < MinLightFontSize ? RegularFontFamily : LightFontFamily;
+                    button.Margin = new Thickness(otherScaleFactor * otherScaleFactor * BaseButtonMargin, 0, otherScaleFactor * otherScaleFactor * BaseButtonMargin, 0);
                 }
+
+                lastInputScaleFactor = inputScaleFactor;
+                lastOtherScaleFactor = otherScaleFactor;
             }
         }
 
