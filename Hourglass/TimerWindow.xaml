@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:hg="clr-namespace:Hourglass"
         Title="Hourglass" Height="150" Width="350" MinHeight="150" MinWidth="250"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        SizeChanged="Window_SizeChanged">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="#0066CC"/>
@@ -42,18 +42,18 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <ProgressBar Value="{Binding Progress}"/>
+        <ProgressBar x:Name="TimerProgressBar" Value="{Binding Progress}"/>
         <Grid x:Name="ControlsGrid" Background="White" Margin="10">
             <StackPanel Margin="20 0" VerticalAlignment="Center">
-                <TextBox Name="TitleTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Text="{Binding TimerTitle, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" hg:Watermark.HintText="Click to enter title"/>
-                <TextBox Name="InputTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI Light, Segoe UI" FontSize="18" Margin="0 1 0 4" Text="{Binding TimerText, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" hg:Watermark.HintText="Click to enter time or date"/>
+                <TextBox Name="TitleTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" hg:Watermark.HintText="Click to enter title"/>
+                <TextBox Name="TimerTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI Light, Segoe UI" FontSize="18" Margin="0 1 0 4" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" hg:Watermark.HintText="Click to enter time or date" GotKeyboardFocus="TimerTextBox_GotKeyboardFocus"/>
                 <StackPanel Background="Transparent" HorizontalAlignment="Center" Orientation="Horizontal">
-                    <Button Content="Start" Command="{Binding StartCommand}" IsDefault="True"/>
-                    <Button Content="Pause" Command="{Binding PauseCommand}"/>
-                    <Button Content="Resume" Command="{Binding ResumeCommand}"/>
-                    <Button Content="Stop" Command="{Binding StopCommand}"/>
-                    <Button Content="OK" Command="{Binding OkCommand}"/>
-                    <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True"/>
+                    <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" IsDefault="True"/>
+                    <Button x:Name="PauseButton" Content="Pause" Click="PauseButton_Click"/>
+                    <Button x:Name="ResumeButton" Content="Resume" Click="ResumeButton_Click"/>
+                    <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click"/>
+                    <Button x:Name="ResetButton" Content="Reset" Click="ResetButton_Click"/>
+                    <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" IsCancel="True"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
