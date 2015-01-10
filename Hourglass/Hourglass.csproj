@@ -54,6 +54,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MultiplierConverter.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="DateTimeUtility.cs" />
     <Compile Include="FocusUtility.cs" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 
@@ -20,8 +21,18 @@ namespace Hourglass
             this.contentPresenter = new ContentPresenter();
             this.contentPresenter.Content = watermark;
             this.contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
-            this.contentPresenter.Opacity = 0.5;
             this.IsHitTestVisible = false;
+
+            Binding opacityBinding = new Binding();
+            opacityBinding.Source = adornedElement;
+            opacityBinding.Path = new PropertyPath("Opacity");
+            opacityBinding.Converter = new MultiplierConverter(0.5);
+            BindingOperations.SetBinding(this, Adorner.OpacityProperty, opacityBinding);
+
+            Binding visibilityBinding = new Binding();
+            visibilityBinding.Source = adornedElement;
+            visibilityBinding.Path = new PropertyPath("Visibility");
+            BindingOperations.SetBinding(this, Adorner.VisibilityProperty, visibilityBinding);
         }
 
         protected override Size ArrangeOverride(Size finalSize)

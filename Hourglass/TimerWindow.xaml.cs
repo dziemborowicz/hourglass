@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace Hourglass
 {
-    public partial class TimerWindow : Window
+    public partial class TimerWindow : Window, INotifyPropertyChanged
     {
         private Timer timer;
         private object lastInput;
@@ -25,14 +26,14 @@ namespace Hourglass
         {
             InitializeComponent();
 
-            timer = new Timer(Dispatcher);
-            timer.Started += Timer_Started;
-            timer.Paused += Timer_Paused;
-            timer.Resumed += Timer_Resumed;
-            timer.Stopped += Timer_Stopped;
-            timer.Reseted += Timer_Reseted;
-            timer.Expired += Timer_Expired;
-            timer.Tick += Timer_Tick;
+            Timer = new Timer(Dispatcher);
+            Timer.Started += Timer_Started;
+            Timer.Paused += Timer_Paused;
+            Timer.Resumed += Timer_Resumed;
+            Timer.Stopped += Timer_Stopped;
+            Timer.Reseted += Timer_Reseted;
+            Timer.Expired += Timer_Expired;
+            Timer.Tick += Timer_Tick;
 
             TimerTextBox.Loaded += (s, e) => ResetInterface();
         }
@@ -114,19 +115,26 @@ namespace Hourglass
         {
             int interval = 100;
 
-            if (timer.StartTime.HasValue)
+            if (Timer.StartTime.HasValue)
             {
-                interval = (int)(1000 * timer.TotalTime.Value.TotalSeconds / ActualWidth / 2);
+                interval = (int)(1000 * Timer.TotalTime.Value.TotalSeconds / ActualWidth / 2);
                 if (interval < 10) interval = 10;
                 if (interval > 100) interval = 100;
             }
 
-            timer.Interval = new TimeSpan(0, 0, 0, 0, interval);
+            Timer.Interval = new TimeSpan(0, 0, 0, 0, interval);
         }
 
         #endregion
 
         #region UI Helpers
+
+        private void CancelEditing()
+        {
+            FocusUtility.RemoveFocus(TimerTextBox);
+            IsEditing = false;
+            UpdateAvailableCommands();
+        }
 
         private string GetTimerStringHint()
         {
@@ -148,12 +156,12 @@ namespace Hourglass
 
         private void UpdateAvailableCommands()
         {
-            StartButton.IsEnabled = isEditing;
-            PauseButton.IsEnabled = !isEditing && timer.State == TimerState.Running && timer.TimeLeft.HasValue;
-            ResumeButton.IsEnabled = !isEditing && timer.State == TimerState.Paused;
-            StopButton.IsEnabled = !isEditing && (timer.State == TimerState.Running || timer.State == TimerState.Paused);
-            ResetButton.IsEnabled = !isEditing && timer.State == TimerState.Expired;
-            CancelButton.IsEnabled = isEditing && timer.State != TimerState.Stopped;
+            StartButton.IsEnabled = IsEditing;
+            PauseButton.IsEnabled = !IsEditing && Timer.State == TimerState.Running && Timer.TimeLeft.HasValue;
+            ResumeButton.IsEnabled = !IsEditing && Timer.State == TimerState.Paused;
+            StopButton.IsEnabled = !IsEditing && (Timer.State == TimerState.Running || Timer.State == TimerState.Paused);
+            ResetButton.IsEnabled = !IsEditing && Timer.State == TimerState.Expired;
+            CancelButton.IsEnabled = IsEditing && Timer.State != TimerState.Stopped;
         }
 
         #endregion
@@ -162,10 +170,10 @@ namespace Hourglass
 
         private void TimerTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (timer.State == TimerState.Expired)
-                timer.Reset();
+            if (Timer.State == TimerState.Expired)
+                Timer.Reset();
 
-            isEditing = true;
+            IsEditing = true;
             UpdateAvailableCommands();
         }
 
@@ -174,10 +182,12 @@ namespace Hourglass
             try
             {
                 DateTime dateTime = DateTimeUtility.ParseNatural(TimerTextBox.Text);
-                FocusUtility.RemoveFocus(TimerTextBox);
                 lastInput = dateTime;
-                isEditing = false;
-                timer.Start(dateTime);
+
+                FocusUtility.RemoveFocus(TimerTextBox);
+                IsEditing = false;
+
+                Timer.Start(dateTime);
                 UpdateScale();
                 UpdateTimerInterval();
                 return;
@@ -189,10 +199,12 @@ namespace Hourglass
             try
             {
                 TimeSpan timeSpan = TimeSpanUtility.ParseNatural(TimerTextBox.Text);
-                FocusUtility.RemoveFocus(TimerTextBox);
                 lastInput = timeSpan;
-                isEditing = false;
-                timer.Start(timeSpan);
+
+                FocusUtility.RemoveFocus(TimerTextBox);
+                IsEditing = false;
+
+                Timer.Start(timeSpan);
                 UpdateScale();
                 UpdateTimerInterval();
                 return;
@@ -204,29 +216,35 @@ namespace Hourglass
 
         private void PauseButton_Click(object sender, RoutedEventArgs e)
         {
-            timer.Pause();
+            Timer.Pause();
         }
 
         private void ResumeButton_Click(object sender, RoutedEventArgs e)
         {
-            timer.Resume();
+            Timer.Resume();
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            timer.Stop();
+            Timer.Stop();
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            timer.Reset();
+            Timer.Reset();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            FocusUtility.RemoveFocus(TimerTextBox);
-            isEditing = false;
-            UpdateAvailableCommands();
+            CancelEditing();
+        }
+
+        private void Background_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (IsEditing && Timer.State != TimerState.Stopped)
+                CancelEditing();
+            else if (TitleTextBox.IsFocused)
+                FocusUtility.RemoveFocus(TitleTextBox);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -273,16 +291,57 @@ namespace Hourglass
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (!isEditing)
-                TimerTextBox.Text = TimeSpanUtility.ToNaturalString(timer.TimeLeft.Value);
+            if (!IsEditing)
+                TimerTextBox.Text = TimeSpanUtility.ToNaturalString(Timer.TimeLeft.Value);
 
-            if (timer.StartTime.HasValue)
+            if (Timer.StartTime.HasValue)
             {
-                long timeLeft = timer.TimeLeft.Value.Ticks;
-                long totalTime = timer.TotalTime.Value.Ticks;
+                long timeLeft = Timer.TimeLeft.Value.Ticks;
+                long totalTime = Timer.TotalTime.Value.Ticks;
                 double progress = 100.0 * (totalTime - timeLeft) / totalTime;
                 TimerProgressBar.Value = progress;
             }
+            else
+                TimerProgressBar.Value = 0.0;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public Timer Timer
+        {
+            get { return timer; }
+            private set
+            {
+                if (value == timer) return;
+                timer = value;
+                OnPropertyChanged("Timer");
+            }
+        }
+
+        public bool IsEditing
+        {
+            get { return isEditing; }
+            private set
+            {
+                if (value == isEditing) return;
+                isEditing = value;
+                OnPropertyChanged("IsEditing");
+            }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(params string[] propertyNames)
+        {
+            if (PropertyChanged != null)
+                foreach (string propertyName in propertyNames)
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
