@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -157,7 +158,7 @@ namespace Hourglass
         private void UpdateAvailableCommands()
         {
             StartButton.IsEnabled = IsEditing;
-            PauseButton.IsEnabled = !IsEditing && Timer.State == TimerState.Running && Timer.TimeLeft.HasValue;
+            PauseButton.IsEnabled = !IsEditing && Timer.State == TimerState.Running && Timer.StartTime.HasValue;
             ResumeButton.IsEnabled = !IsEditing && Timer.State == TimerState.Paused;
             StopButton.IsEnabled = !IsEditing && (Timer.State == TimerState.Running || Timer.State == TimerState.Paused);
             ResetButton.IsEnabled = !IsEditing && Timer.State == TimerState.Expired;
@@ -179,32 +180,37 @@ namespace Hourglass
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            string input = TimerTextBox.Text;
+
+            if (Regex.IsMatch(input, @"^\s*(un)?till?\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                input = Regex.Replace(input, @"^\s*(un)?till?\s*", string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            else
+                try
+                {
+                    TimeSpan timeSpan = TimeSpanUtility.ParseNatural(input);
+                    lastInput = timeSpan;
+
+                    FocusUtility.RemoveFocus(TimerTextBox);
+                    IsEditing = false;
+
+                    Timer.Start(timeSpan);
+                    UpdateScale();
+                    UpdateTimerInterval();
+                    return;
+                }
+                catch (Exception)
+                {
+                }
+
             try
             {
-                DateTime dateTime = DateTimeUtility.ParseNatural(TimerTextBox.Text);
+                DateTime dateTime = DateTimeUtility.ParseNatural(input);
                 lastInput = dateTime;
 
                 FocusUtility.RemoveFocus(TimerTextBox);
                 IsEditing = false;
 
                 Timer.Start(dateTime);
-                UpdateScale();
-                UpdateTimerInterval();
-                return;
-            }
-            catch (Exception)
-            {
-            }
-
-            try
-            {
-                TimeSpan timeSpan = TimeSpanUtility.ParseNatural(TimerTextBox.Text);
-                lastInput = timeSpan;
-
-                FocusUtility.RemoveFocus(TimerTextBox);
-                IsEditing = false;
-
-                Timer.Start(timeSpan);
                 UpdateScale();
                 UpdateTimerInterval();
                 return;
