@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Hourglass
@@ -12,11 +9,11 @@ namespace Hourglass
         [STAThread]
         public static void Main(string[] args)
         {
-            AppEntry appEntry = new AppEntry();
+            var appEntry = new AppEntry();
             appEntry.Run(args);
         }
 
-        private App app;
+        private App _app;
 
         public AppEntry()
         {
@@ -25,14 +22,14 @@ namespace Hourglass
 
         protected override bool OnStartup(StartupEventArgs eventArgs)
         {
-            app = new App();
-            app.Run(new TimerWindow(eventArgs.CommandLine.ToArray()));
+            _app = new App();
+            _app.Run(new TimerWindow(eventArgs.CommandLine.ToArray()));
             return false;
         }
 
         protected override void OnStartupNextInstance(StartupNextInstanceEventArgs eventArgs)
         {
-            TimerWindow timerWindow = new TimerWindow(eventArgs.CommandLine.ToArray());
+            var timerWindow = new TimerWindow(eventArgs.CommandLine.ToArray());
             timerWindow.Show();
         }
     }

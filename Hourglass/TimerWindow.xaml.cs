@@ -1,30 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Hourglass
 {
-    public partial class TimerWindow : Window, INotifyPropertyChanged
+    public partial class TimerWindow : INotifyPropertyChanged
     {
-        private Timer timer;
-        private object lastInput;
-        private bool isEditing;
+        private Timer _timer;
+        private object _lastInput;
+        private bool _isEditing;
 
         public TimerWindow(string[] args)
         {
+            if (args == null)
+                throw new ArgumentNullException("args");
+
             InitializeComponent();
 
             Timer = new Timer(Dispatcher);
@@ -54,12 +49,12 @@ namespace Hourglass
         private const double BaseWindowHeight = 150;
         private const double MinLightFontSize = 14;
 
-        private double lastInputScaleFactor = Double.NaN;
-        private double lastOtherScaleFactor = Double.NaN;
+        private double _lastInputScaleFactor = Double.NaN;
+        private double _lastOtherScaleFactor = Double.NaN;
 
         private double GetInputScaleFactor()
         {
-            return Math.Min(this.ActualHeight / BaseWindowHeight, 0.8 * TimerTextBox.ActualWidth / GetReferenceTextWidth());
+            return Math.Min(ActualHeight / BaseWindowHeight, 0.8 * TimerTextBox.ActualWidth / GetReferenceTextWidth());
         }
 
         private double GetOtherScaleFactor(double inputScaleFactor)
@@ -76,12 +71,11 @@ namespace Hourglass
                 ReferenceText[2] = new FormattedText("888 days 88 hours 88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(RegularFontFamily, TimerTextBox.FontStyle, TimerTextBox.FontWeight, TimerTextBox.FontStretch), BaseInputFontSize, TimerTextBox.Foreground);
             }
 
-            if (TimerTextBox.Text.Contains(" day"))
+            if (TimerTextBox.Text.Contains("day"))
                 return ReferenceText[2].Width;
-            else if (TimerTextBox.Text.Contains(" hour"))
+            if (TimerTextBox.Text.Contains("hour"))
                 return ReferenceText[1].Width;
-            else
-                return ReferenceText[0].Width;
+            return ReferenceText[0].Width;
         }
 
         private void UpdateScale()
@@ -89,7 +83,7 @@ namespace Hourglass
             double inputScaleFactor = GetInputScaleFactor();
             double otherScaleFactor = GetOtherScaleFactor(inputScaleFactor);
 
-            if (inputScaleFactor > 0 && (inputScaleFactor != lastInputScaleFactor || otherScaleFactor != lastOtherScaleFactor))
+            if (inputScaleFactor > 0 && (!inputScaleFactor.Equals(_lastInputScaleFactor) || !otherScaleFactor.Equals(_lastOtherScaleFactor)))
             {
                 ControlsGrid.Margin = new Thickness(otherScaleFactor * BaseControlsGridMargin);
 
@@ -107,8 +101,8 @@ namespace Hourglass
                     button.Margin = new Thickness(otherScaleFactor * otherScaleFactor * BaseButtonMargin, 0, otherScaleFactor * otherScaleFactor * BaseButtonMargin, 0);
                 }
 
-                lastInputScaleFactor = inputScaleFactor;
-                lastOtherScaleFactor = otherScaleFactor;
+                _lastInputScaleFactor = inputScaleFactor;
+                _lastOtherScaleFactor = otherScaleFactor;
             }
         }
 
@@ -116,7 +110,7 @@ namespace Hourglass
         {
             int interval = 100;
 
-            if (Timer.StartTime.HasValue)
+            if (Timer.TotalTime.HasValue)
             {
                 interval = (int)(1000 * Timer.TotalTime.Value.TotalSeconds / ActualWidth / 2);
                 if (interval < 10) interval = 10;
@@ -137,14 +131,52 @@ namespace Hourglass
             UpdateAvailableCommands();
         }
 
+        private object GetInput()
+        {
+            string input = TimerTextBox.Text;
+
+            if (Regex.IsMatch(input, @"^\s*(un)?till?\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                input = Regex.Replace(input, @"^\s*(un)?till?\s*", string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                return GetInputFromDateTimeOrTimeSpan(input);
+            }
+            
+            return GetInputFromTimeSpanOrDateTime(input);
+        }
+
+        private static object GetInputFromDateTimeOrTimeSpan(string str)
+        {
+            DateTime dateTime;
+            if (DateTimeUtility.TryParseNatural(str, out dateTime))
+                return dateTime;
+
+            TimeSpan timeSpan;
+            if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
+                return timeSpan;
+
+            return null;
+        }
+
+        private static object GetInputFromTimeSpanOrDateTime(string str)
+        {
+            TimeSpan timeSpan;
+            if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
+                return timeSpan;
+
+            DateTime dateTime;
+            if (DateTimeUtility.TryParseNatural(str, out dateTime))
+                return dateTime;
+
+            return null;
+        }
+
         private string GetTimerStringHint()
         {
-            if (lastInput is TimeSpan)
-                return TimeSpanUtility.ToShortNaturalString((TimeSpan)lastInput);
-            else if (lastInput is DateTime)
-                return DateTimeUtility.ToNaturalString((DateTime)lastInput);
-            else
-                return string.Empty;
+            if (_lastInput is TimeSpan)
+                return TimeSpanUtility.ToShortNaturalString((TimeSpan)_lastInput);
+            if (_lastInput is DateTime)
+                return DateTimeUtility.ToNaturalString((DateTime)_lastInput);
+            return string.Empty;
         }
 
         private void ResetInterface()
@@ -180,44 +212,18 @@ namespace Hourglass
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            string input = TimerTextBox.Text;
-
-            if (Regex.IsMatch(input, @"^\s*(un)?till?\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-                input = Regex.Replace(input, @"^\s*(un)?till?\s*", string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-            else
-                try
-                {
-                    TimeSpan timeSpan = TimeSpanUtility.ParseNatural(input);
-                    lastInput = timeSpan;
-
-                    FocusUtility.RemoveFocus(TimerTextBox);
-                    IsEditing = false;
-
-                    Timer.Start(timeSpan);
-                    UpdateScale();
-                    UpdateTimerInterval();
-                    return;
-                }
-                catch (Exception)
-                {
-                }
-
-            try
-            {
-                DateTime dateTime = DateTimeUtility.ParseNatural(input);
-                lastInput = dateTime;
-
-                FocusUtility.RemoveFocus(TimerTextBox);
-                IsEditing = false;
-
-                Timer.Start(dateTime);
-                UpdateScale();
-                UpdateTimerInterval();
+            var input = GetInput();
+            if (input == null)
                 return;
-            }
-            catch (Exception)
-            {
-            }
+
+            FocusUtility.RemoveFocus(TimerTextBox);
+            IsEditing = false;
+
+            Timer.Start(input);
+            UpdateScale();
+            UpdateTimerInterval();
+
+            _lastInput = input;
         }
 
         private void PauseButton_Click(object sender, RoutedEventArgs e)
@@ -297,10 +303,10 @@ namespace Hourglass
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (!IsEditing)
+            if (!IsEditing && Timer.TimeLeft.HasValue)
                 TimerTextBox.Text = TimeSpanUtility.ToNaturalString(Timer.TimeLeft.Value);
 
-            if (Timer.StartTime.HasValue)
+            if (Timer.TimeLeft.HasValue && Timer.TotalTime.HasValue)
             {
                 long timeLeft = Timer.TimeLeft.Value.Ticks;
                 long totalTime = Timer.TotalTime.Value.Ticks;
@@ -317,22 +323,22 @@ namespace Hourglass
 
         public Timer Timer
         {
-            get { return timer; }
+            get { return _timer; }
             private set
             {
-                if (value == timer) return;
-                timer = value;
+                if (value == _timer) return;
+                _timer = value;
                 OnPropertyChanged("Timer");
             }
         }
 
         public bool IsEditing
         {
-            get { return isEditing; }
+            get { return _isEditing; }
             private set
             {
-                if (value == isEditing) return;
-                isEditing = value;
+                if (value == _isEditing) return;
+                _isEditing = value;
                 OnPropertyChanged("IsEditing");
             }
         }

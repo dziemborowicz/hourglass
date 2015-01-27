@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -31,7 +27,7 @@ namespace Hourglass
             if (!(d is TextBox) && !(d is ComboBox))
                 return;
 
-            Control control = (Control)d;
+            var control = (Control)d;
 
             control.Loaded += (sender, eventArgs) =>
             {
@@ -54,7 +50,7 @@ namespace Hourglass
 
         private static void AddWatermark(Control control)
         {
-            AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
+            var layer = AdornerLayer.GetAdornerLayer(control);
             if (layer == null)
                 return;
 
@@ -63,29 +59,28 @@ namespace Hourglass
 
         private static void RemoveWatermark(Control control)
         {
-            AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
+            var layer = AdornerLayer.GetAdornerLayer(control);
             if (layer == null)
                 return;
 
-            Adorner[] adorners = layer.GetAdorners(control);
+            var adorners = layer.GetAdorners(control);
             if (adorners == null)
                 return;
 
-            foreach (Adorner adorner in adorners)
-                if (adorner is WatermarkAdorner)
-                {
-                    adorner.Visibility = Visibility.Hidden;
-                    layer.Remove(adorner);
-                }
+            foreach (var adorner in adorners.OfType<WatermarkAdorner>())
+            {
+                adorner.Visibility = Visibility.Hidden;
+                layer.Remove(adorner);
+            }
         }
 
         private static bool HasActualValue(Control control)
         {
-            TextBox textBox = control as TextBox;
+            var textBox = control as TextBox;
             if (textBox != null)
                 return !string.IsNullOrEmpty(textBox.Text);
 
-            ComboBox comboBox = control as ComboBox;
+            var comboBox = control as ComboBox;
             if (comboBox != null)
                 return !string.IsNullOrEmpty(comboBox.Text);
 

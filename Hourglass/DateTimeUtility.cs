@@ -204,6 +204,30 @@ namespace Hourglass
             throw new FormatException();
         }
 
+        public static bool TryParseNatural(string str, out DateTime dateTime)
+        {
+            return TryParseNatural(str, DateTime.Now, out dateTime);
+        }
+
+        public static bool TryParseNatural(string str, DateTime referenceDate, out DateTime dateTime)
+        {
+            return TryParseNatural(str, referenceDate, CultureInfo.CurrentCulture, out dateTime);
+        }
+
+        public static bool TryParseNatural(string str, DateTime referenceDate, IFormatProvider provider, out DateTime dateTime)
+        {
+            try
+            {
+                dateTime = ParseNatural(str, referenceDate, provider);
+                return true;
+            }
+            catch (FormatException)
+            {
+                dateTime = DateTime.MinValue;
+                return false;
+            }
+        }
+
         public static string ToNaturalString(DateTime dateTime)
         {
             if (dateTime.Second != 0)

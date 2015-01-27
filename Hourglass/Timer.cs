@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace Hourglass
@@ -12,15 +8,15 @@ namespace Hourglass
     {
         #region Internal State
 
-        private DispatcherTimer ticker;
+        private DispatcherTimer _ticker;
 
-        private string title;
+        private string _title;
 
-        private TimerState state = TimerState.Stopped;
-        private DateTime? startTime;
-        private DateTime? endTime;
-        private TimeSpan? timeLeft;
-        private TimeSpan? totalTime;
+        private TimerState _state = TimerState.Stopped;
+        private DateTime? _startTime;
+        private DateTime? _endTime;
+        private TimeSpan? _timeLeft;
+        private TimeSpan? _totalTime;
 
         #endregion
 
@@ -28,23 +24,33 @@ namespace Hourglass
 
         public Timer(Dispatcher dispatcher)
         {
-            ticker = new DispatcherTimer(DispatcherPriority.Normal, dispatcher);
-            ticker.Tick += (s, e) => DispatcherTimerTick();
-            ticker.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            _ticker = new DispatcherTimer(DispatcherPriority.Normal, dispatcher);
+            _ticker.Tick += (s, e) => DispatcherTimerTick();
+            _ticker.Interval = new TimeSpan(0, 0, 0, 0, 100);
         }
 
         #endregion
 
         #region Event Methods
 
+        public void Start(object input)
+        {
+            if (input is DateTime)
+                Start((DateTime)input);
+            else if (input is TimeSpan)
+                Start((TimeSpan)input);
+            else
+                throw new ArgumentException(@"input must be a DateTime or TimeSpan", "input");
+        }
+
         public void Start(DateTime dateTime)
         {
-            state = TimerState.Running;
-            startTime = null;
-            endTime = dateTime;
-            timeLeft = dateTime - DateTime.Now;
-            timeLeft = (timeLeft > TimeSpan.Zero) ? timeLeft : TimeSpan.Zero;
-            totalTime = null;
+            _state = TimerState.Running;
+            _startTime = null;
+            _endTime = dateTime;
+            _timeLeft = dateTime - DateTime.Now;
+            _timeLeft = (_timeLeft > TimeSpan.Zero) ? _timeLeft : TimeSpan.Zero;
+            _totalTime = null;
 
             StartDispatcherTimer();
             OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime");
@@ -53,11 +59,11 @@ namespace Hourglass
 
         public void Start(TimeSpan timeSpan)
         {
-            state = TimerState.Running;
-            startTime = DateTime.Now;
-            endTime = startTime + timeSpan;
-            timeLeft = timeSpan;
-            totalTime = timeSpan;
+            _state = TimerState.Running;
+            _startTime = DateTime.Now;
+            _endTime = _startTime + timeSpan;
+            _timeLeft = timeSpan;
+            _totalTime = timeSpan;
 
             StartDispatcherTimer();
             OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime");
@@ -66,11 +72,11 @@ namespace Hourglass
 
         public void Pause()
         {
-            if (state != TimerState.Running || !totalTime.HasValue)
+            if (_state != TimerState.Running || !_totalTime.HasValue)
                 return;
 
-            state = TimerState.Paused;
-            timeLeft = endTime - DateTime.Now;
+            _state = TimerState.Paused;
+            _timeLeft = _endTime - DateTime.Now;
 
             StopDispatcherTimer();
             OnPropertyChanged("State", "TimeLeft");
@@ -79,12 +85,12 @@ namespace Hourglass
 
         public void Resume()
         {
-            if (state != TimerState.Paused)
+            if (_state != TimerState.Paused)
                 return;
 
-            state = TimerState.Running;
-            endTime = DateTime.Now + timeLeft;
-            startTime = endTime - totalTime;
+            _state = TimerState.Running;
+            _endTime = DateTime.Now + _timeLeft;
+            _startTime = _endTime - _totalTime;
 
             StartDispatcherTimer();
             OnPropertyChanged("State", "StartTime", "EndTime");
@@ -93,11 +99,11 @@ namespace Hourglass
 
         public void Stop()
         {
-            state = TimerState.Stopped;
-            startTime = null;
-            endTime = null;
-            timeLeft = null;
-            totalTime = null;
+            _state = TimerState.Stopped;
+            _startTime = null;
+            _endTime = null;
+            _timeLeft = null;
+            _totalTime = null;
 
             StopDispatcherTimer();
             OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime");
@@ -112,20 +118,20 @@ namespace Hourglass
 
         private void DispatcherTimerTick()
         {
-            if (state != TimerState.Running)
+            if (_state != TimerState.Running)
                 return;
 
-            timeLeft = endTime - DateTime.Now;
-            timeLeft = (timeLeft > TimeSpan.Zero) ? timeLeft : TimeSpan.Zero;
+            _timeLeft = _endTime - DateTime.Now;
+            _timeLeft = (_timeLeft > TimeSpan.Zero) ? _timeLeft : TimeSpan.Zero;
 
-            if (timeLeft > TimeSpan.Zero)
+            if (_timeLeft > TimeSpan.Zero)
             {
                 OnPropertyChanged("TimeLeft");
                 OnTick();
             }
             else
             {
-                state = TimerState.Expired;
+                _state = TimerState.Expired;
 
                 StopDispatcherTimer();
                 OnPropertyChanged("State", "TimeLeft");
@@ -140,12 +146,12 @@ namespace Hourglass
         private void StartDispatcherTimer()
         {
             DispatcherTimerTick();
-            ticker.Start();
+            _ticker.Start();
         }
 
         private void StopDispatcherTimer()
         {
-            ticker.Stop();
+            _ticker.Stop();
         }
 
         #endregion
@@ -154,47 +160,47 @@ namespace Hourglass
 
         public string Title
         {
-            get { return title; }
+            get { return _title; }
             set
             {
-                if (title == value) return;
-                title = value;
+                if (_title == value) return;
+                _title = value;
                 OnPropertyChanged("Title");
             }
         }
 
         public TimerState State
         {
-            get { return state; }
+            get { return _state; }
         }
 
         public DateTime? StartTime
         {
-            get { return startTime; }
+            get { return _startTime; }
         }
 
         public DateTime? EndTime
         {
-            get { return endTime; }
+            get { return _endTime; }
         }
 
         public TimeSpan? TimeLeft
         {
-            get { return timeLeft; }
+            get { return _timeLeft; }
         }
 
         public TimeSpan? TotalTime
         {
-            get { return totalTime; }
+            get { return _totalTime; }
         }
 
         public TimeSpan Interval
         {
-            get { return ticker.Interval; }
+            get { return _ticker.Interval; }
             set
             {
-                if (ticker.Interval == value) return;
-                ticker.Interval = value;
+                if (_ticker.Interval == value) return;
+                _ticker.Interval = value;
                 OnPropertyChanged("Interval");
             }
         }
@@ -271,10 +277,10 @@ namespace Hourglass
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && ticker != null)
+            if (disposing && _ticker != null)
             {
-                ticker.Stop();
-                ticker = null;
+                _ticker.Stop();
+                _ticker = null;
             }
         }
 

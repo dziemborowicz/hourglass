@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 
 namespace Hourglass
@@ -12,11 +7,11 @@ namespace Hourglass
     {
         public static void RemoveFocus(FrameworkElement element)
         {
-            FrameworkElement parent = (FrameworkElement)element.Parent;
-            while (parent != null && parent is IInputElement && !((IInputElement)parent).Focusable)
+            var parent = (FrameworkElement)element.Parent;
+            while (parent != null && !((IInputElement)parent).Focusable)
                 parent = (FrameworkElement)parent.Parent;
-            DependencyObject scope = FocusManager.GetFocusScope(element);
-            FocusManager.SetFocusedElement(scope, parent as IInputElement);
+            var scope = FocusManager.GetFocusScope(element);
+            FocusManager.SetFocusedElement(scope, parent);
         }
     }
 }

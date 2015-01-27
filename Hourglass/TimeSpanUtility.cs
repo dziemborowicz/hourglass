@@ -121,6 +121,20 @@ namespace Hourglass
             }
             return new TimeSpan(ticks);
         }
+        
+        public static bool TryParseNatural(string str, out TimeSpan timeSpan)
+        {
+            try
+            {
+                timeSpan = ParseNatural(str);
+                return true;
+            }
+            catch (FormatException)
+            {
+                timeSpan = TimeSpan.Zero;
+                return false;
+            }
+        }
 
         public static string ToNaturalString(TimeSpan timeSpan)
         {
