@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,6 +11,11 @@ namespace Hourglass
     public class TimeSpanUtility
     {
         public static TimeSpan ParseNatural(string str)
+        {
+            return ParseNatural(str, CultureInfo.CurrentCulture);
+        }
+
+        public static TimeSpan ParseNatural(string str, IFormatProvider provider)
         {
             // Null or empty input
             if (str == null)
