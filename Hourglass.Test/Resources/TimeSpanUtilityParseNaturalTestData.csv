@@ -1,6 +1,6 @@
 "Input","Culture","Expected"
 "","en-US","System.FormatException"
-"junk","en-US","System.FormatException"
+"spam","en-US","System.FormatException"
 "0","en-US","0:00:00:00.0000000"
 "5","en-US","0:00:05:00.0000000"
 "60","en-US","0:01:00:00.0000000"

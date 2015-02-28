@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Hourglass
 {
@@ -17,12 +15,24 @@ namespace Hourglass
 
         public static TimeSpan ParseNatural(string str, IFormatProvider provider)
         {
-            // Null or empty input
-            if (str == null)
-                throw new ArgumentNullException("str");
-
-            if (string.IsNullOrWhiteSpace(str))
+            TimeSpan timeSpan;
+            if (!TryParseNatural(str, provider, out timeSpan))
                 throw new FormatException();
+            return timeSpan;
+        }
+
+        public static bool TryParseNatural(string str, out TimeSpan timeSpan)
+        {
+            return TryParseNatural(str, CultureInfo.CurrentCulture, out timeSpan);
+        }
+
+        public static bool TryParseNatural(string str, IFormatProvider provider, out TimeSpan timeSpan)
+        {
+            timeSpan = TimeSpan.Zero;
+
+            // Null or empty input
+            if (string.IsNullOrWhiteSpace(str))
+                return false;
 
             // Trim whitespace
             str = str.Trim(' ', '\t', '\r', '\n');
@@ -32,8 +42,9 @@ namespace Hourglass
             {
                 int minutes;
                 if (!int.TryParse(str, out minutes))
-                    throw new FormatException();
-                return new TimeSpan(0, minutes, 0);
+                    return false;
+                timeSpan = new TimeSpan(0, minutes, 0);
+                return true;
             }
 
             // Multi-part input
@@ -47,25 +58,25 @@ namespace Hourglass
             parts = parts.Where(s => !string.IsNullOrEmpty(s)).ToArray();
 
             // Get values
-            double[] values = new double[parts.Length];
+            var values = new double[parts.Length];
             for (int i = 0; i < parts.Length; i++)
             {
-                string part = parts[i];
-                Match match = Regex.Match(part, @"^[+\-]?\d+(\.\d*)?|^[+\-]?\.\d+");
+                var part = parts[i];
+                var match = Regex.Match(part, @"^[+\-]?\d+(\.\d*)?|^[+\-]?\.\d+");
                 if (match.Success)
                 {
                     if (!double.TryParse(match.Value, out values[i]))
-                        throw new FormatException();
+                        return false;
                 }
                 else
-                    throw new FormatException();
+                    return false;
             }
 
             // Get explicit units
-            int[] units = new int[parts.Length];
+            var units = new int[parts.Length];
             for (int i = 0; i < parts.Length; i++)
             {
-                string part = parts[i];
+                var part = parts[i];
                 if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(d|dys?|days?)$"))
                     units[i] = 24 * 60 * 60;
                 else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(h|hrs?|hours?)$"))
@@ -77,7 +88,7 @@ namespace Hourglass
                 else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)$"))
                     units[i] = 0;
                 else
-                    throw new FormatException();
+                    return false;
             }
 
             // Fill units implicitly left
@@ -93,7 +104,7 @@ namespace Hourglass
                     else if (lastUnit == 60)
                         units[i] = 1;
                     else if (lastUnit != 0)
-                        throw new FormatException();
+                        return false;
                 }
                 lastUnit = units[i];
             }
@@ -114,39 +125,26 @@ namespace Hourglass
                     else if (lastUnit == 60 * 60)
                         units[i] = 24 * 60 * 60;
                     else if (lastUnit != 0)
-                        throw new FormatException();
+                        return false;
                 }
                 lastUnit = units[i];
             }
 
             // Calculate time
-            long ticks = 0;
+            long ticks = 0L;
             for (int i = 0; i < parts.Length; i++)
             {
                 ticks += (long)(values[i] * units[i] * 10000000L);
             }
-            return new TimeSpan(ticks);
-        }
-        
-        public static bool TryParseNatural(string str, out TimeSpan timeSpan)
-        {
-            try
-            {
-                timeSpan = ParseNatural(str);
-                return true;
-            }
-            catch (FormatException)
-            {
-                timeSpan = TimeSpan.Zero;
-                return false;
-            }
+            timeSpan = new TimeSpan(ticks);
+            return true;
         }
 
         public static string ToNaturalString(TimeSpan timeSpan)
         {
             // Reject negative values
             if (timeSpan.Ticks < 0)
-                throw new ArgumentOutOfRangeException("timeSpan", "timeSpan must be at least zero.");
+                throw new ArgumentOutOfRangeException("timeSpan", @"timeSpan must be at least zero.");
 
             // Breakdown time interval
             long totalSeconds = timeSpan.Ticks / 10000000L;
@@ -156,35 +154,35 @@ namespace Hourglass
             long seconds = totalSeconds % 60;
 
             // Build string
-            StringBuilder sb = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             if (days == 1)
-                sb.Append("1 day ");
+                stringBuilder.AppendFormat("{0} day ", days);
             else if (days != 0)
-                sb.AppendFormat("{0} days ", days);
+                stringBuilder.AppendFormat("{0} days ", days);
 
             if (hours == 1)
-                sb.Append("1 hour ");
+                stringBuilder.AppendFormat("{0} hour ", hours);
             else if (hours != 0 || days != 0)
-                sb.AppendFormat("{0} hours ", hours);
+                stringBuilder.AppendFormat("{0} hours ", hours);
 
             if (minutes == 1)
-                sb.Append("1 minute ");
+                stringBuilder.AppendFormat("{0} minute ", minutes);
             else if (minutes != 0 || hours != 0 || days != 0)
-                sb.AppendFormat("{0} minutes ", minutes);
+                stringBuilder.AppendFormat("{0} minutes ", minutes);
 
             if (seconds == 1)
-                sb.Append("1 second");
+                stringBuilder.AppendFormat("{0} second", seconds);
             else
-                sb.AppendFormat("{0} seconds", seconds);
+                stringBuilder.AppendFormat("{0} seconds", seconds);
 
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
 
         public static string ToShortNaturalString(TimeSpan timeSpan)
         {
             // Reject negative values
             if (timeSpan.Ticks < 0)
-                throw new ArgumentOutOfRangeException("timeSpan", "timeSpan must be at least zero.");
+                throw new ArgumentOutOfRangeException("timeSpan", @"timeSpan must be at least zero.");
 
             // Breakdown time interval
             long totalSeconds = timeSpan.Ticks / 10000000L;
@@ -194,29 +192,29 @@ namespace Hourglass
             long seconds = totalSeconds % 60;
 
             // Build string
-            StringBuilder sb = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             if (days == 1)
-                sb.Append("1 day ");
+                stringBuilder.AppendFormat("{0} day ", days);
             else if (days != 0)
-                sb.AppendFormat("{0} days ", days);
+                stringBuilder.AppendFormat("{0} days ", days);
 
             if (hours == 1)
-                sb.Append("1 hour ");
+                stringBuilder.AppendFormat("{0} hour ", hours);
             else if (hours != 0)
-                sb.AppendFormat("{0} hours ", hours);
+                stringBuilder.AppendFormat("{0} hours ", hours);
 
             if (minutes == 1)
-                sb.Append("1 minute ");
+                stringBuilder.AppendFormat("{0} minute ", minutes);
             else if (minutes != 0)
-                sb.AppendFormat("{0} minutes ", minutes);
+                stringBuilder.AppendFormat("{0} minutes ", minutes);
 
             if (seconds == 1)
-                sb.Append("1 second ");
+                stringBuilder.AppendFormat("{0} second ", seconds);
             else if (seconds != 0 || (days == 0 && hours == 0 && minutes == 0))
-                sb.AppendFormat("{0} seconds ", seconds);
+                stringBuilder.AppendFormat("{0} seconds ", seconds);
 
-            sb.Remove(sb.Length - 1, 1);
-            return sb.ToString();
+            stringBuilder.Remove(stringBuilder.Length - 1, 1);
+            return stringBuilder.ToString();
         }
     }
 }

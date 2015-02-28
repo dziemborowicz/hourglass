@@ -33,6 +33,9 @@ namespace Hourglass.Test
                 }
                 catch (Exception e)
                 {
+                    if (e is AssertFailedException)
+                        throw;
+
                     Assert.AreEqual(expectedException, e.GetType(), @"Input: ""{0}""; Culture: {1}.", input, culture);
                 }
             }

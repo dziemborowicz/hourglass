@@ -34,6 +34,9 @@ namespace Hourglass.Test
                 }
                 catch (Exception e)
                 {
+                    if (e is AssertFailedException)
+                        throw;
+
                     Assert.AreEqual(expectedException, e.GetType(), @"Input: ""{0}""; Reference Date: {1}; Culture: {2}.", input, referenceDate, culture);
                 }
             }
