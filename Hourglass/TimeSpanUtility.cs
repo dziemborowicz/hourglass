@@ -156,24 +156,24 @@ namespace Hourglass
             // Build string
             var stringBuilder = new StringBuilder();
             if (days == 1)
-                stringBuilder.AppendFormat("{0} day ", days);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} day ", days);
             else if (days != 0)
-                stringBuilder.AppendFormat("{0} days ", days);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} days ", days);
 
             if (hours == 1)
-                stringBuilder.AppendFormat("{0} hour ", hours);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} hour ", hours);
             else if (hours != 0 || days != 0)
-                stringBuilder.AppendFormat("{0} hours ", hours);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} hours ", hours);
 
             if (minutes == 1)
-                stringBuilder.AppendFormat("{0} minute ", minutes);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} minute ", minutes);
             else if (minutes != 0 || hours != 0 || days != 0)
-                stringBuilder.AppendFormat("{0} minutes ", minutes);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} minutes ", minutes);
 
             if (seconds == 1)
-                stringBuilder.AppendFormat("{0} second", seconds);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} second", seconds);
             else
-                stringBuilder.AppendFormat("{0} seconds", seconds);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} seconds", seconds);
 
             return stringBuilder.ToString();
         }
@@ -194,24 +194,24 @@ namespace Hourglass
             // Build string
             var stringBuilder = new StringBuilder();
             if (days == 1)
-                stringBuilder.AppendFormat("{0} day ", days);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} day ", days);
             else if (days != 0)
-                stringBuilder.AppendFormat("{0} days ", days);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} days ", days);
 
             if (hours == 1)
-                stringBuilder.AppendFormat("{0} hour ", hours);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} hour ", hours);
             else if (hours != 0)
-                stringBuilder.AppendFormat("{0} hours ", hours);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} hours ", hours);
 
             if (minutes == 1)
-                stringBuilder.AppendFormat("{0} minute ", minutes);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} minute ", minutes);
             else if (minutes != 0)
-                stringBuilder.AppendFormat("{0} minutes ", minutes);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} minutes ", minutes);
 
             if (seconds == 1)
-                stringBuilder.AppendFormat("{0} second ", seconds);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} second ", seconds);
             else if (seconds != 0 || (days == 0 && hours == 0 && minutes == 0))
-                stringBuilder.AppendFormat("{0} seconds ", seconds);
+                stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0} seconds ", seconds);
 
             stringBuilder.Remove(stringBuilder.Length - 1, 1);
             return stringBuilder.ToString();

@@ -387,13 +387,13 @@ namespace Hourglass
             }
 
             // Normalize noon, midday, or midnight
-            str = Regex.Replace(str, @"(?<=(^|\s))(12(:00(:00)?)?\s*)?noon(?=($|\s))", "12:00:00 PM", RegexOptions);
-            str = Regex.Replace(str, @"(?<=(^|\s))(12(:00(:00)?)?\s*)?mid(-?d)?ay(?=($|\s))", "12:00:00 PM", RegexOptions);
-            str = Regex.Replace(str, @"(?<=(^|\s))(12(:00(:00)?)?\s*)?mid-?night(?=($|\s))", "12:00:00 AM", RegexOptions);
+            str = Regex.Replace(str, @"\b(12([.:]00([.:]00)?)?\s*)?noon\b", "12:00:00 PM", RegexOptions);
+            str = Regex.Replace(str, @"\b(12([.:]00([.:]00)?)?\s*)?mid(-?d)?ay\b", "12:00:00 PM", RegexOptions);
+            str = Regex.Replace(str, @"\b(12([.:]00([.:]00)?)?\s*)?mid-?night\b", "12:00:00 AM", RegexOptions);
 
             // Normalize relative dates
-            str = Regex.Replace(str, @"(?<=(^|\s))todd?ay(?=($|\s))", referenceDate.ToString("yyyy-MM-dd"), RegexOptions);
-            str = Regex.Replace(str, @"(?<=(^|\s))tomm?orr?ow(?=($|\s))", referenceDate.AddDays(1).ToString("yyyy-MM-dd"), RegexOptions);
+            str = Regex.Replace(str, @"\btodd?ay\b", referenceDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), RegexOptions);
+            str = Regex.Replace(str, @"\btomm?orr?ow\b", referenceDate.AddDays(1).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), RegexOptions);
 
             // Try each format
             foreach (var format in GetNaturalFormats(provider))
@@ -526,15 +526,33 @@ namespace Hourglass
             }
         }
 
+        private static string GetMonthFormatString(IFormatProvider provider)
+        {
+            if (IsMonthFirst(provider))
+                return "MMMM d, yyyy";
+
+            if (IsYearFirst(provider))
+                return "yyyy MMMM d";
+
+            return "d MMMM yyyy";
+        }
+
         public static string ToNaturalString(DateTime dateTime)
         {
+            return ToNaturalString(dateTime, CultureInfo.CurrentCulture);
+        }
+
+        public static string ToNaturalString(DateTime dateTime, IFormatProvider provider)
+        {
+            var monthFormatString = GetMonthFormatString(provider);
+
             if (dateTime.Second != 0)
-                return dateTime.ToString("d MMMM yyyy h:mm:ss tt");
+                return dateTime.ToString(monthFormatString + " h:mm:ss tt", CultureInfo.InvariantCulture);
 
             if (dateTime.Minute != 0 || dateTime.Hour != 0)
-                return dateTime.ToString("d MMMM yyyy h:mm tt");
+                return dateTime.ToString(monthFormatString + " h:mm tt", CultureInfo.InvariantCulture);
 
-            return dateTime.ToString("d MMMM yyyy");
+            return dateTime.ToString(monthFormatString, CultureInfo.InvariantCulture);
         }
 
         #endregion
