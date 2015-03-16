@@ -1,136 +1,146 @@
-﻿using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TimerWindow.xaml.cs" company="Chris Dziemborowicz">
+//   Copyright (c) Chris Dziemborowicz. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Hourglass
 {
+    using System;
+    using System.ComponentModel;
+    using System.Text.RegularExpressions;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+
+    /// <summary>
+    /// A timer window.
+    /// </summary>
     public partial class TimerWindow : INotifyPropertyChanged
     {
-        private Timer _timer;
-        private object _lastInput;
-        private bool _isEditing;
+        #region Private Members
 
+        /// <summary>
+        /// The <see cref="Timer"/> used for this window.
+        /// </summary>
+        private readonly Timer timer;
+
+        /// <summary>
+        /// A <see cref="TimerScaler"/> used to ensure that controls shrink and grow with the window size, and to
+        /// update the <see cref="Timer"/> interval to ensure smooth animation of the progress bar.
+        /// </summary>
+        private readonly TimerScaler scaler;
+
+        /// <summary>
+        /// A <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the last input used to start a timer, or
+        /// <c>null</c> if no input has been used to start a timer yet.
+        /// </summary>
+        private object lastInput;
+
+        /// <summary>
+        /// A value indicating whether the user is currently editing the input or title.
+        /// </summary>
+        private bool isEditing;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimerWindow"/> class.
+        /// </summary>
+        /// <param name="args">Command-line arguments.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="args"/> is <c>null</c>.</exception>
         public TimerWindow(string[] args)
         {
             if (args == null)
+            {
                 throw new ArgumentNullException("args");
+            }
 
             InitializeComponent();
 
-            Timer = new Timer(Dispatcher);
-            Timer.Started += Timer_Started;
-            Timer.Paused += Timer_Paused;
-            Timer.Resumed += Timer_Resumed;
-            Timer.Stopped += Timer_Stopped;
-            Timer.Reseted += Timer_Reseted;
-            Timer.Expired += Timer_Expired;
-            Timer.Tick += Timer_Tick;
+            TimerTextBox.Loaded += (s, e) => this.ResetInterface();
 
-            TimerTextBox.Loaded += (s, e) => ResetInterface();
-        }
+            this.timer = new Timer(Dispatcher);
+            this.timer.Started += this.TimerStarted;
+            this.timer.Paused += this.TimerPaused;
+            this.timer.Resumed += this.TimerResumed;
+            this.timer.Stopped += this.TimerStopped;
+            this.timer.Reseted += this.TimerReseted;
+            this.timer.Expired += this.TimerExpired;
+            this.timer.Tick += this.TimerTick;
 
-        #region Interface Scaling
-
-        private static readonly FontFamily RegularFontFamily = new FontFamily("Segoe UI");
-        private static readonly FontFamily LightFontFamily = new FontFamily("Segoe UI Light, Segoe UI");
-        private static readonly FormattedText[] ReferenceText = new FormattedText[3];
-
-        private const double BaseButtonMargin = 7;
-        private const double BaseControlsGridMargin = 10;
-        private const double BaseFontSize = 12;
-        private const double BaseInputFontSize = 18;
-        private const double BaseInputTopMargin = 1;
-        private const double BaseInputBottomMargin = 4;
-        private const double BaseWindowHeight = 150;
-        private const double MinLightFontSize = 14;
-
-        private double _lastInputScaleFactor = Double.NaN;
-        private double _lastOtherScaleFactor = Double.NaN;
-
-        private double GetInputScaleFactor()
-        {
-            return Math.Min(ActualHeight / BaseWindowHeight, 0.8 * TimerTextBox.ActualWidth / GetReferenceTextWidth());
-        }
-
-        private double GetOtherScaleFactor(double inputScaleFactor)
-        {
-            return Math.Max(1, 1 + Math.Log(inputScaleFactor));
-        }
-
-        private double GetReferenceTextWidth()
-        {
-            if (ReferenceText[0] == null)
-            {
-                ReferenceText[0] = new FormattedText("88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(RegularFontFamily, TimerTextBox.FontStyle, TimerTextBox.FontWeight, TimerTextBox.FontStretch), BaseInputFontSize, TimerTextBox.Foreground);
-                ReferenceText[1] = new FormattedText("88 hours 88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(RegularFontFamily, TimerTextBox.FontStyle, TimerTextBox.FontWeight, TimerTextBox.FontStretch), BaseInputFontSize, TimerTextBox.Foreground);
-                ReferenceText[2] = new FormattedText("888 days 88 hours 88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(RegularFontFamily, TimerTextBox.FontStyle, TimerTextBox.FontWeight, TimerTextBox.FontStretch), BaseInputFontSize, TimerTextBox.Foreground);
-            }
-
-            if (TimerTextBox.Text.Contains("day"))
-                return ReferenceText[2].Width;
-            if (TimerTextBox.Text.Contains("hour"))
-                return ReferenceText[1].Width;
-            return ReferenceText[0].Width;
-        }
-
-        private void UpdateScale()
-        {
-            double inputScaleFactor = GetInputScaleFactor();
-            double otherScaleFactor = GetOtherScaleFactor(inputScaleFactor);
-
-            if (inputScaleFactor > 0 && (!inputScaleFactor.Equals(_lastInputScaleFactor) || !otherScaleFactor.Equals(_lastOtherScaleFactor)))
-            {
-                ControlsGrid.Margin = new Thickness(otherScaleFactor * BaseControlsGridMargin);
-
-                TimerTextBox.FontSize = inputScaleFactor * BaseInputFontSize;
-                TimerTextBox.FontFamily = TimerTextBox.FontSize < MinLightFontSize ? RegularFontFamily : LightFontFamily;
-                TimerTextBox.Margin = new Thickness(0, inputScaleFactor * BaseInputTopMargin, 0, inputScaleFactor * BaseInputBottomMargin);
-
-                TitleTextBox.FontSize = otherScaleFactor * BaseFontSize;
-                TitleTextBox.FontFamily = TitleTextBox.FontSize < MinLightFontSize ? RegularFontFamily : LightFontFamily;
-
-                foreach (Button button in VisualTreeUtility.GetVisualChildren<Button>(this))
-                {
-                    button.FontSize = otherScaleFactor * BaseFontSize;
-                    button.FontFamily = button.FontSize < MinLightFontSize ? RegularFontFamily : LightFontFamily;
-                    button.Margin = new Thickness(otherScaleFactor * otherScaleFactor * BaseButtonMargin, 0, otherScaleFactor * otherScaleFactor * BaseButtonMargin, 0);
-                }
-
-                _lastInputScaleFactor = inputScaleFactor;
-                _lastOtherScaleFactor = otherScaleFactor;
-            }
-        }
-
-        private void UpdateTimerInterval()
-        {
-            int interval = 100;
-
-            if (Timer.TotalTime.HasValue)
-            {
-                interval = (int)(1000 * Timer.TotalTime.Value.TotalSeconds / ActualWidth / 2);
-                if (interval < 10) interval = 10;
-                if (interval > 100) interval = 100;
-            }
-
-            Timer.Interval = new TimeSpan(0, 0, 0, 0, interval);
+            Button[] buttons = { StartButton, PauseButton, ResumeButton, StopButton, ResetButton, CancelButton };
+            this.scaler = new TimerScaler(this.timer, this /* timerWindow */, ControlsGrid, TimerTextBox, TitleTextBox, buttons);
         }
 
         #endregion
 
-        #region UI Helpers
+        #region Events
 
-        private void CancelEditing()
+        /// <summary>
+        /// Raised when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets a value indicating whether the user is currently editing the input or title.
+        /// </summary>
+        public bool IsEditing
         {
-            FocusUtility.RemoveFocus(TimerTextBox);
-            IsEditing = false;
-            UpdateAvailableCommands();
+            get
+            {
+                return this.isEditing;
+            }
+
+            private set
+            {
+                if (value == this.isEditing)
+                {
+                    return;
+                }
+
+                this.isEditing = value;
+                this.OnPropertyChanged("IsEditing");
+            }
         }
 
+        #endregion
+
+        #region Protected Methods
+
+        /// <summary>
+        /// Raises the <see cref="PropertyChanged"/> event.
+        /// </summary>
+        /// <param name="propertyNames">One or more property names.</param>
+        protected void OnPropertyChanged(params string[] propertyNames)
+        {
+            PropertyChangedEventHandler eventHandler = this.PropertyChanged;
+
+            if (eventHandler != null)
+            {
+                foreach (string propertyName in propertyNames)
+                {
+                    eventHandler(this, new PropertyChangedEventArgs(propertyName));
+                }
+            }
+        }
+
+        #endregion
+
+        #region Private Methods (Helpers)
+
+        /// <summary>
+        /// Returns a <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c> if
+        /// the user has not specified a valid input.
+        /// </summary>
+        /// <returns>A <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c>
+        /// if the user has not specified a valid input.</returns>
         private object GetInput()
         {
             string input = TimerTextBox.Text;
@@ -138,222 +148,325 @@ namespace Hourglass
             if (Regex.IsMatch(input, @"^\s*(un)?till?\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
             {
                 input = Regex.Replace(input, @"^\s*(un)?till?\s*", string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                return GetInputFromDateTimeOrTimeSpan(input);
+                return this.GetInputFromDateTimeOrTimeSpan(input);
             }
             
-            return GetInputFromTimeSpanOrDateTime(input);
+            return this.GetInputFromTimeSpanOrDateTime(input);
         }
 
-        private static object GetInputFromDateTimeOrTimeSpan(string str)
+        /// <summary>
+        /// Returns a <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c> if
+        /// the user has not specified a valid input, favoring a <see cref="DateTime"/> in the case of ambiguity.
+        /// </summary>
+        /// <param name="str">An input <see cref="string"/>.</param>
+        /// <returns>A <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c>
+        /// if the user has not specified a valid input, favoring a <see cref="DateTime"/> in the case of ambiguity.
+        /// </returns>
+        private object GetInputFromDateTimeOrTimeSpan(string str)
         {
             DateTime dateTime;
             if (DateTimeUtility.TryParseNatural(str, out dateTime))
+            {
                 return dateTime;
+            }
 
             TimeSpan timeSpan;
             if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
+            {
                 return timeSpan;
+            }
 
             return null;
         }
 
-        private static object GetInputFromTimeSpanOrDateTime(string str)
+        /// <summary>
+        /// Returns a <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c> if
+        /// the user has not specified a valid input, favoring a <see cref="TimeSpan"/> in the case of ambiguity.
+        /// </summary>
+        /// <param name="str">An input <see cref="string"/>.</param>
+        /// <returns>A <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c>
+        /// if the user has not specified a valid input, favoring a <see cref="TimeSpan"/> in the case of ambiguity.
+        /// </returns>
+        private object GetInputFromTimeSpanOrDateTime(string str)
         {
             TimeSpan timeSpan;
             if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
+            {
                 return timeSpan;
+            }
 
             DateTime dateTime;
             if (DateTimeUtility.TryParseNatural(str, out dateTime))
+            {
                 return dateTime;
+            }
 
             return null;
         }
 
+        /// <summary>
+        /// Returns a <see cref="string"/> representation of the user's last input.
+        /// </summary>
+        /// <returns>A <see cref="string"/> representation of the user's last input, or <see cref="String.Empty"/> if
+        /// the user has not specified a valid input.</returns>
         private string GetTimerStringHint()
         {
-            if (_lastInput is TimeSpan)
-                return TimeSpanUtility.ToShortNaturalString((TimeSpan)_lastInput);
-            if (_lastInput is DateTime)
-                return DateTimeUtility.ToNaturalString((DateTime)_lastInput);
+            if (this.lastInput is TimeSpan)
+            {
+                return TimeSpanUtility.ToShortNaturalString((TimeSpan)this.lastInput);
+            }
+
+            if (this.lastInput is DateTime)
+            {
+                return DateTimeUtility.ToNaturalString((DateTime)this.lastInput);
+            }
+
             return string.Empty;
         }
 
+        /// <summary>
+        /// Ends editing of the input and title, and removes focus from those fields.
+        /// </summary>
+        private void CancelEditing()
+        {
+            FocusUtility.RemoveFocus(TimerTextBox);
+            this.IsEditing = false;
+            this.UpdateAvailableCommands();
+        }
+
+        /// <summary>
+        /// Resets the user interface.
+        /// </summary>
         private void ResetInterface()
         {
-            TimerTextBox.Text = GetTimerStringHint();
+            TimerTextBox.Text = this.GetTimerStringHint();
             TimerTextBox.Focus();
             TimerTextBox.SelectAll();
-            UpdateAvailableCommands();
+            this.UpdateAvailableCommands();
         }
 
+        /// <summary>
+        /// Updates the commands displayed to the user based on the state of the <see cref="Timer"/>.
+        /// </summary>
         private void UpdateAvailableCommands()
         {
-            StartButton.IsEnabled = IsEditing;
-            PauseButton.IsEnabled = !IsEditing && Timer.State == TimerState.Running && Timer.StartTime.HasValue;
-            ResumeButton.IsEnabled = !IsEditing && Timer.State == TimerState.Paused;
-            StopButton.IsEnabled = !IsEditing && (Timer.State == TimerState.Running || Timer.State == TimerState.Paused);
-            ResetButton.IsEnabled = !IsEditing && Timer.State == TimerState.Expired;
-            CancelButton.IsEnabled = IsEditing && Timer.State != TimerState.Stopped;
+            StartButton.IsEnabled = this.IsEditing;
+            PauseButton.IsEnabled = !this.IsEditing && this.timer.State == TimerState.Running && this.timer.StartTime.HasValue;
+            ResumeButton.IsEnabled = !this.IsEditing && this.timer.State == TimerState.Paused;
+            StopButton.IsEnabled = !this.IsEditing && (this.timer.State == TimerState.Running || this.timer.State == TimerState.Paused);
+            ResetButton.IsEnabled = !this.IsEditing && this.timer.State == TimerState.Expired;
+            CancelButton.IsEnabled = this.IsEditing && this.timer.State != TimerState.Stopped;
         }
 
         #endregion
 
-        #region UI Events
+        #region Private Methods (User Interface Event Handlers)
 
-        private void TimerTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="TimerTextBox"/> receives keyboard focus.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerTextBox"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TimerTextBoxGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (Timer.State == TimerState.Expired)
-                Timer.Reset();
+            if (this.timer.State == TimerState.Expired)
+            {
+                this.timer.Reset();
+            }
 
-            IsEditing = true;
-            UpdateAvailableCommands();
+            this.IsEditing = true;
+            this.UpdateAvailableCommands();
         }
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="StartButton"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="StartButton"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void StartButtonClick(object sender, RoutedEventArgs e)
         {
-            var input = GetInput();
+            object input = this.GetInput();
+
             if (input == null)
+            {
                 return;
+            }
 
             FocusUtility.RemoveFocus(TimerTextBox);
-            IsEditing = false;
+            this.IsEditing = false;
 
-            Timer.Start(input);
-            UpdateScale();
-            UpdateTimerInterval();
+            this.timer.Start(input);
+            this.scaler.Scale();
 
-            _lastInput = input;
+            this.lastInput = input;
         }
 
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="PauseButton"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="StartButton"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void PauseButtonClick(object sender, RoutedEventArgs e)
         {
-            Timer.Pause();
+            this.timer.Pause();
         }
 
-        private void ResumeButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="ResumeButton"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="ResumeButton"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void ResumeButtonClick(object sender, RoutedEventArgs e)
         {
-            Timer.Resume();
+            this.timer.Resume();
         }
 
-        private void StopButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="StopButton"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="StopButton"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void StopButtonClick(object sender, RoutedEventArgs e)
         {
-            Timer.Stop();
+            this.timer.Stop();
         }
 
-        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="ResetButton"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="ResetButton"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void ResetButtonClick(object sender, RoutedEventArgs e)
         {
-            Timer.Reset();
+            this.timer.Reset();
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="CancelButton"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="CancelButton"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            CancelEditing();
+            this.CancelEditing();
         }
 
-        private void Background_MouseDown(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Invoked when the background area of the window is clicked.
+        /// </summary>
+        /// <param name="sender">The background <see cref="Grid"/> control.</param>
+        /// <param name="e">The event data.</param>
+        private void BackgroundMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsEditing && Timer.State != TimerState.Stopped)
-                CancelEditing();
+            if (this.IsEditing && this.timer.State != TimerState.Stopped)
+            {
+                this.CancelEditing();
+            }
             else if (TitleTextBox.IsFocused)
+            {
                 FocusUtility.RemoveFocus(TitleTextBox);
+            }
         }
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        /// <summary>
+        /// Invoked when this window has first rendered or has changed its rendering size.
+        /// </summary>
+        /// <param name="sender">This window.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            UpdateScale();
-            UpdateTimerInterval();
+            this.scaler.Scale();
         }
 
         #endregion
 
-        #region Timer Events
+        #region Private Methods (Timer Event Handlers)
 
-        private void Timer_Started(object sender, EventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="Timer"/> is started.
+        /// </summary>
+        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
+        /// <param name="e">An object that contains no event data.</param>
+        private void TimerStarted(object sender, EventArgs e)
         {
-            UpdateAvailableCommands();
+            this.UpdateAvailableCommands();
         }
 
-        private void Timer_Paused(object sender, EventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="Timer"/> is paused.
+        /// </summary>
+        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
+        /// <param name="e">An object that contains no event data.</param>
+        private void TimerPaused(object sender, EventArgs e)
         {
-            UpdateAvailableCommands();
+            this.UpdateAvailableCommands();
         }
 
-        private void Timer_Resumed(object sender, EventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="Timer"/> is resumed from a paused state.
+        /// </summary>
+        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
+        /// <param name="e">An object that contains no event data.</param>
+        private void TimerResumed(object sender, EventArgs e)
         {
-            UpdateAvailableCommands();
+            this.UpdateAvailableCommands();
         }
 
-        private void Timer_Stopped(object sender, EventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="Timer"/> is stopped.
+        /// </summary>
+        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
+        /// <param name="e">An object that contains no event data.</param>
+        private void TimerStopped(object sender, EventArgs e)
         {
-            ResetInterface();
+            this.ResetInterface();
         }
 
-        private void Timer_Reseted(object sender, EventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="Timer"/> is reset.
+        /// </summary>
+        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
+        /// <param name="e">An object that contains no event data.</param>
+        private void TimerReseted(object sender, EventArgs e)
         {
-            ResetInterface();
+            this.ResetInterface();
         }
 
-        private void Timer_Expired(object sender, EventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="Timer"/> expires.
+        /// </summary>
+        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
+        /// <param name="e">An object that contains no event data.</param>
+        private void TimerExpired(object sender, EventArgs e)
         {
             TimerTextBox.Text = "Timer expired";
             TimerProgressBar.Value = 100.0;
-            UpdateAvailableCommands();
+            this.UpdateAvailableCommands();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        /// <summary>
+        /// Invoked when the <see cref="Timer"/> ticks.
+        /// </summary>
+        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
+        /// <param name="e">An object that contains no event data.</param>
+        private void TimerTick(object sender, EventArgs e)
         {
-            if (!IsEditing && Timer.TimeLeft.HasValue)
-                TimerTextBox.Text = TimeSpanUtility.ToNaturalString(Timer.TimeLeft.Value);
-
-            if (Timer.TimeLeft.HasValue && Timer.TotalTime.HasValue)
+            if (!this.IsEditing && this.timer.TimeLeft.HasValue)
             {
-                long timeLeft = Timer.TimeLeft.Value.Ticks;
-                long totalTime = Timer.TotalTime.Value.Ticks;
+                TimerTextBox.Text = TimeSpanUtility.ToNaturalString(this.timer.TimeLeft.Value);
+            }
+
+            if (this.timer.TimeLeft.HasValue && this.timer.TotalTime.HasValue)
+            {
+                long timeLeft = this.timer.TimeLeft.Value.Ticks;
+                long totalTime = this.timer.TotalTime.Value.Ticks;
                 double progress = 100.0 * (totalTime - timeLeft) / totalTime;
                 TimerProgressBar.Value = progress;
             }
             else
+            {
                 TimerProgressBar.Value = 0.0;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public Timer Timer
-        {
-            get { return _timer; }
-            private set
-            {
-                if (value == _timer) return;
-                _timer = value;
-                OnPropertyChanged("Timer");
             }
-        }
-
-        public bool IsEditing
-        {
-            get { return _isEditing; }
-            private set
-            {
-                if (value == _isEditing) return;
-                _isEditing = value;
-                OnPropertyChanged("IsEditing");
-            }
-        }
-
-        #endregion
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(params string[] propertyNames)
-        {
-            if (PropertyChanged != null)
-                foreach (string propertyName in propertyNames)
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

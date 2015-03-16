@@ -58,7 +58,7 @@
     <Compile Include="Timer.cs" />
     <Compile Include="DateTimeUtility.cs" />
     <Compile Include="FocusUtility.cs" />
-    <Compile Include="TimerState.cs" />
+    <Compile Include="TimerScaler.cs" />
     <Compile Include="TimeSpanUtility.cs" />
     <Compile Include="VisualTreeUtility.cs" />
     <Compile Include="Watermark.cs" />

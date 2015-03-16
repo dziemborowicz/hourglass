@@ -4,7 +4,7 @@
         xmlns:hg="clr-namespace:Hourglass"
         Title="Hourglass" Height="150" Width="350" MinHeight="150" MinWidth="250"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        SizeChanged="Window_SizeChanged">
+        SizeChanged="WindowSizeChanged">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="#0066CC"/>
@@ -108,19 +108,19 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid MouseDown="Background_MouseDown">
+    <Grid MouseDown="BackgroundMouseDown">
         <ProgressBar x:Name="TimerProgressBar"/>
         <Grid x:Name="ControlsGrid" Background="White" Margin="10">
             <StackPanel Margin="20 0" VerticalAlignment="Center">
                 <TextBox x:Name="TitleTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Style="{StaticResource TitleTextBoxStyle}" Foreground="DarkGray" TextAlignment="Center" hg:Watermark.HintText="Click to enter title"/>
-                <TextBox x:Name="TimerTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI Light, Segoe UI" FontSize="18" Margin="0 1 0 4" TextAlignment="Center" hg:Watermark.HintText="Click to enter time or date" GotKeyboardFocus="TimerTextBox_GotKeyboardFocus"/>
+                <TextBox x:Name="TimerTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI Light, Segoe UI" FontSize="18" Margin="0 1 0 4" TextAlignment="Center" hg:Watermark.HintText="Click to enter time or date" GotKeyboardFocus="TimerTextBoxGotKeyboardFocus"/>
                 <StackPanel x:Name="CommandPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource CommandPanelStyle}">
-                    <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" IsDefault="True"/>
-                    <Button x:Name="PauseButton" Content="Pause" Click="PauseButton_Click"/>
-                    <Button x:Name="ResumeButton" Content="Resume" Click="ResumeButton_Click"/>
-                    <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click"/>
-                    <Button x:Name="ResetButton" Content="Reset" Click="ResetButton_Click"/>
-                    <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" IsCancel="True"/>
+                    <Button x:Name="StartButton" Content="Start" Click="StartButtonClick" IsDefault="True"/>
+                    <Button x:Name="PauseButton" Content="Pause" Click="PauseButtonClick"/>
+                    <Button x:Name="ResumeButton" Content="Resume" Click="ResumeButtonClick"/>
+                    <Button x:Name="StopButton" Content="Stop" Click="StopButtonClick"/>
+                    <Button x:Name="ResetButton" Content="Reset" Click="ResetButtonClick"/>
+                    <Button x:Name="CancelButton" Content="Cancel" Click="CancelButtonClick" IsCancel="True"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
