@@ -32,6 +32,11 @@ namespace Hourglass
         private readonly TimerScaler scaler;
 
         /// <summary>
+        /// A <see cref="SoundManager"/> used to manage and play notification sounds.
+        /// </summary>
+        private readonly SoundManager soundManager;
+
+        /// <summary>
         /// A <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the last input used to start a timer, or
         /// <c>null</c> if no input has been used to start a timer yet.
         /// </summary>
@@ -73,6 +78,8 @@ namespace Hourglass
 
             Button[] buttons = { StartButton, PauseButton, ResumeButton, StopButton, ResetButton, CancelButton };
             this.scaler = new TimerScaler(this.timer, this /* timerWindow */, ControlsGrid, TimerTextBox, TitleTextBox, buttons);
+
+            this.soundManager = new SoundManager();
         }
 
         #endregion
@@ -451,6 +458,7 @@ namespace Hourglass
         {
             TimerTextBox.Text = "Timer expired";
             TimerProgressBar.Value = 100.0;
+            this.soundManager.PlayNotificationSound();
             this.UpdateAvailableCommands();
         }
 

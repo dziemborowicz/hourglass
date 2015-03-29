@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MultiplierConverter.cs" />
+    <Compile Include="SoundManager.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="DateTimeUtility.cs" />
     <Compile Include="FocusUtility.cs" />
@@ -103,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AppIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Beep.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
