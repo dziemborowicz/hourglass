@@ -60,7 +60,6 @@
     <Compile Include="FocusUtility.cs" />
     <Compile Include="TimerScaler.cs" />
     <Compile Include="TimeSpanUtility.cs" />
-    <Compile Include="VisualTreeUtility.cs" />
     <Compile Include="Watermark.cs" />
     <Compile Include="WatermarkAdorner.cs" />
     <Page Include="TimerWindow.xaml">
