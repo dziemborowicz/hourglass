@@ -319,10 +319,11 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Converts a <see cref="TimeSpan"/> to a natural <see cref="string"/> representation (e.g., "10 minutes").
+        /// Converts a <see cref="TimeSpan"/> to a short natural <see cref="string"/> representation (e.g., "10
+        /// minutes").
         /// </summary>
         /// <param name="timeSpan">A <see cref="TimeSpan"/>.</param>
-        /// <returns>A natural <see cref="string"/> representation of the <see cref="TimeSpan"/>.</returns>
+        /// <returns>A short natural <see cref="string"/> representation of the <see cref="TimeSpan"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">If the <see cref="TimeSpan"/> is less than <see
         /// cref="TimeSpan.Zero"/>.</exception>
         public static string ToShortNaturalString(TimeSpan timeSpan)

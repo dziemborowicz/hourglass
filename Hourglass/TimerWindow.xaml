@@ -113,7 +113,7 @@
         <Grid x:Name="ControlsGrid" Background="White" Margin="10">
             <StackPanel Margin="20 0" VerticalAlignment="Center">
                 <TextBox x:Name="TitleTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Style="{StaticResource TitleTextBoxStyle}" Foreground="DarkGray" TextAlignment="Center" hg:Watermark.HintText="Click to enter title"/>
-                <TextBox x:Name="TimerTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI Light, Segoe UI" FontSize="18" Margin="0 1 0 4" TextAlignment="Center" hg:Watermark.HintText="Click to enter time or date" GotKeyboardFocus="TimerTextBoxGotKeyboardFocus"/>
+                <TextBox x:Name="TimerTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI Light, Segoe UI" FontSize="18" Margin="0 1 0 4" TextAlignment="Center" hg:Watermark.HintText="Click to enter time or date" GotKeyboardFocus="TimerTextBoxGotKeyboardFocus" TextChanged="TimerTextBoxTextChanged"/>
                 <StackPanel x:Name="CommandPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource CommandPanelStyle}">
                     <Button x:Name="StartButton" Content="Start" Click="StartButtonClick" IsDefault="True"/>
                     <Button x:Name="PauseButton" Content="Pause" Click="PauseButtonClick"/>

@@ -279,6 +279,16 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Invoked when content changes in the <see cref="TimerTextBox"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerTextBox"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TimerTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.scaler.Scale();
+        }
+
+        /// <summary>
         /// Invoked when the <see cref="StartButton"/> is clicked.
         /// </summary>
         /// <param name="sender">The <see cref="StartButton"/>.</param>

@@ -8,6 +8,7 @@ namespace Hourglass
 {
     using System;
     using System.Globalization;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -49,26 +50,14 @@ namespace Hourglass
         private const double BaseInputBottomMargin = 4;
 
         /// <summary>
+        /// The default width of a <see cref="timerWindow"/>.
+        /// </summary>
+        private const double BaseWindowWidth = 350;
+
+        /// <summary>
         /// The default height of a <see cref="timerWindow"/>.
         /// </summary>
         private const double BaseWindowHeight = 150;
-
-        /// <summary>
-        /// The size at and above which the <see cref="LargeFontFamily"/> will be used to render controls.
-        /// </summary>
-        /// <seealso cref="LargeFontFamily"/>
-        private const double LargeFontSize = 14;
-
-        /// <summary>
-        /// The font family used for the controls.
-        /// </summary>
-        private static readonly FontFamily FontFamily = new FontFamily("Segoe UI");
-
-        /// <summary>
-        /// The font family used for the controls at larger font sizes.
-        /// </summary>
-        /// <seealso cref="LargeFontSize"/>
-        private static readonly FontFamily LargeFontFamily = new FontFamily("Segoe UI Light, Segoe UI");
 
         /// <summary>
         /// A <see cref="Timer"/>.
@@ -102,20 +91,20 @@ namespace Hourglass
         private readonly Button[] buttons;
 
         /// <summary>
-        /// The width of the three reference texts "88 minutes 88 seconds", "88 hours 88 minutes 88 seconds", and "888
-        /// days 88 hours 88 minutes 88 seconds" respectively.
+        /// The <see cref="Window.ActualWidth"/> of the <see cref="timerWindow"/> during the last scale operation.
         /// </summary>
-        private readonly double[] referenceTextWidths = new double[3];
+        private double lastWindowWidth;
 
         /// <summary>
-        /// The most recent scale factor for controls other than the <see cref="timerTextBox"/>.
+        /// The <see cref="Window.ActualHeight"/> of the <see cref="timerWindow"/> during the last scale operation.
         /// </summary>
-        private double lastScaleFactor = double.NaN;
+        private double lastWindowHeight;
 
         /// <summary>
-        /// The most recent scale factor for the <see cref="timerTextBox"/>.
+        /// The base scale factor during the last scale operation.
         /// </summary>
-        private double lastTimerTextBoxScaleFactor = double.NaN;
+        /// <seealso cref="GetBaseScaleFactor"/>
+        private double lastBaseScaleFactor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerScaler"/> class.
@@ -171,11 +160,6 @@ namespace Hourglass
             this.timerTextBox = timerTextBox;
             this.titleTextBox = titleTextBox;
             this.buttons = (Button[])buttons.Clone();
-
-            // Cache reference text widths
-            this.referenceTextWidths[0] = new FormattedText("88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(FontFamily, this.timerTextBox.FontStyle, this.timerTextBox.FontWeight, this.timerTextBox.FontStretch), BaseInputFontSize, this.timerTextBox.Foreground).Width;
-            this.referenceTextWidths[1] = new FormattedText("88 hours 88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(FontFamily, this.timerTextBox.FontStyle, this.timerTextBox.FontWeight, this.timerTextBox.FontStretch), BaseInputFontSize, this.timerTextBox.Foreground).Width;
-            this.referenceTextWidths[2] = new FormattedText("888 days 88 hours 88 minutes 88 seconds", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface(FontFamily, this.timerTextBox.FontStyle, this.timerTextBox.FontWeight, this.timerTextBox.FontStretch), BaseInputFontSize, this.timerTextBox.Foreground).Width;
         }
 
         /// <summary>
@@ -189,38 +173,120 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Scales the <see cref="TimerWindow"/> to ensure that controls shrink and grow with the window size.
+        /// Scales the <see cref="timerWindow"/> and its controls.
         /// </summary>
         private void ScaleControls()
         {
-            double inputScaleFactor = this.GetTimerTextBoxScaleFactor();
-            double otherScaleFactor = this.GetScaleFactor(inputScaleFactor);
+            double baseScaleFactor = this.GetBaseScaleFactor();
+            double reducedScaleFactor = this.GetReducedScaleFactor(baseScaleFactor, 0.5 /* reductionFactor */);
 
-            if (inputScaleFactor > 0 && (!inputScaleFactor.Equals(this.lastTimerTextBoxScaleFactor) || !otherScaleFactor.Equals(this.lastScaleFactor)))
+            if (!this.ShouldScaleControls(baseScaleFactor))
             {
-                this.controlsGrid.Margin = new Thickness(otherScaleFactor * BaseControlsGridMargin);
-
-                this.timerTextBox.FontSize = inputScaleFactor * BaseInputFontSize;
-                this.timerTextBox.FontFamily = this.timerTextBox.FontSize < LargeFontSize ? FontFamily : LargeFontFamily;
-                this.timerTextBox.Margin = new Thickness(0, inputScaleFactor * BaseInputTopMargin, 0, inputScaleFactor * BaseInputBottomMargin);
-
-                this.titleTextBox.FontSize = otherScaleFactor * BaseFontSize;
-                this.titleTextBox.FontFamily = this.titleTextBox.FontSize < LargeFontSize ? FontFamily : LargeFontFamily;
-
-                foreach (Button button in this.buttons)
-                {
-                    button.FontSize = otherScaleFactor * BaseFontSize;
-                    button.FontFamily = button.FontSize < LargeFontSize ? FontFamily : LargeFontFamily;
-                    button.Margin = new Thickness(otherScaleFactor * otherScaleFactor * BaseButtonMargin, 0, otherScaleFactor * otherScaleFactor * BaseButtonMargin, 0);
-                }
-
-                this.lastTimerTextBoxScaleFactor = inputScaleFactor;
-                this.lastScaleFactor = otherScaleFactor;
+                return;
             }
+
+            this.ScaleControls(baseScaleFactor, reducedScaleFactor);
         }
 
         /// <summary>
-        /// Updates the <see cref="Timer"/> interval to ensure smooth animation of the progress bar.
+        /// Scales the <see cref="timerWindow"/> and its controls using the specified factors.
+        /// </summary>
+        /// <param name="baseScaleFactor">The base scale factor.</param>
+        /// <param name="reducedScaleFactor">The reduced scale factor.</param>
+        /// <seealso cref="GetBaseScaleFactor"/>
+        /// <seealso cref="GetReducedScaleFactor"/>
+        private void ScaleControls(double baseScaleFactor, double reducedScaleFactor)
+        {
+            this.controlsGrid.Margin = new Thickness(reducedScaleFactor * BaseControlsGridMargin);
+
+            this.titleTextBox.FontSize = reducedScaleFactor * BaseFontSize;
+            this.timerTextBox.FontSize = baseScaleFactor * BaseInputFontSize;
+            this.timerTextBox.Margin = new Thickness(0, baseScaleFactor * BaseInputTopMargin, 0, baseScaleFactor * BaseInputBottomMargin);
+
+            foreach (Button button in this.buttons)
+            {
+                button.FontSize = reducedScaleFactor * BaseFontSize;
+                button.Margin = new Thickness(baseScaleFactor * BaseButtonMargin, 0, baseScaleFactor * BaseButtonMargin, 0);
+            }
+
+            this.lastWindowWidth = this.timerWindow.ActualWidth;
+            this.lastWindowHeight = this.timerWindow.ActualHeight;
+            this.lastBaseScaleFactor = baseScaleFactor;
+        }
+
+        /// <summary>
+        /// <para>
+        /// Returns a value indicating whether the controls should be scaled using the specified base scale factor.
+        /// </para><para>
+        /// The controls should be scaled each time the window size changes to ensure smooth window scaling.
+        /// </para><para>
+        /// The controls should also be scaled when it is necessary to do so to ensure that all of the text in the
+        /// <see cref="timerTextBox"/> is visible. However, the controls should not be scaled when the change in the
+        /// base scale factor is small and entirely attributable to text changes. This prevents small text changes from
+        /// causing constant rescaling of the interface.
+        /// </para>
+        /// </summary>
+        /// <param name="baseScaleFactor">The base scale factor.</param>
+        /// <returns>A value indicating whether the controls should be scaled.</returns>
+        private bool ShouldScaleControls(double baseScaleFactor)
+        {
+            // Scale each time the window size changes to ensure smooth window scaling
+            if (!this.timerWindow.ActualWidth.Equals(this.lastWindowWidth) ||
+                !this.timerWindow.ActualHeight.Equals(this.lastWindowHeight))
+            {
+                return true;
+            }
+
+            // The base scale factor changing when the window size has not changed indicates that the text has changed,
+            // but we scale only when the base scale factor change attributable to a text change exceeds a threshold
+            if (Math.Abs(baseScaleFactor - this.lastBaseScaleFactor) > 0.05)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the base scale factor for the user interface based on the width and height of the <see
+        /// cref="timerWindow"/> and the width of the text in the <see cref="timerTextBox"/>.
+        /// </summary>
+        /// <returns>The base scale factor.</returns>
+        private double GetBaseScaleFactor()
+        {
+            Typeface typeface = new Typeface(this.timerTextBox.FontFamily, this.timerTextBox.FontStyle, this.timerTextBox.FontWeight, this.timerTextBox.FontStretch);
+            FormattedText formattedText = new FormattedText(this.timerTextBox.Text, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, BaseInputFontSize, this.timerTextBox.Foreground);
+            double textWidth = 1.05 * formattedText.Width;
+
+            double widthFactor = Math.Max(this.timerWindow.ActualWidth / BaseWindowWidth, 2.0 / 3.0);
+            double heightFactor = Math.Max(this.timerWindow.ActualHeight / BaseWindowHeight, 2.0 / 3.0);
+            double textFactor = this.timerTextBox.ActualWidth / textWidth;
+
+            double[] factors = { widthFactor, heightFactor, textFactor };
+            return factors.Min();
+        }
+
+        /// <summary>
+        /// Returns the reduced scale factor. The reduced scale factor is computed by multiplying the amount by which
+        /// the base scale factor exceeds 1.0 by the reduction factor. If the base scale factor is less than 1.0, the
+        /// reduced scale factor is 1.0.
+        /// </summary>
+        /// <param name="baseScaleFactor">The base scale factor.</param>
+        /// <param name="reductionFactor">The reduction factor.</param>
+        /// <returns>The reduced scale factor.</returns>
+        private double GetReducedScaleFactor(double baseScaleFactor, double reductionFactor)
+        {
+            if (baseScaleFactor < 1.0)
+            {
+                return 1.0;
+            }
+
+            double difference = baseScaleFactor - 1.0;
+            return 1.0 + (difference * reductionFactor);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="timer"/> interval to ensure smooth animation of the progress bar.
         /// </summary>
         private void ScaleTimerInterval()
         {
@@ -241,50 +307,6 @@ namespace Hourglass
             }
 
             this.timer.Interval = new TimeSpan(0, 0, 0, 0, intervalInMilliseconds);
-        }
-
-        /// <summary>
-        /// Returns the scale factor for controls other than the <see cref="timerTextBox"/>.
-        /// </summary>
-        /// <param name="timerTextBoxScaleFactor">The scale factor for the <see cref="timerTextBox"/>.</param>
-        /// <returns>The scale factor.</returns>
-        /// <seealso cref="GetTimerTextBoxScaleFactor"/>
-        private double GetScaleFactor(double timerTextBoxScaleFactor)
-        {
-            return Math.Max(1, 1 + Math.Log(timerTextBoxScaleFactor));
-        }
-
-        /// <summary>
-        /// Returns the scale factor for the <see cref="timerTextBox"/>.
-        /// </summary>
-        /// <returns>The scale factor for the <see cref="timerTextBox"/>.</returns>
-        /// <seealso cref="GetScaleFactor"/>
-        private double GetTimerTextBoxScaleFactor()
-        {
-            return Math.Min(this.timerWindow.ActualHeight / BaseWindowHeight, 0.8 * this.timerTextBox.ActualWidth / this.GetReferenceTextWidth());
-        }
-
-        /// <summary>
-        /// Returns the width of the <see cref="timerTextBox"/> reference text.
-        /// </summary>
-        /// <remarks>
-        /// Reference text is used rather than the actual text to avoid small variations in the scale factor as a
-        /// result of small changes in the width of the actual text as the timer counts down.
-        /// </remarks>
-        /// <returns>The width of the <see cref="timerTextBox"/> reference text.</returns>
-        private double GetReferenceTextWidth()
-        {
-            if (this.timerTextBox.Text.Contains("day"))
-            {
-                return this.referenceTextWidths[2];
-            }
-
-            if (this.timerTextBox.Text.Contains("hour"))
-            {
-                return this.referenceTextWidths[1];
-            }
-
-            return this.referenceTextWidths[0];
         }
     }
 }
