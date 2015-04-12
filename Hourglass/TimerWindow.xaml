@@ -4,7 +4,7 @@
         xmlns:hg="clr-namespace:Hourglass"
         Title="Hourglass" Height="150" Width="350" MinHeight="150" MinWidth="250"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        SizeChanged="WindowSizeChanged">
+        Loaded="WindowLoaded" SizeChanged="WindowSizeChanged" Closed="WindowClosed">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="#0066CC"/>

@@ -32,17 +32,6 @@ namespace Hourglass
         private readonly TimerScaler scaler;
 
         /// <summary>
-        /// A <see cref="SoundManager"/> used to manage and play notification sounds.
-        /// </summary>
-        private readonly SoundManager soundManager;
-
-        /// <summary>
-        /// A <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the last input used to start a timer, or
-        /// <c>null</c> if no input has been used to start a timer yet.
-        /// </summary>
-        private object lastInput;
-
-        /// <summary>
         /// A value indicating whether the user is currently editing the input or title.
         /// </summary>
         private bool isEditing;
@@ -54,32 +43,27 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerWindow"/> class.
         /// </summary>
-        /// <param name="args">Command-line arguments.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="args"/> is <c>null</c>.</exception>
-        public TimerWindow(string[] args)
+        /// <param name="timer">A <see cref="Timer"/>.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="timer"/> is <c>null</c>.</exception>
+        public TimerWindow(Timer timer)
         {
-            if (args == null)
+            if (timer == null)
             {
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException("timer");
             }
 
             InitializeComponent();
 
-            TimerTextBox.Loaded += (s, e) => this.ResetInterface();
+            this.timer = timer;
 
-            this.timer = new Timer(Dispatcher);
-            this.timer.Started += this.TimerStarted;
-            this.timer.Paused += this.TimerPaused;
-            this.timer.Resumed += this.TimerResumed;
-            this.timer.Stopped += this.TimerStopped;
-            this.timer.Reseted += this.TimerReseted;
-            this.timer.Expired += this.TimerExpired;
-            this.timer.Tick += this.TimerTick;
+            TimerMenu menu = new TimerMenu();
+            menu.Bind(this /* window */);
 
             Button[] buttons = { StartButton, PauseButton, ResumeButton, StopButton, ResetButton, CancelButton };
             this.scaler = new TimerScaler(this.timer, this /* timerWindow */, ControlsGrid, TimerTextBox, TitleTextBox, buttons);
 
-            this.soundManager = new SoundManager();
+            // This has to be hooked up after the Watermark class hooks itself up
+            this.TimerTextBox.Loaded += this.TimerTextBoxLoaded;
         }
 
         #endregion
@@ -94,6 +78,14 @@ namespace Hourglass
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets the <see cref="Timer"/> used for this window.
+        /// </summary>
+        public Timer Timer
+        {
+            get { return this.timer; }
+        }
 
         /// <summary>
         /// Gets a value indicating whether the user is currently editing the input or title.
@@ -143,12 +135,12 @@ namespace Hourglass
         #region Private Methods (Helpers)
 
         /// <summary>
-        /// Returns a <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c> if
-        /// the user has not specified a valid input.
+        /// Returns a <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
+        /// specified a valid input.
         /// </summary>
-        /// <returns>A <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c>
-        /// if the user has not specified a valid input.</returns>
-        private object GetInput()
+        /// <returns>A <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
+        /// specified a valid input.</returns>
+        private TimerInput GetInput()
         {
             string input = TimerTextBox.Text;
 
@@ -162,50 +154,50 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns a <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c> if
-        /// the user has not specified a valid input, favoring a <see cref="DateTime"/> in the case of ambiguity.
+        /// Returns a <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
+        /// specified a valid input, favoring a <see cref="TimerInput"/> with an underlying <see cref="DateTime"/> in
+        /// the case of ambiguity.
         /// </summary>
         /// <param name="str">An input <see cref="string"/>.</param>
-        /// <returns>A <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c>
-        /// if the user has not specified a valid input, favoring a <see cref="DateTime"/> in the case of ambiguity.
-        /// </returns>
-        private object GetInputFromDateTimeOrTimeSpan(string str)
+        /// <returns>A <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
+        /// specified a valid input. </returns>
+        private TimerInput GetInputFromDateTimeOrTimeSpan(string str)
         {
             DateTime dateTime;
             if (DateTimeUtility.TryParseNatural(str, out dateTime))
             {
-                return dateTime;
+                return new TimerInput(dateTime);
             }
 
             TimeSpan timeSpan;
             if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
             {
-                return timeSpan;
+                return new TimerInput(timeSpan);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Returns a <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c> if
-        /// the user has not specified a valid input, favoring a <see cref="TimeSpan"/> in the case of ambiguity.
+        /// Returns a <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
+        /// specified a valid input, favoring a <see cref="TimerInput"/> with an underlying <see cref="TimeSpan"/> in
+        /// the case of ambiguity.
         /// </summary>
         /// <param name="str">An input <see cref="string"/>.</param>
-        /// <returns>A <see cref="TimeSpan"/> or <see cref="DateTime"/> representing the user's input, or <c>null</c>
-        /// if the user has not specified a valid input, favoring a <see cref="TimeSpan"/> in the case of ambiguity.
-        /// </returns>
-        private object GetInputFromTimeSpanOrDateTime(string str)
+        /// <returns>A <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
+        /// specified a valid input. </returns>
+        private TimerInput GetInputFromTimeSpanOrDateTime(string str)
         {
             TimeSpan timeSpan;
             if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
             {
-                return timeSpan;
+                return new TimerInput(timeSpan);
             }
 
             DateTime dateTime;
             if (DateTimeUtility.TryParseNatural(str, out dateTime))
             {
-                return dateTime;
+                return new TimerInput(dateTime);
             }
 
             return null;
@@ -218,17 +210,18 @@ namespace Hourglass
         /// the user has not specified a valid input.</returns>
         private string GetTimerStringHint()
         {
-            if (this.lastInput is TimeSpan)
-            {
-                return TimeSpanUtility.ToShortNaturalString((TimeSpan)this.lastInput);
-            }
+            return this.timer.LastInput != null ? this.timer.LastInput.ToString() : string.Empty;
+        }
 
-            if (this.lastInput is DateTime)
-            {
-                return DateTimeUtility.ToNaturalString((DateTime)this.lastInput);
-            }
-
-            return string.Empty;
+        /// <summary>
+        /// Begins editing of the input.
+        /// </summary>
+        private void BeginEditing()
+        {
+            TimerTextBox.Text = this.GetTimerStringHint();
+            TimerTextBox.Focus();
+            TimerTextBox.SelectAll();
+            this.UpdateAvailableCommands();
         }
 
         /// <summary>
@@ -238,17 +231,6 @@ namespace Hourglass
         {
             FocusUtility.RemoveFocus(TimerTextBox);
             this.IsEditing = false;
-            this.UpdateAvailableCommands();
-        }
-
-        /// <summary>
-        /// Resets the user interface.
-        /// </summary>
-        private void ResetInterface()
-        {
-            TimerTextBox.Text = this.GetTimerStringHint();
-            TimerTextBox.Focus();
-            TimerTextBox.SelectAll();
             this.UpdateAvailableCommands();
         }
 
@@ -302,7 +284,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void StartButtonClick(object sender, RoutedEventArgs e)
         {
-            object input = this.GetInput();
+            TimerInput input = this.GetInput();
 
             if (input == null)
             {
@@ -314,8 +296,6 @@ namespace Hourglass
 
             this.timer.Start(input);
             this.scaler.Scale();
-
-            this.lastInput = input;
         }
 
         /// <summary>
@@ -386,6 +366,41 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Invoked when this window is laid out, rendered, and ready for interaction.
+        /// </summary>
+        /// <param name="sender">This window.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            this.timer.Started += this.TimerStarted;
+            this.timer.Paused += this.TimerPaused;
+            this.timer.Resumed += this.TimerResumed;
+            this.timer.Stopped += this.TimerStopped;
+            this.timer.Reseted += this.TimerReseted;
+            this.timer.Expired += this.TimerExpired;
+            this.timer.Tick += this.TimerTick;
+
+            this.timer.Bind(this /* window */);
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="TimerTextBox"/> is laid out, rendered, and ready for interaction.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerTextBox"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TimerTextBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            if (this.timer.State == TimerState.Stopped)
+            {
+                this.BeginEditing();
+            }
+            else
+            {
+                this.UpdateAvailableCommands();
+            }
+        }
+
+        /// <summary>
         /// Invoked when this window has first rendered or has changed its rendering size.
         /// </summary>
         /// <param name="sender">This window.</param>
@@ -393,6 +408,24 @@ namespace Hourglass
         private void WindowSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.scaler.Scale();
+        }
+
+        /// <summary>
+        /// Invoked when this window is about to close.
+        /// </summary>
+        /// <param name="sender">This window.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowClosed(object sender, EventArgs e)
+        {
+            this.timer.Started -= this.TimerStarted;
+            this.timer.Paused -= this.TimerPaused;
+            this.timer.Resumed -= this.TimerResumed;
+            this.timer.Stopped -= this.TimerStopped;
+            this.timer.Reseted -= this.TimerReseted;
+            this.timer.Expired -= this.TimerExpired;
+            this.timer.Tick -= this.TimerTick;
+
+            this.timer.Unbind();
         }
 
         #endregion
@@ -436,7 +469,7 @@ namespace Hourglass
         /// <param name="e">An object that contains no event data.</param>
         private void TimerStopped(object sender, EventArgs e)
         {
-            this.ResetInterface();
+            this.BeginEditing();
         }
 
         /// <summary>
@@ -446,7 +479,7 @@ namespace Hourglass
         /// <param name="e">An object that contains no event data.</param>
         private void TimerReseted(object sender, EventArgs e)
         {
-            this.ResetInterface();
+            this.BeginEditing();
         }
 
         /// <summary>
@@ -458,7 +491,7 @@ namespace Hourglass
         {
             TimerTextBox.Text = "Timer expired";
             TimerProgressBar.Value = 100.0;
-            this.soundManager.PlayNotificationSound();
+            SoundManager.Instance.Play(this.timer.Sound);
             this.UpdateAvailableCommands();
         }
 

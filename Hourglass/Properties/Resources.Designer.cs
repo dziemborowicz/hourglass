@@ -73,9 +73,27 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream Beep {
+        internal static System.IO.UnmanagedMemoryStream BeepLoud {
             get {
-                return ResourceManager.GetStream("Beep", resourceCulture);
+                return ResourceManager.GetStream("BeepLoud", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream BeepNormal {
+            get {
+                return ResourceManager.GetStream("BeepNormal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream BeepQuiet {
+            get {
+                return ResourceManager.GetStream("BeepQuiet", resourceCulture);
             }
         }
     }

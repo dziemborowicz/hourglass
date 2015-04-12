@@ -55,10 +55,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MultiplierConverter.cs" />
+    <Compile Include="SoundInfo.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="DateTimeUtility.cs" />
     <Compile Include="FocusUtility.cs" />
+    <Compile Include="TimerInfo.cs" />
+    <Compile Include="TimerInfoList.cs" />
+    <Compile Include="TimerInput.cs" />
+    <Compile Include="TimerInputList.cs" />
+    <Compile Include="TimerManager.cs" />
+    <Compile Include="TimerMenu.cs" />
     <Compile Include="TimerScaler.cs" />
     <Compile Include="TimeSpanUtility.cs" />
     <Compile Include="Watermark.cs" />
@@ -106,7 +113,9 @@
     <None Include="Resources\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Beep.wav" />
+    <Content Include="Resources\BeepLoud.wav" />
+    <Content Include="Resources\BeepNormal.wav" />
+    <Content Include="Resources\BeepQuiet.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

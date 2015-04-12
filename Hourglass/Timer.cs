@@ -42,15 +42,19 @@ namespace Hourglass
     /// </summary>
     public class Timer : IDisposable, INotifyPropertyChanged
     {
+        #region Constants
+
+        /// <summary>
+        /// The default period of time between timer ticks.
+        /// </summary>
+        private static readonly TimeSpan DefaultInterval = new TimeSpan(0, 0, 0, 0, 100);
+
+        #endregion
+
         #region Private Members
 
         /// <summary>
-        /// A <see cref="DispatcherTimer"/> used to raise events.
-        /// </summary>
-        private DispatcherTimer ticker;
-
-        /// <summary>
-        /// A <see cref="string"/> title or description of this timer.
+        /// A title or description of this timer.
         /// </summary>
         private string title;
 
@@ -60,30 +64,88 @@ namespace Hourglass
         private TimerState state = TimerState.Stopped;
 
         /// <summary>
-        /// The <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is <see
-        /// cref="TimerState.Running"/> and this timer is counting down a <see cref="TimeSpan"/>, or <c>null</c>
+        /// The <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is not <see
+        /// cref="TimerState.Stopped"/> and this timer is counting down a <see cref="TimeSpan"/>, or <c>null</c>
         /// otherwise.
         /// </summary>
         private DateTime? startTime;
 
         /// <summary>
-        /// The <see cref="DateTime"/> that this timer will expire if the <see cref="State"/> is <see
-        /// cref="TimerState.Running"/>, or <c>null</c> otherwise.
+        /// The <see cref="DateTime"/> that this timer will expire if the <see cref="State"/> is not <see
+        /// cref="TimerState.Stopped"/>, or <c>null</c> otherwise.
         /// </summary>
         private DateTime? endTime;
 
         /// <summary>
         /// A <see cref="TimeSpan"/> representing the time left until this timer expires if the <see cref="State"/> is
-        /// <see cref="TimerState.Running"/>, or <c>null</c> otherwise.
+        /// not <see cref="TimerState.Stopped"/>, or <c>null</c> otherwise.
         /// </summary>
         private TimeSpan? timeLeft;
 
         /// <summary>
         /// A <see cref="TimeSpan"/> representing the total time that this timer will run if the <see cref="State"/> is
-        /// <see cref="TimerState.Running"/> and this timer is counting down a <see cref="TimeSpan"/>, or <c>null</c>
-        /// otherwise.
+        /// not <see cref="TimerState.Stopped"/> and this timer is counting down a <see cref="TimeSpan"/>, or
+        /// <c>null</c> otherwise.
         /// </summary>
         private TimeSpan? totalTime;
+
+        /// <summary>
+        /// A <see cref="TimerInput"/> representing the last input used to start this timer, or <c>null</c> if no input
+        /// has been used to start this timer yet.
+        /// </summary>
+        private TimerInput lastInput;
+
+        /// <summary>
+        /// A <see cref="DispatcherTimer"/> used to raise events.
+        /// </summary>
+        private DispatcherTimer ticker;
+
+        /// <summary>
+        /// The period of time between timer ticks.
+        /// </summary>
+        private TimeSpan interval = DefaultInterval;
+
+        /// <summary>
+        /// A <see cref="TimerWindow"/> used to display the progress of this timer.
+        /// </summary>
+        private TimerWindow timerWindow;
+
+        /// <summary>
+        /// A value indicating whether to loop the timer continuously.
+        /// </summary>
+        private bool loopTimer;
+
+        /// <summary>
+        /// A value indicating whether the <see cref="TimerWindow"/> should always be displayed on top of other windows.
+        /// </summary>
+        private bool alwaysOnTop;
+
+        /// <summary>
+        /// A value indicating whether an icon for the <see cref="TimerWindow"/> should be shown in the notification
+        /// area (system tray).
+        /// </summary>
+        private bool showInNotificationArea;
+
+        /// <summary>
+        /// A value indicating whether the <see cref="TimerWindow"/> should be brought to the top of other windows when
+        /// the timer expires.
+        /// </summary>
+        private bool popUpWhenExpired;
+
+        /// <summary>
+        /// A value indicating whether the <see cref="TimerWindow"/> should be closed when the timer expires.
+        /// </summary>
+        private bool closeWhenExpired;
+
+        /// <summary>
+        /// The sound to play when the timer expires, or <c>null</c> if no sound is to be played.
+        /// </summary>
+        private SoundInfo sound;
+
+        /// <summary>
+        /// A value indicating whether the sound that plays when the timer expires should be looped.
+        /// </summary>
+        private bool loopSound;
 
         /// <summary>
         /// Indicates whether this object has been disposed.
@@ -97,12 +159,58 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="Timer"/> class.
         /// </summary>
-        /// <param name="dispatcher">The <see cref="Dispatcher"/> to use when raising events.</param>
-        public Timer(Dispatcher dispatcher)
+        /// <param name="args">Command-line arguments.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="args"/> is <c>null</c>.</exception>
+        public Timer(string[] args)
         {
-            this.ticker = new DispatcherTimer(DispatcherPriority.Normal, dispatcher);
-            this.ticker.Tick += (s, e) => this.DispatcherTimerTick();
-            this.ticker.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            if (args == null)
+            {
+                throw new ArgumentNullException("args");
+            }
+
+            // TODO Parse command-line arguments
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Timer"/> class.
+        /// </summary>
+        /// <param name="input">A <see cref="TimerInput"/>.</param>
+        public Timer(TimerInput input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            this.Start(input);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Timer"/> class.
+        /// </summary>
+        /// <param name="timerInfo">A <see cref="TimerInfo"/> representing the state of the timer.</param>
+        public Timer(TimerInfo timerInfo)
+        {
+            this.title = timerInfo.Title;
+            this.state = timerInfo.State;
+            this.startTime = timerInfo.StartTime;
+            this.endTime = timerInfo.EndTime;
+            this.timeLeft = timerInfo.TimeLeft;
+            this.totalTime = timerInfo.TotalTime;
+            this.loopTimer = timerInfo.LoopTimer;
+            this.alwaysOnTop = timerInfo.AlwaysOnTop;
+            this.showInNotificationArea = timerInfo.ShowInNotificationArea;
+            this.popUpWhenExpired = timerInfo.PopUpWhenExpired;
+            this.closeWhenExpired = timerInfo.CloseWhenExpired;
+
+            if (!string.IsNullOrEmpty(timerInfo.SoundPath))
+            {
+                this.sound = SoundManager.Instance.GetSoundOrDefault(timerInfo.SoundPath);
+            }
+
+            this.loopSound = timerInfo.LoopSound;
+
+            this.Update();
         }
 
         #endregion
@@ -185,8 +293,8 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets the <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is <see
-        /// cref="TimerState.Running"/> and this timer is counting down a <see cref="TimeSpan"/>, or <c>null</c>
+        /// Gets the <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is not <see
+        /// cref="TimerState.Stopped"/> and this timer is counting down a <see cref="TimeSpan"/>, or <c>null</c>
         /// otherwise.
         /// </summary>
         public DateTime? StartTime
@@ -195,8 +303,8 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets the <see cref="DateTime"/> that this timer will expire if the <see cref="State"/> is <see
-        /// cref="TimerState.Running"/>, or <c>null</c> otherwise.
+        /// Gets the <see cref="DateTime"/> that this timer will expire if the <see cref="State"/> is not <see
+        /// cref="TimerState.Stopped"/>, or <c>null</c> otherwise.
         /// </summary>
         public DateTime? EndTime
         {
@@ -205,7 +313,7 @@ namespace Hourglass
 
         /// <summary>
         /// Gets a <see cref="TimeSpan"/> representing the time left until this timer expires if the <see
-        /// cref="State"/> is <see cref="TimerState.Running"/>, or <c>null</c> otherwise.
+        /// cref="State"/> is not <see cref="TimerState.Stopped"/>, or <c>null</c> otherwise.
         /// </summary>
         public TimeSpan? TimeLeft
         {
@@ -214,12 +322,21 @@ namespace Hourglass
 
         /// <summary>
         /// Gets a <see cref="TimeSpan"/> representing the total time that this timer will run if the <see
-        /// cref="State"/> is <see cref="TimerState.Running"/> and this timer is counting down a <see cref="TimeSpan"/>,
-        /// or <c>null</c> otherwise.
+        /// cref="State"/> is not <see cref="TimerState.Stopped"/> and this timer is counting down a <see
+        /// cref="TimeSpan"/>, or <c>null</c> otherwise.
         /// </summary>
         public TimeSpan? TotalTime
         {
             get { return this.totalTime; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TimerInput"/> representing the last input used to start this timer, or <c>null</c> if
+        /// no input has been used to start this timer yet.
+        /// </summary>
+        public TimerInput LastInput
+        {
+            get { return this.lastInput; }
         }
 
         /// <summary>
@@ -230,18 +347,190 @@ namespace Hourglass
         {
             get
             {
-                return this.ticker.Interval;
+                return this.interval;
             }
 
             set
             {
-                if (this.ticker.Interval == value)
+                if (this.interval == value)
                 {
                     return;
                 }
 
-                this.ticker.Interval = value;
+                this.interval = value;
+
+                if (this.ticker != null)
+                {
+                    this.ticker.Interval = value;
+                }
+
                 this.OnPropertyChanged("Interval");
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TimerWindow"/> used to display the progress of this timer.
+        /// </summary>
+        public TimerWindow TimerWindow
+        {
+            get { return this.timerWindow; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to loop the timer continuously.
+        /// </summary>
+        public bool LoopTimer
+        {
+            get
+            {
+                return this.loopTimer;
+            }
+
+            set
+            {
+                if (this.loopTimer == value)
+                {
+                    return;
+                }
+
+                this.loopTimer = value;
+                this.OnPropertyChanged("LoopTimer");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="TimerWindow"/> should always be displayed on top of
+        /// other windows.
+        /// </summary>
+        public bool AlwaysOnTop
+        {
+            get
+            {
+                return this.alwaysOnTop;
+            }
+
+            set
+            {
+                if (this.alwaysOnTop == value)
+                {
+                    return;
+                }
+
+                this.alwaysOnTop = value;
+                this.OnPropertyChanged("AlwaysOnTop");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether an icon for the <see cref="TimerWindow"/> should be shown in the
+        /// notification area (system tray).
+        /// </summary>
+        public bool ShowInNotificationArea
+        {
+            get
+            {
+                return this.showInNotificationArea;
+            }
+
+            set
+            {
+                if (this.showInNotificationArea == value)
+                {
+                    return;
+                }
+
+                this.showInNotificationArea = value;
+                this.OnPropertyChanged("ShowInNotificationArea");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="TimerWindow"/> should be brought to the top of other
+        /// windows when the timer expires.
+        /// </summary>
+        public bool PopUpWhenExpired
+        {
+            get
+            {
+                return this.popUpWhenExpired;
+            }
+
+            set
+            {
+                if (this.popUpWhenExpired == value)
+                {
+                    return;
+                }
+
+                this.popUpWhenExpired = value;
+                this.OnPropertyChanged("PopUpWhenExpired");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="TimerWindow"/> should be closed when the timer
+        /// expires.
+        /// </summary>
+        public bool CloseWhenExpired
+        {
+            get
+            {
+                return this.closeWhenExpired;
+            }
+
+            set
+            {
+                if (this.closeWhenExpired == value)
+                {
+                    return;
+                }
+
+                this.closeWhenExpired = value;
+                this.OnPropertyChanged("CloseWhenExpired");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the sound to play when the timer expires. Set to <c>null</c> if no sound is to be played.
+        /// </summary>
+        public SoundInfo Sound
+        {
+            get
+            {
+                return this.sound;
+            }
+
+            set
+            {
+                if (this.sound == value)
+                {
+                    return;
+                }
+
+                this.sound = value;
+                this.OnPropertyChanged("Sound");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the sound that plays when the timer expires should be looped.
+        /// </summary>
+        public bool LoopSound
+        {
+            get
+            {
+                return this.loopSound;
+            }
+
+            set
+            {
+                if (this.loopSound == value)
+                {
+                    return;
+                }
+
+                this.loopSound = value;
+                this.OnPropertyChanged("LoopSound");
             }
         }
 
@@ -252,30 +541,23 @@ namespace Hourglass
         /// <summary>
         /// Starts the timer counting down a <see cref="TimeSpan"/> or to a <see cref="DateTime"/>.
         /// </summary>
-        /// <param name="input">A <see cref="TimeSpan"/> or <see cref="DateTime"/>.</param>
-        /// <exception cref="ArgumentException">If the <paramref name="input"/> is not a <see cref="TimeSpan"/> or a
-        /// <see cref="DateTime"/>.</exception>
+        /// <param name="input">A <see cref="TimerInput"/>.</param>
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public void Start(object input)
+        public void Start(TimerInput input)
         {
             if (this.disposed)
             {
                 throw new ObjectDisposedException(this.GetType().ToString());
             }
 
-            if (input is TimeSpan)
+            if (input.IsTimeSpan)
             {
-                this.Start((TimeSpan)input);
-                return;
+                this.Start(input.TimeSpan);
             }
-
-            if (input is DateTime)
+            else
             {
-                this.Start((DateTime)input);
-                return;
+                this.Start(input.DateTime);
             }
-
-            throw new ArgumentException("input must be a TimeSpan or DateTime.", "input");
         }
 
         /// <summary>
@@ -290,15 +572,20 @@ namespace Hourglass
                 throw new ObjectDisposedException(this.GetType().ToString());
             }
 
+            TimerInput input = new TimerInput(timeSpan);
+
             this.state = TimerState.Running;
             this.startTime = DateTime.Now;
             this.endTime = this.startTime + timeSpan;
             this.timeLeft = timeSpan;
             this.totalTime = timeSpan;
+            this.lastInput = input;
 
             this.StartDispatcherTimer();
-            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime");
+            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime", "LastInput");
             this.OnStarted();
+
+            TimerManager.Instance.AddInput(input);
         }
 
         /// <summary>
@@ -313,16 +600,21 @@ namespace Hourglass
                 throw new ObjectDisposedException(this.GetType().ToString());
             }
 
+            TimerInput input = new TimerInput(dateTime);
+
             this.state = TimerState.Running;
             this.startTime = null;
             this.endTime = dateTime;
             this.timeLeft = dateTime - DateTime.Now;
             this.timeLeft = (this.timeLeft > TimeSpan.Zero) ? this.timeLeft : TimeSpan.Zero;
             this.totalTime = null;
+            this.lastInput = input;
 
             this.StartDispatcherTimer();
-            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime");
+            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime", "LastInput");
             this.OnStarted();
+
+            TimerManager.Instance.AddInput(input);
         }
 
         /// <summary>
@@ -427,6 +719,118 @@ namespace Hourglass
 
             this.Stop();
             this.OnReseted();
+        }
+
+        /// <summary>
+        /// Updates the state of the timer.
+        /// </summary>
+        /// <remarks>
+        /// When the timer is running, this method is periodically invoked to update the state of the timer.
+        /// </remarks>
+        public void Update()
+        {
+            if (this.state != TimerState.Running)
+            {
+                return;
+            }
+
+            // Update time left
+            this.timeLeft = this.endTime - DateTime.Now;
+            this.timeLeft = (this.timeLeft > TimeSpan.Zero) ? this.timeLeft : TimeSpan.Zero;
+
+            // Check if expired
+            if (this.timeLeft <= TimeSpan.Zero)
+            {
+                this.state = TimerState.Expired;
+
+                this.StopDispatcherTimer();
+                this.OnPropertyChanged("State", "TimeLeft");
+                this.OnExpired();
+                return;
+            }
+
+            // Raise event
+            this.OnPropertyChanged("TimeLeft");
+            this.OnTick();
+        }
+
+        /// <summary>
+        /// Binds the timer to a <see cref="TimerWindow"/>.
+        /// </summary>
+        /// <remarks>
+        /// The timer must be bound to a <see cref="TimerWindow"/> before it can be started because <see cref="Tick"/>
+        /// events are invoked using the <see cref="Dispatcher"/> associated with the bound window.
+        /// </remarks>
+        /// <param name="window">A <see cref="TimerWindow"/>.</param>
+        /// <exception cref="InvalidOperationException">If this method is invoked more than once.</exception>
+        public void Bind(TimerWindow window)
+        {
+            if (this.timerWindow != null)
+            {
+                throw new InvalidOperationException("A Timer can only be bound to one Window.");
+            }
+            
+            // Bind the window
+            this.timerWindow = window;
+
+            // Create a DispatcherTimer
+            this.ticker = new DispatcherTimer(DispatcherPriority.Normal, this.timerWindow.Dispatcher);
+            this.ticker.Tick += (s, e) => this.DispatcherTimerTick();
+            this.ticker.Interval = this.interval;
+
+            // If the timer is running, start raising Tick events
+            if (this.state == TimerState.Running)
+            {
+                this.StartDispatcherTimer();
+            }
+        }
+
+        /// <summary>
+        /// Unbinds the timer from a <see cref="TimerWindow"/>.
+        /// </summary>
+        public void Unbind()
+        {
+            if (this.timerWindow == null)
+            {
+                throw new InvalidOperationException("The timer is not bound.");
+            }
+
+            // Unbind the window
+            this.timerWindow = null;
+
+            // Dispose the DispatcherTimer
+            if (this.ticker != null)
+            {
+                this.ticker.Stop();
+                this.ticker = null;
+            }
+
+            // Reset timer interval
+            this.Interval = DefaultInterval;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="TimerInfo"/> representing the state of the timer.
+        /// </summary>
+        /// <returns>A <see cref="TimerInfo"/> representing the state of the timer.</returns>
+        public TimerInfo ToTimerInfo()
+        {
+            return new TimerInfo
+            {
+                Title = this.title,
+                State = this.state,
+                StartTime = this.startTime,
+                EndTime = this.endTime,
+                TimeLeft = this.timeLeft,
+                TotalTime = this.totalTime,
+                LoopTimer = this.loopTimer,
+                AlwaysOnTop = this.alwaysOnTop,
+                ShowInNotificationArea = this.showInNotificationArea,
+                PopUpWhenExpired = this.popUpWhenExpired,
+                CloseWhenExpired = this.closeWhenExpired,
+                SoundPath = this.sound == null ? null : this.sound.Path,
+                LoopSound = this.loopSound
+            };
         }
 
         /// <summary>
@@ -583,29 +987,7 @@ namespace Hourglass
         /// </summary>
         private void DispatcherTimerTick()
         {
-            if (this.state != TimerState.Running)
-            {
-                return;
-            }
-
-            // Update time left
-            this.timeLeft = this.endTime - DateTime.Now;
-            this.timeLeft = (this.timeLeft > TimeSpan.Zero) ? this.timeLeft : TimeSpan.Zero;
-
-            // Check if expired
-            if (this.timeLeft <= TimeSpan.Zero)
-            {
-                this.state = TimerState.Expired;
-
-                this.StopDispatcherTimer();
-                this.OnPropertyChanged("State", "TimeLeft");
-                this.OnExpired();
-                return;
-            }
-
-            // Raise event
-            this.OnPropertyChanged("TimeLeft");
-            this.OnTick();
+            this.Update();
         }
 
         /// <summary>
@@ -613,6 +995,11 @@ namespace Hourglass
         /// </summary>
         private void StartDispatcherTimer()
         {
+            if (this.ticker == null)
+            {
+                return;
+            }
+
             this.DispatcherTimerTick();
             this.ticker.Start();
         }
@@ -622,6 +1009,11 @@ namespace Hourglass
         /// </summary>
         private void StopDispatcherTimer()
         {
+            if (this.ticker == null)
+            {
+                return;
+            }
+
             this.ticker.Stop();
         }
 

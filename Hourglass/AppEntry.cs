@@ -44,25 +44,37 @@ namespace Hourglass
         /// <summary>
         /// Invoked when the application starts.
         /// </summary>
-        /// <param name="eventArgs">Contains the command-line arguments of the application and indicates whether the
+        /// <param name="e">Contains the command-line arguments of the application and indicates whether the
         /// application startup should be canceled.</param>
         /// <returns>A value indicating whether the application should continue starting up.</returns>
-        protected override bool OnStartup(StartupEventArgs eventArgs)
+        protected override bool OnStartup(StartupEventArgs e)
         {
+            TimerManager.Instance.LoadFromSettings();
+
+            string[] args = e.CommandLine.ToArray();
+            Timer timer = new Timer(args);
+            TimerManager.Instance.Add(timer);
+            TimerWindow window = new TimerWindow(timer);
+
             this.app = new App();
-            this.app.Run(new TimerWindow(eventArgs.CommandLine.ToArray()));
+            this.app.Run(window);
+
             return false;
         }
 
         /// <summary>
         /// Invoked when a subsequent instance of this application starts.
         /// </summary>
-        /// <param name="eventArgs">Contains the command-line arguments of the subsequent application instance and
-        /// indicates whether the first application instance should be brought to the foreground.</param>
-        protected override void OnStartupNextInstance(StartupNextInstanceEventArgs eventArgs)
+        /// <param name="e">Contains the command-line arguments of the subsequent application instance and indicates
+        /// whether the first application instance should be brought to the foreground.</param>
+        protected override void OnStartupNextInstance(StartupNextInstanceEventArgs e)
         {
-            TimerWindow timerWindow = new TimerWindow(eventArgs.CommandLine.ToArray());
-            timerWindow.Show();
+            string[] args = e.CommandLine.ToArray();
+            Timer timer = new Timer(args);
+            TimerManager.Instance.Add(timer);
+            TimerWindow window = new TimerWindow(timer);
+
+            window.Show();
         }
     }
 }

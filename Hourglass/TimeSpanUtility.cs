@@ -317,6 +317,20 @@ namespace Hourglass
 
             return stringBuilder.ToString();
         }
+        
+        /// <summary>
+        /// Converts a <see cref="Nullable{TimeSpan}"/> to a natural <see cref="string"/> representation (e.g., "10
+        /// minutes 0 seconds").
+        /// </summary>
+        /// <param name="timeSpan">A <see cref="Nullable{TimeSpan}"/>.</param>
+        /// <returns>A natural <see cref="string"/> representation of the <see cref="Nullable{TimeSpan}"/>, or "null"
+        /// if <paramref name="timeSpan"/> is <c>null</c>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">If the <see cref="Nullable{TimeSpan}"/> is less than <see
+        /// cref="TimeSpan.Zero"/>.</exception>
+        public static string ToNaturalString(TimeSpan? timeSpan)
+        {
+            return timeSpan.HasValue ? ToNaturalString(timeSpan.Value) : "null";
+        }
 
         /// <summary>
         /// Converts a <see cref="TimeSpan"/> to a short natural <see cref="string"/> representation (e.g., "10
@@ -387,6 +401,20 @@ namespace Hourglass
 
             // Trim the last character
             return stringBuilder.ToString(0, stringBuilder.Length - 1);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="Nullable{TimeSpan}"/> to a short natural <see cref="string"/> representation (e.g.,
+        /// "10 minutes").
+        /// </summary>
+        /// <param name="timeSpan">A <see cref="Nullable{TimeSpan}"/>.</param>
+        /// <returns>A short natural <see cref="string"/> representation of the <see cref="Nullable{TimeSpan}"/>, or
+        /// "null" if <paramref name="timeSpan"/> is <c>null</c>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">If the <see cref="Nullable{TimeSpan}"/> is less than <see
+        /// cref="TimeSpan.Zero"/>.</exception>
+        public static string ToShortNaturalString(TimeSpan? timeSpan)
+        {
+            return timeSpan.HasValue ? ToShortNaturalString(timeSpan.Value) : "null";
         }
     }
 }

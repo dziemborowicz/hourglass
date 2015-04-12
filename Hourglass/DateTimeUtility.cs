@@ -640,6 +640,21 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Converts a <see cref="Nullable{DateTime}"/> to a natural <see cref="string"/> representation.
+        /// </summary>
+        /// <remarks>
+        /// This overload uses the <see cref="CultureInfo.CurrentCulture"/> as the <see cref="IFormatProvider"/> when
+        /// converting.
+        /// </remarks>
+        /// <param name="dateTime">A <see cref="Nullable{DateTime}"/>.</param>
+        /// <returns>A natural <see cref="string"/> representation of the <see cref="Nullable{DateTime}"/>, or "null"
+        /// if <paramref name="dateTime"/> is <c>null</c>.</returns>
+        public static string ToNaturalString(DateTime? dateTime)
+        {
+            return dateTime.HasValue ? ToNaturalString(dateTime.Value) : "null";
+        }
+
+        /// <summary>
         /// Converts a <see cref="DateTime"/> to a natural <see cref="string"/> representation.
         /// </summary>
         /// <param name="dateTime">A <see cref="DateTime"/>.</param>
@@ -661,6 +676,19 @@ namespace Hourglass
             }
 
             return dateTime.ToString(monthFormatString, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="Nullable{DateTime}"/> to a natural <see cref="string"/> representation.
+        /// </summary>
+        /// <param name="dateTime">A <see cref="Nullable{DateTime}"/>.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use when converting. This value is only used to
+        /// determine the order of the day, month and year in the date part of the <see cref="string"/>.</param>
+        /// <returns>A natural <see cref="string"/> representation of the <see cref="Nullable{DateTime}"/>, or "null"
+        /// if <paramref name="dateTime"/> is <c>null</c>.</returns>
+        public static string ToNaturalString(DateTime? dateTime, IFormatProvider provider)
+        {
+            return dateTime.HasValue ? ToNaturalString(dateTime.Value, provider) : "null";
         }
 
         #endregion

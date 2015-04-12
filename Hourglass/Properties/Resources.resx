@@ -121,7 +121,13 @@
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AppIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Beep" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Beep.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="BeepLoud" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\beeploud.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="BeepNormal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\beepnormal.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="BeepQuiet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\beepquiet.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
