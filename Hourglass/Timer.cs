@@ -140,7 +140,7 @@ namespace Hourglass
         /// <summary>
         /// The sound to play when the timer expires, or <c>null</c> if no sound is to be played.
         /// </summary>
-        private SoundInfo sound;
+        private Sound sound;
 
         /// <summary>
         /// A value indicating whether the sound that plays when the timer expires should be looped.
@@ -203,9 +203,9 @@ namespace Hourglass
             this.popUpWhenExpired = timerInfo.PopUpWhenExpired;
             this.closeWhenExpired = timerInfo.CloseWhenExpired;
 
-            if (!string.IsNullOrEmpty(timerInfo.SoundPath))
+            if (!string.IsNullOrEmpty(timerInfo.SoundIdentifier))
             {
-                this.sound = SoundManager.Instance.GetSoundOrDefault(timerInfo.SoundPath);
+                this.sound = SoundManager.Instance.GetSoundOrDefault(timerInfo.SoundIdentifier);
             }
 
             this.loopSound = timerInfo.LoopSound;
@@ -493,7 +493,7 @@ namespace Hourglass
         /// <summary>
         /// Gets or sets the sound to play when the timer expires. Set to <c>null</c> if no sound is to be played.
         /// </summary>
-        public SoundInfo Sound
+        public Sound Sound
         {
             get
             {
@@ -828,7 +828,7 @@ namespace Hourglass
                 ShowInNotificationArea = this.showInNotificationArea,
                 PopUpWhenExpired = this.popUpWhenExpired,
                 CloseWhenExpired = this.closeWhenExpired,
-                SoundPath = this.sound == null ? null : this.sound.Path,
+                SoundIdentifier = this.sound == null ? null : this.sound.Identifier,
                 LoopSound = this.loopSound
             };
         }

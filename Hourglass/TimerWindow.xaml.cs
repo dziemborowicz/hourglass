@@ -516,7 +516,7 @@ namespace Hourglass
         {
             TimerTextBox.Text = "Timer expired";
             TimerProgressBar.Value = 100.0;
-            SoundManager.Instance.Play(this.timer.Sound);
+            this.timer.Sound.PlayAsync();
             this.UpdateAvailableCommands();
         }
 

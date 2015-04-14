@@ -54,8 +54,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileSound.cs" />
     <Compile Include="MultiplierConverter.cs" />
-    <Compile Include="SoundInfo.cs" />
+    <Compile Include="ResourceSound.cs" />
+    <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="DateTimeUtility.cs" />

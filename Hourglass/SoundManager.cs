@@ -6,19 +6,16 @@
 
 namespace Hourglass
 {
-    using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Media;
     using System.Reflection;
 
     using Hourglass.Properties;
 
     /// <summary>
-    /// Manages and plays notification sounds.
+    /// Manages notification sounds.
     /// </summary>
     public class SoundManager
     {
@@ -28,127 +25,102 @@ namespace Hourglass
         public static readonly SoundManager Instance = new SoundManager();
 
         /// <summary>
-        /// A <see cref="SoundPlayer"/>.
+        /// A collection of sounds.
         /// </summary>
-        private readonly SoundPlayer soundPlayer = new SoundPlayer();
-
-        /// <summary>
-        /// A collection of sounds in built-in resources.
-        /// </summary>
-        private readonly ReadOnlyCollection<SoundInfo> builtInSounds;
-
-        /// <summary>
-        /// A collection of sounds in provided by the user and stored in the application directory or in the "Sounds"
-        /// folder under the application directory.
-        /// </summary>
-        private readonly ReadOnlyCollection<SoundInfo> customSounds;
+        private readonly List<Sound> sounds = new List<Sound>(); 
 
         /// <summary>
         /// Prevents a default instance of the <see cref="SoundManager"/> class from being created.
         /// </summary>
         private SoundManager()
         {
-            this.builtInSounds = new ReadOnlyCollection<SoundInfo>(this.LoadBuiltInSounds());
-            this.customSounds = new ReadOnlyCollection<SoundInfo>(this.LoadCustomSounds());
+            this.sounds.AddRange(this.GetResourceSounds());
+            this.sounds.AddRange(this.GetFileSounds());
         }
 
         /// <summary>
         /// Gets the default sound.
         /// </summary>
-        public SoundInfo DefaultSound
+        public Sound DefaultSound
         {
-            get { return this.builtInSounds[1]; }
+            get { return this.GetSound("resx://Normal beep"); }
         }
 
         /// <summary>
-        /// Gets a collection of sounds in built-in resources.
+        /// Gets a collection of sounds stored in the assembly.
         /// </summary>
-        public IEnumerable<SoundInfo> BuiltInSounds
+        public IEnumerable<ResourceSound> ResourceSounds
         {
-            get { return this.builtInSounds; }
+            get { return this.sounds.OfType<ResourceSound>(); }
         }
 
         /// <summary>
-        /// Gets a collection of sounds in provided by the user and stored in the application directory or in the
-        /// "Sounds" folder under the application directory.
+        /// Gets a collection of sounds stored in the file system.
         /// </summary>
-        public IEnumerable<SoundInfo> CustomSounds
+        public IEnumerable<FileSound> FileSounds
         {
-            get { return this.customSounds; }
+            get { return this.sounds.OfType<FileSound>(); }
         }
 
         /// <summary>
-        /// Returns the sound specified by the provided path, or <c>null</c> if no such sound is loaded.
+        /// Returns the sound for the specified identifier, or <c>null</c> if no such sound is loaded.
         /// </summary>
-        /// <param name="path">A path specifying a sound.</param>
-        /// <returns>the sound specified by the provided path, or <c>null</c> if no such sound is loaded.</returns>
-        public SoundInfo GetSound(string path)
+        /// <param name="identifier">The identifier for the sound.</param>
+        /// <returns>The sound for the specified identifier, or <c>null</c> if no such sound is loaded.</returns>
+        public Sound GetSound(string identifier)
         {
-            return this.builtInSounds.FirstOrDefault(s => s.Path == path) ?? this.customSounds.FirstOrDefault(s => s.Path == path);
+            return this.sounds.FirstOrDefault(s => s.Identifier == identifier);
         }
 
         /// <summary>
-        /// Returns the sound specified by the provided path, or <see cref="DefaultSound"/> if no such sound is loaded.
+        /// Returns the sound for the specified identifier, or <see cref="DefaultSound"/> if no such sound is loaded.
         /// </summary>
-        /// <param name="path">A path specifying a sound.</param>
-        /// <returns>the sound specified by the provided path, or <see cref="DefaultSound"/> if no such sound is
-        /// loaded.</returns>
-        public SoundInfo GetSoundOrDefault(string path)
+        /// <param name="identifier">The identifier for the sound.</param>
+        /// <returns>The sound for the specified identifier, or <see cref="DefaultSound"/> if no such sound is loaded.
+        /// </returns>
+        public Sound GetSoundOrDefault(string identifier)
         {
-            return this.GetSound(path) ?? this.DefaultSound;
+            return this.GetSound(identifier) ?? this.DefaultSound;
         }
 
         /// <summary>
-        /// Plays a sound.
+        /// Loads the collection of sounds stored in the assembly.
         /// </summary>
-        /// <param name="sound">The sound to play.</param>
-        /// <returns><c>true</c> if the sound plays successfully, or <c>false</c> otherwise.</returns>
-        public bool Play(SoundInfo sound)
+        /// <returns>A collection of sounds stored in the assembly.</returns>
+        private IList<Sound> GetResourceSounds()
         {
-            try
-            {
-                // TODO Implement this properly
-                this.soundPlayer.Stream = Resources.BeepNormal;
-                this.soundPlayer.Play();
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Loads the collection of sounds in built-in resources.
-        /// </summary>
-        /// <returns>A collection of sounds in built-in resources.</returns>
-        private IList<SoundInfo> LoadBuiltInSounds()
-        {
-            List<SoundInfo> list = new List<SoundInfo>();
-            list.Add(new SoundInfo("Loud beep", true /* isBuiltIn */, "builtin:BeepLoud.wav"));
-            list.Add(new SoundInfo("Normal beep", true /* isBuiltIn */, "builtin:BeepNormal.wav"));
-            list.Add(new SoundInfo("Quiet beep", true /* isBuiltIn */, "builtin:BeepQuiet.wav"));
+            List<Sound> list = new List<Sound>();
+            list.Add(new ResourceSound("Loud beep", () => Resources.BeepLoud));
+            list.Add(new ResourceSound("Normal beep", () => Resources.BeepNormal));
+            list.Add(new ResourceSound("Quiet beep", () => Resources.BeepQuiet));
             return list;
         }
 
         /// <summary>
-        /// Loads the sounds in provided by the user and stored in the application directory or in the "Sounds"
-        /// folder under the application directory.
+        /// Loads the collection of sounds stored in the file system.
         /// </summary>
-        /// <returns>A collection of the sounds in provided by the user and stored in the application directory or in
-        /// the "Sounds" folder under the application directory.</returns>
-        private IList<SoundInfo> LoadCustomSounds()
+        /// <returns>A collection of sounds stored in the file system.</returns>
+        private IList<Sound> GetFileSounds()
         {
             try
             {
-                List<SoundInfo> list = new List<SoundInfo>();
+                List<Sound> list = new List<Sound>();
 
-                string appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".";
-                list.AddRange(this.LoadCustomSounds(appPath, appPath));
+                string appDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".";
+                if (Directory.Exists(appDirectory))
+                {
+                    IEnumerable<string> paths = Directory.GetFiles(appDirectory, "*.wav");
+                    IEnumerable<FileSound> fileSounds = paths.Select(path => new FileSound(path));
+                    list.AddRange(fileSounds);
+                }
 
-                string soundsPath = Path.Combine(appPath, "Sounds");
-                list.AddRange(this.LoadCustomSounds(appPath, soundsPath));
+                string soundsDirectory = Path.Combine(appDirectory, "Sounds");
+                if (Directory.Exists(soundsDirectory))
+                {
+                    IEnumerable<string> paths = Directory.GetFiles(soundsDirectory, "*.wav");
+                    IEnumerable<FileSound> fileSounds = paths.Select(path => new FileSound(path));
+                    list.AddRange(fileSounds);
+                }
 
                 list.Sort((a, b) => string.Compare(a.Name, b.Name, CultureInfo.CurrentCulture, CompareOptions.StringSort));
 
@@ -156,56 +128,9 @@ namespace Hourglass
             }
             catch
             {
-                // Not worth reporting this
-                return new List<SoundInfo>();
+                // Not worth raising an exception
+                return new List<Sound>();
             }
-        }
-
-        /// <summary>
-        /// Loads the sounds in the specified directory.
-        /// </summary>
-        /// <param name="rootDirectory">The root application directory.</param>
-        /// <param name="directory">The directory from which to load the sounds.</param>
-        /// <returns>A collection of the sounds in the specified directory.</returns>
-        private IList<SoundInfo> LoadCustomSounds(string rootDirectory, string directory)
-        {
-            List<SoundInfo> list = new List<SoundInfo>();
-            
-            if (!Directory.Exists(directory))
-            {
-                return list;
-            }
-
-            foreach (string file in Directory.GetFiles(directory, "*.wav"))
-            {
-                string name = Path.GetFileNameWithoutExtension(file);
-                string path = this.MakeCustomSoundPath(rootDirectory, file);
-
-                list.Add(new SoundInfo(name, true /* isBuiltIn */, "custom:" + path));
-            }
-
-            return list;
-        }
-
-        /// <summary>
-        /// Returns a path to the specified <paramref name="file"/> that is relative to <paramref name="directory"/>.
-        /// </summary>
-        /// <param name="directory">A directory path.</param>
-        /// <param name="file">A file path.</param>
-        /// <returns>A path to the specified <paramref name="file"/> that is relative to <paramref name="directory"/>.
-        /// </returns>
-        /// <exception cref="ArgumentException">If the file is not under the directory.</exception>
-        private string MakeCustomSoundPath(string directory, string file)
-        {
-            string directoryPath = Path.GetFullPath(directory);
-            string filePath = Path.GetFullPath(file);
-
-            if (!filePath.StartsWith(directoryPath, StringComparison.Ordinal))
-            {
-                throw new ArgumentException("The file must be under the directory.");
-            }
-
-            return "custom:" + filePath.Substring(directoryPath.Length + 1);
         }
     }
 }

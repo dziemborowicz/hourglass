@@ -108,10 +108,10 @@ namespace Hourglass
         public bool CloseWhenExpired { get; set; }
 
         /// <summary>
-        /// Gets or sets the path of the sound to play when the timer expires. Set to <c>null</c> if no sound is to be
-        /// played.
+        /// Gets or sets the identifier for the sound to play when the timer expires. Set to <c>null</c> if no sound is
+        /// to be played.
         /// </summary>
-        public string SoundPath { get; set; }
+        public string SoundIdentifier { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the sound that plays when the timer expires should be looped.

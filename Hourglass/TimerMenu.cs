@@ -408,21 +408,13 @@ namespace Hourglass
         /// </summary>
         private void UpdateSavedTimersHeaders()
         {
-            foreach (object item in this.savedTimersMenuItem.Items)
+            foreach (MenuItem menuItem in this.savedTimersMenuItem.Items.OfType<MenuItem>())
             {
-                MenuItem menuItem = item as MenuItem;
-                if (menuItem == null)
-                {
-                    continue;
-                }
-
                 Timer timer = menuItem.Tag as Timer;
-                if (timer == null)
+                if (timer != null)
                 {
-                    continue;
+                    menuItem.Header = this.GetMenuHeaderForTimer(timer);
                 }
-
-                menuItem.Header = this.GetMenuHeaderForTimer(timer);
             }
         }
 
@@ -520,11 +512,11 @@ namespace Hourglass
 
             this.soundMenuItem.Items.Add(this.noSoundMenuItem);
 
-            if (SoundManager.Instance.BuiltInSounds.Any())
+            if (SoundManager.Instance.ResourceSounds.Any())
             {
                 this.soundMenuItem.Items.Add(new Separator());
 
-                foreach (SoundInfo sound in SoundManager.Instance.BuiltInSounds)
+                foreach (Sound sound in SoundManager.Instance.ResourceSounds)
                 {
                     MenuItem menuItem = new MenuItem();
                     menuItem.Header = sound.Name;
@@ -533,11 +525,11 @@ namespace Hourglass
                 }
             }
 
-            if (SoundManager.Instance.CustomSounds.Any())
+            if (SoundManager.Instance.FileSounds.Any())
             {
                 this.soundMenuItem.Items.Add(new Separator());
 
-                foreach (SoundInfo sound in SoundManager.Instance.CustomSounds)
+                foreach (Sound sound in SoundManager.Instance.FileSounds)
                 {
                     MenuItem menuItem = new MenuItem();
                     menuItem.Header = sound.Name;
