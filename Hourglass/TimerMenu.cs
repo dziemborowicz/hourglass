@@ -12,6 +12,7 @@ namespace Hourglass
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
+    using System.Windows.Threading;
 
     /// <summary>
     /// A <see cref="ContextMenu"/> for the <see cref="TimerWindow"/>.
@@ -89,6 +90,11 @@ namespace Hourglass
         private MenuItem closeMenuItem;
 
         /// <summary>
+        /// A <see cref="DispatcherTimer"/> used to raise events.
+        /// </summary>
+        private DispatcherTimer ticker;
+
+        /// <summary>
         /// A value indicating whether the <see cref="Menu"/> is currently updating.
         /// </summary>
         private bool updating;
@@ -101,7 +107,7 @@ namespace Hourglass
             this.BuildMenu();
         }
 
-        #region Private Methods (General)
+        #region Private Methods (Binding)
 
         /// <summary>
         /// Binds the context menu to a <see cref="TimerWindow"/>.
@@ -118,8 +124,53 @@ namespace Hourglass
             // Bind the timer and window
             this.timerWindow = window;
             this.timerWindow.ContextMenu = this;
-            this.timerWindow.ContextMenuOpening += (s, e) => this.UpdateMenu();
+            this.timerWindow.ContextMenuOpening += this.WindowContextMenuOpening;
+            this.timerWindow.ContextMenuClosing += this.WindowContextMenuClosing;
+
+            this.ticker = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
+            this.ticker.Interval = new TimeSpan(0, 0, 0, 0, 500 /* ms */);
+            this.ticker.Tick += this.DispatcherTimerTick;
         }
+
+        #endregion
+
+        #region Private Methods (Lifecycle)
+
+        /// <summary>
+        /// Invoked when the context menu is opened.
+        /// </summary>
+        /// <param name="sender">The bound <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            this.UpdateMenu();
+
+            this.ticker.Start();
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="ticker"/> interval has elapsed.
+        /// </summary>
+        /// <param name="sender">The <see cref="DispatcherTimer"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void DispatcherTimerTick(object sender, EventArgs e)
+        {
+            this.UpdateSavedTimersHeaders();
+        }
+
+        /// <summary>
+        /// Invoked just before the context menu is closed.
+        /// </summary>
+        /// <param name="sender">The bound <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowContextMenuClosing(object sender, ContextMenuEventArgs e)
+        {
+            this.ticker.Stop();
+        }
+
+        #endregion
+
+        #region Private Methods (Building)
 
         /// <summary>
         /// Builds or rebuilds the context menu.
@@ -333,7 +384,7 @@ namespace Hourglass
                 foreach (Timer savedTimer in savedTimers)
                 {
                     MenuItem timerMenuItem = new MenuItem();
-                    timerMenuItem.Header = this.SavedTimerToMenuHeader(savedTimer);
+                    timerMenuItem.Header = this.GetMenuHeaderForTimer(savedTimer);
                     timerMenuItem.Tag = savedTimer;
                     timerMenuItem.Click += this.SavedTimerMenuItemClick;
                     this.savedTimersMenuItem.Items.Add(timerMenuItem);
@@ -353,6 +404,29 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Updates the <see cref="MenuItem.Header"/> of the items in the <see cref="savedTimersMenuItem"/>.
+        /// </summary>
+        private void UpdateSavedTimersHeaders()
+        {
+            foreach (object item in this.savedTimersMenuItem.Items)
+            {
+                MenuItem menuItem = item as MenuItem;
+                if (menuItem == null)
+                {
+                    continue;
+                }
+
+                Timer timer = menuItem.Tag as Timer;
+                if (timer == null)
+                {
+                    continue;
+                }
+
+                menuItem.Header = this.GetMenuHeaderForTimer(timer);
+            }
+        }
+
+        /// <summary>
         /// Returns a list of saved <see cref="Timer"/> objects.
         /// </summary>
         /// <returns>A list of saved <see cref="Timer"/> objects.</returns>
@@ -366,7 +440,7 @@ namespace Hourglass
         /// </summary>
         /// <param name="savedTimer">A <see cref="Timer"/>.</param>
         /// <returns>The header string for a specified <see cref="Timer"/>.</returns>
-        private string SavedTimerToMenuHeader(Timer savedTimer)
+        private string GetMenuHeaderForTimer(Timer savedTimer)
         {
             savedTimer.Update();
 
