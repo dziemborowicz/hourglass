@@ -7,7 +7,6 @@
 namespace Hourglass
 {
     using System;
-    using System.IO;
 
     /// <summary>
     /// A representation of a sound used to notify the user that a <see cref="Timer"/> has expired.

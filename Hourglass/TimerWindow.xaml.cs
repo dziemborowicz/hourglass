@@ -235,6 +235,29 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Updates the text displayed to the user based on the state of the <see cref="Timer"/>.
+        /// </summary>
+        private void UpdateTimerText()
+        {
+            if (!this.IsEditing && this.timer.TimeLeft.HasValue)
+            {
+                TimerTextBox.Text = TimeSpanUtility.ToNaturalString(this.timer.TimeLeft.Value);
+            }
+
+            if (this.timer.TimeLeft.HasValue && this.timer.TotalTime.HasValue)
+            {
+                long timeLeft = this.timer.TimeLeft.Value.Ticks;
+                long totalTime = this.timer.TotalTime.Value.Ticks;
+                double progress = 100.0 * (totalTime - timeLeft) / totalTime;
+                TimerProgressBar.Value = progress;
+            }
+            else
+            {
+                TimerProgressBar.Value = 0.0;
+            }
+        }
+
+        /// <summary>
         /// Updates the commands displayed to the user based on the state of the <see cref="Timer"/>.
         /// </summary>
         private void UpdateAvailableCommands()
@@ -381,6 +404,8 @@ namespace Hourglass
             this.timer.Tick += this.TimerTick;
 
             this.timer.Bind(this /* window */);
+
+            this.UpdateTimerText();
         }
 
         /// <summary>
@@ -502,22 +527,7 @@ namespace Hourglass
         /// <param name="e">An object that contains no event data.</param>
         private void TimerTick(object sender, EventArgs e)
         {
-            if (!this.IsEditing && this.timer.TimeLeft.HasValue)
-            {
-                TimerTextBox.Text = TimeSpanUtility.ToNaturalString(this.timer.TimeLeft.Value);
-            }
-
-            if (this.timer.TimeLeft.HasValue && this.timer.TotalTime.HasValue)
-            {
-                long timeLeft = this.timer.TimeLeft.Value.Ticks;
-                long totalTime = this.timer.TotalTime.Value.Ticks;
-                double progress = 100.0 * (totalTime - timeLeft) / totalTime;
-                TimerProgressBar.Value = progress;
-            }
-            else
-            {
-                TimerProgressBar.Value = 0.0;
-            }
+            this.UpdateTimerText();
         }
 
         #endregion
