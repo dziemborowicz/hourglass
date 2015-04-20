@@ -5,7 +5,7 @@
     <Setting Name="Timers" Type="Hourglass.TimerInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Inputs" Type="Hourglass.TimerInputList" Scope="User">
+    <Setting Name="Inputs" Type="Hourglass.TimerInputInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

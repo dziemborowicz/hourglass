@@ -147,60 +147,10 @@ namespace Hourglass
             if (Regex.IsMatch(input, @"^\s*(un)?till?\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
             {
                 input = Regex.Replace(input, @"^\s*(un)?till?\s*", string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                return this.GetInputFromDateTimeOrTimeSpan(input);
-            }
-            
-            return this.GetInputFromTimeSpanOrDateTime(input);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
-        /// specified a valid input, favoring a <see cref="TimerInput"/> with an underlying <see cref="DateTime"/> in
-        /// the case of ambiguity.
-        /// </summary>
-        /// <param name="str">An input <see cref="string"/>.</param>
-        /// <returns>A <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
-        /// specified a valid input. </returns>
-        private TimerInput GetInputFromDateTimeOrTimeSpan(string str)
-        {
-            DateTime dateTime;
-            if (DateTimeUtility.TryParseNatural(str, out dateTime))
-            {
-                return new TimerInput(dateTime);
+                return TimerInput.FromDateTimeOrTimeSpan(input);
             }
 
-            TimeSpan timeSpan;
-            if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
-            {
-                return new TimerInput(timeSpan);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Returns a <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
-        /// specified a valid input, favoring a <see cref="TimerInput"/> with an underlying <see cref="TimeSpan"/> in
-        /// the case of ambiguity.
-        /// </summary>
-        /// <param name="str">An input <see cref="string"/>.</param>
-        /// <returns>A <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
-        /// specified a valid input. </returns>
-        private TimerInput GetInputFromTimeSpanOrDateTime(string str)
-        {
-            TimeSpan timeSpan;
-            if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
-            {
-                return new TimerInput(timeSpan);
-            }
-
-            DateTime dateTime;
-            if (DateTimeUtility.TryParseNatural(str, out dateTime))
-            {
-                return new TimerInput(dateTime);
-            }
-
-            return null;
+            return TimerInput.FromTimeSpanOrDateTime(input);
         }
 
         /// <summary>

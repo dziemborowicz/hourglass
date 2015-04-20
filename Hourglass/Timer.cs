@@ -550,14 +550,21 @@ namespace Hourglass
                 throw new ObjectDisposedException(this.GetType().ToString());
             }
 
-            if (input.IsTimeSpan)
+            TimeSpanTimerInput timeSpanTimerInput = input as TimeSpanTimerInput;
+            if (timeSpanTimerInput != null)
             {
-                this.Start(input.TimeSpan);
+                this.Start(timeSpanTimerInput.TimeSpan);
+                return;
             }
-            else
+
+            DateTimeTimerInput dateTimeTimerInput = input as DateTimeTimerInput;
+            if (dateTimeTimerInput != null)
             {
-                this.Start(input.DateTime);
+                this.Start(dateTimeTimerInput.DateTime);
+                return;
             }
+
+            throw new ArgumentException("Unsupported TimerInput implementation", "input");
         }
 
         /// <summary>
@@ -572,7 +579,7 @@ namespace Hourglass
                 throw new ObjectDisposedException(this.GetType().ToString());
             }
 
-            TimerInput input = new TimerInput(timeSpan);
+            TimerInput input = new TimeSpanTimerInput(timeSpan);
 
             this.state = TimerState.Running;
             this.startTime = DateTime.Now;
@@ -585,7 +592,7 @@ namespace Hourglass
             this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime", "LastInput");
             this.OnStarted();
 
-            TimerManager.Instance.AddInput(input);
+            TimerInputManager.Instance.Add(input);
         }
 
         /// <summary>
@@ -600,7 +607,7 @@ namespace Hourglass
                 throw new ObjectDisposedException(this.GetType().ToString());
             }
 
-            TimerInput input = new TimerInput(dateTime);
+            TimerInput input = new DateTimeTimerInput(dateTime);
 
             this.state = TimerState.Running;
             this.startTime = null;
@@ -614,7 +621,7 @@ namespace Hourglass
             this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime", "LastInput");
             this.OnStarted();
 
-            TimerManager.Instance.AddInput(input);
+            TimerInputManager.Instance.Add(input);
         }
 
         /// <summary>

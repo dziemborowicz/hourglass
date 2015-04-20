@@ -9,7 +9,7 @@ namespace Hourglass
     using System.Collections.Generic;
 
     /// <summary>
-    /// A list of <see cref="TimerInfo"/> objects.
+    /// A list of <see cref="TimerInfo"/> objects used for XML serialization.
     /// </summary>
     public class TimerInfoList : List<TimerInfo>
     {

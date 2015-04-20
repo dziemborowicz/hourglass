@@ -24,11 +24,6 @@ namespace Hourglass
         public const int MaxSavedTimers = 25;
 
         /// <summary>
-        /// The maximum number of <see cref="TimerInput"/> objects to track and persist in settings.
-        /// </summary>
-        public const int MaxInputs = 5;
-
-        /// <summary>
         /// Singleton instance of the <see cref="TimerManager"/> class.
         /// </summary>
         public static readonly TimerManager Instance = new TimerManager();
@@ -37,11 +32,6 @@ namespace Hourglass
         /// The currently loaded <see cref="Timer"/> objects in reverse chronological order.
         /// </summary>
         private readonly List<Timer> timers = new List<Timer>();
-
-        /// <summary>
-        /// The most recent <see cref="TimerInput"/> objects in reverse chronological order.
-        /// </summary>
-        private readonly List<TimerInput> inputs = new List<TimerInput>(); 
 
         /// <summary>
         /// Prevents a default instance of the <see cref="TimerManager"/> class from being created.
@@ -56,14 +46,6 @@ namespace Hourglass
         public IList<Timer> Timers
         {
             get { return new ReadOnlyCollection<Timer>(this.timers); }
-        }
-
-        /// <summary>
-        /// Gets a list of the most recent <see cref="TimerInput"/> objects.
-        /// </summary>
-        public IList<TimerInput> Inputs
-        {
-            get { return new ReadOnlyCollection<TimerInput>(this.inputs); }
         }
 
         /// <summary>
@@ -110,32 +92,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Adds a <see cref="TimerInput"/> to the list of recent inputs.
-        /// </summary>
-        /// <param name="input">A <see cref="TimerInput"/>.</param>
-        public void AddInput(TimerInput input)
-        {
-            this.inputs.Remove(input);
-            this.inputs.Insert(0, input);
-
-            while (this.inputs.Count > MaxInputs)
-            {
-                this.inputs.RemoveAt(this.inputs.Count - 1);
-            }
-        }
-
-        /// <summary>
-        /// Clears the list of recent <see cref="TimerInput"/> objects.
-        /// </summary>
-        public void ClearInputs()
-        {
-            this.inputs.Clear();
-        }
-
-        /// <summary>
         /// Saves state to the default settings.
         /// </summary>
-        public void SaveToSettings()
+        public void Save()
         {
             IEnumerable<TimerInfo> timerInfos = this.timers
                 .Where(t => t.State != TimerState.Stopped && t.State != TimerState.Expired)
@@ -143,30 +102,19 @@ namespace Hourglass
                 .Select(t => t.ToTimerInfo());
 
             Settings.Default.Timers = new TimerInfoList(timerInfos);
-            Settings.Default.Inputs = new TimerInputList(this.inputs);
-            Settings.Default.Save();
         }
 
         /// <summary>
         /// Loads state from the default settings.
         /// </summary>
-        public void LoadFromSettings()
+        public void Load()
         {
-            if (this.timers.Count != 0)
-            {
-                throw new InvalidOperationException("Cannot load timers if timers are already loaded.");
-            }
+            this.timers.Clear();
 
             IEnumerable<TimerInfo> timerInfos = Settings.Default.Timers;
             if (timerInfos != null)
             {
                 this.timers.AddRange(timerInfos.Select(ti => new Timer(ti)));
-            }
-
-            IEnumerable<TimerInput> savedInputs = Settings.Default.Inputs;
-            if (savedInputs != null)
-            {
-                this.inputs.AddRange(savedInputs);
             }
         }
     }

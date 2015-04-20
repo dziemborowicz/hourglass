@@ -303,7 +303,7 @@ namespace Hourglass
         {
             this.recentTimersMenuItem.Items.Clear();
 
-            if (TimerManager.Instance.Inputs.Count == 0)
+            if (TimerInputManager.Instance.Inputs.Count == 0)
             {
                 MenuItem noRecentTimersMenuItem = new MenuItem();
                 noRecentTimersMenuItem.Header = "No recent timers";
@@ -312,7 +312,7 @@ namespace Hourglass
             }
             else
             {
-                foreach (TimerInput input in TimerManager.Instance.Inputs)
+                foreach (TimerInput input in TimerInputManager.Instance.Inputs)
                 {
                     MenuItem timerMenuItem = new MenuItem();
                     timerMenuItem.Header = input.ToString();
@@ -356,7 +356,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void ClearRecentTimersMenuItemClick(object sender, RoutedEventArgs e)
         {
-            TimerManager.Instance.ClearInputs();
+            TimerInputManager.Instance.Clear();
         }
 
         #endregion

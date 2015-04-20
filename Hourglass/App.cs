@@ -21,8 +21,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         protected override void OnExit(ExitEventArgs e)
         {
-            TimerManager.Instance.SaveToSettings();
-            Settings.Default.Save();
+            SettingsManager.Instance.Save();
 
             base.OnExit(e);
         }

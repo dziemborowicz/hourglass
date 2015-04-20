@@ -54,9 +54,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeTimer.cs" />
+    <Compile Include="DateTimeTimerInput.cs" />
+    <Compile Include="DateTimeTimerInputInfo.cs" />
     <Compile Include="FileSound.cs" />
     <Compile Include="MultiplierConverter.cs" />
     <Compile Include="ResourceSound.cs" />
+    <Compile Include="SettingsManager.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Timer.cs" />
@@ -65,10 +69,15 @@
     <Compile Include="TimerInfo.cs" />
     <Compile Include="TimerInfoList.cs" />
     <Compile Include="TimerInput.cs" />
-    <Compile Include="TimerInputList.cs" />
+    <Compile Include="TimerInputInfo.cs" />
+    <Compile Include="TimerInputInfoList.cs" />
+    <Compile Include="TimerInputManager.cs" />
     <Compile Include="TimerManager.cs" />
     <Compile Include="TimerMenu.cs" />
     <Compile Include="TimerScaler.cs" />
+    <Compile Include="TimeSpanTimer.cs" />
+    <Compile Include="TimeSpanTimerInput.cs" />
+    <Compile Include="TimeSpanTimerInputInfo.cs" />
     <Compile Include="TimeSpanUtility.cs" />
     <Compile Include="Watermark.cs" />
     <Compile Include="WatermarkAdorner.cs" />

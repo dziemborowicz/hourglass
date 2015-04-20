@@ -49,7 +49,7 @@ namespace Hourglass
         /// <returns>A value indicating whether the application should continue starting up.</returns>
         protected override bool OnStartup(StartupEventArgs e)
         {
-            TimerManager.Instance.LoadFromSettings();
+            SettingsManager.Instance.Load();
 
             string[] args = e.CommandLine.ToArray();
             Timer timer = new Timer(args);
