@@ -1,21 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeTimerInputInfo.cs" company="Chris Dziemborowicz">
+// <copyright file="TimeSpanTimerOptionsInfo.cs" company="Chris Dziemborowicz">
 //   Copyright (c) Chris Dziemborowicz. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Hourglass
 {
-    using System;
-
     /// <summary>
-    /// The representation of a <see cref="DateTimeTimerInput"/> used for XML serialization.
+    /// The representation of a <see cref="TimeSpanTimerOptions"/> used for XML serialization.
     /// </summary>
-    public class DateTimeTimerInputInfo : TimerInputInfo
+    public class TimeSpanTimerOptionsInfo : TimerOptionsInfo
     {
         /// <summary>
-        /// Gets or sets the <see cref="DateTime"/> until which the <see cref="DateTimeTimer"/> should count down.
+        /// Gets or sets a value indicating whether to loop the timer continuously.
         /// </summary>
-        public DateTime DateTime { get; set; }
+        public bool LoopTimer { get; set; }
     }
 }

@@ -39,16 +39,14 @@ namespace Hourglass
 
             this.IsHitTestVisible = false;
 
+            this.AdornedElement.IsVisibleChanged += this.AdornedElementIsVisibleChanged;
+            this.Visibility = this.AdornedElement.IsVisible ? Visibility.Visible : Visibility.Collapsed;
+
             Binding opacityBinding = new Binding();
-            opacityBinding.Source = adornedElement;
+            opacityBinding.Source = this.AdornedElement;
             opacityBinding.Path = new PropertyPath("Opacity");
             opacityBinding.Converter = new MultiplierConverter(0.5);
             BindingOperations.SetBinding(this, UIElement.OpacityProperty, opacityBinding);
-
-            Binding visibilityBinding = new Binding();
-            visibilityBinding.Source = adornedElement;
-            visibilityBinding.Path = new PropertyPath("Visibility");
-            BindingOperations.SetBinding(this, UIElement.VisibilityProperty, visibilityBinding);
         }
 
         /// <summary>
@@ -69,7 +67,7 @@ namespace Hourglass
         {
             this.contentPresenter.Arrange(new Rect(finalSize));
 
-            TextBox textBox = AdornedElement as TextBox;
+            TextBox textBox = this.AdornedElement as TextBox;
 
             if (textBox != null)
             {
@@ -77,7 +75,7 @@ namespace Hourglass
                 TextElement.SetFontSize(this.contentPresenter, textBox.FontSize);
             }
 
-            ComboBox comboBox = AdornedElement as ComboBox;
+            ComboBox comboBox = this.AdornedElement as ComboBox;
 
             if (comboBox != null)
             {
@@ -114,8 +112,19 @@ namespace Hourglass
         /// element sizes.</returns>
         protected override Size MeasureOverride(Size availableSize)
         {
-            this.contentPresenter.Measure(AdornedElement.RenderSize);
-            return AdornedElement.RenderSize;
+            this.contentPresenter.Measure(this.AdornedElement.RenderSize);
+            return this.AdornedElement.RenderSize;
+        }
+
+        /// <summary>
+        /// Invoked when the value of the <see cref="UIElement.IsVisible"/> property changes on the <see
+        /// cref="Adorner.AdornedElement"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="Adorner.AdornedElement"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void AdornedElementIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            this.Visibility = this.AdornedElement.IsVisible ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

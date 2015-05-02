@@ -19,7 +19,7 @@ namespace Hourglass
         /// <summary>
         /// The path to the sound file.
         /// </summary>
-        private string path;
+        private readonly string path;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileSound"/> class.
@@ -55,6 +55,50 @@ namespace Hourglass
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object.
+        /// </summary>
+        /// <param name="obj">An <see cref="object"/>.</param>
+        /// <returns><c>true</c> if the specified object is equal to the current object, or <c>false</c> otherwise.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (object.ReferenceEquals(obj, null))
+            {
+                return false;
+            }
+
+            if (object.ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            if (!base.Equals(obj))
+            {
+                return false;
+            }
+
+            FileSound sound = (FileSound)obj;
+            return object.Equals(this.path, sound.path);
+        }
+
+        /// <summary>
+        /// Serves as the default hash function.
+        /// </summary>
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode()
+        {
+            int hashCode = 17;
+            hashCode = (31 * hashCode) + base.GetHashCode();
+            hashCode = (31 * hashCode) + this.path.GetHashCode();
+            return hashCode;
         }
 
         /// <summary>

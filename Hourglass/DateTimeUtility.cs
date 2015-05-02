@@ -428,8 +428,7 @@ namespace Hourglass
                     Match match = Regex.Match(str, format, RegexOptions);
                     if (match.Success)
                     {
-                        int day = referenceDate.Day, month = referenceDate.Month, year = referenceDate.Year;
-                        int hour = 0, minute = 0, second = 0;
+                        int? year = null, month = null, day = null, hour = null, minute = null, second = null;
 
                         if (match.Groups["weekday"].Success)
                         {
@@ -489,6 +488,26 @@ namespace Hourglass
                                     year += referenceDate.Year / 1000 * 1000;
                                 }
                             }
+
+                            // Default month to January where a year is specified
+                            if (year.HasValue)
+                            {
+                                month = month ?? 1;
+                            }
+
+                            // Default day to the 1st where a month is specified
+                            if (month.HasValue)
+                            {
+                                day = day ?? 1;
+                            }
+
+                            // Default time to midnight if day is specified
+                            if (day.HasValue)
+                            {
+                                hour = 0;
+                                minute = 0;
+                                second = 0;
+                            }
                         }
 
                         // Parse hours
@@ -510,41 +529,47 @@ namespace Hourglass
                         }
 
                         // Parse AM/PM
-                        if (match.Groups["ampm"].Success && match.Groups["ampm"].Value.StartsWith("p", StringComparison.InvariantCultureIgnoreCase) && hour != 12)
+                        if (match.Groups["ampm"].Success && match.Groups["ampm"].Value.StartsWith("p", StringComparison.InvariantCultureIgnoreCase) && hour.HasValue && hour != 12)
                         {
                             hour += 12;
                         }
 
                         // Fix reference to midnight as "12"
-                        if ((!match.Groups["ampm"].Success || match.Groups["ampm"].Value.StartsWith("a", StringComparison.InvariantCultureIgnoreCase)) && hour == 12)
+                        if ((!match.Groups["ampm"].Success || match.Groups["ampm"].Value.StartsWith("a", StringComparison.InvariantCultureIgnoreCase)) && hour.HasValue && hour == 12)
                         {
                             hour = 0;
                         }
 
-                        DateTime dateTime = new DateTime(year, month, day, hour, minute, second);
+                        DateTime dateTime = new DateTime(
+                            year ?? referenceDate.Year,
+                            month ?? referenceDate.Month,
+                            day ?? referenceDate.Day,
+                            hour ?? referenceDate.Hour,
+                            minute ?? referenceDate.Minute,
+                            second ?? referenceDate.Second);
 
                         // Prefer output dates after reference date
                         if (dateTime <= referenceDate)
                         {
-                            if (match.Groups["hour"].Success && !match.Groups["ampm"].Success && hour < 12 && dateTime.AddHours(12) > referenceDate)
+                            if (match.Groups["hour"].Success && !match.Groups["ampm"].Success && hour.HasValue && hour < 12 && dateTime.AddHours(12) > referenceDate)
                             {
                                 dateTime = dateTime.AddHours(12);
                             }
-                            else if (!match.Groups["day"].Success)
+                            else if (!day.HasValue)
                             {
                                 dateTime = dateTime.AddDays(1);
                             }
-                            else if (!match.Groups["month"].Success)
+                            else if (!month.HasValue)
                             {
                                 dateTime = dateTime.AddMonths(1);
                             }
-                            else if (!match.Groups["year"].Success)
+                            else if (!year.HasValue)
                             {
                                 dateTime = dateTime.AddYears(1);
                             }
                         }
 
-                        // Prefer 8:00:00 AM too 7:59:59 PM for times without AM/PM except on the reference date
+                        // Prefer 8:00:00 AM to 7:59:59 PM for times without AM/PM except on the reference date
                         if (!match.Groups["ampm"].Success && dateTime.Date != referenceDate.Date && dateTime.TimeOfDay != TimeSpan.Zero && dateTime.Hour < 8)
                         {
                             dateTime = dateTime.AddHours(12);
@@ -689,6 +714,28 @@ namespace Hourglass
         public static string ToNaturalString(DateTime? dateTime, IFormatProvider provider)
         {
             return dateTime.HasValue ? ToNaturalString(dateTime.Value, provider) : "null";
+        }
+
+        /// <summary>
+        /// Returns the later of two <see cref="DateTime"/>s.
+        /// </summary>
+        /// <param name="a">The first <see cref="DateTime"/> to compare.</param>
+        /// <param name="b">The second <see cref="DateTime"/> to compare.</param>
+        /// <returns><paramref name="a"/> or <paramref name="b"/>, whichever is later.</returns>
+        public static DateTime Max(DateTime a, DateTime b)
+        {
+            return a > b ? a : b;
+        }
+
+        /// <summary>
+        /// Returns the earlier of two <see cref="DateTime"/>s.
+        /// </summary>
+        /// <param name="a">The first <see cref="DateTime"/> to compare.</param>
+        /// <param name="b">The second <see cref="DateTime"/> to compare.</param>
+        /// <returns><paramref name="a"/> or <paramref name="b"/>, whichever is earlier.</returns>
+        public static DateTime Min(DateTime a, DateTime b)
+        {
+            return a < b ? a : b;
         }
 
         #endregion

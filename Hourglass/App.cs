@@ -8,8 +8,6 @@ namespace Hourglass
 {
     using System.Windows;
 
-    using Hourglass.Properties;
-
     /// <summary>
     /// The application.
     /// </summary>

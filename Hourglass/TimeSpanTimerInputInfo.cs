@@ -15,7 +15,7 @@ namespace Hourglass
     public class TimeSpanTimerInputInfo : TimerInputInfo
     {
         /// <summary>
-        /// Gets or sets the <see cref="TimeSpanTimerInput.TimeSpan"/> for a <see cref="TimeSpanTimerInput"/>.
+        /// Gets or sets the <see cref="TimeSpan"/> for which the <see cref="TimeSpanTimer"/> should count down.
         /// </summary>
         [XmlIgnore]
         public TimeSpan TimeSpan { get; set; }

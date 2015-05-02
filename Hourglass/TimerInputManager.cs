@@ -13,7 +13,7 @@ namespace Hourglass
     using Hourglass.Properties;
 
     /// <summary>
-    /// Manages <see cref="TimerInput"/>s.
+    /// Manages recent <see cref="TimerInput"/>s.
     /// </summary>
     public class TimerInputManager
     {
@@ -23,14 +23,14 @@ namespace Hourglass
         public const int Capacity = 5;
 
         /// <summary>
-        /// Singleton instance of the <see cref="TimerManager"/> class.
+        /// Singleton instance of the <see cref="TimerInputManager"/> class.
         /// </summary>
         public static readonly TimerInputManager Instance = new TimerInputManager();
 
         /// <summary>
         /// The most recent <see cref="TimerInput"/>s in reverse chronological order.
         /// </summary>
-        private readonly List<TimerInput> timerInputs = new List<TimerInput>(); 
+        private readonly List<TimerInput> timerInputs = new List<TimerInput>(Capacity); 
 
         /// <summary>
         /// Prevents a default instance of the <see cref="TimerInputManager"/> class from being created.
@@ -73,15 +73,6 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Saves state to the default settings.
-        /// </summary>
-        public void Save()
-        {
-            IEnumerable<TimerInputInfo> timerInputInfos = this.timerInputs.Select(TimerInputInfo.FromTimerInput);
-            Settings.Default.Inputs = new TimerInputInfoList(timerInputInfos);
-        }
-
-        /// <summary>
         /// Loads state from the default settings.
         /// </summary>
         public void Load()
@@ -93,6 +84,15 @@ namespace Hourglass
             {
                 this.timerInputs.AddRange(timerInputInfos.Select(TimerInput.FromTimerInputInfo));
             }
+        }
+
+        /// <summary>
+        /// Saves state to the default settings.
+        /// </summary>
+        public void Save()
+        {
+            IEnumerable<TimerInputInfo> timerInputInfos = this.timerInputs.Select(TimerInputInfo.FromTimerInput);
+            Settings.Default.Inputs = new TimerInputInfoList(timerInputInfos);
         }
     }
 }

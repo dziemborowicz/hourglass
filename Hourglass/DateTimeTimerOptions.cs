@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ResourceSound.cs" company="Chris Dziemborowicz">
+// <copyright file="DateTimeTimerOptions.cs" company="Chris Dziemborowicz">
 //   Copyright (c) Chris Dziemborowicz. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,56 +7,44 @@
 namespace Hourglass
 {
     using System;
-    using System.IO;
-    using System.Media;
 
     /// <summary>
-    /// A <see cref="Sound"/> stored in the assembly.
+    /// Configuration data for a <see cref="DateTimeTimer"/>.
     /// </summary>
-    public class ResourceSound : Sound
+    public class DateTimeTimerOptions : TimerOptions
     {
-        /// <summary>
-        /// A method that returns a stream to the sound data.
-        /// </summary>
-        private readonly Func<UnmanagedMemoryStream> streamProvider;
+        #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResourceSound"/> class.
+        /// Initializes a new instance of the <see cref="DateTimeTimerOptions"/> class.
         /// </summary>
-        /// <param name="name">The friendly name for the sound.</param>
-        /// <param name="streamProvider">A method that returns a stream to the sound data.</param>
-        public ResourceSound(string name, Func<UnmanagedMemoryStream> streamProvider)
-            : base(name, "resx://" + name)
+        public DateTimeTimerOptions()
         {
-            if (streamProvider == null)
-            {
-                throw new ArgumentNullException("streamProvider");
-            }
-
-            this.streamProvider = streamProvider;
         }
 
         /// <summary>
-        /// Plays the sound.
+        /// Initializes a new instance of the <see cref="DateTimeTimerOptions"/> class from a <see
+        /// cref="DateTimeTimerOptions"/>.
         /// </summary>
-        /// <returns><c>true</c> if the sound plays successfully, or <c>false</c> otherwise.</returns>
-        public override bool Play()
+        /// <param name="options">A <see cref="DateTimeTimerOptions"/>.</param>
+        public DateTimeTimerOptions(DateTimeTimerOptions options)
+            : base(options)
         {
-            try
-            {
-                using (UnmanagedMemoryStream stream = this.streamProvider())
-                using (SoundPlayer player = new SoundPlayer(stream))
-                {
-                    player.PlaySync();
-                }
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeTimerOptions"/> class from a <see
+        /// cref="DateTimeTimerOptionsInfo"/>.
+        /// </summary>
+        /// <param name="optionsInfo">A <see cref="DateTimeTimerOptionsInfo"/>.</param>
+        public DateTimeTimerOptions(DateTimeTimerOptionsInfo optionsInfo)
+            : base(optionsInfo)
+        {
+        }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
@@ -95,9 +83,26 @@ namespace Hourglass
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
+            this.ThrowIfNotFrozen();
+
             int hashCode = 17;
             hashCode = (31 * hashCode) + base.GetHashCode();
             return hashCode;
         }
+
+        #endregion
+
+        #region Protected Methods
+
+        /// <summary>
+        /// Returns a new <see cref="TimerOptionsInfo"/> of the correct type for this class.
+        /// </summary>
+        /// <returns>A new <see cref="TimerOptionsInfo"/>.</returns>
+        protected override TimerOptionsInfo GetNewTimerOptionsInfo()
+        {
+            return new DateTimeTimerOptionsInfo();
+        }
+
+        #endregion
     }
 }

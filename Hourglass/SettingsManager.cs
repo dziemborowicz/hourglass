@@ -26,17 +26,6 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Saves state to the default settings.
-        /// </summary>
-        public void Save()
-        {
-            TimerManager.Instance.Save();
-            TimerInputManager.Instance.Save();
-
-            Settings.Default.Save();
-        }
-
-        /// <summary>
         /// Loads state from the default settings.
         /// </summary>
         public void Load()
@@ -45,6 +34,17 @@ namespace Hourglass
 
             TimerManager.Instance.Load();
             TimerInputManager.Instance.Load();
+        }
+
+        /// <summary>
+        /// Saves state to the default settings.
+        /// </summary>
+        public void Save()
+        {
+            TimerManager.Instance.Save();
+            TimerInputManager.Instance.Save();
+
+            Settings.Default.Save();
         }
     }
 }

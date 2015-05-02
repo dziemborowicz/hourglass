@@ -24,6 +24,18 @@ namespace Hourglass
         /// <param name="dateTime">The <see cref="DateTime"/> until which the <see cref="DateTimeTimer"/> should count
         /// down.</param>
         public DateTimeTimerInput(DateTime dateTime)
+            : this(dateTime, new DateTimeTimerOptions())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeTimerInput"/> class.
+        /// </summary>
+        /// <param name="dateTime">The <see cref="DateTime"/> until which the <see cref="DateTimeTimer"/> should count
+        /// down.</param>
+        /// <param name="options">The configuration data for the timer.</param>
+        public DateTimeTimerInput(DateTime dateTime, TimerOptions options)
+            : base(options)
         {
             this.dateTime = dateTime;
         }
@@ -55,8 +67,28 @@ namespace Hourglass
         /// </returns>
         public override bool Equals(object obj)
         {
-            DateTimeTimerInput input = obj as DateTimeTimerInput;
-            return input != null && input.dateTime == this.dateTime;
+            if (object.ReferenceEquals(obj, null))
+            {
+                return false;
+            }
+
+            if (object.ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            if (!base.Equals(obj))
+            {
+                return false;
+            }
+
+            DateTimeTimerInput input = (DateTimeTimerInput)obj;
+            return object.Equals(this.dateTime, input.dateTime);
         }
 
         /// <summary>
@@ -65,7 +97,10 @@ namespace Hourglass
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
-            return this.dateTime.GetHashCode();
+            int hashCode = 17;
+            hashCode = (31 * hashCode) + base.GetHashCode();
+            hashCode = (31 * hashCode) + this.dateTime.GetHashCode();
+            return hashCode;
         }
 
         /// <summary>
@@ -78,12 +113,24 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns the representation of the <see cref="TimerInput"/> used for XML serialization.
+        /// Returns a new <see cref="TimerInputInfo"/> of the correct type for this class.
         /// </summary>
-        /// <returns>The representation of the <see cref="TimerInput"/> used for XML serialization.</returns>
-        public override TimerInputInfo ToTimerInputInfo()
+        /// <returns>A new <see cref="TimerInputInfo"/>.</returns>
+        protected override TimerInputInfo GetNewTimerInputInfo()
         {
-            return new DateTimeTimerInputInfo { DateTime = this.dateTime };
+            return new DateTimeTimerInputInfo();
+        }
+
+        /// <summary>
+        /// Sets the properties on a <see cref="TimerInputInfo"/> from the values in this class.
+        /// </summary>
+        /// <param name="timerInputInfo">A <see cref="TimerInputInfo"/>.</param>
+        protected override void SetTimerInputInfo(TimerInputInfo timerInputInfo)
+        {
+            base.SetTimerInputInfo(timerInputInfo);
+
+            DateTimeTimerInputInfo info = (DateTimeTimerInputInfo)timerInputInfo;
+            info.DateTime = this.dateTime;
         }
     }
 }

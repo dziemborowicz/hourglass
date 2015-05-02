@@ -14,10 +14,23 @@ namespace Hourglass
     public abstract class TimerInput
     {
         /// <summary>
+        /// The configuration data for the timer.
+        /// </summary>
+        private readonly TimerOptions options;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TimerInput"/> class.
         /// </summary>
-        protected TimerInput()
+        /// <param name="options">The configuration data for the timer.</param>
+        protected TimerInput(TimerOptions options)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+
+            this.options = TimerOptions.FromTimerOptions(options);
+            this.options.Freeze();
         }
 
         /// <summary>
@@ -30,6 +43,17 @@ namespace Hourglass
             {
                 throw new ArgumentNullException("inputInfo");
             }
+
+            this.options = TimerOptions.FromTimerOptionsInfo(inputInfo.Options);
+            this.options.Freeze();
+        }
+
+        /// <summary>
+        /// Gets the configuration data for the timer.
+        /// </summary>
+        public TimerOptions Options
+        {
+            get { return this.options; }
         }
 
         /// <summary>
@@ -105,9 +129,67 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Determines whether the specified object is equal to the current object.
+        /// </summary>
+        /// <param name="obj">An <see cref="object"/>.</param>
+        /// <returns><c>true</c> if the specified object is equal to the current object, or <c>false</c> otherwise.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (object.ReferenceEquals(obj, null))
+            {
+                return false;
+            }
+
+            if (object.ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            TimerInput input = (TimerInput)obj;
+            return object.Equals(this.options, input.options);
+        }
+
+        /// <summary>
+        /// Serves as the default hash function.
+        /// </summary>
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode()
+        {
+            int hashCode = 17;
+            hashCode = (31 * hashCode) + this.options.GetHashCode();
+            return hashCode;
+        }
+
+        /// <summary>
         /// Returns the representation of the <see cref="TimerInput"/> used for XML serialization.
         /// </summary>
         /// <returns>The representation of the <see cref="TimerInput"/> used for XML serialization.</returns>
-        public abstract TimerInputInfo ToTimerInputInfo();
+        public TimerInputInfo ToTimerInputInfo()
+        {
+            TimerInputInfo info = this.GetNewTimerInputInfo();
+            this.SetTimerInputInfo(info);
+            return info;
+        }
+
+        /// <summary>
+        /// Returns a new <see cref="TimerInputInfo"/> of the correct type for this class.
+        /// </summary>
+        /// <returns>A new <see cref="TimerInputInfo"/>.</returns>
+        protected abstract TimerInputInfo GetNewTimerInputInfo();
+
+        /// <summary>
+        /// Sets the properties on a <see cref="TimerInputInfo"/> from the values in this class.
+        /// </summary>
+        /// <param name="timerInputInfo">A <see cref="TimerInputInfo"/>.</param>
+        protected virtual void SetTimerInputInfo(TimerInputInfo timerInputInfo)
+        {
+            timerInputInfo.Options = TimerOptionsInfo.FromTimerOptions(this.options);
+        }
     }
 }

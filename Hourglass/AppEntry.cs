@@ -8,8 +8,11 @@ namespace Hourglass
 {
     using System;
     using System.Linq;
+    using System.Windows;
 
     using Microsoft.VisualBasic.ApplicationServices;
+
+    using StartupEventArgs = Microsoft.VisualBasic.ApplicationServices.StartupEventArgs;
 
     /// <summary>
     /// Handles application start up, command-line arguments, and ensures that only one instance of the application is
@@ -51,10 +54,7 @@ namespace Hourglass
         {
             SettingsManager.Instance.Load();
 
-            string[] args = e.CommandLine.ToArray();
-            Timer timer = new Timer(args);
-            TimerManager.Instance.Add(timer);
-            TimerWindow window = new TimerWindow(timer);
+            TimerWindow window = new TimerWindow();
 
             this.app = new App();
             this.app.Run(window);
@@ -69,11 +69,7 @@ namespace Hourglass
         /// whether the first application instance should be brought to the foreground.</param>
         protected override void OnStartupNextInstance(StartupNextInstanceEventArgs e)
         {
-            string[] args = e.CommandLine.ToArray();
-            Timer timer = new Timer(args);
-            TimerManager.Instance.Add(timer);
-            TimerWindow window = new TimerWindow(timer);
-
+            TimerWindow window = new TimerWindow();
             window.Show();
         }
     }

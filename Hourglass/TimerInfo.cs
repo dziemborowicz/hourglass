@@ -12,34 +12,56 @@ namespace Hourglass
     /// <summary>
     /// A representation of the state of a <see cref="Timer"/>.
     /// </summary>
-    public class TimerInfo
+    [XmlInclude(typeof(CommandTimerInfo))]
+    [XmlInclude(typeof(ViewableTimerInfo))]
+    [XmlInclude(typeof(DateTimeTimerInfo))]
+    [XmlInclude(typeof(TimeSpanTimerInfo))]
+    public abstract class TimerInfo
     {
         /// <summary>
-        /// Gets or sets the title or description of the timer.
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="TimerState"/> of the timer.
+        /// Gets or sets the <see cref="TimerState"/> of this timer.
         /// </summary>
         public TimerState State { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="DateTime"/> that the timer was started if the <see cref="State"/> is not <see
-        /// cref="TimerState.Stopped"/> and the timer is counting down a <see cref="TimeSpan"/>, or <c>null</c>
-        /// otherwise.
+        /// Gets or sets the <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is <see
+        /// cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
         /// </summary>
         public DateTime? StartTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="DateTime"/> that the timer will expire if the <see cref="State"/> is not <see
-        /// cref="TimerState.Stopped"/>, or <c>null</c> otherwise.
+        /// Gets or sets the <see cref="DateTime"/> that this timer will expire or has expired if the <see
+        /// cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c>
+        /// otherwise.
         /// </summary>
         public DateTime? EndTime { get; set; }
 
         /// <summary>
-        /// Gets or sets a <see cref="TimeSpan"/> representing the time left until the timer expires if the
-        /// <see cref="State"/> is not <see cref="TimerState.Stopped"/>, or <c>null</c> otherwise.
+        /// Gets or sets a <see cref="TimeSpan"/> representing the time elapsed since this timer started if the <see
+        /// cref="State"/> is <see cref="TimerState.Running"/>, <see cref="TimerState.Paused"/>, or <see
+        /// cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+        /// </summary>
+        [XmlIgnore]
+        public TimeSpan? TimeElapsed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TimeSpan.Ticks"/> property of <see cref="TimeElapsed"/>.
+        /// </summary>
+        /// <remarks>
+        /// This property is exposed because <see cref="TimeSpan"/> does not serialize to XML.
+        /// </remarks>
+        [XmlElement("TimeElapsed")]
+        public long? TimeElapsedTicks
+        {
+            get { return this.TimeElapsed.HasValue ? this.TimeElapsed.Value.Ticks : (long?)null; }
+            set { this.TimeElapsed = value.HasValue ? new TimeSpan(value.Value) : (TimeSpan?)null; }
+        }
+
+        /// <summary>
+        /// Gets or sets a <see cref="TimeSpan"/> representing the time left until this timer expires if the <see
+        /// cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, <see
+        /// cref="TimeSpan.Zero"/> if the <see cref="State"/> is <see cref="TimerState.Expired"/>, or <c>null</c>
+        /// otherwise.
         /// </summary>
         [XmlIgnore]
         public TimeSpan? TimeLeft { get; set; }
@@ -58,9 +80,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets or sets a <see cref="TimeSpan"/> representing the total time that the timer will run if the
-        /// <see cref="State"/> is not <see cref="TimerState.Stopped"/> and the timer is counting down a
-        /// <see cref="TimeSpan"/>, or <c>null</c> otherwise.
+        /// Gets or sets a <see cref="TimeSpan"/> representing the total time that this timer will run for or has run
+        /// for if the <see cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or
+        /// <c>null</c> otherwise.
         /// </summary>
         [XmlIgnore]
         public TimeSpan? TotalTime { get; set; }
@@ -79,43 +101,18 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to loop the timer continuously.
+        /// Returns a <see cref="TimerInfo"/> for the specified <see cref="Timer"/>.
         /// </summary>
-        public bool LoopTimer { get; set; }
+        /// <param name="timer">A <see cref="Timer"/>.</param>
+        /// <returns>A <see cref="TimerInfo"/> for the specified <see cref="Timer"/>.</returns>
+        public static TimerInfo FromTimer(Timer timer)
+        {
+            if (timer == null)
+            {
+                return null;
+            }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="TimerWindow"/> should always be displayed on top of
-        /// other windows.
-        /// </summary>
-        public bool AlwaysOnTop { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether an icon for the <see cref="TimerWindow"/> should be shown in the
-        /// notification area (system tray).
-        /// </summary>
-        public bool ShowInNotificationArea { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="TimerWindow"/> should be brought to the top of other
-        /// windows when the timer expires.
-        /// </summary>
-        public bool PopUpWhenExpired { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the <see cref="TimerWindow"/> should be closed when the timer
-        /// expires.
-        /// </summary>
-        public bool CloseWhenExpired { get; set; }
-
-        /// <summary>
-        /// Gets or sets the identifier for the sound to play when the timer expires. Set to <c>null</c> if no sound is
-        /// to be played.
-        /// </summary>
-        public string SoundIdentifier { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the sound that plays when the timer expires should be looped.
-        /// </summary>
-        public bool LoopSound { get; set; }
+            return timer.ToTimerInfo();
+        }
     }
 }

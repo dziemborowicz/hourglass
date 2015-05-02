@@ -1,21 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeTimerInputInfo.cs" company="Chris Dziemborowicz">
+// <copyright file="ViewableTimerInfo.cs" company="Chris Dziemborowicz">
 //   Copyright (c) Chris Dziemborowicz. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Hourglass
 {
-    using System;
-
     /// <summary>
-    /// The representation of a <see cref="DateTimeTimerInput"/> used for XML serialization.
+    /// A representation of the state of a <see cref="ViewableTimer"/>.
     /// </summary>
-    public class DateTimeTimerInputInfo : TimerInputInfo
+    public abstract class ViewableTimerInfo : CommandTimerInfo
     {
         /// <summary>
-        /// Gets or sets the <see cref="DateTime"/> until which the <see cref="DateTimeTimer"/> should count down.
+        /// Gets or sets the configuration data for this timer.
         /// </summary>
-        public DateTime DateTime { get; set; }
+        public TimerOptionsInfo Options { get; set; }
     }
 }

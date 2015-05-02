@@ -16,12 +16,22 @@ namespace Hourglass
     public abstract class TimerInputInfo
     {
         /// <summary>
+        /// Gets or sets the configuration data for the timer.
+        /// </summary>
+        public TimerOptionsInfo Options { get; set; }
+
+        /// <summary>
         /// Returns a <see cref="TimerInputInfo"/> for the specified <see cref="TimerInput"/>.
         /// </summary>
         /// <param name="input">A <see cref="TimerInput"/>.</param>
         /// <returns>A <see cref="TimerInputInfo"/> for the specified <see cref="TimerInput"/>.</returns>
         public static TimerInputInfo FromTimerInput(TimerInput input)
         {
+            if (input == null)
+            {
+                return null;
+            }
+
             return input.ToTimerInputInfo();
         }
     }

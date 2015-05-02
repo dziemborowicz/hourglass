@@ -17,7 +17,7 @@ namespace Hourglass
     /// cref="TimeSpan"/>, and for converting a <see cref="TimeSpan"/> to a natural <see cref="string"/>
     /// representation.
     /// </summary>
-    public class TimeSpanUtility
+    public static class TimeSpanUtility
     {
         /// <summary>
         /// Parses a <see cref="string"/> representation of a time interval into a <see cref="TimeSpan"/>.
@@ -415,6 +415,28 @@ namespace Hourglass
         public static string ToShortNaturalString(TimeSpan? timeSpan)
         {
             return timeSpan.HasValue ? ToShortNaturalString(timeSpan.Value) : "null";
+        }
+
+        /// <summary>
+        /// Returns the larger of two <see cref="TimeSpan"/>s.
+        /// </summary>
+        /// <param name="a">The first <see cref="TimeSpan"/> to compare.</param>
+        /// <param name="b">The second <see cref="TimeSpan"/> to compare.</param>
+        /// <returns><paramref name="a"/> or <paramref name="b"/>, whichever is larger.</returns>
+        public static TimeSpan Max(TimeSpan a, TimeSpan b)
+        {
+            return a > b ? a : b;
+        }
+
+        /// <summary>
+        /// Returns the smaller of two <see cref="TimeSpan"/>s.
+        /// </summary>
+        /// <param name="a">The first <see cref="TimeSpan"/> to compare.</param>
+        /// <param name="b">The second <see cref="TimeSpan"/> to compare.</param>
+        /// <returns><paramref name="a"/> or <paramref name="b"/>, whichever is smaller.</returns>
+        public static TimeSpan Min(TimeSpan a, TimeSpan b)
+        {
+            return a < b ? a : b;
         }
     }
 }

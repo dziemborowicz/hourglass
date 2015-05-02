@@ -10,6 +10,7 @@ namespace Hourglass
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
+    using System.Windows.Input;
 
     /// <summary>
     /// Provides a <see cref="DependencyProperty"/> that allows a watermark to be applied to <see cref="TextBox"/> and
@@ -51,42 +52,67 @@ namespace Hourglass
         /// <summary>
         /// Invoked when the effective value of the <see cref="HintTextProperty"/> changes.
         /// </summary>
-        /// <param name="depObj">The <see cref="DependencyObject"/> on which the <see cref="HintTextProperty"/> has
+        /// <param name="sender">The <see cref="DependencyObject"/> on which the <see cref="HintTextProperty"/> has
         /// changed value.</param>
-        /// <param name="eventArgs">Event data that is issued by any event that tracks changes to the effective value
-        /// of this property.</param>
-        private static void HintTextPropertyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs eventArgs)
+        /// <param name="e">Event data that is issued by any event that tracks changes to the effective value of this
+        /// property.</param>
+        private static void HintTextPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            if (!(depObj is TextBox) && !(depObj is ComboBox))
+            if (!(sender is TextBox) && !(sender is ComboBox))
             {
                 return;
             }
 
-            Control control = (Control)depObj;
+            Control control = (Control)sender;
 
-            control.Loaded += (s, e) =>
-            {
-                if (!HasActualValue(control))
-                {
-                    AddWatermark(control);
-                }
-            };
+            control.Loaded += ControlLoaded;
+            control.GotKeyboardFocus += ControlGotKeyboardFocus;
+            control.LostKeyboardFocus += ControlLostKeyboardFocus;
+        }
 
-            control.GotKeyboardFocus += (s, e) =>
-            {
-                if (!HasActualValue(control))
-                {
-                    RemoveWatermark(control);
-                }
-            };
+        /// <summary>
+        /// Invoked when the control is laid out, rendered, and ready for interaction.
+        /// </summary>
+        /// <param name="sender">The control.</param>
+        /// <param name="e">The event data.</param>
+        private static void ControlLoaded(object sender, RoutedEventArgs e)
+        {
+            Control control = (Control)sender;
 
-            control.LostKeyboardFocus += (s, e) =>
+            if (!HasActualValue(control) && !control.IsKeyboardFocused)
             {
-                if (!HasActualValue(control))
-                {
-                    AddWatermark(control);
-                }
-            };
+                AddWatermark(control);
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the keyboard is focused on a control.
+        /// </summary>
+        /// <param name="sender">The control.</param>
+        /// <param name="e">The event data.</param>
+        private static void ControlGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            Control control = (Control)sender;
+
+            if (!HasActualValue(control))
+            {
+                RemoveWatermark(control);
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the keyboard is no longer focused on a control.
+        /// </summary>
+        /// <param name="sender">The control.</param>
+        /// <param name="e">The event data.</param>
+        private static void ControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            Control control = (Control)sender;
+
+            if (!HasActualValue(control))
+            {
+                AddWatermark(control);
+            }
         }
 
         /// <summary>

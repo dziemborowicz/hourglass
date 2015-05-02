@@ -7,334 +7,96 @@
 namespace Hourglass
 {
     using System;
-    using System.ComponentModel;
-    using System.Text.RegularExpressions;
     using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Input;
 
     /// <summary>
     /// A timer window.
     /// </summary>
-    public partial class TimerWindow : INotifyPropertyChanged
+    public partial class TimerWindow
     {
-        #region Private Members
+        /// <summary>
+        /// A <see cref="TimerMenu"/>.
+        /// </summary>
+        private TimerMenu timerMenu;
 
         /// <summary>
-        /// The <see cref="Timer"/> used for this window.
+        /// A <see cref="TimerScaler"/>.
         /// </summary>
-        private readonly Timer timer;
-
-        /// <summary>
-        /// A <see cref="TimerScaler"/> used to ensure that controls shrink and grow with the window size, and to
-        /// update the <see cref="Timer"/> interval to ensure smooth animation of the progress bar.
-        /// </summary>
-        private readonly TimerScaler scaler;
-
-        /// <summary>
-        /// A value indicating whether the user is currently editing the input or title.
-        /// </summary>
-        private bool isEditing;
-
-        #endregion
-
-        #region Constructors
+        private TimerScaler timerScaler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerWindow"/> class.
         /// </summary>
-        /// <param name="timer">A <see cref="Timer"/>.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="timer"/> is <c>null</c>.</exception>
-        public TimerWindow(Timer timer)
+        public TimerWindow()
         {
-            if (timer == null)
-            {
-                throw new ArgumentNullException("timer");
-            }
+            this.InitializeComponent();
 
-            InitializeComponent();
-
-            this.timer = timer;
-
-            TimerMenu menu = new TimerMenu();
-            menu.Bind(this /* window */);
-
-            Button[] buttons = { StartButton, PauseButton, ResumeButton, StopButton, ResetButton, CancelButton };
-            this.scaler = new TimerScaler(this.timer, this /* timerWindow */, ControlsGrid, TimerTextBox, TitleTextBox, buttons);
-
-            // This has to be hooked up after the Watermark class hooks itself up
-            this.TimerTextBox.Loaded += this.TimerTextBoxLoaded;
-        }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// Raised when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        /// Gets the <see cref="Timer"/> used for this window.
-        /// </summary>
-        public Timer Timer
-        {
-            get { return this.timer; }
+            this.timerMenu = new TimerMenu(this /* timerWindow */);
+            this.timerScaler = new TimerScaler(this /* timerWindow */);
         }
 
         /// <summary>
-        /// Gets a value indicating whether the user is currently editing the input or title.
+        /// Gets or sets the timer.
         /// </summary>
-        public bool IsEditing
+        public ViewableTimer Timer
         {
-            get
-            {
-                return this.isEditing;
-            }
-
-            private set
-            {
-                if (value == this.isEditing)
-                {
-                    return;
-                }
-
-                this.isEditing = value;
-                this.OnPropertyChanged("IsEditing");
-            }
-        }
-
-        #endregion
-
-        #region Protected Methods
-
-        /// <summary>
-        /// Raises the <see cref="PropertyChanged"/> event.
-        /// </summary>
-        /// <param name="propertyNames">One or more property names.</param>
-        protected void OnPropertyChanged(params string[] propertyNames)
-        {
-            PropertyChangedEventHandler eventHandler = this.PropertyChanged;
-
-            if (eventHandler != null)
-            {
-                foreach (string propertyName in propertyNames)
-                {
-                    eventHandler(this, new PropertyChangedEventArgs(propertyName));
-                }
-            }
-        }
-
-        #endregion
-
-        #region Private Methods (Helpers)
-
-        /// <summary>
-        /// Returns a <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
-        /// specified a valid input.
-        /// </summary>
-        /// <returns>A <see cref="TimerInput"/> representing the user's input, or <c>null</c> if the user has not
-        /// specified a valid input.</returns>
-        private TimerInput GetInput()
-        {
-            string input = TimerTextBox.Text;
-
-            if (Regex.IsMatch(input, @"^\s*(un)?till?\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-            {
-                input = Regex.Replace(input, @"^\s*(un)?till?\s*", string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                return TimerInput.FromDateTimeOrTimeSpan(input);
-            }
-
-            return TimerInput.FromTimeSpanOrDateTime(input);
+            get { return this.DataContext as ViewableTimer; }
+            set { this.DataContext = value; }
         }
 
         /// <summary>
-        /// Returns a <see cref="string"/> representation of the user's last input.
+        /// Shows the <see cref="TimerStatusControl"/>.
         /// </summary>
-        /// <returns>A <see cref="string"/> representation of the user's last input, or <see cref="String.Empty"/> if
-        /// the user has not specified a valid input.</returns>
-        private string GetTimerStringHint()
+        private void ShowTimerStatusControl()
         {
-            return this.timer.LastInput != null ? this.timer.LastInput.ToString() : string.Empty;
+            this.TimerStatusControl.Show();
+            this.TimerExpiredControl.Hide();
+            this.TimerInputControl.Hide();
         }
 
         /// <summary>
-        /// Begins editing of the input.
+        /// Shows the <see cref="TimerExpiredControl"/>.
         /// </summary>
-        private void BeginEditing()
+        /// <param name="sound">The sound to play.</param>
+        private void ShowTimerExpiredControl(Sound sound)
         {
-            TimerTextBox.Text = this.GetTimerStringHint();
-            TimerTextBox.Focus();
-            TimerTextBox.SelectAll();
-            this.UpdateAvailableCommands();
+            this.TimerStatusControl.Hide();
+            this.TimerExpiredControl.Show(sound);
+            this.TimerInputControl.Hide();
         }
 
         /// <summary>
-        /// Ends editing of the input and title, and removes focus from those fields.
+        /// Show the <see cref="TimerInputControl"/>.
         /// </summary>
-        private void CancelEditing()
+        /// <param name="isCancelable">A value indicating whether the control is displaying validation errors.</param>
+        private void ShowTimerInputControl(bool isCancelable)
         {
-            FocusUtility.RemoveFocus(TimerTextBox);
-            this.IsEditing = false;
-            this.UpdateAvailableCommands();
+            this.TimerInputControl.IsCancelable = isCancelable;
+
+            this.TimerStatusControl.Hide();
+            this.TimerExpiredControl.Hide();
+            this.TimerInputControl.Show();
         }
 
         /// <summary>
-        /// Updates the text displayed to the user based on the state of the <see cref="Timer"/>.
+        /// Invoked when the data context for this window changes.
         /// </summary>
-        private void UpdateTimerText()
-        {
-            if (!this.IsEditing && this.timer.TimeLeft.HasValue)
-            {
-                TimerTextBox.Text = TimeSpanUtility.ToNaturalString(this.timer.TimeLeft.Value);
-            }
-
-            if (this.timer.TimeLeft.HasValue && this.timer.TotalTime.HasValue)
-            {
-                long timeLeft = this.timer.TimeLeft.Value.Ticks;
-                long totalTime = this.timer.TotalTime.Value.Ticks;
-                double progress = 100.0 * (totalTime - timeLeft) / totalTime;
-                TimerProgressBar.Value = progress;
-            }
-            else
-            {
-                TimerProgressBar.Value = 0.0;
-            }
-        }
-
-        /// <summary>
-        /// Updates the commands displayed to the user based on the state of the <see cref="Timer"/>.
-        /// </summary>
-        private void UpdateAvailableCommands()
-        {
-            StartButton.IsEnabled = this.IsEditing;
-            PauseButton.IsEnabled = !this.IsEditing && this.timer.State == TimerState.Running && this.timer.StartTime.HasValue;
-            ResumeButton.IsEnabled = !this.IsEditing && this.timer.State == TimerState.Paused;
-            StopButton.IsEnabled = !this.IsEditing && (this.timer.State == TimerState.Running || this.timer.State == TimerState.Paused);
-            ResetButton.IsEnabled = !this.IsEditing && this.timer.State == TimerState.Expired;
-            CancelButton.IsEnabled = this.IsEditing && this.timer.State != TimerState.Stopped;
-        }
-
-        #endregion
-
-        #region Private Methods (User Interface Event Handlers)
-
-        /// <summary>
-        /// Invoked when the <see cref="TimerTextBox"/> receives keyboard focus.
-        /// </summary>
-        /// <param name="sender">The <see cref="TimerTextBox"/>.</param>
+        /// <param name="sender">The window.</param>
         /// <param name="e">The event data.</param>
-        private void TimerTextBoxGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void WindowDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (this.timer.State == TimerState.Expired)
+            ViewableTimer oldTimer = e.OldValue as ViewableTimer;
+            if (oldTimer != null)
             {
-                this.timer.Reset();
+                oldTimer.Stopped -= this.TimerStopped;
+                oldTimer.Expired -= this.TimerExpired;
             }
 
-            this.IsEditing = true;
-            this.UpdateAvailableCommands();
-        }
-
-        /// <summary>
-        /// Invoked when content changes in the <see cref="TimerTextBox"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="TimerTextBox"/>.</param>
-        /// <param name="e">The event data.</param>
-        private void TimerTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            this.scaler.Scale();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="StartButton"/> is clicked.
-        /// </summary>
-        /// <param name="sender">The <see cref="StartButton"/>.</param>
-        /// <param name="e">The event data.</param>
-        private void StartButtonClick(object sender, RoutedEventArgs e)
-        {
-            TimerInput input = this.GetInput();
-
-            if (input == null)
+            ViewableTimer newTimer = e.NewValue as ViewableTimer;
+            if (newTimer != null)
             {
-                return;
-            }
-
-            FocusUtility.RemoveFocus(TimerTextBox);
-            this.IsEditing = false;
-
-            this.timer.Start(input);
-            this.scaler.Scale();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="PauseButton"/> is clicked.
-        /// </summary>
-        /// <param name="sender">The <see cref="StartButton"/>.</param>
-        /// <param name="e">The event data.</param>
-        private void PauseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.timer.Pause();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="ResumeButton"/> is clicked.
-        /// </summary>
-        /// <param name="sender">The <see cref="ResumeButton"/>.</param>
-        /// <param name="e">The event data.</param>
-        private void ResumeButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.timer.Resume();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="StopButton"/> is clicked.
-        /// </summary>
-        /// <param name="sender">The <see cref="StopButton"/>.</param>
-        /// <param name="e">The event data.</param>
-        private void StopButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.timer.Stop();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="ResetButton"/> is clicked.
-        /// </summary>
-        /// <param name="sender">The <see cref="ResetButton"/>.</param>
-        /// <param name="e">The event data.</param>
-        private void ResetButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.timer.Reset();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="CancelButton"/> is clicked.
-        /// </summary>
-        /// <param name="sender">The <see cref="CancelButton"/>.</param>
-        /// <param name="e">The event data.</param>
-        private void CancelButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.CancelEditing();
-        }
-
-        /// <summary>
-        /// Invoked when the background area of the window is clicked.
-        /// </summary>
-        /// <param name="sender">The background <see cref="Grid"/> control.</param>
-        /// <param name="e">The event data.</param>
-        private void BackgroundMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (this.IsEditing && this.timer.State != TimerState.Stopped)
-            {
-                this.CancelEditing();
-            }
-            else if (TitleTextBox.IsFocused)
-            {
-                FocusUtility.RemoveFocus(TitleTextBox);
+                newTimer.Stopped += this.TimerStopped;
+                newTimer.Expired += this.TimerExpired;
             }
         }
 
@@ -345,146 +107,94 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            this.timer.Started += this.TimerStarted;
-            this.timer.Paused += this.TimerPaused;
-            this.timer.Resumed += this.TimerResumed;
-            this.timer.Stopped += this.TimerStopped;
-            this.timer.Reseted += this.TimerReseted;
-            this.timer.Expired += this.TimerExpired;
-            this.timer.Tick += this.TimerTick;
-
-            this.timer.Bind(this /* window */);
-
-            this.UpdateTimerText();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="TimerTextBox"/> is laid out, rendered, and ready for interaction.
-        /// </summary>
-        /// <param name="sender">The <see cref="TimerTextBox"/>.</param>
-        /// <param name="e">The event data.</param>
-        private void TimerTextBoxLoaded(object sender, RoutedEventArgs e)
-        {
-            if (this.timer.State == TimerState.Stopped)
+            if (this.Timer.State == TimerState.Running || this.Timer.State == TimerState.Paused)
             {
-                this.BeginEditing();
+                this.ShowTimerStatusControl();
+            }
+            else if (this.Timer.State == TimerState.Expired)
+            {
+                this.ShowTimerExpiredControl(this.Timer.Options.Sound);
             }
             else
             {
-                this.UpdateAvailableCommands();
+                this.ShowTimerInputControl(false /* isCancelable */);
             }
         }
 
         /// <summary>
-        /// Invoked when this window has first rendered or has changed its rendering size.
+        /// Invoked when the user has specified an input.
         /// </summary>
-        /// <param name="sender">This window.</param>
+        /// <param name="sender">The <see cref="TimerInputControl"/>.</param>
         /// <param name="e">The event data.</param>
-        private void WindowSizeChanged(object sender, SizeChangedEventArgs e)
+        private void TimerInputControlStarted(object sender, TimerInputEventArgs e)
         {
-            this.scaler.Scale();
+            this.Timer = ViewableTimer.GetTimerForInput(e.Input);
+            this.Timer.StartCommand.Execute(e.Input);
+
+            TimerManager.Instance.Add(this.Timer);
+            TimerInputManager.Instance.Add(e.Input);
+
+            this.ShowTimerStatusControl();
         }
 
         /// <summary>
-        /// Invoked when this window is about to close.
+        /// Invoked when the user has canceled.
         /// </summary>
-        /// <param name="sender">This window.</param>
+        /// <param name="sender">The <see cref="TimerInputControl"/>.</param>
         /// <param name="e">The event data.</param>
-        private void WindowClosed(object sender, EventArgs e)
+        private void TimerInputControlCanceled(object sender, EventArgs e)
         {
-            this.timer.Started -= this.TimerStarted;
-            this.timer.Paused -= this.TimerPaused;
-            this.timer.Resumed -= this.TimerResumed;
-            this.timer.Stopped -= this.TimerStopped;
-            this.timer.Reseted -= this.TimerReseted;
-            this.timer.Expired -= this.TimerExpired;
-            this.timer.Tick -= this.TimerTick;
-
-            this.timer.Unbind();
-        }
-
-        #endregion
-
-        #region Private Methods (Timer Event Handlers)
-
-        /// <summary>
-        /// Invoked when the <see cref="Timer"/> is started.
-        /// </summary>
-        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
-        /// <param name="e">An object that contains no event data.</param>
-        private void TimerStarted(object sender, EventArgs e)
-        {
-            this.UpdateAvailableCommands();
+            if (this.Timer == null || this.Timer.State == TimerState.Stopped)
+            {
+                this.Timer = null;
+                this.ShowTimerInputControl(false /* isCancelable */);
+            }
+            else if (this.Timer.State == TimerState.Expired)
+            {
+                // Do not play a sound if we are going to the expired view sometime after the timer actually expires
+                this.ShowTimerExpiredControl(null /* sound */);
+            }
+            else
+            {
+                this.ShowTimerStatusControl();
+            }
         }
 
         /// <summary>
-        /// Invoked when the <see cref="Timer"/> is paused.
+        /// Invoked when the user has reset.
         /// </summary>
-        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
-        /// <param name="e">An object that contains no event data.</param>
-        private void TimerPaused(object sender, EventArgs e)
+        /// <param name="sender">The <see cref="TimerExpiredControl"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TimerExpiredControlReset(object sender, EventArgs e)
         {
-            this.UpdateAvailableCommands();
+            this.Timer = null;
+            this.ShowTimerInputControl(false /* isCancelable */);
         }
 
         /// <summary>
-        /// Invoked when the <see cref="Timer"/> is resumed from a paused state.
+        /// Invoked when the timer expires.
         /// </summary>
-        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
-        /// <param name="e">An object that contains no event data.</param>
-        private void TimerResumed(object sender, EventArgs e)
-        {
-            this.UpdateAvailableCommands();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="Timer"/> is stopped.
-        /// </summary>
-        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
-        /// <param name="e">An object that contains no event data.</param>
-        private void TimerStopped(object sender, EventArgs e)
-        {
-            this.BeginEditing();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="Timer"/> is reset.
-        /// </summary>
-        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
-        /// <param name="e">An object that contains no event data.</param>
-        private void TimerReseted(object sender, EventArgs e)
-        {
-            this.BeginEditing();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="Timer"/> expires.
-        /// </summary>
-        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
-        /// <param name="e">An object that contains no event data.</param>
+        /// <param name="sender">The timer.</param>
+        /// <param name="e">The event data.</param>
         private void TimerExpired(object sender, EventArgs e)
         {
-            TimerTextBox.Text = "Timer expired";
-            TimerProgressBar.Value = 100.0;
-            
-            if (this.timer.Sound != null)
+            if (this.Timer == null || this.Timer.State != TimerState.Expired)
             {
-                this.timer.Sound.PlayAsync();
+                return;
             }
 
-            this.UpdateAvailableCommands();
+            this.ShowTimerExpiredControl(this.Timer.Options.Sound);
         }
 
         /// <summary>
-        /// Invoked when the <see cref="Timer"/> ticks.
+        /// Invoked when the timer is stopped.
         /// </summary>
-        /// <param name="sender">The <see cref="Timer"/> that is the source of the event.</param>
-        /// <param name="e">An object that contains no event data.</param>
-        private void TimerTick(object sender, EventArgs e)
+        /// <param name="sender">The timer.</param>
+        /// <param name="e">The event data.</param>
+        private void TimerStopped(object sender, EventArgs e)
         {
-            this.UpdateTimerText();
+            this.Timer = null;
+            this.ShowTimerInputControl(false /* isCancelable */);
         }
-
-        #endregion
     }
 }

@@ -8,13 +8,13 @@ namespace Hourglass
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Windows;
 
     using Hourglass.Properties;
 
     /// <summary>
-    /// Tracks currently loaded <see cref="Timer"/> objects.
+    /// Manages <see cref="Timer"/>s.
     /// </summary>
     public class TimerManager
     {
@@ -45,7 +45,16 @@ namespace Hourglass
         /// </summary>
         public IList<Timer> Timers
         {
-            get { return new ReadOnlyCollection<Timer>(this.timers); }
+            get { return this.timers.AsReadOnly(); }
+        }
+
+        /// <summary>
+        /// Gets a list of the currently loaded <see cref="Timer"/> objects that are not associated with a <see
+        /// cref="TimerWindow"/> and are not <see cref="TimerState.Stopped"/>.
+        /// </summary>
+        public IList<Timer> ResumableTimers
+        {
+            get { return this.timers.Where(t => t.State != TimerState.Stopped && !IsAssociatedWithWindow(t)).ToList(); }
         }
 
         /// <summary>
@@ -92,16 +101,11 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Saves state to the default settings.
+        /// Clears the <see cref="ResumableTimers"/>.
         /// </summary>
-        public void Save()
+        public void ClearResumableTimers()
         {
-            IEnumerable<TimerInfo> timerInfos = this.timers
-                .Where(t => t.State != TimerState.Stopped && t.State != TimerState.Expired)
-                .Take(MaxSavedTimers)
-                .Select(t => t.ToTimerInfo());
-
-            Settings.Default.Timers = new TimerInfoList(timerInfos);
+            this.Remove(this.ResumableTimers);
         }
 
         /// <summary>
@@ -114,8 +118,32 @@ namespace Hourglass
             IEnumerable<TimerInfo> timerInfos = Settings.Default.Timers;
             if (timerInfos != null)
             {
-                this.timers.AddRange(timerInfos.Select(ti => new Timer(ti)));
+                this.timers.AddRange(timerInfos.Select(Timer.FromTimerInfo));
             }
+        }
+
+        /// <summary>
+        /// Saves state to the default settings.
+        /// </summary>
+        public void Save()
+        {
+            IEnumerable<TimerInfo> timerInfos = this.timers
+                .Where(t => t.State != TimerState.Stopped && t.State != TimerState.Expired)
+                .Take(MaxSavedTimers)
+                .Select(TimerInfo.FromTimer);
+
+            Settings.Default.Timers = new TimerInfoList(timerInfos);
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether a <see cref="Timer"/> is associated with a <see cref="TimerWindow"/>.
+        /// </summary>
+        /// <param name="timer">A <see cref="Timer"/>.</param>
+        /// <returns>A value indicating whether a <see cref="Timer"/> is associated with a <see cref="TimerWindow"/>.
+        /// </returns>
+        private static bool IsAssociatedWithWindow(Timer timer)
+        {
+            return Application.Current.Windows.OfType<TimerWindow>().Any(w => w.Timer == timer);
         }
     }
 }
