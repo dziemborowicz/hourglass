@@ -488,26 +488,6 @@ namespace Hourglass
                                     year += referenceDate.Year / 1000 * 1000;
                                 }
                             }
-
-                            // Default month to January where a year is specified
-                            if (year.HasValue)
-                            {
-                                month = month ?? 1;
-                            }
-
-                            // Default day to the 1st where a month is specified
-                            if (month.HasValue)
-                            {
-                                day = day ?? 1;
-                            }
-
-                            // Default time to midnight if day is specified
-                            if (day.HasValue)
-                            {
-                                hour = 0;
-                                minute = 0;
-                                second = 0;
-                            }
                         }
 
                         // Parse hours
@@ -540,6 +520,33 @@ namespace Hourglass
                             hour = 0;
                         }
 
+                        // Fill fields left
+                        if (year.HasValue)
+                        {
+                            month = month ?? 1;
+                        }
+
+                        if (month.HasValue)
+                        {
+                            day = day ?? 1;
+                        }
+
+                        if (day.HasValue)
+                        {
+                            hour = hour ?? 0;
+                        }
+
+                        if (hour.HasValue)
+                        {
+                            minute = minute ?? 0;
+                        }
+
+                        if (minute.HasValue)
+                        {
+                            second = second ?? 0;
+                        }
+
+                        // Fill fields right and create DateTime
                         DateTime dateTime = new DateTime(
                             year ?? referenceDate.Year,
                             month ?? referenceDate.Month,
