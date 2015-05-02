@@ -110,7 +110,7 @@ namespace Hourglass
                     return false;
                 }
 
-                timeSpan = new TimeSpan(0, minutes, 0);
+                timeSpan = TimeSpan.FromMinutes(minutes);
                 return true;
             }
 
@@ -152,7 +152,19 @@ namespace Hourglass
             for (int i = 0; i < parts.Length; i++)
             {
                 string part = parts[i];
-                if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(d|dys?|days?)$"))
+                if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(y|yrs?|years?)$"))
+                {
+                    units[i] = 365 * 24 * 60 * 60;
+                }
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(mo|mons?|months?)$"))
+                {
+                    units[i] = 30 * 24 * 60 * 60;
+                }
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(w|wks?|weeks?)$"))
+                {
+                    units[i] = 7 * 24 * 60 * 60;
+                }
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(d|dys?|days?)$"))
                 {
                     units[i] = 24 * 60 * 60;
                 }
@@ -184,7 +196,19 @@ namespace Hourglass
             {
                 if (units[i] == 0)
                 {
-                    if (lastUnit == 24 * 60 * 60)
+                    if (lastUnit == 365 * 24 * 60 * 60)
+                    {
+                        units[i] = 30 * 24 * 60 * 60;
+                    }
+                    else if (lastUnit == 30 * 24 * 60 * 60)
+                    {
+                        units[i] = 7 * 24 * 60 * 60;
+                    }
+                    else if (lastUnit == 7 * 24 * 60 * 60)
+                    {
+                        units[i] = 24 * 60 * 60;
+                    }
+                    else if (lastUnit == 24 * 60 * 60)
                     {
                         units[i] = 60 * 60;
                     }
@@ -227,6 +251,18 @@ namespace Hourglass
                     else if (lastUnit == 60 * 60)
                     {
                         units[i] = 24 * 60 * 60;
+                    }
+                    else if (lastUnit == 24 * 60 * 60)
+                    {
+                        units[i] = 7 * 24 * 60 * 60;
+                    }
+                    else if (lastUnit == 7 * 24 * 60 * 60)
+                    {
+                        units[i] = 30 * 24 * 60 * 60;
+                    }
+                    else if (lastUnit == 30 * 24 * 60 * 60)
+                    {
+                        units[i] = 365 * 24 * 60 * 60;
                     }
                     else if (lastUnit != 0)
                     {
