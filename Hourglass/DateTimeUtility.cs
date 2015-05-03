@@ -200,6 +200,10 @@ namespace Hourglass
                 (?<day>\d\d?)
             ",
 
+            // Month only (e.g., "Jan", "Feb")
+            @"  (?<month>(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))[a-z]*
+            ",
+
             // Year only (e.g., "2003", "2015")
             @"  (?<year>20\d\d)
             "
@@ -401,16 +405,6 @@ namespace Hourglass
                 return new DateTime(referenceDate.Year + 1, 1, 1);
             }
 
-            // Month only
-            Regex monthRegex = new Regex(@"^(?<month>(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))[a-z]*$", RegexOptions);
-            Match monthMatch = monthRegex.Match(str);
-            if (monthMatch.Success)
-            {
-                int month = ParseMonth(str);
-                DateTime dateTime = new DateTime(referenceDate.Year, month, 1);
-                return dateTime < referenceDate ? dateTime.AddYears(1) : dateTime;
-            }
-
             // Normalize noon, midday, or midnight
             str = Regex.Replace(str, @"\b(12([.:]00([.:]00)?)?\s*)?noon\b", "12:00:00 PM", RegexOptions);
             str = Regex.Replace(str, @"\b(12([.:]00([.:]00)?)?\s*)?mid(-?d)?ay\b", "12:00:00 PM", RegexOptions);
@@ -485,7 +479,7 @@ namespace Hourglass
                                 year = int.Parse(match.Groups["year"].Value, provider);
                                 if (year < 100)
                                 {
-                                    year += referenceDate.Year / 1000 * 1000;
+                                    year += referenceDate.Year / 100 * 100;
                                 }
                             }
                         }
