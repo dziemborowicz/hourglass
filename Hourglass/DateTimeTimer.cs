@@ -8,6 +8,8 @@ namespace Hourglass
 {
     using System;
 
+    using Hourglass.Serialization;
+
     /// <summary>
     /// A <see cref="HourglassTimer"/> that counts down to a specified date and time.
     /// </summary>

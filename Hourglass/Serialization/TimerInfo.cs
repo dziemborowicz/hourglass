@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass
+namespace Hourglass.Serialization
 {
     using System;
     using System.Xml.Serialization;

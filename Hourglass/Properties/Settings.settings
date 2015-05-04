@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Hourglass.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Timers" Type="Hourglass.TimerInfoList" Scope="User">
+    <Setting Name="Timers" Type="Hourglass.Serialization.TimerInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Inputs" Type="Hourglass.TimerInputInfoList" Scope="User">
+    <Setting Name="Inputs" Type="Hourglass.Serialization.TimerInputInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

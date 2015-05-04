@@ -8,6 +8,8 @@ namespace Hourglass
 {
     using System;
 
+    using Hourglass.Serialization;
+
     /// <summary>
     /// Configuration data for a <see cref="TimeSpanTimer"/>.
     /// </summary>

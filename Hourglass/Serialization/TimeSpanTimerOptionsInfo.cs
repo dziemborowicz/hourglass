@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass
+namespace Hourglass.Serialization
 {
     /// <summary>
     /// The representation of a <see cref="TimeSpanTimerOptions"/> used for XML serialization.

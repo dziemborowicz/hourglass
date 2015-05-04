@@ -10,6 +10,8 @@ namespace Hourglass
     using System.ComponentModel;
     using System.Windows.Threading;
 
+    using Hourglass.Serialization;
+
     /// <summary>
     /// The state of a <see cref="Timer"/>.
     /// </summary>

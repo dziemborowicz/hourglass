@@ -9,6 +9,8 @@ namespace Hourglass
     using System;
     using System.ComponentModel;
 
+    using Hourglass.Serialization;
+
     /// <summary>
     /// Configuration data for a timer.
     /// </summary>

@@ -1,15 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeTimerOptionsInfo.cs" company="Chris Dziemborowicz">
+// <copyright file="DateTimeTimerInfo.cs" company="Chris Dziemborowicz">
 //   Copyright (c) Chris Dziemborowicz. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass
+namespace Hourglass.Serialization
 {
     /// <summary>
-    /// The representation of a <see cref="DateTimeTimerOptions"/> used for XML serialization.
+    /// A representation of the state of a <see cref="DateTimeTimer"/>.
     /// </summary>
-    public class DateTimeTimerOptionsInfo : TimerOptionsInfo
+    public class DateTimeTimerInfo : HourglassTimerInfo
     {
     }
 }

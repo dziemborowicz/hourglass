@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass
+namespace Hourglass.Serialization
 {
     /// <summary>
     /// A representation of the state of a <see cref="TimeSpanTimer"/>.

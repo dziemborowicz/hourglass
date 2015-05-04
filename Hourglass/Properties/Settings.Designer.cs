@@ -25,9 +25,9 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.TimerInfoList Timers {
+        public global::Hourglass.Serialization.TimerInfoList Timers {
             get {
-                return ((global::Hourglass.TimerInfoList)(this["Timers"]));
+                return ((global::Hourglass.Serialization.TimerInfoList)(this["Timers"]));
             }
             set {
                 this["Timers"] = value;
@@ -36,9 +36,9 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.TimerInputInfoList Inputs {
+        public global::Hourglass.Serialization.TimerInputInfoList Inputs {
             get {
-                return ((global::Hourglass.TimerInputInfoList)(this["Inputs"]));
+                return ((global::Hourglass.Serialization.TimerInputInfoList)(this["Inputs"]));
             }
             set {
                 this["Inputs"] = value;

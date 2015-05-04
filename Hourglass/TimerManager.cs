@@ -12,6 +12,7 @@ namespace Hourglass
     using System.Windows;
 
     using Hourglass.Properties;
+    using Hourglass.Serialization;
 
     /// <summary>
     /// Manages <see cref="Timer"/>s.

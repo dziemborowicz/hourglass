@@ -11,6 +11,7 @@ namespace Hourglass
     using System.Linq;
 
     using Hourglass.Properties;
+    using Hourglass.Serialization;
 
     /// <summary>
     /// Manages recent <see cref="TimerInput"/>s.

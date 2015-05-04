@@ -8,6 +8,8 @@ namespace Hourglass
 {
     using System;
 
+    using Hourglass.Serialization;
+
     /// <summary>
     /// A representation of an input for a <see cref="DateTimeTimer"/>.
     /// </summary>

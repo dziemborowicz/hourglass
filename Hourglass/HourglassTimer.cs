@@ -8,6 +8,8 @@ namespace Hourglass
 {
     using System;
 
+    using Hourglass.Serialization;
+
     /// <summary>
     /// A <see cref="Timer"/> that exposes options and properties useful for graphical display.
     /// </summary>

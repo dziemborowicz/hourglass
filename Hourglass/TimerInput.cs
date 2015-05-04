@@ -9,6 +9,8 @@ namespace Hourglass
     using System;
     using System.Text.RegularExpressions;
 
+    using Hourglass.Serialization;
+
     /// <summary>
     /// A representation of an input for a <see cref="Timer"/>.
     /// </summary>
