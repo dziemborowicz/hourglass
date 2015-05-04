@@ -131,7 +131,7 @@ namespace Hourglass
             this.timerWindow.ContextMenu = this;
 
             this.ticker = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
-            this.ticker.Interval = TimeSpan.FromMilliseconds(500);
+            this.ticker.Interval = TimeSpan.FromSeconds(1);
             this.ticker.Tick += this.DispatcherTimerTick;
 
             this.selectableSoundMenuItems = new List<MenuItem>();
