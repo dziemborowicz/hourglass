@@ -8,7 +8,6 @@ namespace Hourglass
 {
     using System;
     using System.Globalization;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -80,7 +79,7 @@ namespace Hourglass
 
         /// <summary>
         /// The change in the base scale factor which is ignored to prevent constant changes in the base scale factor
-        /// resulting from small changes in the content of the <see cref="primaryTextControls"/>.
+        /// resulting from small changes in the content of the <see cref="timerTextBox"/>.
         /// </summary>
         private const double BaseScaleFactorSmoothingThreshold = 0.05;
 
@@ -92,42 +91,43 @@ namespace Hourglass
         /// <summary>
         /// A <see cref="TimerWindow"/>.
         /// </summary>
-        private readonly TimerWindow timerWindow;
+        private TimerWindow timerWindow;
 
         /// <summary>
         /// The <see cref="Grid"/> control that is the first child of the <see cref="timerWindow"/>.
         /// </summary>
-        private readonly Grid outerGrid;
+        private Grid outerGrid;
 
         /// <summary>
-        /// An array of the <see cref="Grid"/> controls containing the controls of the <see cref="timerWindow"/>.
+        /// The <see cref="Grid"/> control that contains the <see cref="controlsPanel"/>.
         /// </summary>
-        private readonly Grid[] controlsGrids;
+        private Grid innerGrid;
 
         /// <summary>
-        /// An array of the <see cref="StackPanel"/> controls containing the controls of the <see cref="timerWindow"/>.
+        /// The <see cref="StackPanel"/> control that contains the controls of the <see cref="timerWindow"/>.
         /// </summary>
-        private readonly StackPanel[] controlsPanels;
+        private StackPanel controlsPanel;
 
         /// <summary>
-        /// An array of the larger text controls on the <see cref="timerWindow"/>.
+        /// The larger <see cref="TextBox"/> on the <see cref="timerWindow"/>.
         /// </summary>
-        private readonly TextControlWrapper[] primaryTextControls;
+        private TextBox timerTextBox;
 
         /// <summary>
-        /// An array of the smaller text controls on the <see cref="timerWindow"/>.
+        /// The smaller <see cref="TextBox"/> on the <see cref="timerWindow"/>.
         /// </summary>
-        private readonly TextControlWrapper[] secondaryTextControls;
+        private TextBox titleTextBox;
+
+        /// <summary>
+        /// The <see cref="Border"/> that animates to notify the user that the timer has expired or that the input was
+        /// invalid.
+        /// </summary>
+        private Border innerNotificationBorder;
 
         /// <summary>
         /// An array of the <see cref="Button"/> elements on the <see cref="timerWindow"/>.
         /// </summary>
-        private readonly Button[] buttons;
-
-        /// <summary>
-        /// An array of the <see cref="Border"/> controls that visualize validation errors and expired timer state.
-        /// </summary>
-        private readonly Border[] borders;
+        private Button[] buttons;
 
         /// <summary>
         /// The <see cref="Window.ActualWidth"/> of the <see cref="timerWindow"/> during the last scale operation.
@@ -146,82 +146,46 @@ namespace Hourglass
         private double lastBaseScaleFactor = 1.0;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimerScaler"/> class.
+        /// Binds the <see cref="TimerScaler"/> to a <see cref="TimerWindow"/>.
         /// </summary>
-        /// <param name="timerWindow">A <see cref="TimerWindow"/>.</param>
-        public TimerScaler(TimerWindow timerWindow)
+        /// <param name="window">A <see cref="TimerWindow"/>.</param>
+        public void Bind(TimerWindow window)
         {
             // Validate parameters
-            if (timerWindow == null)
+            if (window == null)
             {
-                throw new ArgumentNullException("timerWindow");
+                throw new ArgumentNullException("window");
+            }
+
+            // Validate state
+            if (this.timerWindow != null)
+            {
+                throw new InvalidOperationException();
             }
 
             // Initialize members
-            this.timerWindow = timerWindow;
+            this.timerWindow = window;
 
-            this.outerGrid = timerWindow.OuterGrid;
-
-            this.controlsGrids = new[]
-            {
-                timerWindow.TimerStatusControl.ControlsGrid,
-                timerWindow.TimerExpiredControl.ControlsGrid,
-                timerWindow.TimerInputControl.ControlsGrid
-            };
-
-            this.controlsPanels = new[]
-            {
-                timerWindow.TimerStatusControl.ControlsPanel,
-                timerWindow.TimerExpiredControl.ControlsPanel,
-                timerWindow.TimerInputControl.ControlsPanel
-            };
-
-            this.primaryTextControls = new[]
-            {
-                new TextControlWrapper(timerWindow.TimerInputControl.TimerTextBox),
-                new TextControlWrapper(timerWindow.TimerStatusControl.TimerTextBlock),
-                new TextControlWrapper(timerWindow.TimerExpiredControl.TimerTextBlock)
-            };
-
-            this.secondaryTextControls = new[]
-            {
-                new TextControlWrapper(timerWindow.TimerInputControl.TitleTextBox),
-                new TextControlWrapper(timerWindow.TimerStatusControl.TitleTextBlock),
-                new TextControlWrapper(timerWindow.TimerExpiredControl.TitleTextBlock)
-            };
-            
+            this.outerGrid = this.timerWindow.OuterGrid;
+            this.innerGrid = this.timerWindow.InnerGrid;
+            this.controlsPanel = this.timerWindow.ControlsPanel;
+            this.timerTextBox = this.timerWindow.TimerTextBox;
+            this.titleTextBox = this.timerWindow.TitleTextBox;
+            this.innerNotificationBorder = this.timerWindow.InnerNotificationBorder;
             this.buttons = new[]
             {
-                timerWindow.TimerStatusControl.PauseButton,
-                timerWindow.TimerStatusControl.ResumeButton,
-                timerWindow.TimerStatusControl.StopButton,
-                timerWindow.TimerExpiredControl.ResetButton,
-                timerWindow.TimerInputControl.StartButton,
-                timerWindow.TimerInputControl.CancelButton
-            };
-
-            this.borders = new[]
-            {
-                timerWindow.TimerExpiredControl.NotificationBorder,
-                timerWindow.TimerInputControl.ErrorBorder
+                this.timerWindow.StartButton,
+                this.timerWindow.PauseButton,
+                this.timerWindow.ResumeButton,
+                this.timerWindow.StopButton,
+                this.timerWindow.ResetButton,
+                this.timerWindow.CancelButton
             };
 
             // Hook up events
             this.timerWindow.Loaded += (s, e) => this.Scale();
             this.timerWindow.SizeChanged += (s, e) => this.Scale();
-
-            this.timerWindow.TimerInputControl.Showed += (s, e) => this.Scale();
-            this.timerWindow.TimerStatusControl.Showed += (s, e) => this.Scale();
-            this.timerWindow.TimerExpiredControl.Showed += (s, e) => this.Scale();
-
-            this.timerWindow.TimerInputControl.Hidden += (s, e) => this.Scale();
-            this.timerWindow.TimerStatusControl.Hidden += (s, e) => this.Scale();
-            this.timerWindow.TimerExpiredControl.Hidden += (s, e) => this.Scale();
-
-            foreach (TextControlWrapper textControl in this.primaryTextControls)
-            {
-                textControl.TextChanged += (s, e) => this.Scale();
-            }
+            this.timerTextBox.TextChanged += (s, e) => this.Scale();
         }
 
         /// <summary>
@@ -248,6 +212,10 @@ namespace Hourglass
             }
 
             this.ScaleControls(baseScaleFactor, reducedScaleFactor);
+
+            this.lastWindowWidth = this.timerWindow.ActualWidth;
+            this.lastWindowHeight = this.timerWindow.ActualHeight;
+            this.lastBaseScaleFactor = baseScaleFactor;
         }
 
         /// <summary>
@@ -259,42 +227,23 @@ namespace Hourglass
         /// <seealso cref="GetReducedScaleFactor"/>
         private void ScaleControls(double baseScaleFactor, double reducedScaleFactor)
         {
-            foreach (Grid controlsGrid in this.controlsGrids)
-            {
-                controlsGrid.Margin = new Thickness(reducedScaleFactor * BaseControlsGridMargin);
-            }
+            this.innerGrid.Margin = new Thickness(reducedScaleFactor * BaseControlsGridMargin);
 
-            foreach (StackPanel controlsPanel in this.controlsPanels)
-            {
-                controlsPanel.Margin = new Thickness(reducedScaleFactor * BaseControlsPanelMargin, 0, reducedScaleFactor * BaseControlsPanelMargin, 0);
-            }
+            this.controlsPanel.Margin = new Thickness(reducedScaleFactor * BaseControlsPanelMargin, 0, reducedScaleFactor * BaseControlsPanelMargin, 0);
 
-            foreach (TextControlWrapper textControl in this.primaryTextControls)
-            {
-                textControl.FontSize = baseScaleFactor * BasePrimaryTextControlFontSize;
-                textControl.Margin = new Thickness(0, baseScaleFactor * BasePrimaryTextControlTopMargin, 0, baseScaleFactor * BasePrimaryTextControlBottomMargin);
-            }
+            this.timerTextBox.FontSize = baseScaleFactor * BasePrimaryTextControlFontSize;
+            this.timerTextBox.Margin = new Thickness(0, baseScaleFactor * BasePrimaryTextControlTopMargin, 0, baseScaleFactor * BasePrimaryTextControlBottomMargin);
 
-            foreach (TextControlWrapper textControl in this.secondaryTextControls)
-            {
-                textControl.FontSize = reducedScaleFactor * BaseFontSize;
-            }
+            this.titleTextBox.FontSize = reducedScaleFactor * BaseFontSize;
+
+            this.innerNotificationBorder.BorderThickness = new Thickness(reducedScaleFactor * BaseBorderThickness);
+            this.innerNotificationBorder.Margin = new Thickness(reducedScaleFactor * BaseBorderMargin);
 
             foreach (Button button in this.buttons)
             {
                 button.FontSize = reducedScaleFactor * BaseFontSize;
                 button.Margin = new Thickness(baseScaleFactor * BaseButtonMargin, 0, baseScaleFactor * BaseButtonMargin, 0);
             }
-
-            foreach (Border border in this.borders)
-            {
-                border.BorderThickness = new Thickness(reducedScaleFactor * BaseBorderThickness);
-                border.Margin = new Thickness(reducedScaleFactor * BaseBorderMargin);
-            }
-
-            this.lastWindowWidth = this.timerWindow.ActualWidth;
-            this.lastWindowHeight = this.timerWindow.ActualHeight;
-            this.lastBaseScaleFactor = baseScaleFactor;
         }
 
         /// <summary>
@@ -304,7 +253,7 @@ namespace Hourglass
         /// The controls should be scaled each time the window size changes to ensure smooth window scaling.
         /// </para><para>
         /// The controls should also be scaled when it is necessary to do so to ensure that all of the text in the
-        /// <see cref="primaryTextControls"/> is visible. However, the controls should not be scaled when the change in
+        /// <see cref="timerTextBox"/> is visible. However, the controls should not be scaled when the change in
         /// the base scale factor is small and entirely attributable to text changes. This prevents small text changes
         /// from causing constant rescaling of the interface.
         /// </para>
@@ -313,6 +262,12 @@ namespace Hourglass
         /// <returns>A value indicating whether the controls should be scaled.</returns>
         private bool ShouldScaleControls(double baseScaleFactor)
         {
+            // Do not scale the window if it is not loaded or visible
+            if (!this.timerWindow.IsVisible)
+            {
+                return false;
+            }
+
             // Scale each time the window size changes to ensure smooth window scaling
             if (!this.timerWindow.ActualWidth.Equals(this.lastWindowWidth) ||
                 !this.timerWindow.ActualHeight.Equals(this.lastWindowHeight))
@@ -333,7 +288,7 @@ namespace Hourglass
 
         /// <summary>
         /// Returns the base scale factor for the user interface based on the width and height of the <see
-        /// cref="timerWindow"/> and the width of the text in the visible <see cref="primaryTextControls"/>.
+        /// cref="timerWindow"/> and the width of the text in the visible <see cref="timerTextBox"/>.
         /// </summary>
         /// <returns>The base scale factor.</returns>
         private double GetBaseScaleFactor()
@@ -376,15 +331,8 @@ namespace Hourglass
         /// <returns>The width of the text in the main text box that is currently visible.</returns>
         private double GetTextWidth()
         {
-            TextControlWrapper textControl = this.primaryTextControls.FirstOrDefault(c => c.IsVisible);
-
-            if (textControl == null)
-            {
-                return 0.0;
-            }
-
-            Typeface typeface = new Typeface(textControl.FontFamily, textControl.FontStyle, textControl.FontWeight, textControl.FontStretch);
-            FormattedText formattedText = new FormattedText(textControl.Text, CultureInfo.CurrentCulture, textControl.FlowDirection, typeface, BasePrimaryTextControlFontSize, textControl.Foreground);
+            Typeface typeface = new Typeface(this.timerTextBox.FontFamily, this.timerTextBox.FontStyle, this.timerTextBox.FontWeight, this.timerTextBox.FontStretch);
+            FormattedText formattedText = new FormattedText(this.timerTextBox.Text, CultureInfo.CurrentCulture, this.timerTextBox.FlowDirection, typeface, BasePrimaryTextControlFontSize, this.timerTextBox.Foreground);
             return formattedText.Width;
         }
 
@@ -393,11 +341,12 @@ namespace Hourglass
         /// </summary>
         private void ScaleTimerInterval()
         {
-            Timer timer = this.timerWindow.Timer;
-            if (timer == null)
+            if (!this.ShouldScaleTimerInterval())
             {
                 return;
             }
+
+            Timer timer = this.timerWindow.Timer;
 
             if (timer.TotalTime.HasValue)
             {
@@ -409,6 +358,21 @@ namespace Hourglass
             {
                 timer.Interval = Timer.DefaultInterval;
             }
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether the timer interval should be scaled.
+        /// </summary>
+        /// <returns>A value indicating whether the timer interval should be scaled.</returns>
+        private bool ShouldScaleTimerInterval()
+        {
+            // Do not scale the window if it is not loaded or visible
+            if (!this.timerWindow.IsVisible)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

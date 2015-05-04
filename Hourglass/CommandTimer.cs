@@ -6,7 +6,6 @@
 
 namespace Hourglass
 {
-    using System;
     using System.Windows.Input;
 
     /// <summary>

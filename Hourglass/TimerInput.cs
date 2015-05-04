@@ -7,6 +7,7 @@
 namespace Hourglass
 {
     using System;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// A representation of an input for a <see cref="Timer"/>.
@@ -58,12 +59,30 @@ namespace Hourglass
 
         /// <summary>
         /// Returns a <see cref="TimerInput"/> for the specified <see cref="string"/>, or <c>null</c> if the <see
+        /// cref="string"/> is not a valid input.
+        /// </summary>
+        /// <param name="str">An input <see cref="string"/>.</param>
+        /// <returns>A <see cref="TimerInput"/> for the specified <see cref="string"/>, or <c>null</c> if the <see
+        /// cref="string"/> is not a valid input.</returns>
+        public static TimerInput FromString(string str)
+        {
+            if (Regex.IsMatch(str, @"^\s*(un)?till?\s*|^20\d\d$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                str = Regex.Replace(str, @"^\s*(un)?till?\s*", string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                return TimerInput.FromDateTimeOrTimeSpanString(str);
+            }
+
+            return TimerInput.FromTimeSpanOrDateTimeString(str);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="TimerInput"/> for the specified <see cref="string"/>, or <c>null</c> if the <see
         /// cref="string"/> is not a valid input, favoring a <see cref="DateTimeTimerInput"/> in the case of ambiguity.
         /// </summary>
         /// <param name="str">An input <see cref="string"/>.</param>
         /// <returns>A <see cref="TimerInput"/> for the specified <see cref="string"/>, or <c>null</c> if the <see
         /// cref="string"/> is not a valid input.</returns>
-        public static TimerInput FromDateTimeOrTimeSpan(string str)
+        public static TimerInput FromDateTimeOrTimeSpanString(string str)
         {
             DateTime dateTime;
             if (DateTimeUtility.TryParseNatural(str, out dateTime))
@@ -87,7 +106,7 @@ namespace Hourglass
         /// <param name="str">An input <see cref="string"/>.</param>
         /// <returns>A <see cref="TimerInput"/> for the specified <see cref="string"/>, or <c>null</c> if the <see
         /// cref="string"/> is not a valid input.</returns>
-        public static TimerInput FromTimeSpanOrDateTime(string str)
+        public static TimerInput FromTimeSpanOrDateTimeString(string str)
         {
             TimeSpan timeSpan;
             if (TimeSpanUtility.TryParseNatural(str, out timeSpan))

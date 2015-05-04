@@ -6,8 +6,6 @@
 
 namespace Hourglass
 {
-    using System;
-
     /// <summary>
     /// Configuration data for a <see cref="DateTimeTimer"/>.
     /// </summary>

@@ -282,6 +282,12 @@ namespace Hourglass
 
             long timeElapsed = this.TimeElapsed.Value.Ticks;
             long totalTime = this.TotalTime.Value.Ticks;
+
+            if (totalTime == 0)
+            {
+                return 0.0;
+            }
+
             return 100.0 * timeElapsed / totalTime;
         }
 
@@ -303,6 +309,12 @@ namespace Hourglass
 
             long timeLeft = this.TimeLeft.Value.Ticks;
             long totalTime = this.TotalTime.Value.Ticks;
+
+            if (totalTime == 0)
+            {
+                return 100.0;
+            }
+            
             return 100.0 * timeLeft / totalTime;
         }
 

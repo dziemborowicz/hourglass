@@ -3,13 +3,127 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:hg="clr-namespace:Hourglass"
         Title="Hourglass" Height="150" Width="350" MinHeight="150" MinWidth="250"
-        DataContextChanged="WindowDataContextChanged" Loaded="WindowLoaded">
-    <Window.DataContext>
-        <hg:TimeSpanTimer/>
-    </Window.DataContext>
+        MouseDown="WindowMouseDown" Closed="WindowClosed">
+    <Window.Resources>
+        <Style TargetType="{x:Type ProgressBar}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid>
+                            <Border Name="PART_Track" Background="#EEEEEE"/>
+                            <Border Name="PART_Indicator" Background="#3665B3" HorizontalAlignment="Left"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TitleTextBoxStyle" TargetType="TextBox">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value=""/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=IsMouseOver}" Value="False"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=hg:TimerWindow}, Path=AlwaysShowControls}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiDataTrigger.EnterActions>
+                    <MultiDataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiDataTrigger.ExitActions>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ButtonPanelStyle" TargetType="StackPanel">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=IsMouseOver}" Value="False"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=hg:TimerWindow}, Path=AlwaysShowControls}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiDataTrigger.EnterActions>
+                    <MultiDataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiDataTrigger.ExitActions>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="#0066CC"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Margin" Value="7 0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <TextBlock>
+                            <ContentPresenter RecognizesAccessKey="True"/>
+                        </TextBlock>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Foreground" Value="#FF0000"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid x:Name="OuterGrid">
-        <hg:TimerStatusControl x:Name="TimerStatusControl"/>
-        <hg:TimerExpiredControl x:Name="TimerExpiredControl" Reset="TimerExpiredControlReset"/>
-        <hg:TimerInputControl x:Name="TimerInputControl" Started="TimerInputControlStarted" Canceled="TimerInputControlCanceled"/>
+        <ProgressBar x:Name="ProgressBar"/>
+        <Border x:Name="OuterNotificationBorder" Background="#C75050" IsHitTestVisible="False" Opacity="0"/>
+        <Grid x:Name="InnerGrid" Background="White" Margin="10">
+            <StackPanel x:Name="ControlsPanel" Margin="20 0" VerticalAlignment="Center">
+                <TextBox x:Name="TitleTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI" Foreground="DarkGray" TextAlignment="Center" Style="{StaticResource TitleTextBoxStyle}" hg:Watermark.HintText="Click to enter title" />
+                <TextBox x:Name="TimerTextBox" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Segoe UI Light, Segoe UI" FontSize="18" Margin="0 1 0 4" TextAlignment="Center" MouseDown="TimerTextBoxMouseDown" hg:Watermark.HintText="Click to enter time or date" />
+                <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">
+                    <Button x:Name="StartButton" Content="Start" Click="StartButtonClick" IsDefault="True"/>
+                    <Button x:Name="PauseButton" Content="Pause" Click="PauseButtonClick"/>
+                    <Button x:Name="ResumeButton" Content="Resume" Click="ResumeButtonClick"/>
+                    <Button x:Name="StopButton" Content="Stop" Click="StopButtonClick"/>
+                    <Button x:Name="ResetButton" Content="Reset" Click="ResetButtonClick"/>
+                    <Button x:Name="CancelButton" Content="Cancel" Click="CancelButtonClick" IsCancel="True"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Border x:Name="InnerNotificationBorder" BorderBrush="#C75050" BorderThickness="1" IsHitTestVisible="False" Margin="15" Opacity="0"/>
     </Grid>
 </Window>

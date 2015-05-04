@@ -24,12 +24,12 @@ namespace Hourglass
         /// <summary>
         /// The <see cref="TimerWindow"/> that uses this context menu.
         /// </summary>
-        private readonly TimerWindow timerWindow;
+        private TimerWindow timerWindow;
 
         /// <summary>
         /// A <see cref="DispatcherTimer"/> used to raise events.
         /// </summary>
-        private readonly DispatcherTimer ticker;
+        private DispatcherTimer ticker;
 
         /// <summary>
         /// The "Loop timer" <see cref="MenuItem"/>.
@@ -103,20 +103,29 @@ namespace Hourglass
 
         #endregion
 
-        #region Constructors
-
+        #region Public Methods
+        
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimerMenu"/> class.
+        /// Binds the <see cref="TimerMenu"/> to a <see cref="TimerWindow"/>.
         /// </summary>
-        /// <param name="timerWindow">A <see cref="TimerWindow"/>.</param>
-        public TimerMenu(TimerWindow timerWindow)
+        /// <param name="window">A <see cref="TimerWindow"/>.</param>
+        public void Bind(TimerWindow window)
         {
-            if (timerWindow == null)
+            // Validate parameters
+            if (window == null)
             {
-                throw new ArgumentNullException("timerWindow");
+                throw new ArgumentNullException("window");
             }
 
-            this.timerWindow = timerWindow;
+            // Validate state
+            if (this.timerWindow != null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            // Initialize members
+            this.timerWindow = window;
+
             this.timerWindow.ContextMenuOpening += this.WindowContextMenuOpening;
             this.timerWindow.ContextMenuClosing += this.WindowContextMenuClosing;
             this.timerWindow.ContextMenu = this;
@@ -127,6 +136,7 @@ namespace Hourglass
 
             this.selectableSoundMenuItems = new List<MenuItem>();
 
+            // Build the menu
             this.BuildMenu();
         }
 
@@ -351,6 +361,7 @@ namespace Hourglass
 
             ViewableTimer timer = ViewableTimer.GetTimerForInput(input);
             timer.StartCommand.Execute(input);
+            TimerManager.Instance.Add(timer);
 
             TimerWindow window = new TimerWindow();
             window.Timer = timer;

@@ -417,24 +417,21 @@ namespace Hourglass
                 return;
             }
 
-            // Update time elapsed and time left
+            // Update timer state
             DateTime now = DateTime.Now;
             this.timeElapsed = TimeSpanUtility.Max(now - (this.startTime ?? now), TimeSpan.Zero);
             this.timeLeft = TimeSpanUtility.Max((this.endTime ?? now) - now, TimeSpan.Zero);
 
-            if (this.timeLeft > TimeSpan.Zero)
+            this.OnPropertyChanged("TimeElapsed", "TimeLeft");
+            this.OnTick();
+
+            // Check if the timer has expired
+            if (this.timeLeft <= TimeSpan.Zero)
             {
-                // Raise a tick event
-                this.OnPropertyChanged("TimeElapsed", "TimeLeft");
-                this.OnTick();
-            }
-            else
-            {
-                // Raise an expired event
                 this.state = TimerState.Expired;
 
                 this.StopDispatcherTimer();
-                this.OnPropertyChanged("State", "TimeElapsed", "TimeLeft");
+                this.OnPropertyChanged("State");
                 this.OnExpired();
             }
         }

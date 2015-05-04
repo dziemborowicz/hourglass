@@ -54,6 +54,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.cs" />
+    <Compile Include="AppEntry.cs" />
     <Compile Include="CommandTimer.cs" />
     <Compile Include="CommandTimerInfo.cs" />
     <Compile Include="DateTimeTimer.cs" />
@@ -70,15 +72,8 @@
     <Compile Include="SettingsManager.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
-    <Compile Include="TextControlWrapper.cs" />
     <Compile Include="Timer.cs" />
-    <Compile Include="TimerExpiredControl.xaml.cs">
-      <DependentUpon>TimerExpiredControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TimerInfo.cs" />
-    <Compile Include="TimerInputControl.xaml.cs">
-      <DependentUpon>TimerInputControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TimerInputEventArgs.cs" />
     <Compile Include="TimerManager.cs" />
     <Compile Include="TimerMenu.cs" />
@@ -92,9 +87,6 @@
     <Compile Include="TimerOptions.cs" />
     <Compile Include="TimerOptionsInfo.cs" />
     <Compile Include="TimerScaler.cs" />
-    <Compile Include="TimerStatusControl.xaml.cs">
-      <DependentUpon>TimerStatusControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TimerWindow.xaml.cs">
       <DependentUpon>TimerWindow.xaml</DependentUpon>
     </Compile>
@@ -109,24 +101,10 @@
     <Compile Include="ViewableTimerInfo.cs" />
     <Compile Include="Watermark.cs" />
     <Compile Include="WatermarkAdorner.cs" />
-    <Page Include="TimerExpiredControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TimerInputControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TimerStatusControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="TimerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="App.cs" />
-    <Compile Include="AppEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

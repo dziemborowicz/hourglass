@@ -7,12 +7,8 @@
 namespace Hourglass
 {
     using System;
-    using System.Linq;
-    using System.Windows;
 
     using Microsoft.VisualBasic.ApplicationServices;
-
-    using StartupEventArgs = Microsoft.VisualBasic.ApplicationServices.StartupEventArgs;
 
     /// <summary>
     /// Handles application start up, command-line arguments, and ensures that only one instance of the application is
