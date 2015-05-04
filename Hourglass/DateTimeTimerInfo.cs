@@ -9,7 +9,7 @@ namespace Hourglass
     /// <summary>
     /// A representation of the state of a <see cref="DateTimeTimer"/>.
     /// </summary>
-    public class DateTimeTimerInfo : ViewableTimerInfo
+    public class DateTimeTimerInfo : HourglassTimerInfo
     {
     }
 }

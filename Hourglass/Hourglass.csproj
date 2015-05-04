@@ -56,8 +56,6 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="AppEntry.cs" />
-    <Compile Include="CommandTimer.cs" />
-    <Compile Include="CommandTimerInfo.cs" />
     <Compile Include="DateTimeTimer.cs" />
     <Compile Include="DateTimeTimerInfo.cs" />
     <Compile Include="DateTimeTimerInput.cs" />
@@ -67,14 +65,12 @@
     <Compile Include="FileSound.cs" />
     <Compile Include="MathUtility.cs" />
     <Compile Include="MultiplierConverter.cs" />
-    <Compile Include="RelayCommand.cs" />
     <Compile Include="ResourceSound.cs" />
     <Compile Include="SettingsManager.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TimerInfo.cs" />
-    <Compile Include="TimerInputEventArgs.cs" />
     <Compile Include="TimerManager.cs" />
     <Compile Include="TimerMenu.cs" />
     <Compile Include="DateTimeUtility.cs" />
@@ -97,8 +93,8 @@
     <Compile Include="TimeSpanTimerOptions.cs" />
     <Compile Include="TimeSpanTimerOptionsInfo.cs" />
     <Compile Include="TimeSpanUtility.cs" />
-    <Compile Include="ViewableTimer.cs" />
-    <Compile Include="ViewableTimerInfo.cs" />
+    <Compile Include="HourglassTimer.cs" />
+    <Compile Include="HourglassTimerInfo.cs" />
     <Compile Include="Watermark.cs" />
     <Compile Include="WatermarkAdorner.cs" />
     <Page Include="TimerWindow.xaml">

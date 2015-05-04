@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ViewableTimer.cs" company="Chris Dziemborowicz">
+// <copyright file="HourglassTimer.cs" company="Chris Dziemborowicz">
 //   Copyright (c) Chris Dziemborowicz. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,9 +9,9 @@ namespace Hourglass
     using System;
 
     /// <summary>
-    /// A <see cref="CommandTimer"/> that exposes properties useful for graphical display.
+    /// A <see cref="Timer"/> that exposes properties useful for graphical display.
     /// </summary>
-    public abstract class ViewableTimer : CommandTimer
+    public abstract class HourglassTimer : Timer
     {
         #region Private Members
 
@@ -55,10 +55,10 @@ namespace Hourglass
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ViewableTimer"/> class.
+        /// Initializes a new instance of the <see cref="HourglassTimer"/> class.
         /// </summary>
         /// <param name="options">Configuration data for this timer.</param>
-        protected ViewableTimer(TimerOptions options)
+        protected HourglassTimer(TimerOptions options)
         {
             if (options == null)
             {
@@ -67,15 +67,15 @@ namespace Hourglass
 
             this.options = options;
 
-            this.UpdateViewableTimer();
+            this.UpdateHourglassTimer();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ViewableTimer"/> class.
+        /// Initializes a new instance of the <see cref="HourglassTimer"/> class.
         /// </summary>
-        /// <param name="timerInfo">A <see cref="ViewableTimerInfo"/> representing the state of the <see
-        /// cref="ViewableTimer"/>.</param>
-        protected ViewableTimer(ViewableTimerInfo timerInfo)
+        /// <param name="timerInfo">A <see cref="HourglassTimerInfo"/> representing the state of the <see
+        /// cref="HourglassTimer"/>.</param>
+        protected HourglassTimer(HourglassTimerInfo timerInfo)
             : base(timerInfo)
         {
             if (timerInfo.Options == null)
@@ -85,7 +85,7 @@ namespace Hourglass
 
             this.options = TimerOptions.FromTimerOptionsInfo(timerInfo.Options);
 
-            this.UpdateViewableTimer();
+            this.UpdateHourglassTimer();
         }
 
         #endregion
@@ -157,12 +157,12 @@ namespace Hourglass
         #region Static Methods
 
         /// <summary>
-        /// Returns a new <see cref="ViewableTimer"/> that can be started with the specified <see cref="TimerInput"/>.
+        /// Returns a new <see cref="HourglassTimer"/> that can be started with the specified <see cref="TimerInput"/>.
         /// </summary>
         /// <param name="input">A <see cref="TimerInput"/>.</param>
-        /// <returns>A new <see cref="ViewableTimer"/> that can be started with the specified <see cref="TimerInput"/>.
+        /// <returns>A new <see cref="HourglassTimer"/> that can be started with the specified <see cref="TimerInput"/>.
         /// </returns>
-        public static ViewableTimer GetTimerForInput(TimerInput input)
+        public static HourglassTimer GetTimerForInput(TimerInput input)
         {
             if (input is DateTimeTimerInput)
             {
@@ -179,6 +179,17 @@ namespace Hourglass
 
         #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// Starts the timer.
+        /// </summary>
+        /// <param name="input">A <see cref="TimerInput"/>.</param>
+        /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
+        public abstract void Start(TimerInput input);
+
+        #endregion
+
         #region Protected Methods (Events)
 
         /// <summary>
@@ -186,7 +197,7 @@ namespace Hourglass
         /// </summary>
         protected override void OnStarted()
         {
-            this.UpdateViewableTimer();
+            this.UpdateHourglassTimer();
             base.OnStarted();
         }
 
@@ -195,7 +206,7 @@ namespace Hourglass
         /// </summary>
         protected override void OnPaused()
         {
-            this.UpdateViewableTimer();
+            this.UpdateHourglassTimer();
             base.OnPaused();
         }
 
@@ -204,7 +215,7 @@ namespace Hourglass
         /// </summary>
         protected override void OnResumed()
         {
-            this.UpdateViewableTimer();
+            this.UpdateHourglassTimer();
             base.OnResumed();
         }
 
@@ -213,7 +224,7 @@ namespace Hourglass
         /// </summary>
         protected override void OnStopped()
         {
-            this.UpdateViewableTimer();
+            this.UpdateHourglassTimer();
             base.OnStopped();
         }
 
@@ -222,7 +233,7 @@ namespace Hourglass
         /// </summary>
         protected override void OnExpired()
         {
-            this.UpdateViewableTimer();
+            this.UpdateHourglassTimer();
             base.OnExpired();
         }
 
@@ -231,7 +242,7 @@ namespace Hourglass
         /// </summary>
         protected override void OnTick()
         {
-            this.UpdateViewableTimer();
+            this.UpdateHourglassTimer();
             base.OnTick();
         }
 
@@ -243,7 +254,7 @@ namespace Hourglass
         {
             base.SetTimerInputInfo(timerInfo);
 
-            ViewableTimerInfo info = (ViewableTimerInfo)timerInfo;
+            HourglassTimerInfo info = (HourglassTimerInfo)timerInfo;
             info.Options = TimerOptionsInfo.FromTimerOptions(this.Options);
         }
 
@@ -252,9 +263,9 @@ namespace Hourglass
         #region Private Methods
 
         /// <summary>
-        /// Updates the <see cref="ViewableTimer"/> state.
+        /// Updates the <see cref="HourglassTimer"/> state.
         /// </summary>
-        private void UpdateViewableTimer()
+        private void UpdateHourglassTimer()
         {
             this.timeLeftAsPercentage = this.GetTimeLeftAsPercentage();
             this.timeElapsedAsPercentage = this.GetTimeElapsedAsPercentage();

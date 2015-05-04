@@ -12,8 +12,7 @@ namespace Hourglass
     /// <summary>
     /// A representation of the state of a <see cref="Timer"/>.
     /// </summary>
-    [XmlInclude(typeof(CommandTimerInfo))]
-    [XmlInclude(typeof(ViewableTimerInfo))]
+    [XmlInclude(typeof(HourglassTimerInfo))]
     [XmlInclude(typeof(DateTimeTimerInfo))]
     [XmlInclude(typeof(TimeSpanTimerInfo))]
     public abstract class TimerInfo

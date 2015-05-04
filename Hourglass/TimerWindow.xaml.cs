@@ -68,9 +68,9 @@ namespace Hourglass
         private TimerScaler scaler = new TimerScaler();
 
         /// <summary>
-        /// The <see cref="ViewableTimer"/> backing the window.
+        /// The <see cref="HourglassTimer"/> backing the window.
         /// </summary>
-        private ViewableTimer timer = new TimeSpanTimer();
+        private HourglassTimer timer = new TimeSpanTimer();
 
         /// <summary>
         /// The animation used notify the user that the timer has expired.
@@ -159,9 +159,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="ViewableTimer"/> backing the window.
+        /// Gets or sets the <see cref="HourglassTimer"/> backing the window.
         /// </summary>
-        public ViewableTimer Timer
+        public HourglassTimer Timer
         {
             get
             {
@@ -375,25 +375,25 @@ namespace Hourglass
         #region Private Methods (Timer Binding)
 
         /// <summary>
-        /// Binds the <see cref="TimerWindow"/> event handlers and controls to a <see cref="ViewableTimer"/>.
+        /// Binds the <see cref="TimerWindow"/> event handlers and controls to a <see cref="HourglassTimer"/>.
         /// </summary>
-        /// <param name="viewableTimer">A <see cref="ViewableTimer"/>.</param>
-        private void BindTimer(ViewableTimer viewableTimer)
+        /// <param name="hourglassTimer">A <see cref="HourglassTimer"/>.</param>
+        private void BindTimer(HourglassTimer hourglassTimer)
         {
-            viewableTimer.Started += this.TimerStarted;
-            viewableTimer.Paused += this.TimerPaused;
-            viewableTimer.Resumed += this.TimerResumed;
-            viewableTimer.Stopped += this.TimerStopped;
-            viewableTimer.Expired += this.TimerExpired;
-            viewableTimer.Tick += this.TimerTick;
-            viewableTimer.PropertyChanged += this.TimerPropertyChanged;
+            hourglassTimer.Started += this.TimerStarted;
+            hourglassTimer.Paused += this.TimerPaused;
+            hourglassTimer.Resumed += this.TimerResumed;
+            hourglassTimer.Stopped += this.TimerStopped;
+            hourglassTimer.Expired += this.TimerExpired;
+            hourglassTimer.Tick += this.TimerTick;
+            hourglassTimer.PropertyChanged += this.TimerPropertyChanged;
 
             this.ShowViewForTimer();
             this.UpdateTimerBinding();
         }
 
         /// <summary>
-        /// Updates the user interface elements bound to <see cref="ViewableTimer"/> properties.
+        /// Updates the user interface elements bound to <see cref="HourglassTimer"/> properties.
         /// </summary>
         private void UpdateTimerBinding()
         {
@@ -406,18 +406,18 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Unbinds the <see cref="TimerWindow"/> event handlers and controls from a <see cref="ViewableTimer"/>.
+        /// Unbinds the <see cref="TimerWindow"/> event handlers and controls from a <see cref="HourglassTimer"/>.
         /// </summary>
-        /// <param name="viewableTimer">A <see cref="ViewableTimer"/>.</param>
-        private void UnbindTimer(ViewableTimer viewableTimer)
+        /// <param name="hourglassTimer">A <see cref="HourglassTimer"/>.</param>
+        private void UnbindTimer(HourglassTimer hourglassTimer)
         {
-            viewableTimer.Started -= this.TimerStarted;
-            viewableTimer.Paused -= this.TimerPaused;
-            viewableTimer.Resumed -= this.TimerResumed;
-            viewableTimer.Stopped -= this.TimerStopped;
-            viewableTimer.Expired -= this.TimerExpired;
-            viewableTimer.Tick -= this.TimerTick;
-            viewableTimer.PropertyChanged -= this.TimerPropertyChanged;
+            hourglassTimer.Started -= this.TimerStarted;
+            hourglassTimer.Paused -= this.TimerPaused;
+            hourglassTimer.Resumed -= this.TimerResumed;
+            hourglassTimer.Stopped -= this.TimerStopped;
+            hourglassTimer.Expired -= this.TimerExpired;
+            hourglassTimer.Tick -= this.TimerTick;
+            hourglassTimer.PropertyChanged -= this.TimerPropertyChanged;
         }
 
         #endregion
@@ -425,9 +425,9 @@ namespace Hourglass
         #region Private Methods (Timer Events)
 
         /// <summary>
-        /// Invoked when the <see cref="ViewableTimer"/> is started.
+        /// Invoked when the <see cref="HourglassTimer"/> is started.
         /// </summary>
-        /// <param name="sender">The <see cref="ViewableTimer"/>.</param>
+        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
         /// <param name="e">The event data.</param>
         private void TimerStarted(object sender, EventArgs e)
         {
@@ -435,9 +435,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="ViewableTimer"/> is paused.
+        /// Invoked when the <see cref="HourglassTimer"/> is paused.
         /// </summary>
-        /// <param name="sender">The <see cref="ViewableTimer"/>.</param>
+        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
         /// <param name="e">The event data.</param>
         private void TimerPaused(object sender, EventArgs e)
         {
@@ -452,9 +452,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="ViewableTimer"/> is resumed from a paused state.
+        /// Invoked when the <see cref="HourglassTimer"/> is resumed from a paused state.
         /// </summary>
-        /// <param name="sender">The <see cref="ViewableTimer"/>.</param>
+        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
         /// <param name="e">The event data.</param>
         private void TimerResumed(object sender, EventArgs e)
         {
@@ -469,9 +469,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="ViewableTimer"/> is stopped.
+        /// Invoked when the <see cref="HourglassTimer"/> is stopped.
         /// </summary>
-        /// <param name="sender">The <see cref="ViewableTimer"/>.</param>
+        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
         /// <param name="e">The event data.</param>
         private void TimerStopped(object sender, EventArgs e)
         {
@@ -486,9 +486,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="ViewableTimer"/> expires.
+        /// Invoked when the <see cref="HourglassTimer"/> expires.
         /// </summary>
-        /// <param name="sender">The <see cref="ViewableTimer"/>.</param>
+        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
         /// <param name="e">The event data.</param>
         private void TimerExpired(object sender, EventArgs e)
         {
@@ -503,9 +503,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="ViewableTimer"/> ticks.
+        /// Invoked when the <see cref="HourglassTimer"/> ticks.
         /// </summary>
-        /// <param name="sender">The <see cref="ViewableTimer"/>.</param>
+        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
         /// <param name="e">The event data.</param>
         private void TimerTick(object sender, EventArgs e)
         {
@@ -513,9 +513,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when a <see cref="ViewableTimer"/> property value changes.
+        /// Invoked when a <see cref="HourglassTimer"/> property value changes.
         /// </summary>
-        /// <param name="sender">The <see cref="ViewableTimer"/>.</param>
+        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
         /// <param name="e">The event data.</param>
         private void TimerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -540,8 +540,8 @@ namespace Hourglass
                 return;
             }
 
-            this.Timer = ViewableTimer.GetTimerForInput(input);
-            this.Timer.StartCommand.Execute(input);
+            this.Timer = HourglassTimer.GetTimerForInput(input);
+            this.Timer.Start(input);
             TimerManager.Instance.Add(this.Timer);
         }
 

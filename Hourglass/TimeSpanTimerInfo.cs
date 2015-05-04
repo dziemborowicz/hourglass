@@ -9,7 +9,7 @@ namespace Hourglass
     /// <summary>
     /// A representation of the state of a <see cref="TimeSpanTimer"/>.
     /// </summary>
-    public class TimeSpanTimerInfo : ViewableTimerInfo
+    public class TimeSpanTimerInfo : HourglassTimerInfo
     {
     }
 }

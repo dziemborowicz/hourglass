@@ -359,8 +359,8 @@ namespace Hourglass
 
             TimerInputManager.Instance.Add(input);
 
-            ViewableTimer timer = ViewableTimer.GetTimerForInput(input);
-            timer.StartCommand.Execute(input);
+            HourglassTimer timer = HourglassTimer.GetTimerForInput(input);
+            timer.Start(input);
             TimerManager.Instance.Add(timer);
 
             TimerWindow window = new TimerWindow();
@@ -481,7 +481,7 @@ namespace Hourglass
         private void SavedTimerMenuItemClick(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
-            ViewableTimer savedTimer = (ViewableTimer)menuItem.Tag;
+            HourglassTimer savedTimer = (HourglassTimer)menuItem.Tag;
 
             TimerWindow window = new TimerWindow();
             window.Timer = savedTimer;

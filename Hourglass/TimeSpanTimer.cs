@@ -9,9 +9,9 @@ namespace Hourglass
     using System;
 
     /// <summary>
-    /// A <see cref="ViewableTimer"/> that counts down for a specified span of time.
+    /// A <see cref="HourglassTimer"/> that counts down for a specified span of time.
     /// </summary>
-    public class TimeSpanTimer : ViewableTimer
+    public class TimeSpanTimer : HourglassTimer
     {
         #region Constructors
 
@@ -55,82 +55,26 @@ namespace Hourglass
 
         #endregion
 
-        #region Protected Methods
+        #region Public Methods
 
         /// <summary>
         /// Starts the timer.
         /// </summary>
-        /// <param name="parameter">A <see cref="TimerInput"/> used to start the timer.</param>
-        protected override void ExecuteStart(object parameter)
+        /// <param name="input">A <see cref="TimeSpanTimerInput"/>.</param>
+        /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
+        public override void Start(TimerInput input)
         {
-            TimeSpanTimerInput input = (TimeSpanTimerInput)parameter;
+            TimeSpanTimerInput timeSpanTimerInput = (TimeSpanTimerInput)input;
 
             DateTime startTime = DateTime.Now;
-            DateTime endTime = startTime.Add(input.TimeSpan);
+            DateTime endTime = startTime.Add(timeSpanTimerInput.TimeSpan);
 
             this.Start(startTime, endTime);
         }
 
-        /// <summary>
-        /// Returns a value indicating whether the timer can be started.
-        /// </summary>
-        /// <returns>A value indicating whether the timer can be started.</returns>
-        /// <param name="parameter">A <see cref="TimerInput"/> used to start the timer.</param>
-        protected override bool CanExecuteStart(object parameter)
-        {
-            return true;
-        }
+        #endregion
 
-        /// <summary>
-        /// Pauses the timer.
-        /// </summary>
-        protected override void ExecutePause()
-        {
-            this.Pause();
-        }
-
-        /// <summary>
-        /// Returns a value indicating whether the timer can be paused.
-        /// </summary>
-        /// <returns>A value indicating whether the timer can be paused.</returns>
-        protected override bool CanExecutePause()
-        {
-            return this.State == TimerState.Running;
-        }
-
-        /// <summary>
-        /// Resumes the timer.
-        /// </summary>
-        protected override void ExecuteResume()
-        {
-            this.Resume();
-        }
-
-        /// <summary>
-        /// Returns a value indicating whether the timer can be resumed.
-        /// </summary>
-        /// <returns>A value indicating whether the timer can be resumed.</returns>
-        protected override bool CanExecuteResume()
-        {
-            return this.State == TimerState.Paused;
-        }
-
-        /// <summary>
-        /// Stops the timer.
-        /// </summary>
-        protected override void ExecuteStop()
-        {
-            this.Stop();
-        }
-
-        /// <summary>
-        /// Returns a value indicating whether the timer can be stopped.
-        /// </summary>
-        /// <returns>A value indicating whether the timer can be stopped.</returns>
-        protected override bool CanExecuteStop()
-        {
-            return this.State != TimerState.Stopped && this.State != TimerState.Expired;
-        }
+        #region Protected Methods
 
         /// <summary>
         /// Returns a new <see cref="TimerInfo"/> of the correct type for this class.
