@@ -540,6 +540,8 @@ namespace Hourglass
                 return;
             }
 
+            TimerInputManager.Instance.Add(input);
+
             this.Timer = HourglassTimer.GetTimerForInput(input);
             this.Timer.Start(input);
             TimerManager.Instance.Add(this.Timer);

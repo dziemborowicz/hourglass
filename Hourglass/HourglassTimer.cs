@@ -9,7 +9,7 @@ namespace Hourglass
     using System;
 
     /// <summary>
-    /// A <see cref="Timer"/> that exposes properties useful for graphical display.
+    /// A <see cref="Timer"/> that exposes options and properties useful for graphical display.
     /// </summary>
     public abstract class HourglassTimer : Timer
     {

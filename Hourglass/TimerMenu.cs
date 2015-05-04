@@ -213,7 +213,7 @@ namespace Hourglass
 
             foreach (MenuItem menuItem in this.selectableSoundMenuItems)
             {
-                menuItem.IsChecked = object.Equals(menuItem.Tag, this.timerWindow.Timer.Options.Sound);
+                menuItem.IsChecked = menuItem.Tag == this.timerWindow.Timer.Options.Sound;
             }
         }
 
@@ -356,7 +356,6 @@ namespace Hourglass
         {
             MenuItem menuItem = (MenuItem)sender;
             TimerInput input = (TimerInput)menuItem.Tag;
-
             TimerInputManager.Instance.Add(input);
 
             HourglassTimer timer = HourglassTimer.GetTimerForInput(input);
@@ -434,6 +433,7 @@ namespace Hourglass
                 Timer timer = menuItem.Tag as Timer;
                 if (timer != null)
                 {
+                    timer.Update();
                     menuItem.Header = this.GetMenuHeaderForTimer(timer);
                 }
             }
@@ -466,9 +466,9 @@ namespace Hourglass
 
             string timeLeft = TimeSpanUtility.ToNaturalString(savedTimer.TimeLeft);
 
-            string target = savedTimer.TotalTime.HasValue
-                ? TimeSpanUtility.ToShortNaturalString(savedTimer.TotalTime)
-                : DateTimeUtility.ToNaturalString(savedTimer.EndTime);
+            string target = savedTimer is DateTimeTimer
+                ? DateTimeUtility.ToNaturalString(savedTimer.EndTime)
+                : TimeSpanUtility.ToShortNaturalString(savedTimer.TotalTime);
 
             return string.Format(format, timeLeft, target);
         }

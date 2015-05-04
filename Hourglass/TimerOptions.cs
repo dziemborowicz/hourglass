@@ -17,11 +17,6 @@ namespace Hourglass
         #region Private Members
 
         /// <summary>
-        /// A value indicating whether the options are currently modifiable.
-        /// </summary>
-        private bool isFrozen;
-
-        /// <summary>
         /// A user-specified title for the timer.
         /// </summary>
         private string title;
@@ -125,14 +120,6 @@ namespace Hourglass
         #region Properties
 
         /// <summary>
-        /// Gets a value indicating whether the options are currently modifiable.
-        /// </summary>
-        public bool IsFrozen
-        {
-            get { return this.isFrozen; }
-        }
-
-        /// <summary>
         /// Gets or sets a user-specified title for the timer.
         /// </summary>
         public string Title
@@ -144,8 +131,6 @@ namespace Hourglass
 
             set
             {
-                this.ThrowIfFrozen();
-
                 if (this.title == value)
                 {
                     return;
@@ -168,8 +153,6 @@ namespace Hourglass
 
             set
             {
-                this.ThrowIfFrozen();
-
                 if (this.alwaysOnTop == value)
                 {
                     return;
@@ -193,8 +176,6 @@ namespace Hourglass
 
             set
             {
-                this.ThrowIfFrozen();
-
                 if (this.showInNotificationArea == value)
                 {
                     return;
@@ -218,8 +199,6 @@ namespace Hourglass
 
             set
             {
-                this.ThrowIfFrozen();
-
                 if (this.popUpWhenExpired == value)
                 {
                     return;
@@ -242,8 +221,6 @@ namespace Hourglass
 
             set
             {
-                this.ThrowIfFrozen();
-
                 if (this.closeWhenExpired == value)
                 {
                     return;
@@ -266,9 +243,7 @@ namespace Hourglass
 
             set
             {
-                this.ThrowIfFrozen();
-
-                if (object.ReferenceEquals(this.sound, value))
+                if (this.sound == value)
                 {
                     return;
                 }
@@ -291,8 +266,6 @@ namespace Hourglass
 
             set
             {
-                this.ThrowIfFrozen();
-
                 if (this.loopSound == value)
                 {
                     return;
@@ -356,70 +329,6 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Makes the options un-modifiable and sets its <see cref="IsFrozen"/> property to <c>true</c>.
-        /// </summary>
-        public void Freeze()
-        {
-            this.isFrozen = true;
-        }
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="obj">An <see cref="object"/>.</param>
-        /// <returns><c>true</c> if the specified object is equal to the current object, or <c>false</c> otherwise.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (object.ReferenceEquals(obj, null))
-            {
-                return false;
-            }
-
-            if (object.ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (this.GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            TimerOptions options = (TimerOptions)obj;
-            return object.Equals(this.isFrozen, options.isFrozen)
-                && object.Equals(this.title, options.title)
-                && object.Equals(this.alwaysOnTop, options.alwaysOnTop)
-                && object.Equals(this.showInNotificationArea, options.showInNotificationArea)
-                && object.Equals(this.popUpWhenExpired, options.popUpWhenExpired)
-                && object.Equals(this.closeWhenExpired, options.closeWhenExpired)
-                && object.Equals(this.sound, options.sound)
-                && object.Equals(this.loopSound, options.loopSound);
-        }
-
-        /// <summary>
-        /// Serves as the default hash function.
-        /// </summary>
-        /// <returns>A hash code for the current object.</returns>
-        public override int GetHashCode()
-        {
-            this.ThrowIfNotFrozen();
-
-            int hashCode = 17;
-            // ReSharper disable NonReadonlyFieldInGetHashCode
-            hashCode = (31 * hashCode) + this.isFrozen.GetHashCode();
-            hashCode = (31 * hashCode) + this.title.GetHashCode();
-            hashCode = (31 * hashCode) + this.alwaysOnTop.GetHashCode();
-            hashCode = (31 * hashCode) + this.showInNotificationArea.GetHashCode();
-            hashCode = (31 * hashCode) + this.popUpWhenExpired.GetHashCode();
-            hashCode = (31 * hashCode) + this.closeWhenExpired.GetHashCode();
-            hashCode = (31 * hashCode) + (this.sound == null ? 0 : this.sound.GetHashCode());
-            hashCode = (31 * hashCode) + this.loopSound.GetHashCode();
-            // ReSharper restore NonReadonlyFieldInGetHashCode
-            return hashCode;
-        }
-
-        /// <summary>
         /// Returns the representation of the <see cref="TimerOptions"/> used for XML serialization.
         /// </summary>
         /// <returns>The representation of the <see cref="TimerOptions"/> used for XML serialization.</returns>
@@ -453,30 +362,6 @@ namespace Hourglass
             timerOptionsInfo.CloseWhenExpired = this.closeWhenExpired;
             timerOptionsInfo.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;
             timerOptionsInfo.LoopSound = this.loopSound;
-        }
-
-        /// <summary>
-        /// Throws an <see cref="InvalidOperationException"/> if the <see cref="IsFrozen"/> property is set to
-        /// <c>true</c>.
-        /// </summary>
-        protected void ThrowIfFrozen()
-        {
-            if (this.isFrozen)
-            {
-                throw new InvalidOperationException("The options are frozen.");
-            }
-        }
-
-        /// <summary>
-        /// Throws an <see cref="InvalidOperationException"/> if the <see cref="IsFrozen"/> property is set to
-        /// <c>false</c>.
-        /// </summary>
-        protected void ThrowIfNotFrozen()
-        {
-            if (!this.isFrozen)
-            {
-                throw new InvalidOperationException("The options are not frozen.");
-            }
         }
 
         /// <summary>

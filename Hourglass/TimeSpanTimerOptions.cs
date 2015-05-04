@@ -79,8 +79,6 @@ namespace Hourglass
 
             set
             {
-                this.ThrowIfFrozen();
-
                 if (this.loopTimer == value)
                 {
                     return;
@@ -89,58 +87,6 @@ namespace Hourglass
                 this.loopTimer = value;
                 this.OnPropertyChanged("LoopTimer");
             }
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="obj">An <see cref="object"/>.</param>
-        /// <returns><c>true</c> if the specified object is equal to the current object, or <c>false</c> otherwise.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (object.ReferenceEquals(obj, null))
-            {
-                return false;
-            }
-
-            if (object.ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (this.GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            if (!base.Equals(obj))
-            {
-                return false;
-            }
-
-            TimeSpanTimerOptions options = (TimeSpanTimerOptions)obj;
-            return object.Equals(this.loopTimer, options.loopTimer);
-        }
-
-        /// <summary>
-        /// Serves as the default hash function.
-        /// </summary>
-        /// <returns>A hash code for the current object.</returns>
-        public override int GetHashCode()
-        {
-            this.ThrowIfNotFrozen();
-
-            int hashCode = 17;
-            // ReSharper disable NonReadonlyFieldInGetHashCode
-            hashCode = (31 * hashCode) + base.GetHashCode();
-            hashCode = (31 * hashCode) + this.loopTimer.GetHashCode();
-            // ReSharper restore NonReadonlyFieldInGetHashCode
-            return hashCode;
         }
 
         #endregion

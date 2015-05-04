@@ -53,8 +53,10 @@ namespace Hourglass
         /// <param name="input">A <see cref="TimerInput"/>.</param>
         public void Add(TimerInput input)
         {
-            // Insert or move to the top of the list
-            this.timerInputs.Remove(input);
+            // Remove all equivalent inputs
+            this.timerInputs.RemoveAll(element => element.EqualsExceptForOptions(input));
+
+            // Add the input to the top of the list
             this.timerInputs.Insert(0, input);
 
             // Limit the number of inputs in the list

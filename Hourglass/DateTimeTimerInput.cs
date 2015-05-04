@@ -60,47 +60,31 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Determines whether the specified object is equal to the current object.
+        /// Returns a value indicating whether the <see cref="TimerInput"/> is equivalent to this <see
+        /// cref="TimerInput"/> except for the <see cref="Options"/> field, which is ignored.
         /// </summary>
-        /// <param name="obj">An <see cref="object"/>.</param>
-        /// <returns><c>true</c> if the specified object is equal to the current object, or <c>false</c> otherwise.
-        /// </returns>
-        public override bool Equals(object obj)
+        /// <param name="input">A <see cref="TimerInput"/>.</param>
+        /// <returns>A value indicating whether the <see cref="TimerInput"/> is equivalent to this <see
+        /// cref="TimerInput"/> except for the <see cref="Options"/> field.</returns>
+        public override bool EqualsExceptForOptions(TimerInput input)
         {
-            if (object.ReferenceEquals(obj, null))
-            {
-                return false;
-            }
-
-            if (object.ReferenceEquals(this, obj))
+            if (object.ReferenceEquals(this, input))
             {
                 return true;
             }
 
-            if (this.GetType() != obj.GetType())
+            if (object.ReferenceEquals(input, null))
             {
                 return false;
             }
 
-            if (!base.Equals(obj))
+            if (this.GetType() != input.GetType())
             {
                 return false;
             }
 
-            DateTimeTimerInput input = (DateTimeTimerInput)obj;
-            return object.Equals(this.dateTime, input.dateTime);
-        }
-
-        /// <summary>
-        /// Serves as the default hash function.
-        /// </summary>
-        /// <returns>A hash code for the current object.</returns>
-        public override int GetHashCode()
-        {
-            int hashCode = 17;
-            hashCode = (31 * hashCode) + base.GetHashCode();
-            hashCode = (31 * hashCode) + this.dateTime.GetHashCode();
-            return hashCode;
+            DateTimeTimerInput dateTimeTimerInput = (DateTimeTimerInput)input;
+            return this.DateTime.Equals(dateTimeTimerInput.DateTime);
         }
 
         /// <summary>

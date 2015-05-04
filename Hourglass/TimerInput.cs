@@ -31,7 +31,6 @@ namespace Hourglass
             }
 
             this.options = TimerOptions.FromTimerOptions(options);
-            this.options.Freeze();
         }
 
         /// <summary>
@@ -46,7 +45,6 @@ namespace Hourglass
             }
 
             this.options = TimerOptions.FromTimerOptionsInfo(inputInfo.Options);
-            this.options.Freeze();
         }
 
         /// <summary>
@@ -148,42 +146,13 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Determines whether the specified object is equal to the current object.
+        /// Returns a value indicating whether the <see cref="TimerInput"/> is equivalent to this <see
+        /// cref="TimerInput"/> except for the <see cref="Options"/> field, which is ignored.
         /// </summary>
-        /// <param name="obj">An <see cref="object"/>.</param>
-        /// <returns><c>true</c> if the specified object is equal to the current object, or <c>false</c> otherwise.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (object.ReferenceEquals(obj, null))
-            {
-                return false;
-            }
-
-            if (object.ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (this.GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            TimerInput input = (TimerInput)obj;
-            return object.Equals(this.options, input.options);
-        }
-
-        /// <summary>
-        /// Serves as the default hash function.
-        /// </summary>
-        /// <returns>A hash code for the current object.</returns>
-        public override int GetHashCode()
-        {
-            int hashCode = 17;
-            hashCode = (31 * hashCode) + this.options.GetHashCode();
-            return hashCode;
-        }
+        /// <param name="input">A <see cref="TimerInput"/>.</param>
+        /// <returns>A value indicating whether the <see cref="TimerInput"/> is equivalent to this <see
+        /// cref="TimerInput"/> except for the <see cref="Options"/> field.</returns>
+        public abstract bool EqualsExceptForOptions(TimerInput input);
 
         /// <summary>
         /// Returns the representation of the <see cref="TimerInput"/> used for XML serialization.
