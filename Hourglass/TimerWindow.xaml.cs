@@ -73,6 +73,11 @@ namespace Hourglass
         private HourglassTimer timer = new TimeSpanTimer();
 
         /// <summary>
+        /// The last <see cref="TimerInput"/> used to start a timer in the window.
+        /// </summary>
+        private TimerInput lastInput;
+
+        /// <summary>
         /// The animation used notify the user that the timer has expired.
         /// </summary>
         private DoubleAnimation expirationAnimation;
@@ -93,7 +98,7 @@ namespace Hourglass
         {
             this.InitializeComponent();
             this.InitializeAnimations();
-            this.BindTimer(this.Timer);
+            this.BindTimer();
             this.menu.Bind(this /* window */);
             this.scaler.Bind(this /* window */);
 
@@ -175,11 +180,29 @@ namespace Hourglass
                     return;
                 }
 
-                this.UnbindTimer(this.timer);
+                this.UnbindTimer();
                 this.timer = value;
-                this.BindTimer(this.timer);
+                this.BindTimer();
                 this.OnPropertyChanged("Timer");
             }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Starts a new <see cref="Timer"/> with the specified <see cref="TimerInput"/>.
+        /// </summary>
+        /// <param name="input">A <see cref="TimerInput"/>.</param>
+        public void StartFromInput(TimerInput input)
+        {
+            TimerInputManager.Instance.Add(input);
+            this.lastInput = input;
+
+            this.Timer = HourglassTimer.GetTimerForInput(input);
+            this.Timer.Start(input);
+            TimerManager.Instance.Add(this.Timer);
         }
 
         #endregion
@@ -280,7 +303,7 @@ namespace Hourglass
 
             this.TimerTextBox.Focusable = true;
             this.TimerTextBox.IsReadOnly = false;
-            this.TimerTextBox.Text = "TODO Set last timer text";
+            this.TimerTextBox.Text = this.lastInput != null ? this.lastInput.ToString() : string.Empty;
             this.TimerTextBox.SelectAll();
             this.TimerTextBox.Focus();
 
@@ -377,16 +400,15 @@ namespace Hourglass
         /// <summary>
         /// Binds the <see cref="TimerWindow"/> event handlers and controls to a <see cref="HourglassTimer"/>.
         /// </summary>
-        /// <param name="hourglassTimer">A <see cref="HourglassTimer"/>.</param>
-        private void BindTimer(HourglassTimer hourglassTimer)
+        private void BindTimer()
         {
-            hourglassTimer.Started += this.TimerStarted;
-            hourglassTimer.Paused += this.TimerPaused;
-            hourglassTimer.Resumed += this.TimerResumed;
-            hourglassTimer.Stopped += this.TimerStopped;
-            hourglassTimer.Expired += this.TimerExpired;
-            hourglassTimer.Tick += this.TimerTick;
-            hourglassTimer.PropertyChanged += this.TimerPropertyChanged;
+            this.Timer.Started += this.TimerStarted;
+            this.Timer.Paused += this.TimerPaused;
+            this.Timer.Resumed += this.TimerResumed;
+            this.Timer.Stopped += this.TimerStopped;
+            this.Timer.Expired += this.TimerExpired;
+            this.Timer.Tick += this.TimerTick;
+            this.Timer.PropertyChanged += this.TimerPropertyChanged;
 
             this.ShowViewForTimer();
             this.UpdateTimerBinding();
@@ -408,16 +430,20 @@ namespace Hourglass
         /// <summary>
         /// Unbinds the <see cref="TimerWindow"/> event handlers and controls from a <see cref="HourglassTimer"/>.
         /// </summary>
-        /// <param name="hourglassTimer">A <see cref="HourglassTimer"/>.</param>
-        private void UnbindTimer(HourglassTimer hourglassTimer)
+        private void UnbindTimer()
         {
-            hourglassTimer.Started -= this.TimerStarted;
-            hourglassTimer.Paused -= this.TimerPaused;
-            hourglassTimer.Resumed -= this.TimerResumed;
-            hourglassTimer.Stopped -= this.TimerStopped;
-            hourglassTimer.Expired -= this.TimerExpired;
-            hourglassTimer.Tick -= this.TimerTick;
-            hourglassTimer.PropertyChanged -= this.TimerPropertyChanged;
+            this.Timer.Started -= this.TimerStarted;
+            this.Timer.Paused -= this.TimerPaused;
+            this.Timer.Resumed -= this.TimerResumed;
+            this.Timer.Stopped -= this.TimerStopped;
+            this.Timer.Expired -= this.TimerExpired;
+            this.Timer.Tick -= this.TimerTick;
+            this.Timer.PropertyChanged -= this.TimerPropertyChanged;
+
+            if (this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired)
+            {
+                TimerManager.Instance.Remove(this.Timer);
+            }
         }
 
         #endregion
@@ -540,11 +566,7 @@ namespace Hourglass
                 return;
             }
 
-            TimerInputManager.Instance.Add(input);
-
-            this.Timer = HourglassTimer.GetTimerForInput(input);
-            this.Timer.Start(input);
-            TimerManager.Instance.Add(this.Timer);
+            this.StartFromInput(input);
         }
 
         /// <summary>
@@ -649,10 +671,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowClosed(object sender, EventArgs e)
         {
-            if (this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired)
-            {
-                TimerManager.Instance.Remove(this.Timer);
-            }
+            this.UnbindTimer();
         }
 
         #endregion

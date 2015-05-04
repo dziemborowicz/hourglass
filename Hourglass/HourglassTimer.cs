@@ -21,6 +21,12 @@ namespace Hourglass
         private readonly TimerOptions options;
 
         /// <summary>
+        /// The <see cref="TimerInput"/> used to start this timer, or <c>null</c> if the <see cref="Timer.State"/> is
+        /// <see cref="TimerState.Stopped"/>.
+        /// </summary>
+        private TimerInput input;
+
+        /// <summary>
         /// The percentage of time left until the timer expires.
         /// </summary>
         /// <remarks>
@@ -84,6 +90,7 @@ namespace Hourglass
             }
 
             this.options = TimerOptions.FromTimerOptionsInfo(timerInfo.Options);
+            this.input = TimerInput.FromTimerInputInfo(timerInfo.Input);
 
             this.UpdateHourglassTimer();
         }
@@ -98,6 +105,15 @@ namespace Hourglass
         public TimerOptions Options
         {
             get { return this.options; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TimerInput"/> used to start this timer, or <c>null</c> if the <see cref="Timer.State"/>
+        /// is <see cref="TimerState.Stopped"/>.
+        /// </summary>
+        public TimerInput Input
+        {
+            get { return this.input; }
         }
 
         /// <summary>
@@ -184,9 +200,40 @@ namespace Hourglass
         /// <summary>
         /// Starts the timer.
         /// </summary>
-        /// <param name="input">A <see cref="TimerInput"/>.</param>
+        /// <param name="timerInput">A <see cref="TimerInput"/>.</param>
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public abstract void Start(TimerInput input);
+        public virtual void Start(TimerInput timerInput)
+        {
+            this.input = timerInput;
+            this.OnPropertyChanged("Input");
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            this.Update();
+
+            string format = string.Empty;
+            switch (this.State)
+            {
+                case TimerState.Running:
+                    format = "{0} \u2794 {1}";
+                    break;
+
+                case TimerState.Paused:
+                    format = "{0} \u2794 {1} (Paused)";
+                    break;
+
+                case TimerState.Expired:
+                    format = "{1} (Expired)";
+                    break;
+            }
+
+            return string.Format(format, TimeSpanUtility.ToNaturalString(this.TimeLeft), this.input);
+        }
 
         #endregion
 
@@ -256,6 +303,7 @@ namespace Hourglass
 
             HourglassTimerInfo info = (HourglassTimerInfo)timerInfo;
             info.Options = TimerOptionsInfo.FromTimerOptions(this.Options);
+            info.Input = TimerInputInfo.FromTimerInput(this.Input);
         }
 
         #endregion
@@ -267,12 +315,13 @@ namespace Hourglass
         /// </summary>
         private void UpdateHourglassTimer()
         {
+            this.input = this.State != TimerState.Stopped ? this.input : null;
             this.timeLeftAsPercentage = this.GetTimeLeftAsPercentage();
             this.timeElapsedAsPercentage = this.GetTimeElapsedAsPercentage();
             this.timeLeftAsString = this.GetTimeLeftAsString();
             this.timeElapsedAsString = this.GetTimeElapsedAsString();
 
-            this.OnPropertyChanged("TimeLeftAsPercentage", "TimeElapsedAsPercentage", "TimeLeftAsString", "TimeElapsedAsString");
+            this.OnPropertyChanged("Input", "TimeLeftAsPercentage", "TimeElapsedAsPercentage", "TimeLeftAsString", "TimeElapsedAsString");
         }
 
         /// <summary>

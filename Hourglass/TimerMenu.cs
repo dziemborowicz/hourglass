@@ -155,7 +155,7 @@ namespace Hourglass
             this.UpdateSavedTimersMenuItem();
             this.UpdateSoundMenuItem();
 
-            this.SyncFromOptionsToMenu();
+            this.UpdateMenuFromOptions();
 
             this.ticker.Start();
         }
@@ -177,7 +177,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowContextMenuClosing(object sender, ContextMenuEventArgs e)
         {
-            this.SyncFromMenuToOptions();
+            this.UpdateOptionsFromMenu();
 
             this.ticker.Stop();
         }
@@ -189,7 +189,7 @@ namespace Hourglass
         /// <summary>
         /// Reads the options from the <see cref="TimerOptions"/> and applies them to this menu.
         /// </summary>
-        private void SyncFromOptionsToMenu()
+        private void UpdateMenuFromOptions()
         {
             TimeSpanTimerOptions timeSpanTimerOptions = this.timerWindow.Timer.Options as TimeSpanTimerOptions;
             if (timeSpanTimerOptions != null)
@@ -220,7 +220,7 @@ namespace Hourglass
         /// <summary>
         /// Reads the options from this menu and applies them to the <see cref="TimerOptions"/>.
         /// </summary>
-        private void SyncFromMenuToOptions()
+        private void UpdateOptionsFromMenu()
         {
             TimeSpanTimerOptions timeSpanTimerOptions = this.timerWindow.Timer.Options as TimeSpanTimerOptions;
             if (timeSpanTimerOptions != null)
@@ -356,14 +356,9 @@ namespace Hourglass
         {
             MenuItem menuItem = (MenuItem)sender;
             TimerInput input = (TimerInput)menuItem.Tag;
-            TimerInputManager.Instance.Add(input);
-
-            HourglassTimer timer = HourglassTimer.GetTimerForInput(input);
-            timer.Start(input);
-            TimerManager.Instance.Add(timer);
 
             TimerWindow window = new TimerWindow();
-            window.Timer = timer;
+            window.StartFromInput(input);
             window.Show();
         }
 
@@ -403,7 +398,7 @@ namespace Hourglass
                 foreach (Timer savedTimer in savedTimers)
                 {
                     MenuItem timerMenuItem = new MenuItem();
-                    timerMenuItem.Header = this.GetMenuHeaderForTimer(savedTimer);
+                    timerMenuItem.Header = savedTimer.ToString();
                     timerMenuItem.Tag = savedTimer;
                     timerMenuItem.Click += this.SavedTimerMenuItemClick;
 
@@ -433,44 +428,9 @@ namespace Hourglass
                 Timer timer = menuItem.Tag as Timer;
                 if (timer != null)
                 {
-                    timer.Update();
-                    menuItem.Header = this.GetMenuHeaderForTimer(timer);
+                    menuItem.Header = timer.ToString();
                 }
             }
-        }
-
-        /// <summary>
-        /// Returns the header string for a specified <see cref="Timer"/>.
-        /// </summary>
-        /// <param name="savedTimer">A <see cref="Timer"/>.</param>
-        /// <returns>The header string for a specified <see cref="Timer"/>.</returns>
-        private string GetMenuHeaderForTimer(Timer savedTimer)
-        {
-            savedTimer.Update();
-
-            string format = string.Empty;
-            switch (savedTimer.State)
-            {
-                case TimerState.Running:
-                    format = "{0} \u2794 {1}";
-                    break;
-
-                case TimerState.Paused:
-                    format = "{0} \u2794 {1} (Paused)";
-                    break;
-
-                case TimerState.Expired:
-                    format = "{1} (Expired)";
-                    break;
-            }
-
-            string timeLeft = TimeSpanUtility.ToNaturalString(savedTimer.TimeLeft);
-
-            string target = savedTimer is DateTimeTimer
-                ? DateTimeUtility.ToNaturalString(savedTimer.EndTime)
-                : TimeSpanUtility.ToShortNaturalString(savedTimer.TotalTime);
-
-            return string.Format(format, timeLeft, target);
         }
 
         /// <summary>
