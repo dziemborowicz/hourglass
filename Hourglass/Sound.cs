@@ -46,18 +46,6 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns a <see cref="Sound"/> for the specified identifier, or <c>null</c> if the identifier is <c>null</c>
-        /// or empty.
-        /// </summary>
-        /// <param name="identifier">The identifier for the sound.</param>
-        /// <returns>A <see cref="Sound"/> for the specified identifier, or <c>null</c> if the identifier is <c>null</c>
-        /// or empty.</returns>
-        public static Sound FromIdentifier(string identifier)
-        {
-            return SoundManager.Instance.GetSoundOrDefault(identifier);
-        }
-
-        /// <summary>
         /// Gets the friendly name for this sound.
         /// </summary>
         public string Name
@@ -71,6 +59,18 @@ namespace Hourglass
         public string Identifier
         {
             get { return this.identifier; }
+        }
+
+        /// <summary>
+        /// Returns a <see cref="Sound"/> for the specified identifier, or <c>null</c> if the identifier is <c>null</c>
+        /// or empty.
+        /// </summary>
+        /// <param name="identifier">The identifier for the sound.</param>
+        /// <returns>A <see cref="Sound"/> for the specified identifier, or <c>null</c> if the identifier is <c>null</c>
+        /// or empty.</returns>
+        public static Sound FromIdentifier(string identifier)
+        {
+            return SoundManager.Instance.GetSoundOrDefault(identifier);
         }
 
         /// <summary>
