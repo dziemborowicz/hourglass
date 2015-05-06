@@ -68,11 +68,11 @@ namespace Hourglass
 
         /// <summary>
         /// Returns a value indicating whether the <see cref="TimerInput"/> is equivalent to this <see
-        /// cref="TimerInput"/> except for the <see cref="Options"/> field, which is ignored.
+        /// cref="TimerInput"/> except for the <see cref="HourglassTimer.Options"/> field, which is ignored.
         /// </summary>
         /// <param name="input">A <see cref="TimerInput"/>.</param>
         /// <returns>A value indicating whether the <see cref="TimerInput"/> is equivalent to this <see
-        /// cref="TimerInput"/> except for the <see cref="Options"/> field.</returns>
+        /// cref="TimerInput"/> except for the <see cref="HourglassTimer.Options"/> field.</returns>
         public override bool EqualsExceptForOptions(TimerInput input)
         {
             if (object.ReferenceEquals(this, input))
