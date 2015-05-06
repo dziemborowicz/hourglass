@@ -69,6 +69,11 @@ namespace Hourglass
         /// <returns>The sound for the specified identifier, or <c>null</c> if no such sound is loaded.</returns>
         public Sound GetSound(string identifier)
         {
+            if (string.IsNullOrEmpty(identifier))
+            {
+                return null;
+            }
+
             return this.sounds.FirstOrDefault(s => s.Identifier == identifier);
         }
 
@@ -80,6 +85,11 @@ namespace Hourglass
         /// </returns>
         public Sound GetSoundOrDefault(string identifier)
         {
+            if (string.IsNullOrEmpty(identifier))
+            {
+                return null;
+            }
+
             return this.GetSound(identifier) ?? this.DefaultSound;
         }
 

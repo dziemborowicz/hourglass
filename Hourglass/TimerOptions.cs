@@ -119,7 +119,7 @@ namespace Hourglass
             this.showInNotificationArea = optionsInfo.ShowInNotificationArea;
             this.popUpWhenExpired = optionsInfo.PopUpWhenExpired;
             this.closeWhenExpired = optionsInfo.CloseWhenExpired;
-            this.sound = SoundManager.Instance.GetSoundOrDefault(optionsInfo.SoundIdentifier);
+            this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
             this.loopSound = optionsInfo.LoopSound;
         }
 
@@ -320,12 +320,12 @@ namespace Hourglass
         #region Public Methods
 
         /// <summary>
-        /// Returns a copy of the <see cref="TimerOptions"/>, or <c>null</c> if the <see cref="TimerOptions"/> is not a
-        /// supported type.
+        /// Returns a <see cref="TimerOptions"/> for the specified <see cref="TimerOptions"/>, or <c>null</c> if the
+        /// specified <see cref="TimerOptions"/> is <c>null</c>.
         /// </summary>
         /// <param name="options">A <see cref="TimerOptions"/>.</param>
-        /// <returns>A copy of the <see cref="TimerOptions"/>, or <c>null</c> if the <see cref="TimerOptions"/> is not
-        /// a supported type.</returns>
+        /// <returns>A <see cref="TimerOptions"/> for the specified <see cref="TimerOptions"/>, or <c>null</c> if the
+        /// specified <see cref="TimerOptions"/> is <c>null</c>.</returns>
         public static TimerOptions FromTimerOptions(TimerOptions options)
         {
             return options != null ? new TimerOptions(options) : null;
@@ -333,11 +333,11 @@ namespace Hourglass
 
         /// <summary>
         /// Returns a <see cref="TimerOptions"/> for the specified <see cref="TimerOptionsInfo"/>, or <c>null</c> if
-        /// the <see cref="TimerOptionsInfo"/> is not a supported type.
+        /// the specified <see cref="TimerOptionsInfo"/> is <c>null</c>.
         /// </summary>
         /// <param name="optionsInfo">A <see cref="TimerInputInfo"/>.</param>
         /// <returns>A <see cref="TimerOptions"/> for the specified <see cref="TimerOptionsInfo"/>, or <c>null</c> if
-        /// the <see cref="TimerOptionsInfo"/> is not a supported type.</returns>
+        /// the specified <see cref="TimerOptionsInfo"/> is <c>null</c>.</returns>
         public static TimerOptions FromTimerOptionsInfo(TimerOptionsInfo optionsInfo)
         {
             return optionsInfo != null ? new TimerOptions(optionsInfo) : null;
