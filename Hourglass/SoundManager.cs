@@ -43,23 +43,23 @@ namespace Hourglass
         /// </summary>
         public Sound DefaultSound
         {
-            get { return this.GetSound("resx://Normal beep"); }
+            get { return this.GetSound("resource:Normal beep"); }
         }
 
         /// <summary>
         /// Gets a collection of sounds stored in the assembly.
         /// </summary>
-        public IEnumerable<ResourceSound> ResourceSounds
+        public IEnumerable<Sound> BuiltInSounds
         {
-            get { return this.sounds.OfType<ResourceSound>(); }
+            get { return this.sounds.Where(s => s.IsBuiltIn); }
         }
 
         /// <summary>
         /// Gets a collection of sounds stored in the file system.
         /// </summary>
-        public IEnumerable<FileSound> FileSounds
+        public IEnumerable<Sound> UserProvidedSounds
         {
-            get { return this.sounds.OfType<FileSound>(); }
+            get { return this.sounds.Where(s => !s.IsBuiltIn); }
         }
 
         /// <summary>
@@ -100,9 +100,9 @@ namespace Hourglass
         private IList<Sound> GetResourceSounds()
         {
             List<Sound> list = new List<Sound>();
-            list.Add(new ResourceSound("Loud beep", () => Resources.BeepLoud));
-            list.Add(new ResourceSound("Normal beep", () => Resources.BeepNormal));
-            list.Add(new ResourceSound("Quiet beep", () => Resources.BeepQuiet));
+            list.Add(new Sound("Loud beep", () => Resources.BeepLoud));
+            list.Add(new Sound("Normal beep", () => Resources.BeepNormal));
+            list.Add(new Sound("Quiet beep", () => Resources.BeepQuiet));
             return list;
         }
 
@@ -120,7 +120,7 @@ namespace Hourglass
                 if (Directory.Exists(appDirectory))
                 {
                     IEnumerable<string> paths = Directory.GetFiles(appDirectory, "*.wav");
-                    IEnumerable<FileSound> fileSounds = paths.Select(path => new FileSound(path));
+                    IEnumerable<Sound> fileSounds = paths.Select(path => new Sound(path));
                     list.AddRange(fileSounds);
                 }
 
@@ -128,7 +128,7 @@ namespace Hourglass
                 if (Directory.Exists(soundsDirectory))
                 {
                     IEnumerable<string> paths = Directory.GetFiles(soundsDirectory, "*.wav");
-                    IEnumerable<FileSound> fileSounds = paths.Select(path => new FileSound(path));
+                    IEnumerable<Sound> fileSounds = paths.Select(path => new Sound(path));
                     list.AddRange(fileSounds);
                 }
 

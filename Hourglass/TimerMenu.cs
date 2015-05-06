@@ -493,11 +493,11 @@ namespace Hourglass
             this.selectableSoundMenuItems.Add(noSoundMenuItem);
 
             // Built-in sounds
-            if (SoundManager.Instance.ResourceSounds.Any())
+            if (SoundManager.Instance.BuiltInSounds.Any())
             {
                 this.soundMenuItem.Items.Add(new Separator());
 
-                foreach (Sound sound in SoundManager.Instance.ResourceSounds)
+                foreach (Sound sound in SoundManager.Instance.BuiltInSounds)
                 {
                     MenuItem menuItem = new MenuItem();
                     menuItem.Header = sound.Name;
@@ -510,12 +510,12 @@ namespace Hourglass
                 }
             }
 
-            // Custom sounds
-            if (SoundManager.Instance.FileSounds.Any())
+            // User-provided sounds
+            if (SoundManager.Instance.UserProvidedSounds.Any())
             {
                 this.soundMenuItem.Items.Add(new Separator());
 
-                foreach (Sound sound in SoundManager.Instance.FileSounds)
+                foreach (Sound sound in SoundManager.Instance.UserProvidedSounds)
                 {
                     MenuItem menuItem = new MenuItem();
                     menuItem.Header = sound.Name;

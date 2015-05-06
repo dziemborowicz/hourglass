@@ -76,11 +76,10 @@ namespace Hourglass
         {
             TimeSpanTimerInput timeSpanTimerInput = (TimeSpanTimerInput)timerInput;
 
-            DateTime startTime = DateTime.Now;
-            DateTime endTime = startTime.Add(timeSpanTimerInput.TimeSpan);
+            DateTime start = DateTime.Now;
+            DateTime end = start.Add(timeSpanTimerInput.TimeSpan);
 
-            this.Start(startTime, endTime);
-            base.Start(timerInput);
+            this.Start(start, end, timerInput);
         }
 
         #endregion

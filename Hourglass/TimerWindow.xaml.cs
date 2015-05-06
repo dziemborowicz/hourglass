@@ -78,6 +78,11 @@ namespace Hourglass
         private TimerInput lastInput = TimerInputManager.Instance.LastInput;
 
         /// <summary>
+        /// The <see cref="SoundPlayer"/> used to play notification sounds.
+        /// </summary>
+        private SoundPlayer soundPlayer = new SoundPlayer();
+
+        /// <summary>
         /// The animation used notify the user that the timer has expired.
         /// </summary>
         private DoubleAnimation expirationAnimation;
@@ -331,6 +336,7 @@ namespace Hourglass
             this.TimerTextBox.SelectAll();
             this.TimerTextBox.Focus();
 
+            this.soundPlayer.Stop();
             this.OuterNotificationBorder.Opacity = 0;
             this.EndAnimations();
 
@@ -352,6 +358,7 @@ namespace Hourglass
             FocusUtility.RemoveFocus(this.TimerTextBox);
             FocusUtility.RemoveFocus(this.TitleTextBox);
 
+            this.soundPlayer.Stop();
             this.OuterNotificationBorder.Opacity = 0;
             this.EndAnimations();
 
@@ -373,6 +380,7 @@ namespace Hourglass
             FocusUtility.RemoveFocus(this.TimerTextBox);
             FocusUtility.RemoveFocus(this.TitleTextBox);
 
+            this.soundPlayer.Play(this.Timer.Options.Sound, this.timer.Options.LoopSound);
             this.OuterNotificationBorder.Opacity = 1;
             this.EndAnimations();
             this.BeginExpirationAnimation();
@@ -697,6 +705,8 @@ namespace Hourglass
         private void WindowClosing(object sender, CancelEventArgs e)
         {
             this.UnbindTimer();
+
+            this.soundPlayer.Dispose();
 
             SettingsManager.Instance.Save();
         }

@@ -76,11 +76,10 @@ namespace Hourglass
         {
             DateTimeTimerInput dateTimeTimerInput = (DateTimeTimerInput)timerInput;
 
-            DateTime startTime = DateTime.Now;
-            DateTime endTime = dateTimeTimerInput.DateTime;
+            DateTime start = DateTime.Now;
+            DateTime end = dateTimeTimerInput.DateTime;
 
-            this.Start(startTime, endTime);
-            base.Start(timerInput);
+            this.Start(start, end, timerInput);
         }
 
         #endregion

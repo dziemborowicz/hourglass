@@ -299,10 +299,7 @@ namespace Hourglass
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
         public void Start(DateTime start, DateTime end)
         {
-            if (this.disposed)
-            {
-                throw new ObjectDisposedException(this.GetType().ToString());
-            }
+            this.ThrowIfDisposed();
 
             this.state = TimerState.Running;
             this.startTime = start;
@@ -325,10 +322,7 @@ namespace Hourglass
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
         public void Pause()
         {
-            if (this.disposed)
-            {
-                throw new ObjectDisposedException(this.GetType().ToString());
-            }
+            this.ThrowIfDisposed();
 
             if (this.state != TimerState.Running)
             {
@@ -356,10 +350,7 @@ namespace Hourglass
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
         public void Resume()
         {
-            if (this.disposed)
-            {
-                throw new ObjectDisposedException(this.GetType().ToString());
-            }
+            this.ThrowIfDisposed();
 
             if (this.state != TimerState.Paused)
             {
@@ -384,10 +375,7 @@ namespace Hourglass
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
         public void Stop()
         {
-            if (this.disposed)
-            {
-                throw new ObjectDisposedException(this.GetType().ToString());
-            }
+            this.ThrowIfDisposed();
 
             if (this.state == TimerState.Stopped)
             {
@@ -414,6 +402,8 @@ namespace Hourglass
         /// </remarks>
         public void Update()
         {
+            this.ThrowIfDisposed();
+
             if (this.state != TimerState.Running)
             {
                 return;
@@ -597,6 +587,17 @@ namespace Hourglass
                 {
                     this.dispatcherTimer.Stop();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Throws a <see cref="ObjectDisposedException"/> if the object has been disposed.
+        /// </summary>
+        protected void ThrowIfDisposed()
+        {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException(this.GetType().FullName);
             }
         }
 

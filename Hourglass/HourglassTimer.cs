@@ -212,11 +212,7 @@ namespace Hourglass
         /// </summary>
         /// <param name="timerInput">A <see cref="TimerInput"/>.</param>
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public virtual void Start(TimerInput timerInput)
-        {
-            this.input = timerInput;
-            this.OnPropertyChanged("Input");
-        }
+        public abstract void Start(TimerInput timerInput);
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -243,6 +239,27 @@ namespace Hourglass
             }
 
             return string.Format(format, TimeSpanUtility.ToNaturalString(this.TimeLeft), this.input);
+        }
+
+        #endregion
+
+        #region Protected Methods (General)
+
+        /// <summary>
+        /// Starts the timer.
+        /// </summary>
+        /// <param name="start">The <see cref="DateTime"/> the timer was started.</param>
+        /// <param name="end">The <see cref="DateTime"/> the timer expires.</param>
+        /// <param name="timerInput">A <see cref="TimerInput"/>.</param>
+        /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
+        protected void Start(DateTime start, DateTime end, TimerInput timerInput)
+        {
+            this.ThrowIfDisposed();
+
+            this.input = timerInput;
+            this.OnPropertyChanged("Input");
+
+            this.Start(start, end);
         }
 
         #endregion
@@ -302,6 +319,10 @@ namespace Hourglass
             this.UpdateHourglassTimer();
             base.OnTick();
         }
+
+        #endregion
+
+        #region Protected Methods (Serialization)
 
         /// <summary>
         /// Sets the properties on a <see cref="TimerInfo"/> from the values in this class.
