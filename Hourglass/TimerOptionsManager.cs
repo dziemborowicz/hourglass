@@ -81,7 +81,10 @@ namespace Hourglass
                     orderby window.Menu.LastShowed descending
                     select window.Timer.Options;
 
-            this.defaultOptions = q.FirstOrDefault() ?? this.defaultOptions;
+            this.defaultOptions = TimerOptions.FromTimerOptions(q.FirstOrDefault()) ?? this.defaultOptions;
+
+            // Never set a default title
+            this.defaultOptions.Title = string.Empty;
         }
     }
 }
