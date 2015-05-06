@@ -37,11 +37,6 @@ namespace Hourglass
         private MenuItem loopTimerMenuItem;
 
         /// <summary>
-        /// The separator after the "Loop timer" <see cref="MenuItem"/>.
-        /// </summary>
-        private Separator loopTimerSeparator;
-
-        /// <summary>
         /// The "Always on top" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem alwaysOnTopMenuItem;
@@ -101,10 +96,27 @@ namespace Hourglass
         /// </summary>
         private MenuItem closeMenuItem;
 
+        /// <summary>
+        /// The date and time the menu was last visible.
+        /// </summary>
+        private DateTime lastShowed = DateTime.MinValue;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the date and time the menu was last visible.
+        /// </summary>
+        public DateTime LastShowed
+        {
+            get { return this.lastShowed; }
+        }
+
         #endregion
 
         #region Public Methods
-        
+
         /// <summary>
         /// Binds the <see cref="TimerMenu"/> to a <see cref="TimerWindow"/>.
         /// </summary>
@@ -157,6 +169,7 @@ namespace Hourglass
 
             this.UpdateMenuFromOptions();
 
+            this.lastShowed = DateTime.Now;
             this.ticker.Start();
         }
 
@@ -167,6 +180,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void DispatcherTimerTick(object sender, EventArgs e)
         {
+            this.lastShowed = DateTime.Now;
             this.UpdateSavedTimersHeaders();
         }
 
@@ -179,7 +193,10 @@ namespace Hourglass
         {
             this.UpdateOptionsFromMenu();
 
+            this.lastShowed = DateTime.Now;
             this.ticker.Stop();
+
+            SettingsManager.Instance.Save();
         }
 
         #endregion
@@ -191,18 +208,15 @@ namespace Hourglass
         /// </summary>
         private void UpdateMenuFromOptions()
         {
-            TimeSpanTimerOptions timeSpanTimerOptions = this.timerWindow.Timer.Options as TimeSpanTimerOptions;
-            if (timeSpanTimerOptions != null)
+            if (!(this.timerWindow.Timer is DateTimeTimer))
             {
-                this.loopTimerMenuItem.Visibility = Visibility.Visible;
-                this.loopTimerSeparator.Visibility = Visibility.Visible;
-
-                this.loopTimerMenuItem.IsChecked = timeSpanTimerOptions.LoopTimer;
+                this.loopTimerMenuItem.IsEnabled = true;
+                this.loopTimerMenuItem.IsChecked = this.timerWindow.Timer.Options.LoopTimer;
             }
             else
             {
-                this.loopTimerMenuItem.Visibility = Visibility.Collapsed;
-                this.loopTimerSeparator.Visibility = Visibility.Collapsed;
+                this.loopTimerMenuItem.IsEnabled = false;
+                this.loopTimerMenuItem.IsChecked = false;
             }
 
             this.alwaysOnTopMenuItem.IsChecked = this.timerWindow.Timer.Options.AlwaysOnTop;
@@ -222,10 +236,9 @@ namespace Hourglass
         /// </summary>
         private void UpdateOptionsFromMenu()
         {
-            TimeSpanTimerOptions timeSpanTimerOptions = this.timerWindow.Timer.Options as TimeSpanTimerOptions;
-            if (timeSpanTimerOptions != null)
+            if (!(this.timerWindow.Timer is DateTimeTimer))
             {
-                timeSpanTimerOptions.LoopTimer = this.loopTimerMenuItem.IsChecked;
+                this.timerWindow.Timer.Options.LoopTimer = this.loopTimerMenuItem.IsChecked;
             }
 
             this.timerWindow.Timer.Options.AlwaysOnTop = this.alwaysOnTopMenuItem.IsChecked;
@@ -254,8 +267,7 @@ namespace Hourglass
             this.loopTimerMenuItem.IsCheckable = true;
             this.Items.Add(this.loopTimerMenuItem);
 
-            this.loopTimerSeparator = new Separator();
-            this.Items.Add(this.loopTimerSeparator);
+            this.Items.Add(new Separator());
 
             this.alwaysOnTopMenuItem = new MenuItem();
             this.alwaysOnTopMenuItem.Header = "Always on top";
@@ -356,6 +368,7 @@ namespace Hourglass
         {
             MenuItem menuItem = (MenuItem)sender;
             TimerInput input = (TimerInput)menuItem.Tag;
+            input.Options = this.timerWindow.Timer.Options;
 
             TimerWindow window = new TimerWindow();
             window.StartFromInput(input);

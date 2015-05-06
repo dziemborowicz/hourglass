@@ -70,12 +70,12 @@ namespace Hourglass
         /// <summary>
         /// The <see cref="HourglassTimer"/> backing the window.
         /// </summary>
-        private HourglassTimer timer = new TimeSpanTimer();
+        private HourglassTimer timer = new TimeSpanTimer(TimerOptionsManager.Instance.DefaultOptions);
 
         /// <summary>
         /// The last <see cref="TimerInput"/> used to start a timer in the window.
         /// </summary>
-        private TimerInput lastInput;
+        private TimerInput lastInput = TimerInputManager.Instance.LastInput;
 
         /// <summary>
         /// The animation used notify the user that the timer has expired.
@@ -164,6 +164,22 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Gets the <see cref="TimerMenu"/> for the window.
+        /// </summary>
+        public TimerMenu Menu
+        {
+            get { return this.menu; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TimerScaler"/> for the window.
+        /// </summary>
+        public TimerScaler Scaler
+        {
+            get { return this.scaler; }
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="HourglassTimer"/> backing the window.
         /// </summary>
         public HourglassTimer Timer
@@ -185,6 +201,14 @@ namespace Hourglass
                 this.BindTimer();
                 this.OnPropertyChanged("Timer");
             }
+        }
+
+        /// <summary>
+        /// Gets the last <see cref="TimerInput"/> used to start a timer in the window.
+        /// </summary>
+        public TimerInput LastInput
+        {
+            get { return this.lastInput; }
         }
 
         #endregion
@@ -566,6 +590,7 @@ namespace Hourglass
                 return;
             }
 
+            input.Options = this.Timer.Options;
             this.StartFromInput(input);
         }
 
@@ -665,13 +690,15 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="TimerWindow"/> is about to close.
+        /// Invoked directly after <see cref="Window.Close"/> is called, and can be handled to cancel window closure.
         /// </summary>
         /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private void WindowClosed(object sender, EventArgs e)
+        private void WindowClosing(object sender, CancelEventArgs e)
         {
             this.UnbindTimer();
+
+            SettingsManager.Instance.Save();
         }
 
         #endregion

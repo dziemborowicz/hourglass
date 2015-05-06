@@ -26,7 +26,7 @@ namespace Hourglass
         /// <param name="dateTime">The <see cref="DateTime"/> until which the <see cref="DateTimeTimer"/> should count
         /// down.</param>
         public DateTimeTimerInput(DateTime dateTime)
-            : this(dateTime, new DateTimeTimerOptions())
+            : this(dateTime, new TimerOptions())
         {
         }
 

@@ -21,7 +21,15 @@ namespace Hourglass
         /// Initializes a new instance of the <see cref="TimeSpanTimer"/> class.
         /// </summary>
         public TimeSpanTimer()
-            : base(new TimeSpanTimerOptions())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeSpanTimer"/> class.
+        /// </summary>
+        /// <param name="options">A <see cref="TimerOptions"/>.</param>
+        public TimeSpanTimer(TimerOptions options)
+            : base(options)
         {
         }
 

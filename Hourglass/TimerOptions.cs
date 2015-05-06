@@ -14,7 +14,7 @@ namespace Hourglass
     /// <summary>
     /// Configuration data for a timer.
     /// </summary>
-    public abstract class TimerOptions : INotifyPropertyChanged
+    public class TimerOptions : INotifyPropertyChanged
     {
         #region Private Members
 
@@ -22,6 +22,11 @@ namespace Hourglass
         /// A user-specified title for the timer.
         /// </summary>
         private string title;
+
+        /// <summary>
+        /// A value indicating whether to loop the timer continuously.
+        /// </summary>
+        private bool loopTimer;
 
         /// <summary>
         /// A value indicating whether the timer window should always be displayed on top of other windows.
@@ -63,8 +68,16 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerOptions"/> class.
         /// </summary>
-        protected TimerOptions()
+        public TimerOptions()
         {
+            this.title = string.Empty;
+            this.loopTimer = false;
+            this.alwaysOnTop = false;
+            this.showInNotificationArea = false;
+            this.popUpWhenExpired = true;
+            this.closeWhenExpired = false;
+            this.sound = SoundManager.Instance.DefaultSound;
+            this.loopSound = false;
         }
 
         /// <summary>
@@ -72,20 +85,21 @@ namespace Hourglass
         /// cref="TimerOptions"/> class.
         /// </summary>
         /// <param name="options">A <see cref="TimerOptions"/>.</param>
-        protected TimerOptions(TimerOptions options)
+        public TimerOptions(TimerOptions options)
         {
             if (options == null)
             {
                 throw new ArgumentNullException("options");
             }
 
-            this.title = options.Title;
-            this.alwaysOnTop = options.AlwaysOnTop;
-            this.showInNotificationArea = options.ShowInNotificationArea;
-            this.popUpWhenExpired = options.PopUpWhenExpired;
-            this.closeWhenExpired = options.CloseWhenExpired;
-            this.sound = options.Sound;
-            this.loopSound = options.LoopSound;
+            this.title = options.title;
+            this.loopTimer = options.loopTimer;
+            this.alwaysOnTop = options.alwaysOnTop;
+            this.showInNotificationArea = options.showInNotificationArea;
+            this.popUpWhenExpired = options.popUpWhenExpired;
+            this.closeWhenExpired = options.closeWhenExpired;
+            this.sound = options.sound;
+            this.loopSound = options.loopSound;
         }
 
         /// <summary>
@@ -100,6 +114,7 @@ namespace Hourglass
             }
 
             this.title = optionsInfo.Title;
+            this.loopTimer = optionsInfo.LoopTimer;
             this.alwaysOnTop = optionsInfo.AlwaysOnTop;
             this.showInNotificationArea = optionsInfo.ShowInNotificationArea;
             this.popUpWhenExpired = optionsInfo.PopUpWhenExpired;
@@ -124,7 +139,7 @@ namespace Hourglass
         /// <summary>
         /// Gets or sets a user-specified title for the timer.
         /// </summary>
-        public string Title
+        public virtual string Title
         {
             get
             {
@@ -144,9 +159,31 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to loop the timer continuously.
+        /// </summary>
+        public virtual bool LoopTimer
+        {
+            get
+            {
+                return this.loopTimer;
+            }
+
+            set
+            {
+                if (this.loopTimer == value)
+                {
+                    return;
+                }
+
+                this.loopTimer = value;
+                this.OnPropertyChanged("LoopTimer");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the timer window should always be displayed on top of other windows.
         /// </summary>
-        public bool AlwaysOnTop
+        public virtual bool AlwaysOnTop
         {
             get
             {
@@ -169,7 +206,7 @@ namespace Hourglass
         /// Gets or sets a value indicating whether an icon for the timer window should be shown in the notification
         /// area (system tray).
         /// </summary>
-        public bool ShowInNotificationArea
+        public virtual bool ShowInNotificationArea
         {
             get
             {
@@ -192,7 +229,7 @@ namespace Hourglass
         /// Gets or sets a value indicating whether the timer window should be brought to the top of other windows when
         /// the timer expires.
         /// </summary>
-        public bool PopUpWhenExpired
+        public virtual bool PopUpWhenExpired
         {
             get
             {
@@ -214,7 +251,7 @@ namespace Hourglass
         /// <summary>
         /// Gets or sets a value indicating whether the timer window should be closed when the timer expires.
         /// </summary>
-        public bool CloseWhenExpired
+        public virtual bool CloseWhenExpired
         {
             get
             {
@@ -236,7 +273,7 @@ namespace Hourglass
         /// <summary>
         /// Gets or sets the sound to play when the timer expires, or <c>null</c> if no sound is to be played.
         /// </summary>
-        public Sound Sound
+        public virtual Sound Sound
         {
             get
             {
@@ -259,7 +296,7 @@ namespace Hourglass
         /// Gets or sets a value indicating whether the sound that plays when the timer expires should be looped until
         /// stopped by the user.
         /// </summary>
-        public bool LoopSound
+        public virtual bool LoopSound
         {
             get
             {
@@ -291,19 +328,7 @@ namespace Hourglass
         /// a supported type.</returns>
         public static TimerOptions FromTimerOptions(TimerOptions options)
         {
-            TimeSpanTimerOptions timeSpanTimerOptions = options as TimeSpanTimerOptions;
-            if (timeSpanTimerOptions != null)
-            {
-                return new TimeSpanTimerOptions(timeSpanTimerOptions);
-            }
-
-            DateTimeTimerOptions dateTimeTimerOptions = options as DateTimeTimerOptions;
-            if (dateTimeTimerOptions != null)
-            {
-                return new DateTimeTimerOptions(dateTimeTimerOptions);
-            }
-
-            return null;
+            return options != null ? new TimerOptions(options) : null;
         }
 
         /// <summary>
@@ -315,19 +340,7 @@ namespace Hourglass
         /// the <see cref="TimerOptionsInfo"/> is not a supported type.</returns>
         public static TimerOptions FromTimerOptionsInfo(TimerOptionsInfo optionsInfo)
         {
-            TimeSpanTimerOptionsInfo timeSpanTimerOptionsInfo = optionsInfo as TimeSpanTimerOptionsInfo;
-            if (timeSpanTimerOptionsInfo != null)
-            {
-                return new TimeSpanTimerOptions(timeSpanTimerOptionsInfo);
-            }
-
-            DateTimeTimerOptionsInfo dateTimeTimerOptionsInfo = optionsInfo as DateTimeTimerOptionsInfo;
-            if (dateTimeTimerOptionsInfo != null)
-            {
-                return new DateTimeTimerOptions(dateTimeTimerOptionsInfo);
-            }
-
-            return null;
+            return optionsInfo != null ? new TimerOptions(optionsInfo) : null;
         }
 
         /// <summary>
@@ -336,35 +349,21 @@ namespace Hourglass
         /// <returns>The representation of the <see cref="TimerOptions"/> used for XML serialization.</returns>
         public TimerOptionsInfo ToTimerOptionsInfo()
         {
-            TimerOptionsInfo info = this.GetNewTimerOptionsInfo();
-            this.SetTimerOptionsInfo(info);
+            TimerOptionsInfo info = new TimerOptionsInfo();
+            info.Title = this.title;
+            info.LoopTimer = this.loopTimer;
+            info.AlwaysOnTop = this.alwaysOnTop;
+            info.ShowInNotificationArea = this.showInNotificationArea;
+            info.PopUpWhenExpired = this.popUpWhenExpired;
+            info.CloseWhenExpired = this.closeWhenExpired;
+            info.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;
+            info.LoopSound = this.loopSound;
             return info;
         }
 
         #endregion
 
         #region Protected Methods
-
-        /// <summary>
-        /// Returns a new <see cref="TimerOptionsInfo"/> of the correct type for this class.
-        /// </summary>
-        /// <returns>A new <see cref="TimerOptionsInfo"/>.</returns>
-        protected abstract TimerOptionsInfo GetNewTimerOptionsInfo();
-
-        /// <summary>
-        /// Sets the properties on a <see cref="TimerOptionsInfo"/> from the values in this class.
-        /// </summary>
-        /// <param name="timerOptionsInfo">A <see cref="TimerOptionsInfo"/>.</param>
-        protected virtual void SetTimerOptionsInfo(TimerOptionsInfo timerOptionsInfo)
-        {
-            timerOptionsInfo.Title = this.title;
-            timerOptionsInfo.AlwaysOnTop = this.alwaysOnTop;
-            timerOptionsInfo.ShowInNotificationArea = this.showInNotificationArea;
-            timerOptionsInfo.PopUpWhenExpired = this.popUpWhenExpired;
-            timerOptionsInfo.CloseWhenExpired = this.closeWhenExpired;
-            timerOptionsInfo.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;
-            timerOptionsInfo.LoopSound = this.loopSound;
-        }
 
         /// <summary>
         /// Raises the <see cref="PropertyChanged"/> event.

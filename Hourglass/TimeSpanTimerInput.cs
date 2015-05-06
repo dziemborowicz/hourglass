@@ -26,7 +26,7 @@ namespace Hourglass
         /// <param name="timeSpan">The <see cref="TimeSpan"/> for which the <see cref="TimeSpanTimer"/> should count
         /// down.</param>
         public TimeSpanTimerInput(TimeSpan timeSpan)
-            : this(timeSpan, new TimeSpanTimerOptions())
+            : this(timeSpan, new TimerOptions())
         {
         }
 

@@ -44,5 +44,16 @@ namespace Hourglass.Properties {
                 this["Inputs"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Hourglass.Serialization.TimerOptionsInfo DefaultOptions {
+            get {
+                return ((global::Hourglass.Serialization.TimerOptionsInfo)(this["DefaultOptions"]));
+            }
+            set {
+                this["DefaultOptions"] = value;
+            }
+        }
     }
 }

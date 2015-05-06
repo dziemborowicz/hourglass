@@ -21,7 +21,15 @@ namespace Hourglass
         /// Initializes a new instance of the <see cref="DateTimeTimer"/> class.
         /// </summary>
         public DateTimeTimer()
-            : base(new DateTimeTimerOptions())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeTimer"/> class.
+        /// </summary>
+        /// <param name="options">A <see cref="TimerOptions"/>.</param>
+        public DateTimeTimer(TimerOptions options)
+            : base(options)
         {
         }
 

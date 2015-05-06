@@ -34,6 +34,7 @@ namespace Hourglass
 
             TimerManager.Instance.Load();
             TimerInputManager.Instance.Load();
+            TimerOptionsManager.Instance.Load();
         }
 
         /// <summary>
@@ -43,6 +44,7 @@ namespace Hourglass
         {
             TimerManager.Instance.Save();
             TimerInputManager.Instance.Save();
+            TimerOptionsManager.Instance.Save();
 
             Settings.Default.Save();
         }

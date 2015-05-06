@@ -19,7 +19,7 @@ namespace Hourglass
         /// <summary>
         /// The configuration data for the timer.
         /// </summary>
-        private readonly TimerOptions options;
+        private TimerOptions options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerInput"/> class.
@@ -50,11 +50,12 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets the configuration data for the timer.
+        /// Gets or sets the configuration data for the timer.
         /// </summary>
         public TimerOptions Options
         {
             get { return this.options; }
+            set { this.options = value; }
         }
 
         /// <summary>

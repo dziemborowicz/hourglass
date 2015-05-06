@@ -58,7 +58,6 @@
     <Compile Include="AppEntry.cs" />
     <Compile Include="DateTimeTimer.cs" />
     <Compile Include="DateTimeTimerInput.cs" />
-    <Compile Include="DateTimeTimerOptions.cs" />
     <Compile Include="DateTimeUtility.cs" />
     <Compile Include="FileSound.cs" />
     <Compile Include="FocusUtility.cs" />
@@ -68,11 +67,9 @@
     <Compile Include="ResourceSound.cs" />
     <Compile Include="Serialization\DateTimeTimerInfo.cs" />
     <Compile Include="Serialization\DateTimeTimerInputInfo.cs" />
-    <Compile Include="Serialization\DateTimeTimerOptionsInfo.cs" />
     <Compile Include="Serialization\HourglassTimerInfo.cs" />
     <Compile Include="Serialization\TimeSpanTimerInfo.cs" />
     <Compile Include="Serialization\TimeSpanTimerInputInfo.cs" />
-    <Compile Include="Serialization\TimeSpanTimerOptionsInfo.cs" />
     <Compile Include="Serialization\TimerInfo.cs" />
     <Compile Include="Serialization\TimerInfoList.cs" />
     <Compile Include="Serialization\TimerInputInfo.cs" />
@@ -81,9 +78,9 @@
     <Compile Include="SettingsManager.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
+    <Compile Include="TimerOptionsManager.cs" />
     <Compile Include="TimeSpanTimer.cs" />
     <Compile Include="TimeSpanTimerInput.cs" />
-    <Compile Include="TimeSpanTimerOptions.cs" />
     <Compile Include="TimeSpanUtility.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TimerInput.cs" />

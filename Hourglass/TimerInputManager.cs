@@ -21,7 +21,7 @@ namespace Hourglass
         /// <summary>
         /// The maximum number of <see cref="TimerInput"/>s.
         /// </summary>
-        public const int Capacity = 5;
+        public const int Capacity = 10;
 
         /// <summary>
         /// Singleton instance of the <see cref="TimerInputManager"/> class.
@@ -31,7 +31,7 @@ namespace Hourglass
         /// <summary>
         /// The most recent <see cref="TimerInput"/>s in reverse chronological order.
         /// </summary>
-        private readonly List<TimerInput> timerInputs = new List<TimerInput>(Capacity); 
+        private readonly List<TimerInput> timerInputs = new List<TimerInput>(Capacity);
 
         /// <summary>
         /// Prevents a default instance of the <see cref="TimerInputManager"/> class from being created.
@@ -46,6 +46,14 @@ namespace Hourglass
         public IList<TimerInput> Inputs
         {
             get { return new ReadOnlyCollection<TimerInput>(this.timerInputs); }
+        }
+
+        /// <summary>
+        /// Gets the most recent <see cref="TimerInput"/>, or <c>null</c> if there are no <see cref="TimerInput"/>s.
+        /// </summary>
+        public TimerInput LastInput
+        {
+            get { return this.timerInputs.FirstOrDefault(); }
         }
 
         /// <summary>

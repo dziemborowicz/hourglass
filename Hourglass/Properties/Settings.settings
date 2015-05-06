@@ -8,5 +8,8 @@
     <Setting Name="Inputs" Type="Hourglass.Serialization.TimerInputInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DefaultOptions" Type="Hourglass.Serialization.TimerOptionsInfo" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

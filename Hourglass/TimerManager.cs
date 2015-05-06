@@ -22,7 +22,7 @@ namespace Hourglass
         /// <summary>
         /// The maximum number of <see cref="Timer"/> objects to persist in settings.
         /// </summary>
-        public const int MaxSavedTimers = 25;
+        public const int MaxSavedTimers = 10;
 
         /// <summary>
         /// Singleton instance of the <see cref="TimerManager"/> class.

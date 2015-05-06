@@ -65,6 +65,14 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="HourglassTimer"/> class.
         /// </summary>
+        protected HourglassTimer()
+            : this(new TimerOptions())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HourglassTimer"/> class.
+        /// </summary>
         /// <param name="options">Configuration data for this timer.</param>
         protected HourglassTimer(TimerOptions options)
         {
@@ -73,7 +81,7 @@ namespace Hourglass
                 throw new ArgumentNullException("options");
             }
 
-            this.options = options;
+            this.options = TimerOptions.FromTimerOptions(options);
 
             this.UpdateHourglassTimer();
         }
@@ -184,12 +192,12 @@ namespace Hourglass
         {
             if (input is DateTimeTimerInput)
             {
-                return new DateTimeTimer();
+                return new DateTimeTimer(input.Options);
             }
 
             if (input is TimeSpanTimerInput)
             {
-                return new TimeSpanTimer();
+                return new TimeSpanTimer(input.Options);
             }
 
             return null;

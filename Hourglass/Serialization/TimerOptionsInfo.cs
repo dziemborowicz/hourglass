@@ -6,19 +6,20 @@
 
 namespace Hourglass.Serialization
 {
-    using System.Xml.Serialization;
-
     /// <summary>
     /// The representation of a <see cref="TimerOptions"/> used for XML serialization.
     /// </summary>
-    [XmlInclude(typeof(DateTimeTimerOptionsInfo))]
-    [XmlInclude(typeof(TimeSpanTimerOptionsInfo))]
-    public abstract class TimerOptionsInfo
+    public class TimerOptionsInfo
     {
         /// <summary>
         /// Gets or sets a user-specified title for the timer.
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to loop the timer continuously.
+        /// </summary>
+        public bool LoopTimer { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the timer window should always be displayed on top of other windows.
