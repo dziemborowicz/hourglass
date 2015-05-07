@@ -185,6 +185,7 @@ namespace Hourglass
             // Hook up events
             this.timerWindow.Loaded += (s, e) => this.Scale();
             this.timerWindow.SizeChanged += (s, e) => this.Scale();
+            this.timerWindow.PropertyChanged += (s, e) => this.Scale();
             this.timerTextBox.TextChanged += (s, e) => this.Scale();
         }
 

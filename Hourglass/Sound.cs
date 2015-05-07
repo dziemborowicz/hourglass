@@ -41,6 +41,11 @@ namespace Hourglass
         private readonly Func<UnmanagedMemoryStream> streamProvider;
 
         /// <summary>
+        /// The length of the sound, or <c>null</c> if the length of the sound is unknown.
+        /// </summary>
+        private readonly TimeSpan? duration;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Sound"/> class for a sound stored in the file system.
         /// </summary>
         /// <param name="path">The path to the sound file.</param>
@@ -55,6 +60,7 @@ namespace Hourglass
             this.identifier = GetIdentifierFromPath(path);
             this.isBuiltIn = false;
             this.path = path;
+            this.duration = null;
         }
 
         /// <summary>
@@ -62,7 +68,8 @@ namespace Hourglass
         /// </summary>
         /// <param name="name">The friendly name for the sound.</param>
         /// <param name="streamProvider">A method that returns a stream to the sound data.</param>
-        public Sound(string name, Func<UnmanagedMemoryStream> streamProvider)
+        /// <param name="duration">The length of the sound.</param>
+        public Sound(string name, Func<UnmanagedMemoryStream> streamProvider, TimeSpan duration)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -74,10 +81,16 @@ namespace Hourglass
                 throw new ArgumentNullException("streamProvider");
             }
 
+            if (duration < TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException("duration");
+            }
+
             this.name = name;
             this.identifier = "resource:" + name;
             this.isBuiltIn = true;
             this.streamProvider = streamProvider;
+            this.duration = duration;
         }
 
         /// <summary>
@@ -110,6 +123,14 @@ namespace Hourglass
         public string Path
         {
             get { return this.path; }
+        }
+
+        /// <summary>
+        /// Gets the length of the sound, or <c>null</c> if the length of the sound is unknown.
+        /// </summary>
+        public TimeSpan? Duration
+        {
+            get { return this.duration; }
         }
 
         /// <summary>

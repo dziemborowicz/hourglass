@@ -87,6 +87,35 @@ namespace Hourglass
         #region Protected Methods
 
         /// <summary>
+        /// Raises the <see cref="Timer.Expired"/> event, and restarts the timer if required.
+        /// </summary>
+        protected override void OnExpired()
+        {
+            base.OnExpired();
+
+            // Loop the timer if the option is set
+            if (this.Options.LoopTimer)
+            {
+                if (!this.EndTime.HasValue)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                // Get the input time span in ticks
+                TimeSpanTimerInput timeSpanTimerInput = (TimeSpanTimerInput)this.Input;
+                long inputTicks = timeSpanTimerInput.TimeSpan.Ticks;
+
+                // Find the next start and end times where the end time is in the future
+                long nowTicks = DateTime.Now.Ticks;
+                long startTicks = (Math.Max(nowTicks - this.EndTime.Value.Ticks, 0L) / inputTicks * inputTicks) + this.EndTime.Value.Ticks;
+                long endTicks = startTicks + inputTicks;
+
+                // Start the timer
+                this.Start(new DateTime(startTicks), new DateTime(endTicks), timeSpanTimerInput);
+            }
+        }
+
+        /// <summary>
         /// Returns a new <see cref="TimerInfo"/> of the correct type for this class.
         /// </summary>
         /// <returns>A new <see cref="TimerInfo"/>.</returns>

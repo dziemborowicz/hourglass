@@ -15,12 +15,12 @@ namespace Hourglass
     using Hourglass.Serialization;
 
     /// <summary>
-    /// Manages <see cref="Timer"/>s.
+    /// Manages timers.
     /// </summary>
     public class TimerManager
     {
         /// <summary>
-        /// The maximum number of <see cref="Timer"/> objects to persist in settings.
+        /// The maximum number of timers to persist in settings.
         /// </summary>
         public const int MaxSavedTimers = 10;
 
@@ -30,9 +30,9 @@ namespace Hourglass
         public static readonly TimerManager Instance = new TimerManager();
 
         /// <summary>
-        /// The currently loaded <see cref="Timer"/> objects in reverse chronological order.
+        /// The currently loaded timers in reverse chronological order.
         /// </summary>
-        private readonly List<Timer> timers = new List<Timer>();
+        private readonly List<HourglassTimer> timers = new List<HourglassTimer>();
 
         /// <summary>
         /// Prevents a default instance of the <see cref="TimerManager"/> class from being created.
@@ -42,60 +42,61 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets a list of the currently loaded <see cref="Timer"/> objects.
+        /// Gets a list of the currently loaded timers.
         /// </summary>
-        public IList<Timer> Timers
+        public IList<HourglassTimer> Timers
         {
             get { return this.timers.AsReadOnly(); }
         }
 
         /// <summary>
-        /// Gets a list of the currently loaded <see cref="Timer"/> objects that are not associated with a <see
-        /// cref="TimerWindow"/> and are not <see cref="TimerState.Stopped"/>.
+        /// Gets a list of the currently loaded timers that are not bound to any <see cref="TimerWindow"/> and are not
+        /// <see cref="TimerState.Stopped"/>.
         /// </summary>
-        public IList<Timer> ResumableTimers
+        public IList<HourglassTimer> ResumableTimers
         {
-            get { return this.timers.Where(t => t.State != TimerState.Stopped && !IsAssociatedWithWindow(t)).ToList(); }
+            get { return this.timers.Where(t => t.State != TimerState.Stopped && !IsBoundToWindow(t)).ToList(); }
         }
 
         /// <summary>
-        /// Add a new <see cref="Timer"/>.
+        /// Add a new timer.
         /// </summary>
-        /// <param name="timer">A <see cref="Timer"/>.</param>
-        /// <exception cref="InvalidOperationException">If the <see cref="Timer"/> has already been added.</exception>
-        public void Add(Timer timer)
+        /// <param name="timer">An <see cref="HourglassTimer"/>.</param>
+        /// <exception cref="InvalidOperationException">If the <see cref="HourglassTimer"/> has already been added.
+        /// </exception>
+        public void Add(HourglassTimer timer)
         {
             if (this.timers.Contains(timer))
             {
-                throw new InvalidOperationException("The Timer was already added.");
+                throw new InvalidOperationException("The timer was already added.");
             }
 
             this.timers.Insert(0, timer);
         }
 
         /// <summary>
-        /// Remove an existing <see cref="Timer"/>.
+        /// Remove an existing timer.
         /// </summary>
-        /// <param name="timer">A <see cref="Timer"/>.</param>
+        /// <param name="timer">An <see cref="HourglassTimer"/>.</param>
         /// <exception cref="InvalidOperationException">If the timer had not been added previously or has already been
         /// removed.</exception>
-        public void Remove(Timer timer)
+        public void Remove(HourglassTimer timer)
         {
             if (!this.timers.Contains(timer))
             {
-                throw new InvalidOperationException("The Timer was not found.");
+                throw new InvalidOperationException("The timer was not found.");
             }
 
             this.timers.Remove(timer);
         }
 
         /// <summary>
-        /// Removes the <see cref="Timer"/> elements of the specified collection.
+        /// Removes the timer elements of the specified collection.
         /// </summary>
-        /// <param name="collection">A collection of <see cref="Timer"/> objects to remove.</param>
-        public void Remove(IEnumerable<Timer> collection)
+        /// <param name="collection">A collection of timers to remove.</param>
+        public void Remove(IEnumerable<HourglassTimer> collection)
         {
-            foreach (Timer timer in collection)
+            foreach (HourglassTimer timer in collection)
             {
                 this.Remove(timer);
             }
@@ -119,7 +120,7 @@ namespace Hourglass
             IEnumerable<TimerInfo> timerInfos = Settings.Default.Timers;
             if (timerInfos != null)
             {
-                this.timers.AddRange(timerInfos.Select(Timer.FromTimerInfo));
+                this.timers.AddRange(timerInfos.Select(Timer.FromTimerInfo).OfType<HourglassTimer>());
             }
         }
 
@@ -137,12 +138,10 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns a value indicating whether a <see cref="Timer"/> is associated with a <see cref="TimerWindow"/>.
-        /// </summary>
-        /// <param name="timer">A <see cref="Timer"/>.</param>
-        /// <returns>A value indicating whether a <see cref="Timer"/> is associated with a <see cref="TimerWindow"/>.
-        /// </returns>
-        private static bool IsAssociatedWithWindow(Timer timer)
+        /// Returns a value indicating whether a timer is bound to any <see cref="TimerWindow"/>.</summary>
+        /// <param name="timer">An <see cref="HourglassTimer"/>.</param>
+        /// <returns>A value indicating whether the timer is bound to any <see cref="TimerWindow"/>. </returns>
+        private static bool IsBoundToWindow(HourglassTimer timer)
         {
             return Application.Current.Windows.OfType<TimerWindow>().Any(w => w.Timer == timer);
         }

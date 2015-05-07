@@ -101,6 +101,7 @@ namespace Hourglass
         {
             this.InitializeComponent();
             this.InitializeAnimations();
+            this.InitializeSoundPlayer();
 
             this.BindTimer();
             this.SwitchToInputMode();
@@ -361,12 +362,12 @@ namespace Hourglass
         private void InitializeAnimations()
         {
             // Flash expiration storyboard
-            DoubleAnimation outerFlashAnimation = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.25)));
+            DoubleAnimation outerFlashAnimation = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.2)));
             outerFlashAnimation.EasingFunction = new ExponentialEase { EasingMode = EasingMode.EaseOut };
             Storyboard.SetTarget(outerFlashAnimation, this.OuterNotificationBorder);
             Storyboard.SetTargetProperty(outerFlashAnimation, new PropertyPath(UIElement.OpacityProperty));
 
-            DoubleAnimation innerFlashAnimation = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.25)));
+            DoubleAnimation innerFlashAnimation = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.2)));
             innerFlashAnimation.EasingFunction = new ExponentialEase { EasingMode = EasingMode.EaseOut };
             Storyboard.SetTarget(innerFlashAnimation, this.InnerNotificationBorder);
             Storyboard.SetTargetProperty(innerFlashAnimation, new PropertyPath(UIElement.OpacityProperty));
@@ -407,36 +408,13 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the flash expiration storyboard has completely finished playing.
+        /// Initializes the sound player.
         /// </summary>
-        /// <param name="sender">The originator of the event.</param>
-        /// <param name="e">The event data.</param>
-        private void FlashExpirationStoryboardCompleted(object sender, EventArgs e)
+        private void InitializeSoundPlayer()
         {
-            this.flashExpirationCount++;
-
-            switch (this.Mode)
-            {
-                case TimerWindowMode.Input:
-                    if (this.flashExpirationCount < 3 || this.Timer.Options.LoopSound)
-                    {
-                        this.flashExpirationStoryboard.Begin();
-                    }
-
-                    break;
-
-                case TimerWindowMode.Status:
-                    if (this.flashExpirationCount < 2 || this.Timer.Options.LoopSound)
-                    {
-                        this.flashExpirationStoryboard.Begin();
-                    }
-                    else
-                    {
-                        this.glowExpirationStoryboard.Begin();
-                    }
-
-                    break;
-            }
+            this.soundPlayer.PlaybackStarted += this.SoundPlayerPlaybackStarted;
+            this.soundPlayer.PlaybackStopped += this.SoundPlayerPlaybackStopped;
+            this.soundPlayer.PlaybackCompleted += this.SoundPlayerPlaybackCompleted;
         }
 
         /// <summary>
@@ -446,15 +424,25 @@ namespace Hourglass
         /// animation followed by the glow animation. Default is <c>false</c>.</param>
         private void BeginExpirationAnimation(bool glowOnly = false)
         {
-            this.flashExpirationCount = 0;
-
+            // Begin animation
             if (glowOnly)
             {
+                this.glowExpirationStoryboard.Stop();
                 this.glowExpirationStoryboard.Begin();
             }
             else
             {
+                this.flashExpirationCount = 0;
+                this.flashExpirationStoryboard.Stop();
                 this.flashExpirationStoryboard.Begin();
+            }
+
+            // Bring the window to the front if required
+            if (this.Timer.Options.PopUpWhenExpired)
+            {
+                this.Topmost = false;
+                this.Topmost = true;
+                this.Topmost = this.Timer.Options.AlwaysOnTop;
             }
         }
 
@@ -480,6 +468,7 @@ namespace Hourglass
         /// </summary>
         private void BeginValidationErrorAnimation()
         {
+            this.validationErrorStoryboard.Stop();
             this.validationErrorStoryboard.Begin();
         }
 
@@ -494,6 +483,97 @@ namespace Hourglass
             this.validationErrorStoryboard.Stop();
 
             this.soundPlayer.Stop();
+        }
+
+        /// <summary>
+        /// Invoked when the flash expiration storyboard has completely finished playing.
+        /// </summary>
+        /// <param name="sender">The originator of the event.</param>
+        /// <param name="e">The event data.</param>
+        private void FlashExpirationStoryboardCompleted(object sender, EventArgs e)
+        {
+            this.flashExpirationCount++;
+
+            switch (this.Mode)
+            {
+                case TimerWindowMode.Input:
+                    // Flash three times, or flash indefinitely if the sound is looped
+                    if (this.flashExpirationCount < 3 || this.Timer.Options.LoopSound)
+                    {
+                        this.flashExpirationStoryboard.Begin();
+                    }
+
+                    break;
+
+                case TimerWindowMode.Status:
+                    if (this.Timer.Options.LoopTimer && !(this.Timer is DateTimeTimer))
+                    {
+                        // Flash three times, or flash indefinitely if the sound is looped
+                        if (this.flashExpirationCount < 3 || this.Timer.Options.LoopSound)
+                        {
+                            this.flashExpirationStoryboard.Begin();
+                        }
+                    }
+                    else if (this.Timer.Options.Sound == null && this.Timer.Options.CloseWhenExpired)
+                    {
+                        // Flash three times and then close
+                        if (this.flashExpirationCount < 3)
+                        {
+                            this.flashExpirationStoryboard.Begin();
+                        }
+                        else
+                        {
+                            this.Close();
+                        }
+                    }
+                    else
+                    {
+                        // Flash three times and then glow, or flash indefinitely if the sound is looped
+                        if (this.flashExpirationCount < 2 || this.Timer.Options.LoopSound)
+                        {
+                            this.flashExpirationStoryboard.Begin();
+                        }
+                        else
+                        {
+                            this.glowExpirationStoryboard.Begin();
+                        }
+                    }
+
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when sound playback has started.
+        /// </summary>
+        /// <param name="sender">A <see cref="SoundPlayer"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void SoundPlayerPlaybackStarted(object sender, EventArgs e)
+        {
+            // Do nothing
+        }
+
+        /// <summary>
+        /// Invoked when sound playback has stopped.
+        /// </summary>
+        /// <param name="sender">A <see cref="SoundPlayer"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void SoundPlayerPlaybackStopped(object sender, EventArgs e)
+        {
+            // Do nothing
+        }
+
+        /// <summary>
+        /// Invoked when sound playback has completed.
+        /// </summary>
+        /// <param name="sender">A <see cref="SoundPlayer"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void SoundPlayerPlaybackCompleted(object sender, EventArgs e)
+        {
+            if (this.Timer.Options.CloseWhenExpired && !this.Timer.Options.LoopTimer && this.Mode == TimerWindowMode.Status)
+            {
+                this.Close();
+            }
         }
 
         #endregion
@@ -512,6 +592,7 @@ namespace Hourglass
             this.Timer.Expired += this.TimerExpired;
             this.Timer.Tick += this.TimerTick;
             this.Timer.PropertyChanged += this.TimerPropertyChanged;
+            this.Timer.Options.PropertyChanged += this.TimerOptionsPropertyChanged;
 
             this.UpdateBoundControls();
         }
@@ -531,7 +612,10 @@ namespace Hourglass
                     this.ResumeButton.IsEnabled = false;
                     this.StopButton.IsEnabled = false;
                     this.ResetButton.IsEnabled = false;
+                    this.CloseButton.IsEnabled = false;
                     this.CancelButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
+
+                    this.Topmost = this.Timer.Options.AlwaysOnTop;
                     return;
 
                 case TimerWindowMode.Status:
@@ -543,7 +627,10 @@ namespace Hourglass
                     this.ResumeButton.IsEnabled = this.Timer.State == TimerState.Paused;
                     this.StopButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
                     this.ResetButton.IsEnabled = this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired;
+                    this.CloseButton.IsEnabled = this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired;
                     this.CancelButton.IsEnabled = false;
+
+                    this.Topmost = this.Timer.Options.AlwaysOnTop;
                     return;
             }
         }
@@ -560,6 +647,7 @@ namespace Hourglass
             this.Timer.Expired -= this.TimerExpired;
             this.Timer.Tick -= this.TimerTick;
             this.Timer.PropertyChanged -= this.TimerPropertyChanged;
+            this.Timer.Options.PropertyChanged -= this.TimerOptionsPropertyChanged;
 
             if (this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired)
             {
@@ -642,6 +730,16 @@ namespace Hourglass
             this.UpdateBoundControls();
         }
 
+        /// <summary>
+        /// Invoked when a <see cref="TimerOptions"/> property value changes.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerOptions"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TimerOptionsPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.UpdateBoundControls();
+        }
+
         #endregion
 
         #region Private Methods (Window Events)
@@ -703,6 +801,16 @@ namespace Hourglass
         private void ResetButtonClick(object sender, RoutedEventArgs e)
         {
             this.SwitchToInputMode();
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="CloseButton"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="CloseButton"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void CloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         /// <summary>

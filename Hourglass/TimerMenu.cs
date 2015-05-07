@@ -222,7 +222,18 @@ namespace Hourglass
             this.alwaysOnTopMenuItem.IsChecked = this.timerWindow.Timer.Options.AlwaysOnTop;
             this.showInNotificationAreaMenuItem.IsChecked = this.timerWindow.Timer.Options.ShowInNotificationArea;
             this.popUpWhenExpiredMenuItem.IsChecked = this.timerWindow.Timer.Options.PopUpWhenExpired;
-            this.closeWhenExpiredMenuItem.IsChecked = this.timerWindow.Timer.Options.CloseWhenExpired;
+
+            if ((!this.timerWindow.Timer.Options.LoopTimer || this.timerWindow.Timer is DateTimeTimer) && !this.timerWindow.Timer.Options.LoopSound)
+            {
+                this.closeWhenExpiredMenuItem.IsChecked = this.timerWindow.Timer.Options.CloseWhenExpired;
+                this.closeWhenExpiredMenuItem.IsEnabled = true;
+            }
+            else
+            {
+                this.closeWhenExpiredMenuItem.IsChecked = false;
+                this.closeWhenExpiredMenuItem.IsEnabled = false;
+            }
+
             this.loopSoundMenuItem.IsChecked = this.timerWindow.Timer.Options.LoopSound;
 
             foreach (MenuItem menuItem in this.selectableSoundMenuItems)
@@ -236,7 +247,7 @@ namespace Hourglass
         /// </summary>
         private void UpdateOptionsFromMenu()
         {
-            if (!(this.timerWindow.Timer is DateTimeTimer))
+            if (this.loopTimerMenuItem.IsEnabled)
             {
                 this.timerWindow.Timer.Options.LoopTimer = this.loopTimerMenuItem.IsChecked;
             }
@@ -244,7 +255,12 @@ namespace Hourglass
             this.timerWindow.Timer.Options.AlwaysOnTop = this.alwaysOnTopMenuItem.IsChecked;
             this.timerWindow.Timer.Options.ShowInNotificationArea = this.showInNotificationAreaMenuItem.IsChecked;
             this.timerWindow.Timer.Options.PopUpWhenExpired = this.popUpWhenExpiredMenuItem.IsChecked;
-            this.timerWindow.Timer.Options.CloseWhenExpired = this.closeWhenExpiredMenuItem.IsChecked;
+
+            if (this.closeWhenExpiredMenuItem.IsEnabled)
+            {
+                this.timerWindow.Timer.Options.CloseWhenExpired = this.closeWhenExpiredMenuItem.IsChecked;
+            }
+
             this.timerWindow.Timer.Options.LoopSound = this.loopSoundMenuItem.IsChecked;
 
             MenuItem selectedSoundMenuItem = this.selectableSoundMenuItems.FirstOrDefault(mi => mi.IsChecked);
@@ -395,7 +411,7 @@ namespace Hourglass
         {
             this.savedTimersMenuItem.Items.Clear();
 
-            IList<Timer> savedTimers = TimerManager.Instance.ResumableTimers;
+            IList<HourglassTimer> savedTimers = TimerManager.Instance.ResumableTimers;
 
             if (savedTimers.Count == 0)
             {
@@ -407,8 +423,10 @@ namespace Hourglass
             }
             else
             {
-                foreach (Timer savedTimer in savedTimers)
+                foreach (HourglassTimer savedTimer in savedTimers)
                 {
+                    savedTimer.Update();
+
                     MenuItem timerMenuItem = new MenuItem();
                     timerMenuItem.Header = savedTimer.ToString();
                     timerMenuItem.Tag = savedTimer;

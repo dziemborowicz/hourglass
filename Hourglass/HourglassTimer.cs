@@ -233,6 +233,12 @@ namespace Hourglass
                     format = string.IsNullOrEmpty(this.Options.Title)
                         ? "{0} \u2794 {1}"
                         : "{0} \u2794 {1} \"{2}\"";
+
+                    if (this.Options.LoopTimer && !(this is DateTimeTimer))
+                    {
+                        format += " (Looped)";
+                    }
+
                     break;
 
                 case TimerState.Paused:

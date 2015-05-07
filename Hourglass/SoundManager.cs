@@ -6,6 +6,7 @@
 
 namespace Hourglass
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -100,9 +101,9 @@ namespace Hourglass
         private IList<Sound> GetResourceSounds()
         {
             List<Sound> list = new List<Sound>();
-            list.Add(new Sound("Loud beep", () => Resources.BeepLoud));
-            list.Add(new Sound("Normal beep", () => Resources.BeepNormal));
-            list.Add(new Sound("Quiet beep", () => Resources.BeepQuiet));
+            list.Add(new Sound("Loud beep", () => Resources.BeepLoud, TimeSpan.FromMilliseconds(600)));
+            list.Add(new Sound("Normal beep", () => Resources.BeepNormal, TimeSpan.FromMilliseconds(600)));
+            list.Add(new Sound("Quiet beep", () => Resources.BeepQuiet, TimeSpan.FromMilliseconds(600)));
             return list;
         }
 

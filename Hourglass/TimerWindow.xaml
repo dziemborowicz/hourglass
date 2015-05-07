@@ -120,6 +120,7 @@
                     <Button x:Name="ResumeButton" Content="Resume" Click="ResumeButtonClick"/>
                     <Button x:Name="StopButton" Content="Stop" Click="StopButtonClick"/>
                     <Button x:Name="ResetButton" Content="Reset" Click="ResetButtonClick"/>
+                    <Button x:Name="CloseButton" Content="Close" Click="CloseButtonClick"/>
                     <Button x:Name="CancelButton" Content="Cancel" Click="CancelButtonClick" IsCancel="True"/>
                 </StackPanel>
             </StackPanel>

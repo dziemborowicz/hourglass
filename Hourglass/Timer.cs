@@ -132,7 +132,7 @@ namespace Hourglass
 
             if (this.state == TimerState.Running)
             {
-                this.StartDispatcherTimer();
+                this.dispatcherTimer.Start();
             }
         }
 
@@ -310,7 +310,9 @@ namespace Hourglass
 
             this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeElapsed", "TimeLeft", "TotalTime");
             this.OnStarted();
-            this.StartDispatcherTimer();
+
+            this.Update();
+            this.dispatcherTimer.Start();
         }
 
         /// <summary>
@@ -336,7 +338,8 @@ namespace Hourglass
             this.startTime = null;
             this.endTime = null;
 
-            this.StopDispatcherTimer();
+            this.dispatcherTimer.Stop();
+
             this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeElapsed", "TimeLeft");
             this.OnPaused();
         }
@@ -363,7 +366,9 @@ namespace Hourglass
 
             this.OnPropertyChanged("State", "StartTime", "EndTime");
             this.OnResumed();
-            this.StartDispatcherTimer();
+
+            this.Update();
+            this.dispatcherTimer.Start();
         }
 
         /// <summary>
@@ -389,7 +394,8 @@ namespace Hourglass
             this.timeLeft = null;
             this.totalTime = null;
 
-            this.StopDispatcherTimer();
+            this.dispatcherTimer.Stop();
+
             this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime");
             this.OnStopped();
         }
@@ -422,7 +428,8 @@ namespace Hourglass
             {
                 this.state = TimerState.Expired;
 
-                this.StopDispatcherTimer();
+                this.dispatcherTimer.Stop();
+
                 this.OnPropertyChanged("State");
                 this.OnExpired();
             }
@@ -599,27 +606,6 @@ namespace Hourglass
             {
                 throw new ObjectDisposedException(this.GetType().FullName);
             }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Starts the <see cref="DispatcherTimer"/>.
-        /// </summary>
-        private void StartDispatcherTimer()
-        {
-            this.dispatcherTimer.Start();
-            this.Update();
-        }
-
-        /// <summary>
-        /// Stops the <see cref="DispatcherTimer"/>.
-        /// </summary>
-        private void StopDispatcherTimer()
-        {
-            this.dispatcherTimer.Stop();
         }
 
         #endregion
