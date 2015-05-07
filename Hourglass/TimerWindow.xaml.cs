@@ -11,6 +11,7 @@ namespace Hourglass
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media.Animation;
+    using System.Windows.Shell;
 
     /// <summary>
     /// The mode of a <see cref="TimerWindow"/>.
@@ -605,7 +606,8 @@ namespace Hourglass
             switch (this.Mode)
             {
                 case TimerWindowMode.Input:
-                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0;
+                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
+                    this.UpdateTaskbarProgress();
 
                     this.StartButton.IsEnabled = true;
                     this.PauseButton.IsEnabled = false;
@@ -620,7 +622,8 @@ namespace Hourglass
 
                 case TimerWindowMode.Status:
                     this.TimerTextBox.Text = this.Timer.TimeLeftAsString;
-                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0;
+                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
+                    this.UpdateTaskbarProgress();
 
                     this.StartButton.IsEnabled = false;
                     this.PauseButton.IsEnabled = this.Timer.State == TimerState.Running && !(this.Timer is DateTimeTimer);
@@ -632,6 +635,53 @@ namespace Hourglass
 
                     this.Topmost = this.Timer.Options.AlwaysOnTop;
                     return;
+            }
+        }
+
+        /// <summary>
+        /// Updates the progress shown in the taskbar.
+        /// </summary>
+        private void UpdateTaskbarProgress()
+        {
+            switch (this.Timer.State)
+            {
+                case TimerState.Stopped:
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
+                    this.TaskbarItemInfo.ProgressValue = 0.0;
+                    break;
+
+                case TimerState.Running:
+                    if (!(this.Timer is DateTimeTimer))
+                    {
+                        this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                        this.TaskbarItemInfo.ProgressValue = (this.Timer.TimeLeftAsPercentage ?? 0.0) / 100.0;
+                    }
+                    else
+                    {
+                        this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
+                        this.TaskbarItemInfo.ProgressValue = 0.0;
+                    }
+
+                    break;
+
+                case TimerState.Paused:
+                    if (!(this.Timer is DateTimeTimer))
+                    {
+                        this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Paused;
+                        this.TaskbarItemInfo.ProgressValue = (this.Timer.TimeLeftAsPercentage ?? 0.0) / 100.0;
+                    }
+                    else
+                    {
+                        this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Paused;
+                        this.TaskbarItemInfo.ProgressValue = 0.0;
+                    }
+
+                    break;
+
+                case TimerState.Expired:
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
+                    this.TaskbarItemInfo.ProgressValue = 1.0;
+                    break;
             }
         }
 
@@ -800,6 +850,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void ResetButtonClick(object sender, RoutedEventArgs e)
         {
+            this.Timer.Stop();
             this.SwitchToInputMode();
         }
 
@@ -881,6 +932,7 @@ namespace Hourglass
                     }
                     else
                     {
+                        this.Timer.Stop();
                         this.SwitchToInputMode();
                     }
 

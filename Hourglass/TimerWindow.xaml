@@ -107,6 +107,9 @@
             </Setter>
         </Style>
     </Window.Resources>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo/>
+    </Window.TaskbarItemInfo>
     <Grid x:Name="OuterGrid">
         <ProgressBar x:Name="ProgressBar"/>
         <Border x:Name="OuterNotificationBorder" Background="#C75050" IsHitTestVisible="False" Opacity="0"/>
