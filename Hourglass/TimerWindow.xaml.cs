@@ -353,6 +353,44 @@ namespace Hourglass
             this.UpdateBoundControls();
         }
 
+        /// <summary>
+        /// Cancels the current action, or resets the interface.
+        /// </summary>
+        /// <remarks>
+        /// This is invoked when the user presses the Escape key, or performs an equivalent action.
+        /// </remarks>
+        private void CancelOrReset()
+        {
+            switch (this.Mode)
+            {
+                case TimerWindowMode.Input:
+                    if (this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired)
+                    {
+                        this.SwitchToStatusMode();
+                    }
+
+                    this.EndAnimationsAndSounds();
+
+                    return;
+
+                case TimerWindowMode.Status:
+                    if (this.Timer.State != TimerState.Expired)
+                    {
+                        FocusUtility.RemoveFocus(this.TimerTextBox);
+                        FocusUtility.RemoveFocus(this.TitleTextBox);
+                    }
+                    else
+                    {
+                        this.Timer.Stop();
+                        this.SwitchToInputMode();
+                    }
+
+                    this.EndAnimationsAndSounds();
+
+                    return;
+            }
+        }
+
         #endregion
 
         #region Private Methods (Animations and Sounds)
@@ -758,6 +796,11 @@ namespace Hourglass
         {
             this.BeginExpirationAnimationAndSound();
             this.UpdateBoundControls();
+
+            if (this.Mode == TimerWindowMode.Input)
+            {
+                this.Timer.Stop();
+            }
         }
 
         /// <summary>
@@ -871,10 +914,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            if (this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired)
-            {
-                this.SwitchToStatusMode();
-            }
+            this.CancelOrReset();
         }
 
         /// <summary>
@@ -906,40 +946,28 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Invoked when a key on the keyboard is pressed in the <see cref="TimerWindow"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.CancelOrReset();
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
         /// Invoked when any mouse button is depressed on the <see cref="TimerWindow"/>.
         /// </summary>
         /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)
         {
-            switch (this.Mode)
-            {
-                case TimerWindowMode.Input:
-                    if (this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired)
-                    {
-                        this.SwitchToStatusMode();
-                    }
-
-                    this.EndAnimationsAndSounds();
-
-                    return;
-
-                case TimerWindowMode.Status:
-                    if (this.Timer.State != TimerState.Expired)
-                    {
-                        FocusUtility.RemoveFocus(this.TimerTextBox);
-                        FocusUtility.RemoveFocus(this.TitleTextBox);
-                    }
-                    else
-                    {
-                        this.Timer.Stop();
-                        this.SwitchToInputMode();
-                    }
-
-                    this.EndAnimationsAndSounds();
-
-                    return;
-            }
+            this.CancelOrReset();
+            e.Handled = true;
         }
 
         /// <summary>
