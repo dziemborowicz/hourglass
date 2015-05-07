@@ -29,7 +29,7 @@ namespace Hourglass
         /// <summary>
         /// A <see cref="DispatcherTimer"/> used to raise events.
         /// </summary>
-        private DispatcherTimer ticker;
+        private DispatcherTimer dispatcherTimer;
 
         /// <summary>
         /// The "Loop timer" <see cref="MenuItem"/>.
@@ -142,9 +142,9 @@ namespace Hourglass
             this.timerWindow.ContextMenuClosing += this.WindowContextMenuClosing;
             this.timerWindow.ContextMenu = this;
 
-            this.ticker = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
-            this.ticker.Interval = TimeSpan.FromSeconds(1);
-            this.ticker.Tick += this.DispatcherTimerTick;
+            this.dispatcherTimer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
+            this.dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            this.dispatcherTimer.Tick += this.DispatcherTimerTick;
 
             this.selectableSoundMenuItems = new List<MenuItem>();
 
@@ -170,11 +170,11 @@ namespace Hourglass
             this.UpdateMenuFromOptions();
 
             this.lastShowed = DateTime.Now;
-            this.ticker.Start();
+            this.dispatcherTimer.Start();
         }
 
         /// <summary>
-        /// Invoked when the <see cref="ticker"/> interval has elapsed.
+        /// Invoked when the <see cref="dispatcherTimer"/> interval has elapsed.
         /// </summary>
         /// <param name="sender">The <see cref="DispatcherTimer"/>.</param>
         /// <param name="e">The event data.</param>
@@ -194,7 +194,7 @@ namespace Hourglass
             this.UpdateOptionsFromMenu();
 
             this.lastShowed = DateTime.Now;
-            this.ticker.Stop();
+            this.dispatcherTimer.Stop();
 
             SettingsManager.Instance.Save();
         }

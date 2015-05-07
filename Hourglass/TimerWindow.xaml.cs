@@ -705,6 +705,20 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Invoked when a key on the keyboard is pressed in the <see cref="TitleTextBox"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="TitleTextBox"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TitleTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && this.Mode == TimerWindowMode.Status)
+            {
+                FocusUtility.RemoveFocus(this.TitleTextBox);
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
         /// Invoked when any mouse button is depressed on the <see cref="TimerTextBox"/>.
         /// </summary>
         /// <param name="sender">The <see cref="TimerTextBox"/>.</param>

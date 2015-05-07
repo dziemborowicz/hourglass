@@ -223,20 +223,32 @@ namespace Hourglass
             string format = string.Empty;
             switch (this.State)
             {
+                case TimerState.Stopped:
+                    format = string.IsNullOrEmpty(this.Options.Title)
+                        ? "Stopped"
+                        : "Stopped \"{2}\"";
+                    break;
+
                 case TimerState.Running:
-                    format = "{0} \u2794 {1}";
+                    format = string.IsNullOrEmpty(this.Options.Title)
+                        ? "{0} \u2794 {1}"
+                        : "{0} \u2794 {1} \"{2}\"";
                     break;
 
                 case TimerState.Paused:
-                    format = "{0} \u2794 {1} (Paused)";
+                    format = string.IsNullOrEmpty(this.Options.Title)
+                        ? "{0} \u2794 {1} (Paused)"
+                        : "{0} \u2794 {1} \"{2}\" (Paused)";
                     break;
 
                 case TimerState.Expired:
-                    format = "{1} (Expired)";
+                    format = string.IsNullOrEmpty(this.Options.Title)
+                        ? "{1} (Expired)"
+                        : "{1} \"{2}\" (Expired)";
                     break;
             }
 
-            return string.Format(format, TimeSpanUtility.ToNaturalString(this.TimeLeft), this.input);
+            return string.Format(format, TimeSpanUtility.ToNaturalString(this.TimeLeft), this.input, this.Options.Title);
         }
 
         #endregion
