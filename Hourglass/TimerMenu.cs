@@ -386,7 +386,10 @@ namespace Hourglass
             TimerInput input = (TimerInput)menuItem.Tag;
             input.Options.SetFromTimerOptions(this.timerWindow.Timer.Options);
 
-            TimerWindow window = new TimerWindow();
+            TimerWindow window = this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired
+                ? this.timerWindow
+                : new TimerWindow();
+
             window.Show(input);
         }
 
@@ -473,7 +476,10 @@ namespace Hourglass
             MenuItem menuItem = (MenuItem)sender;
             HourglassTimer savedTimer = (HourglassTimer)menuItem.Tag;
 
-            TimerWindow window = new TimerWindow();
+            TimerWindow window = this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired
+                ? this.timerWindow
+                : new TimerWindow();
+
             window.Show(savedTimer);
         }
 
