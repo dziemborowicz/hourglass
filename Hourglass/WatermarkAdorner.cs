@@ -14,14 +14,13 @@ namespace Hourglass
     using System.Windows.Media;
 
     /// <summary>
-    /// An <see cref="Adorner"/> that displays a watermark on <see cref="TextBox"/> and <see cref="ComboBox"/> controls
-    /// when the control has no actual value.
+    /// An <see cref="Adorner"/> that displays a watermark on a <see cref="TextBox"/> or <see cref="ComboBox"/> control.
     /// </summary>
-    /// <seealso cref="Watermark"/>
+    /// <seealso cref="Hint"/>
     public class WatermarkAdorner : Adorner
     {
         /// <summary>
-        /// A <see cref="ContentPresenter"/> that contains the watermark text.
+        /// A <see cref="ContentPresenter"/> that contains the watermark.
         /// </summary>
         private readonly ContentPresenter contentPresenter;
 
@@ -29,12 +28,12 @@ namespace Hourglass
         /// Initializes a new instance of the <see cref="WatermarkAdorner"/> class.
         /// </summary>
         /// <param name="adornedElement">The <see cref="UIElement"/> to apply the watermark to.</param>
-        /// <param name="watermark">The content of the watermark, typically a <see cref="string"/>.</param>
-        public WatermarkAdorner(UIElement adornedElement, object watermark)
+        /// <param name="hint">The content of the watermark, typically a <see cref="string"/>.</param>
+        public WatermarkAdorner(UIElement adornedElement, object hint)
             : base(adornedElement)
         {
             this.contentPresenter = new ContentPresenter();
-            this.contentPresenter.Content = watermark;
+            this.contentPresenter.Content = hint;
             this.contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
 
             this.IsHitTestVisible = false;
@@ -47,6 +46,15 @@ namespace Hourglass
             opacityBinding.Path = new PropertyPath("Opacity");
             opacityBinding.Converter = new MultiplierConverter(0.5);
             BindingOperations.SetBinding(this, UIElement.OpacityProperty, opacityBinding);
+        }
+
+        /// <summary>
+        /// Gets or sets the content of the watermark.
+        /// </summary>
+        public object Hint
+        {
+            get { return this.contentPresenter.Content; }
+            set { this.contentPresenter.Content = value; }
         }
 
         /// <summary>

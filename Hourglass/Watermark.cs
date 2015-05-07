@@ -9,6 +9,7 @@ namespace Hourglass
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
     using System.Windows.Documents;
     using System.Windows.Input;
 
@@ -20,43 +21,43 @@ namespace Hourglass
     public static class Watermark
     {
         /// <summary>
-        /// A <see cref="DependencyProperty"/> that specifies the watermark text to be displayed when the control has
-        /// no actual value.
+        /// A <see cref="DependencyProperty"/> that specifies the content of the watermark to be displayed when the
+        /// control has no actual value and no keyboard focus, typically a <see cref="string"/>.
         /// </summary>
-        public static readonly DependencyProperty HintTextProperty = DependencyProperty.RegisterAttached(
-                                   "HintText",
+        public static readonly DependencyProperty HintProperty = DependencyProperty.RegisterAttached(
+                                   "Hint",
                                    typeof(object),
                                    typeof(Watermark),
-                                   new FrameworkPropertyMetadata(HintTextPropertyChanged));
+                                   new FrameworkPropertyMetadata(HintPropertyChanged));
 
         /// <summary>
-        /// Returns the value of the <see cref="HintTextProperty"/>.
+        /// Returns the value of the <see cref="HintProperty"/>.
         /// </summary>
         /// <param name="control">A <see cref="Control"/>.</param>
-        /// <returns>The value of the <see cref="HintTextProperty"/>.</returns>
-        public static object GetHintText(Control control)
+        /// <returns>The value of the <see cref="HintProperty"/>.</returns>
+        public static object GetHint(Control control)
         {
-            return control.GetValue(HintTextProperty);
+            return control.GetValue(HintProperty);
         }
 
         /// <summary>
-        /// Sets the value of the <see cref="HintTextProperty"/>.
+        /// Sets the value of the <see cref="HintProperty"/>.
         /// </summary>
         /// <param name="control">A <see cref="Control"/>.</param>
         /// <param name="value">The value to set.</param>
-        public static void SetHintText(Control control, object value)
+        public static void SetHint(Control control, object value)
         {
-            control.SetValue(HintTextProperty, value);
+            control.SetValue(HintProperty, value);
         }
 
         /// <summary>
-        /// Invoked when the effective value of the <see cref="HintTextProperty"/> changes.
+        /// Invoked when the effective value of the <see cref="HintProperty"/> changes.
         /// </summary>
-        /// <param name="sender">The <see cref="DependencyObject"/> on which the <see cref="HintTextProperty"/> has
-        /// changed value.</param>
+        /// <param name="sender">The <see cref="DependencyObject"/> on which the <see cref="HintProperty"/> has changed
+        /// value.</param>
         /// <param name="e">Event data that is issued by any event that tracks changes to the effective value of this
         /// property.</param>
-        private static void HintTextPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void HintPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             if (!(sender is TextBox) && !(sender is ComboBox))
             {
@@ -65,9 +66,33 @@ namespace Hourglass
 
             Control control = (Control)sender;
 
+            control.Loaded -= ControlLoaded;
             control.Loaded += ControlLoaded;
+
+            control.GotKeyboardFocus -= ControlGotKeyboardFocus;
             control.GotKeyboardFocus += ControlGotKeyboardFocus;
+
+            control.LostKeyboardFocus -= ControlLostKeyboardFocus;
             control.LostKeyboardFocus += ControlLostKeyboardFocus;
+
+            TextBox textBox = control as TextBox;
+            if (textBox != null)
+            {
+                textBox.TextChanged -= TextBoxTextChanged;
+                textBox.TextChanged += TextBoxTextChanged;
+            }
+
+            ComboBox comboBox = control as ComboBox;
+            if (comboBox != null)
+            {
+                comboBox.SelectionChanged -= ComboBoxSelectionChanged;
+                comboBox.SelectionChanged += ComboBoxSelectionChanged;
+
+                comboBox.AddHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(ComboBoxTextChanged));
+                comboBox.RemoveHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(ComboBoxTextChanged));
+            }
+
+            UpdateWatermark(control);
         }
 
         /// <summary>
@@ -78,11 +103,7 @@ namespace Hourglass
         private static void ControlLoaded(object sender, RoutedEventArgs e)
         {
             Control control = (Control)sender;
-
-            if (!HasActualValue(control) && !control.IsKeyboardFocused)
-            {
-                AddWatermark(control);
-            }
+            UpdateWatermark(control);
         }
 
         /// <summary>
@@ -93,11 +114,7 @@ namespace Hourglass
         private static void ControlGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             Control control = (Control)sender;
-
-            if (!HasActualValue(control))
-            {
-                RemoveWatermark(control);
-            }
+            UpdateWatermark(control);
         }
 
         /// <summary>
@@ -108,44 +125,71 @@ namespace Hourglass
         private static void ControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             Control control = (Control)sender;
-
-            if (!HasActualValue(control))
-            {
-                AddWatermark(control);
-            }
+            UpdateWatermark(control);
         }
 
         /// <summary>
-        /// Adds a watermark to a <see cref="Control"/>.
+        /// Invoked when content changes in a text box control.
+        /// </summary>
+        /// <param name="sender">The control.</param>
+        /// <param name="e">The event data.</param>
+        private static void TextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            Control control = (Control)sender;
+            UpdateWatermark(control);
+        }
+
+        /// <summary>
+        /// Invoked when the selection of a combo box control changes.
+        /// </summary>
+        /// <param name="sender">The control.</param>
+        /// <param name="e">The event data.</param>
+        private static void ComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Control control = (Control)sender;
+            UpdateWatermark(control);
+        }
+
+        /// <summary>
+        /// Invoked when content changes in a combo box control changes.
+        /// </summary>
+        /// <param name="sender">The control.</param>
+        /// <param name="e">The event data.</param>
+        private static void ComboBoxTextChanged(object sender, RoutedEventArgs e)
+        {
+            Control control = (Control)sender;
+            UpdateWatermark(control);
+        }
+
+        /// <summary>
+        /// Adds a <see cref="WatermarkAdorner"/> to a <see cref="Control"/>.
         /// </summary>
         /// <param name="control">A <see cref="Control"/>.</param>
-        private static void AddWatermark(Control control)
+        /// <param name="hint">The content of the watermark, typically a <see cref="string"/>.</param>
+        private static void AddWatermarkAdorner(Control control, object hint)
         {
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
-
             if (layer == null)
             {
                 return;
             }
 
-            layer.Add(new WatermarkAdorner(control, GetHintText(control)));
+            layer.Add(new WatermarkAdorner(control, hint));
         }
 
         /// <summary>
-        /// Removes the watermark from a <see cref="Control"/>.
+        /// Removes the <see cref="WatermarkAdorner"/> from a <see cref="Control"/>.
         /// </summary>
         /// <param name="control">A <see cref="Control"/>.</param>
-        private static void RemoveWatermark(Control control)
+        private static void RemoveWatermarkAdorner(Control control)
         {
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
-
             if (layer == null)
             {
                 return;
             }
 
             Adorner[] adorners = layer.GetAdorners(control);
-
             if (adorners == null)
             {
                 return;
@@ -153,8 +197,33 @@ namespace Hourglass
 
             foreach (WatermarkAdorner adorner in adorners.OfType<WatermarkAdorner>())
             {
-                adorner.Visibility = Visibility.Hidden;
                 layer.Remove(adorner);
+            }
+        }
+
+        /// <summary>
+        /// Updates the <see cref="WatermarkAdorner"/> on the <see cref="Control"/>.
+        /// </summary>
+        /// <param name="control">A <see cref="Control"/>.</param>
+        private static void UpdateWatermark(Control control)
+        {
+            if (!control.IsKeyboardFocused && !HasActualValue(control))
+            {
+                WatermarkAdorner watermarkAdorner = GetWatermarkAdorner(control);
+                object hint = GetHint(control);
+
+                if (watermarkAdorner == null)
+                {
+                    AddWatermarkAdorner(control, hint);
+                }
+                else if (!object.Equals(watermarkAdorner.Hint, hint))
+                {
+                    watermarkAdorner.Hint = hint;
+                }
+            }
+            else
+            {
+                RemoveWatermarkAdorner(control);
             }
         }
 
@@ -168,20 +237,41 @@ namespace Hourglass
         private static bool HasActualValue(Control control)
         {
             TextBox textBox = control as TextBox;
-
             if (textBox != null)
             {
                 return !string.IsNullOrEmpty(textBox.Text);
             }
 
             ComboBox comboBox = control as ComboBox;
-
             if (comboBox != null)
             {
                 return !string.IsNullOrEmpty(comboBox.Text);
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="WatermarkAdorner"/> for a <see cref="Control"/>, or <c>null</c> if none exists.
+        /// </summary>
+        /// <param name="control">A <see cref="Control"/>.</param>
+        /// <returns>A <see cref="WatermarkAdorner"/> for the <see cref="Control"/>, or <c>null</c> if none exists.
+        /// </returns>
+        private static WatermarkAdorner GetWatermarkAdorner(Control control)
+        {
+            AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
+            if (layer == null)
+            {
+                return null;
+            }
+
+            Adorner[] adorners = layer.GetAdorners(control);
+            if (adorners == null)
+            {
+                return null;
+            }
+
+            return adorners.OfType<WatermarkAdorner>().FirstOrDefault();
         }
     }
 }
