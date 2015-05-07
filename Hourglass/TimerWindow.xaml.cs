@@ -214,7 +214,21 @@ namespace Hourglass
         /// </summary>
         public TimerInput LastInput
         {
-            get { return this.lastInput; }
+            get
+            {
+                return this.lastInput;
+            }
+
+            private set
+            {
+                if (this.lastInput == value)
+                {
+                    return;
+                }
+
+                this.lastInput = value;
+                this.OnPropertyChanged("LastInput");
+            }
         }
 
         #endregion
@@ -229,7 +243,7 @@ namespace Hourglass
         public void Show(TimerInput input)
         {
             // Keep track of the input
-            this.lastInput = input;
+            this.LastInput = input;
             TimerInputManager.Instance.Add(input);
 
             // Start and show a new timer
@@ -311,7 +325,7 @@ namespace Hourglass
 
             this.TimerTextBox.Focusable = true;
             this.TimerTextBox.IsReadOnly = false;
-            this.TimerTextBox.Text = this.lastInput != null ? this.lastInput.ToString() : string.Empty;
+            this.TimerTextBox.Text = this.LastInput != null ? this.LastInput.ToString() : string.Empty;
             this.TimerTextBox.SelectAll();
             this.TimerTextBox.Focus();
 
