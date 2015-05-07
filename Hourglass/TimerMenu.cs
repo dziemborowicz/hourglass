@@ -368,11 +368,10 @@ namespace Hourglass
         {
             MenuItem menuItem = (MenuItem)sender;
             TimerInput input = (TimerInput)menuItem.Tag;
-            input.Options = this.timerWindow.Timer.Options;
+            input.Options.SetFromTimerOptions(this.timerWindow.Timer.Options);
 
             TimerWindow window = new TimerWindow();
-            window.StartFromInput(input);
-            window.Show();
+            window.Show(input);
         }
 
         /// <summary>
@@ -457,8 +456,7 @@ namespace Hourglass
             HourglassTimer savedTimer = (HourglassTimer)menuItem.Tag;
 
             TimerWindow window = new TimerWindow();
-            window.Timer = savedTimer;
-            window.Show();
+            window.Show(savedTimer);
         }
 
         /// <summary>

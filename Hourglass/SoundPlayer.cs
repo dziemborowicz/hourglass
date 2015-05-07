@@ -116,6 +116,7 @@ namespace Hourglass
 
             if (disposing)
             {
+                this.soundPlayer.Stop();
                 this.soundPlayer.Dispose();
 
                 if (this.soundPlayer.Stream != null)

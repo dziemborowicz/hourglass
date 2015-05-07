@@ -13,31 +13,19 @@ namespace Hourglass
     using System.Windows.Media.Animation;
 
     /// <summary>
-    /// The view of a <see cref="TimerWindow"/>.
+    /// The mode of a <see cref="TimerWindow"/>.
     /// </summary>
-    public enum TimerWindowView
+    public enum TimerWindowMode
     {
-        /// <summary>
-        /// Indicates that the <see cref="TimerWindow"/> is not initialized.
-        /// </summary>
-        None,
-
         /// <summary>
         /// Indicates that the <see cref="TimerWindow"/> is accepting user input to start a new <see cref="Timer"/>.
         /// </summary>
         Input,
 
         /// <summary>
-        /// Indicates that the <see cref="TimerWindow"/> is displaying the status of a running or paused <see
-        /// cref="Timer"/>.
+        /// Indicates that the <see cref="TimerWindow"/> is displaying the status of a <see cref="Timer"/>.
         /// </summary>
-        Status,
-
-        /// <summary>
-        /// Indicates that the <see cref="TimerWindow"/> is displaying a notification that a <see cref="Timer"/> has
-        /// expired.
-        /// </summary>
-        Expired
+        Status
     }
 
     /// <summary>
@@ -48,9 +36,9 @@ namespace Hourglass
         #region Private Members
 
         /// <summary>
-        /// The <see cref="TimerWindowView"/> of the window.
+        /// The <see cref="TimerWindowMode"/> of the window.
         /// </summary>
-        private TimerWindowView view = TimerWindowView.None;
+        private TimerWindowMode mode;
 
         /// <summary>
         /// A value indicating whether controls should be showed even when the mouse is not over the window.
@@ -83,14 +71,24 @@ namespace Hourglass
         private SoundPlayer soundPlayer = new SoundPlayer();
 
         /// <summary>
-        /// The animation used notify the user that the timer has expired.
+        /// The number of times the flash expiration storyboard has completed since the timer last expired.
         /// </summary>
-        private DoubleAnimation expirationAnimation;
+        private int flashExpirationCount;
 
         /// <summary>
-        /// The animation used notify the user that the input was invalid.
+        /// The storyboard that flashes red to notify the user that the timer has expired.
         /// </summary>
-        private DoubleAnimation validationErrorAnimation;
+        private Storyboard flashExpirationStoryboard;
+
+        /// <summary>
+        /// The storyboard that glows red to notify the user that the timer has expired.
+        /// </summary>
+        private Storyboard glowExpirationStoryboard;
+
+        /// <summary>
+        /// The storyboard that flashes red to notify the user that the input was invalid.
+        /// </summary>
+        private Storyboard validationErrorStoryboard;
 
         #endregion
 
@@ -103,7 +101,10 @@ namespace Hourglass
         {
             this.InitializeComponent();
             this.InitializeAnimations();
+
             this.BindTimer();
+            this.SwitchToInputMode();
+
             this.menu.Bind(this /* window */);
             this.scaler.Bind(this /* window */);
 
@@ -124,24 +125,24 @@ namespace Hourglass
         #region Properties
 
         /// <summary>
-        /// Gets the <see cref="TimerWindowView"/> of the window.
+        /// Gets the <see cref="TimerWindowMode"/> of the window.
         /// </summary>
-        public TimerWindowView View
+        public TimerWindowMode Mode
         {
             get
             {
-                return this.view;
+                return this.mode;
             }
 
             private set
             {
-                if (this.view == value)
+                if (this.mode == value)
                 {
                     return;
                 }
 
-                this.view = value;
-                this.OnPropertyChanged("View");
+                this.mode = value;
+                this.OnPropertyChanged("mode");
             }
         }
 
@@ -185,7 +186,7 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="HourglassTimer"/> backing the window.
+        /// Gets the <see cref="HourglassTimer"/> backing the window.
         /// </summary>
         public HourglassTimer Timer
         {
@@ -194,7 +195,7 @@ namespace Hourglass
                 return this.timer;
             }
 
-            set
+            private set
             {
                 if (this.timer == value)
                 {
@@ -221,17 +222,58 @@ namespace Hourglass
         #region Public Methods
 
         /// <summary>
-        /// Starts a new <see cref="Timer"/> with the specified <see cref="TimerInput"/>.
+        /// Opens the <see cref="TimerWindow"/> if it is not already open and displays a new <see
+        /// cref="HourglassTimer"/> started with the specified <see cref="TimerInput"/>.
         /// </summary>
         /// <param name="input">A <see cref="TimerInput"/>.</param>
-        public void StartFromInput(TimerInput input)
+        public void Show(TimerInput input)
         {
-            TimerInputManager.Instance.Add(input);
+            // Keep track of the input
             this.lastInput = input;
+            TimerInputManager.Instance.Add(input);
 
+            // Start and show a new timer
             this.Timer = HourglassTimer.GetTimerForInput(input);
             this.Timer.Start(input);
+            this.SwitchToStatusMode();
             TimerManager.Instance.Add(this.Timer);
+
+            // Show the window if it is not already open
+            if (!this.IsVisible)
+            {
+                this.Show();
+            }
+        }
+
+        /// <summary>
+        /// Opens the <see cref="TimerWindow"/> if it is not already open and displays the specified <see
+        /// cref="HourglassTimer"/>.
+        /// </summary>
+        /// <param name="existingTimer">A <see cref="HourglassTimer"/>.</param>
+        public void Show(HourglassTimer existingTimer)
+        {
+            // Show the status of the existing timer
+            this.Timer = existingTimer;
+            this.SwitchToStatusMode();
+            
+            // Show the window if it is not already open
+            if (!this.IsVisible)
+            {
+                this.Show();
+            }
+
+            // Notify expiration if the existing timer is expired
+            if (this.Timer.State == TimerState.Expired)
+            {
+                if (this.Timer.Options.LoopSound)
+                {
+                    this.BeginExpirationAnimationAndSound();
+                }
+                else
+                {
+                    this.BeginExpirationAnimation(true /* glowOnly */);
+                }
+            }
         }
 
         #endregion
@@ -257,77 +299,14 @@ namespace Hourglass
 
         #endregion
 
-        #region Private Methods (Animations)
-
-        /// <summary>
-        /// Initializes the animation members.
-        /// </summary>
-        private void InitializeAnimations()
-        {
-            this.expirationAnimation = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(1)));
-            this.expirationAnimation.EasingFunction = new ExponentialEase { EasingMode = EasingMode.EaseOut };
-            this.expirationAnimation.RepeatBehavior = RepeatBehavior.Forever;
-
-            this.validationErrorAnimation = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(1)));
-            this.validationErrorAnimation.EasingFunction = new ExponentialEase { EasingMode = EasingMode.EaseOut };
-        }
-
-        /// <summary>
-        /// Begins the animation used notify the user that the input was invalid.
-        /// </summary>
-        private void BeginExpirationAnimation()
-        {
-            this.InnerNotificationBorder.BeginAnimation(UIElement.OpacityProperty, this.expirationAnimation);
-        }
-
-        /// <summary>
-        /// Begins the animation used notify the user that the input was invalid.
-        /// </summary>
-        private void BeginValidationErrorAnimation()
-        {
-            this.InnerNotificationBorder.BeginAnimation(UIElement.OpacityProperty, this.validationErrorAnimation);
-        }
-
-        /// <summary>
-        /// Stops all animations.
-        /// </summary>
-        private void EndAnimations()
-        {
-            this.InnerNotificationBorder.BeginAnimation(UIElement.OpacityProperty, null /* animation */);
-        }
-
-        #endregion
-
-        #region Private Methods (Views)
-
-        /// <summary>
-        /// Sets the window view to correspond to the state of the current timer.
-        /// </summary>
-        private void ShowViewForTimer()
-        {
-            switch (this.timer.State)
-            {
-                case TimerState.Stopped:
-                    this.ShowInputView();
-                    return;
-
-                case TimerState.Running:
-                case TimerState.Paused:
-                    this.ShowStatusView();
-                    return;
-
-                case TimerState.Expired:
-                    this.ShowExpiredView();
-                    return;
-            }
-        }
+        #region Private Methods (Modes)
 
         /// <summary>
         /// Sets the window to accept user input to start a new <see cref="Timer"/>.
         /// </summary>
-        private void ShowInputView()
+        private void SwitchToInputMode()
         {
-            this.View = TimerWindowView.Input;
+            this.Mode = TimerWindowMode.Input;
             this.AlwaysShowControls = true;
 
             this.TimerTextBox.Focusable = true;
@@ -336,20 +315,16 @@ namespace Hourglass
             this.TimerTextBox.SelectAll();
             this.TimerTextBox.Focus();
 
-            this.soundPlayer.Stop();
-            this.OuterNotificationBorder.Opacity = 0;
-            this.EndAnimations();
-
-            this.UpdateButtons();
-            this.UpdateTimerBinding();
+            this.EndAnimationsAndSounds();
+            this.UpdateBoundControls();
         }
 
         /// <summary>
         /// Sets the window to display the status of a running or paused <see cref="Timer"/>.
         /// </summary>
-        private void ShowStatusView()
+        private void SwitchToStatusMode()
         {
-            this.View = TimerWindowView.Status;
+            this.Mode = TimerWindowMode.Status;
             this.AlwaysShowControls = false;
 
             this.TimerTextBox.Focusable = false;
@@ -357,72 +332,154 @@ namespace Hourglass
 
             FocusUtility.RemoveFocus(this.TimerTextBox);
             FocusUtility.RemoveFocus(this.TitleTextBox);
+
+            this.EndAnimationsAndSounds();
+            this.UpdateBoundControls();
+        }
+
+        #endregion
+
+        #region Private Methods (Animations and Sounds)
+
+        /// <summary>
+        /// Initializes the animation members.
+        /// </summary>
+        private void InitializeAnimations()
+        {
+            // Flash expiration storyboard
+            DoubleAnimation outerFlashAnimation = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.25)));
+            outerFlashAnimation.EasingFunction = new ExponentialEase { EasingMode = EasingMode.EaseOut };
+            Storyboard.SetTarget(outerFlashAnimation, this.OuterNotificationBorder);
+            Storyboard.SetTargetProperty(outerFlashAnimation, new PropertyPath(UIElement.OpacityProperty));
+
+            DoubleAnimation innerFlashAnimation = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(0.25)));
+            innerFlashAnimation.EasingFunction = new ExponentialEase { EasingMode = EasingMode.EaseOut };
+            Storyboard.SetTarget(innerFlashAnimation, this.InnerNotificationBorder);
+            Storyboard.SetTargetProperty(innerFlashAnimation, new PropertyPath(UIElement.OpacityProperty));
+
+            this.flashExpirationStoryboard = new Storyboard();
+            this.flashExpirationStoryboard.Children.Add(outerFlashAnimation);
+            this.flashExpirationStoryboard.Children.Add(innerFlashAnimation);
+            this.flashExpirationStoryboard.Completed += this.FlashExpirationStoryboardCompleted;
+            Storyboard.SetTarget(this.flashExpirationStoryboard, this);
+
+            // Glow expiration storyboard
+            DoubleAnimation outerGlowAnimation = new DoubleAnimation(1.0, 0.5, new Duration(TimeSpan.FromSeconds(1.5)));
+            outerGlowAnimation.EasingFunction = new ExponentialEase { EasingMode = EasingMode.EaseInOut };
+            Storyboard.SetTarget(outerGlowAnimation, this.OuterNotificationBorder);
+            Storyboard.SetTargetProperty(outerGlowAnimation, new PropertyPath(UIElement.OpacityProperty));
+
+            DoubleAnimation innerGlowAnimation = new DoubleAnimation(1.0, 0.5, new Duration(TimeSpan.FromSeconds(1.5)));
+            innerGlowAnimation.EasingFunction = new ExponentialEase { EasingMode = EasingMode.EaseInOut };
+            Storyboard.SetTarget(innerGlowAnimation, this.InnerNotificationBorder);
+            Storyboard.SetTargetProperty(innerGlowAnimation, new PropertyPath(UIElement.OpacityProperty));
+
+            this.glowExpirationStoryboard = new Storyboard();
+            this.glowExpirationStoryboard.Children.Add(outerGlowAnimation);
+            this.glowExpirationStoryboard.Children.Add(innerGlowAnimation);
+            this.glowExpirationStoryboard.AutoReverse = true;
+            this.glowExpirationStoryboard.RepeatBehavior = RepeatBehavior.Forever;
+            Storyboard.SetTarget(this.glowExpirationStoryboard, this);
+
+            // Validation error storyboard
+            DoubleAnimation validationErrorAnimation = new DoubleAnimation(1.0, 0.0, new Duration(TimeSpan.FromSeconds(1)));
+            validationErrorAnimation.EasingFunction = new ExponentialEase { EasingMode = EasingMode.EaseOut };
+            Storyboard.SetTarget(validationErrorAnimation, this.InnerNotificationBorder);
+            Storyboard.SetTargetProperty(validationErrorAnimation, new PropertyPath(UIElement.OpacityProperty));
+
+            this.validationErrorStoryboard = new Storyboard();
+            this.validationErrorStoryboard.Children.Add(validationErrorAnimation);
+            Storyboard.SetTarget(this.validationErrorStoryboard, this);
+        }
+
+        /// <summary>
+        /// Invoked when the flash expiration storyboard has completely finished playing.
+        /// </summary>
+        /// <param name="sender">The originator of the event.</param>
+        /// <param name="e">The event data.</param>
+        private void FlashExpirationStoryboardCompleted(object sender, EventArgs e)
+        {
+            this.flashExpirationCount++;
+
+            switch (this.Mode)
+            {
+                case TimerWindowMode.Input:
+                    if (this.flashExpirationCount < 3 || this.Timer.Options.LoopSound)
+                    {
+                        this.flashExpirationStoryboard.Begin();
+                    }
+
+                    break;
+
+                case TimerWindowMode.Status:
+                    if (this.flashExpirationCount < 2 || this.Timer.Options.LoopSound)
+                    {
+                        this.flashExpirationStoryboard.Begin();
+                    }
+                    else
+                    {
+                        this.glowExpirationStoryboard.Begin();
+                    }
+
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Begins the animation used to notify the user that the timer has expired.
+        /// </summary>
+        /// <param name="glowOnly"><c>true</c> to show the glow animation only, or <c>false</c> to show the flash
+        /// animation followed by the glow animation. Default is <c>false</c>.</param>
+        private void BeginExpirationAnimation(bool glowOnly = false)
+        {
+            this.flashExpirationCount = 0;
+
+            if (glowOnly)
+            {
+                this.glowExpirationStoryboard.Begin();
+            }
+            else
+            {
+                this.flashExpirationStoryboard.Begin();
+            }
+        }
+
+        /// <summary>
+        /// Begins the sound used to notify the user that the timer has expired.
+        /// </summary>
+        private void BeginExpirationSound()
+        {
+            this.soundPlayer.Play(this.Timer.Options.Sound, this.Timer.Options.LoopSound);
+        }
+
+        /// <summary>
+        /// Begins the animation and sound used to notify the user that the timer has expired.
+        /// </summary>
+        private void BeginExpirationAnimationAndSound()
+        {
+            this.BeginExpirationAnimation();
+            this.BeginExpirationSound();
+        }
+
+        /// <summary>
+        /// Begins the animation used notify the user that the input was invalid.
+        /// </summary>
+        private void BeginValidationErrorAnimation()
+        {
+            this.validationErrorStoryboard.Begin();
+        }
+
+        /// <summary>
+        /// Stops all animations and sounds.
+        /// </summary>
+        private void EndAnimationsAndSounds()
+        {
+            this.flashExpirationCount = 0;
+            this.flashExpirationStoryboard.Stop();
+            this.glowExpirationStoryboard.Stop();
+            this.validationErrorStoryboard.Stop();
 
             this.soundPlayer.Stop();
-            this.OuterNotificationBorder.Opacity = 0;
-            this.EndAnimations();
-
-            this.UpdateButtons();
-            this.UpdateTimerBinding();
-        }
-
-        /// <summary>
-        /// Sets the window to display a notification that a <see cref="Timer"/> has expired.
-        /// </summary>
-        private void ShowExpiredView()
-        {
-            this.View = TimerWindowView.Expired;
-            this.AlwaysShowControls = false;
-
-            this.TimerTextBox.Focusable = false;
-            this.TimerTextBox.IsReadOnly = true;
-
-            FocusUtility.RemoveFocus(this.TimerTextBox);
-            FocusUtility.RemoveFocus(this.TitleTextBox);
-
-            this.soundPlayer.Play(this.Timer.Options.Sound, this.timer.Options.LoopSound);
-            this.OuterNotificationBorder.Opacity = 1;
-            this.EndAnimations();
-            this.BeginExpirationAnimation();
-
-            this.UpdateButtons();
-            this.UpdateTimerBinding();
-        }
-
-        /// <summary>
-        /// Sets the visibility of the buttons.
-        /// </summary>
-        private void UpdateButtons()
-        {
-            switch (this.View)
-            {
-                case TimerWindowView.Input:
-                    this.StartButton.IsEnabled = true;
-                    this.PauseButton.IsEnabled = false;
-                    this.ResumeButton.IsEnabled = false;
-                    this.StopButton.IsEnabled = false;
-                    this.ResetButton.IsEnabled = false;
-                    this.CancelButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
-                    return;
-
-                case TimerWindowView.Status:
-                    this.StartButton.IsEnabled = false;
-                    this.PauseButton.IsEnabled = this.Timer.State == TimerState.Running && !(this.Timer is DateTimeTimer);
-                    this.ResumeButton.IsEnabled = this.Timer.State == TimerState.Paused;
-                    this.StopButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
-                    this.ResetButton.IsEnabled = false;
-                    this.CancelButton.IsEnabled = false;
-                    return;
-
-                case TimerWindowView.Expired:
-                    this.StartButton.IsEnabled = false;
-                    this.PauseButton.IsEnabled = false;
-                    this.ResumeButton.IsEnabled = false;
-                    this.StopButton.IsEnabled = false;
-                    this.ResetButton.IsEnabled = true;
-                    this.CancelButton.IsEnabled = false;
-                    return;
-            }
         }
 
         #endregion
@@ -442,21 +499,39 @@ namespace Hourglass
             this.Timer.Tick += this.TimerTick;
             this.Timer.PropertyChanged += this.TimerPropertyChanged;
 
-            this.ShowViewForTimer();
-            this.UpdateTimerBinding();
+            this.UpdateBoundControls();
         }
 
         /// <summary>
-        /// Updates the user interface elements bound to <see cref="HourglassTimer"/> properties.
+        /// Updates the controls bound to <see cref="HourglassTimer"/> properties.
         /// </summary>
-        private void UpdateTimerBinding()
+        private void UpdateBoundControls()
         {
-            if (this.View != TimerWindowView.Input)
+            switch (this.Mode)
             {
-                this.TimerTextBox.Text = this.Timer.TimeLeftAsString;
-            }
+                case TimerWindowMode.Input:
+                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0;
 
-            this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0;
+                    this.StartButton.IsEnabled = true;
+                    this.PauseButton.IsEnabled = false;
+                    this.ResumeButton.IsEnabled = false;
+                    this.StopButton.IsEnabled = false;
+                    this.ResetButton.IsEnabled = false;
+                    this.CancelButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
+                    return;
+
+                case TimerWindowMode.Status:
+                    this.TimerTextBox.Text = this.Timer.TimeLeftAsString;
+                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0;
+
+                    this.StartButton.IsEnabled = false;
+                    this.PauseButton.IsEnabled = this.Timer.State == TimerState.Running && !(this.Timer is DateTimeTimer);
+                    this.ResumeButton.IsEnabled = this.Timer.State == TimerState.Paused;
+                    this.StopButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
+                    this.ResetButton.IsEnabled = this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired;
+                    this.CancelButton.IsEnabled = false;
+                    return;
+            }
         }
 
         /// <summary>
@@ -489,7 +564,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerStarted(object sender, EventArgs e)
         {
-            this.ShowViewForTimer();
+            this.UpdateBoundControls();
         }
 
         /// <summary>
@@ -499,14 +574,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerPaused(object sender, EventArgs e)
         {
-            if (this.View != TimerWindowView.Input)
-            {
-                this.ShowViewForTimer();
-            }
-            else
-            {
-                this.UpdateButtons();
-            }
+            this.UpdateBoundControls();
         }
 
         /// <summary>
@@ -516,14 +584,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerResumed(object sender, EventArgs e)
         {
-            if (this.View != TimerWindowView.Input)
-            {
-                this.ShowViewForTimer();
-            }
-            else
-            {
-                this.UpdateButtons();
-            }
+            this.UpdateBoundControls();
         }
 
         /// <summary>
@@ -533,14 +594,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerStopped(object sender, EventArgs e)
         {
-            if (this.View != TimerWindowView.Input)
-            {
-                this.ShowViewForTimer();
-            }
-            else
-            {
-                this.UpdateButtons();
-            }
+            this.UpdateBoundControls();
         }
 
         /// <summary>
@@ -550,14 +604,8 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerExpired(object sender, EventArgs e)
         {
-            if (this.View != TimerWindowView.Input)
-            {
-                this.ShowViewForTimer();
-            }
-            else
-            {
-                this.UpdateButtons();
-            }
+            this.BeginExpirationAnimationAndSound();
+            this.UpdateBoundControls();
         }
 
         /// <summary>
@@ -577,7 +625,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            this.UpdateTimerBinding();
+            this.UpdateBoundControls();
         }
 
         #endregion
@@ -598,8 +646,8 @@ namespace Hourglass
                 return;
             }
 
-            input.Options = this.Timer.Options;
-            this.StartFromInput(input);
+            input.Options.SetFromTimerOptions(this.Timer.Options);
+            this.Show(input);
         }
 
         /// <summary>
@@ -630,6 +678,7 @@ namespace Hourglass
         private void StopButtonClick(object sender, RoutedEventArgs e)
         {
             this.Timer.Stop();
+            this.SwitchToInputMode();
         }
 
         /// <summary>
@@ -639,7 +688,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void ResetButtonClick(object sender, RoutedEventArgs e)
         {
-            this.ShowInputView();
+            this.SwitchToInputMode();
         }
 
         /// <summary>
@@ -649,9 +698,9 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            if (this.Timer.State == TimerState.Running || this.Timer.State == TimerState.Paused)
+            if (this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired)
             {
-                this.ShowStatusView();
+                this.SwitchToStatusMode();
             }
         }
 
@@ -662,9 +711,9 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerTextBoxMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.View != TimerWindowView.Input)
+            if (this.Mode != TimerWindowMode.Input)
             {
-                this.ShowInputView();
+                this.SwitchToInputMode();
                 e.Handled = true;
             }
         }
@@ -676,23 +725,31 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)
         {
-            switch (this.View)
+            switch (this.Mode)
             {
-                case TimerWindowView.Input:
-                    if (this.Timer.State == TimerState.Running || this.Timer.State == TimerState.Paused)
+                case TimerWindowMode.Input:
+                    if (this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired)
                     {
-                        this.ShowStatusView();
+                        this.SwitchToStatusMode();
                     }
 
+                    this.EndAnimationsAndSounds();
+
                     return;
 
-                case TimerWindowView.Status:
-                    FocusUtility.RemoveFocus(this.TimerTextBox);
-                    FocusUtility.RemoveFocus(this.TitleTextBox);
-                    return;
+                case TimerWindowMode.Status:
+                    if (this.Timer.State != TimerState.Expired)
+                    {
+                        FocusUtility.RemoveFocus(this.TimerTextBox);
+                        FocusUtility.RemoveFocus(this.TitleTextBox);
+                    }
+                    else
+                    {
+                        this.SwitchToInputMode();
+                    }
 
-                case TimerWindowView.Expired:
-                    this.ShowInputView();
+                    this.EndAnimationsAndSounds();
+
                     return;
             }
         }
@@ -705,9 +762,7 @@ namespace Hourglass
         private void WindowClosing(object sender, CancelEventArgs e)
         {
             this.UnbindTimer();
-
             this.soundPlayer.Dispose();
-
             SettingsManager.Instance.Save();
         }
 

@@ -331,7 +331,7 @@ namespace Hourglass
 
             DateTime now = DateTime.Now;
             this.state = TimerState.Paused;
-            this.timeElapsed = TimeSpanUtility.Max(now - (this.startTime ?? now), TimeSpan.Zero);
+            this.timeElapsed = TimeSpanUtility.Min(now - (this.startTime ?? now), this.totalTime ?? TimeSpan.Zero);
             this.timeLeft = TimeSpanUtility.Max((this.endTime ?? now) - now, TimeSpan.Zero);
             this.startTime = null;
             this.endTime = null;
@@ -411,7 +411,7 @@ namespace Hourglass
 
             // Update timer state
             DateTime now = DateTime.Now;
-            this.timeElapsed = TimeSpanUtility.Max(now - (this.startTime ?? now), TimeSpan.Zero);
+            this.timeElapsed = TimeSpanUtility.Min(now - (this.startTime ?? now), this.totalTime ?? TimeSpan.Zero);
             this.timeLeft = TimeSpanUtility.Max((this.endTime ?? now) - now, TimeSpan.Zero);
 
             this.OnPropertyChanged("TimeElapsed", "TimeLeft");

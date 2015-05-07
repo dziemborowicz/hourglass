@@ -87,40 +87,16 @@ namespace Hourglass
         /// <param name="options">A <see cref="TimerOptions"/>.</param>
         public TimerOptions(TimerOptions options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
-
-            this.title = options.title;
-            this.loopTimer = options.loopTimer;
-            this.alwaysOnTop = options.alwaysOnTop;
-            this.showInNotificationArea = options.showInNotificationArea;
-            this.popUpWhenExpired = options.popUpWhenExpired;
-            this.closeWhenExpired = options.closeWhenExpired;
-            this.sound = options.sound;
-            this.loopSound = options.loopSound;
+            this.SetFromTimerOptions(options);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerOptions"/> class from a <see cref="TimerOptionsInfo"/>.
         /// </summary>
         /// <param name="optionsInfo">A <see cref="TimerOptionsInfo"/>.</param>
-        protected TimerOptions(TimerOptionsInfo optionsInfo)
+        public TimerOptions(TimerOptionsInfo optionsInfo)
         {
-            if (optionsInfo == null)
-            {
-                throw new ArgumentNullException("optionsInfo");
-            }
-
-            this.title = optionsInfo.Title;
-            this.loopTimer = optionsInfo.LoopTimer;
-            this.alwaysOnTop = optionsInfo.AlwaysOnTop;
-            this.showInNotificationArea = optionsInfo.ShowInNotificationArea;
-            this.popUpWhenExpired = optionsInfo.PopUpWhenExpired;
-            this.closeWhenExpired = optionsInfo.CloseWhenExpired;
-            this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
-            this.loopSound = optionsInfo.LoopSound;
+            this.SetFromTimerOptionsInfo(optionsInfo);
         }
 
         #endregion
@@ -341,6 +317,48 @@ namespace Hourglass
         public static TimerOptions FromTimerOptionsInfo(TimerOptionsInfo optionsInfo)
         {
             return optionsInfo != null ? new TimerOptions(optionsInfo) : null;
+        }
+
+        /// <summary>
+        /// Sets all of the options from another instance of the <see cref="TimerOptions"/> class.
+        /// </summary>
+        /// <param name="options">A <see cref="TimerOptions"/>.</param>
+        public void SetFromTimerOptions(TimerOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+
+            this.title = options.title;
+            this.loopTimer = options.loopTimer;
+            this.alwaysOnTop = options.alwaysOnTop;
+            this.showInNotificationArea = options.showInNotificationArea;
+            this.popUpWhenExpired = options.popUpWhenExpired;
+            this.closeWhenExpired = options.closeWhenExpired;
+            this.sound = options.sound;
+            this.loopSound = options.loopSound;
+        }
+
+        /// <summary>
+        /// Sets all of the options from an instance of the <see cref="TimerOptionsInfo"/> class.
+        /// </summary>
+        /// <param name="optionsInfo">A <see cref="TimerOptionsInfo"/>.</param>
+        public void SetFromTimerOptionsInfo(TimerOptionsInfo optionsInfo)
+        {
+            if (optionsInfo == null)
+            {
+                throw new ArgumentNullException("optionsInfo");
+            }
+
+            this.title = optionsInfo.Title;
+            this.loopTimer = optionsInfo.LoopTimer;
+            this.alwaysOnTop = optionsInfo.AlwaysOnTop;
+            this.showInNotificationArea = optionsInfo.ShowInNotificationArea;
+            this.popUpWhenExpired = optionsInfo.PopUpWhenExpired;
+            this.closeWhenExpired = optionsInfo.CloseWhenExpired;
+            this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
+            this.loopSound = optionsInfo.LoopSound;
         }
 
         /// <summary>

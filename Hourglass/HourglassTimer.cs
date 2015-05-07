@@ -220,8 +220,6 @@ namespace Hourglass
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            this.Update();
-
             string format = string.Empty;
             switch (this.State)
             {

@@ -20,6 +20,12 @@ namespace Hourglass
     public static class TimeSpanUtility
     {
         /// <summary>
+        /// The <see cref="RegexOptions"/> used by this class by default when matching an input <see cref="string"/>
+        /// against a <see cref="Regex"/> pattern.
+        /// </summary>
+        private static readonly RegexOptions RegexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
+
+        /// <summary>
         /// Parses a <see cref="string"/> representation of a time interval into a <see cref="TimeSpan"/>.
         /// </summary>
         /// <remarks>
@@ -102,7 +108,7 @@ namespace Hourglass
             str = str.Trim(' ', '\t', '\r', '\n');
 
             // Integer input
-            if (Regex.IsMatch(str, @"^\d+$"))
+            if (Regex.IsMatch(str, @"^\d+$", RegexOptions))
             {
                 int minutes;
                 if (!int.TryParse(str, out minutes))
@@ -116,13 +122,13 @@ namespace Hourglass
 
             // Multi-part input
             string[] parts;
-            if (Regex.IsMatch(str, @"^[\d.,;:]+$"))
+            if (Regex.IsMatch(str, @"^[\d.,;:]+$", RegexOptions))
             {
-                parts = Regex.Split(str, @"[.,;:]");
+                parts = Regex.Split(str, @"[.,;:]", RegexOptions);
             }
             else
             {
-                parts = Regex.Split(str, @"\s+(?=[+\-\d\.])|(?<![+\-\d\.])(?=[+\-\d\.])");
+                parts = Regex.Split(str, @"\s+(?=[+\-\d\.])|(?<![+\-\d\.])(?=[+\-\d\.])", RegexOptions);
             }
 
             // Get rid of empty parts
@@ -133,7 +139,7 @@ namespace Hourglass
             for (int i = 0; i < parts.Length; i++)
             {
                 string part = parts[i];
-                Match match = Regex.Match(part, @"^[+\-]?\d+(\.\d*)?|^[+\-]?\.\d+");
+                Match match = Regex.Match(part, @"^[+\-]?\d+(\.\d*)?|^[+\-]?\.\d+", RegexOptions);
                 if (match.Success)
                 {
                     if (!double.TryParse(match.Value, out values[i]))
@@ -152,35 +158,35 @@ namespace Hourglass
             for (int i = 0; i < parts.Length; i++)
             {
                 string part = parts[i];
-                if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(y|yrs?|years?)$"))
+                if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(y|yrs?|years?)$", RegexOptions))
                 {
                     units[i] = 365 * 24 * 60 * 60;
                 }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(mo|mons?|months?)$"))
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(mo|mons?|months?)$", RegexOptions))
                 {
                     units[i] = 30 * 24 * 60 * 60;
                 }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(w|wks?|weeks?)$"))
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(w|wks?|weeks?)$", RegexOptions))
                 {
                     units[i] = 7 * 24 * 60 * 60;
                 }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(d|dys?|days?)$"))
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(d|dys?|days?)$", RegexOptions))
                 {
                     units[i] = 24 * 60 * 60;
                 }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(h|hrs?|hours?)$"))
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(h|hrs?|hours?)$", RegexOptions))
                 {
                     units[i] = 60 * 60;
                 }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(m|mins?|minutes?)$"))
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(m|mins?|minutes?)$", RegexOptions))
                 {
                     units[i] = 60;
                 }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(s|secs?|seconds?)$"))
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(s|secs?|seconds?)$", RegexOptions))
                 {
                     units[i] = 1;
                 }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)$"))
+                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)$", RegexOptions))
                 {
                     units[i] = 0;
                 }
