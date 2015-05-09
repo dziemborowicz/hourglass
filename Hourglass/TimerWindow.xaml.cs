@@ -13,6 +13,8 @@ namespace Hourglass
     using System.Windows.Media.Animation;
     using System.Windows.Shell;
 
+    using Hourglass.Properties;
+
     /// <summary>
     /// The mode of a <see cref="TimerWindow"/>.
     /// </summary>
@@ -302,6 +304,8 @@ namespace Hourglass
         /// </summary>
         public void BringToFront()
         {
+            this.Show();
+
             if (this.WindowState == WindowState.Minimized)
             {
                 this.WindowState = this.restoreWindowState;
@@ -1034,6 +1038,11 @@ namespace Hourglass
             if (this.WindowState != WindowState.Minimized)
             {
                 this.restoreWindowState = this.WindowState;
+            }
+
+            if (this.WindowState == WindowState.Minimized && Settings.Default.ShowInNotificationArea)
+            {
+                this.Hide();
             }
 
             this.UpdateBoundControls();
