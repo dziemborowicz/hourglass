@@ -299,7 +299,7 @@ namespace Hourglass
         /// </summary>
         private static readonly string[] NaturalTimeFormats =
         {
-            // Time with separators (e.g., "5", "5 pm", "5:30", "5:30 p.m.", "5:30:45 p.m.", "17:30h")
+            // Time with separators (e.g., "5", "5p", "5 pm", "5:30", "5:30 p.m.", "5:30:45 p.m.", "17:30h")
             @"  (?<hour>\d\d?)
                 (
                     [.:]
@@ -312,13 +312,13 @@ namespace Hourglass
                 \s*
                 (?<ampm>
                     (a|p)\.?
-                    (\s*m\.?)
+                    (\s*m\.?)?
                     |
                     h[a-z]*
                 )?
             ",
              
-            // Time without separators (e.g., "5", "5 pm", "530", "530 p.m.", "53045 p.m.", "1730h")
+            // Time without separators (e.g., "5", "5p", "5 pm", "530", "530 p.m.", "53045 p.m.", "1730h")
             @"  (?<hour>\d\d?)
                 (
                     (?<minute>\d\d)
@@ -327,7 +327,7 @@ namespace Hourglass
                 \s*
                 (?<ampm>
                     (a|p)\.?
-                    (\s*m\.?)
+                    (\s*m\.?)?
                     |
                     h[a-z]*
                 )?
