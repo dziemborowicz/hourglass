@@ -690,6 +690,10 @@ namespace Hourglass
             switch (this.Mode)
             {
                 case TimerWindowMode.Input:
+                    this.Title = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired && this.WindowState == WindowState.Minimized
+                        ? this.Timer.TimeLeftAsString
+                        : "Hourglass";
+
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
                     this.UpdateTaskbarProgress();
 
@@ -705,6 +709,10 @@ namespace Hourglass
                     return;
 
                 case TimerWindowMode.Status:
+                    this.Title = this.WindowState == WindowState.Minimized
+                        ? this.Timer.TimeLeftAsString
+                        : "Hourglass";
+
                     this.TimerTextBox.Text = this.Timer.TimeLeftAsString;
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
                     this.UpdateTaskbarProgress();
@@ -1027,6 +1035,8 @@ namespace Hourglass
             {
                 this.restoreWindowState = this.WindowState;
             }
+
+            this.UpdateBoundControls();
         }
 
         /// <summary>
