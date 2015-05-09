@@ -55,5 +55,17 @@ namespace Hourglass.Properties {
                 this["DefaultOptions"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowInNotificationArea {
+            get {
+                return ((bool)(this["ShowInNotificationArea"]));
+            }
+            set {
+                this["ShowInNotificationArea"] = value;
+            }
+        }
     }
 }

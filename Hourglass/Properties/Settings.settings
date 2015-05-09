@@ -11,5 +11,8 @@
     <Setting Name="DefaultOptions" Type="Hourglass.Serialization.TimerOptionsInfo" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ShowInNotificationArea" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

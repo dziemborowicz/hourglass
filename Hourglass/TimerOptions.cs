@@ -34,12 +34,6 @@ namespace Hourglass
         private bool alwaysOnTop;
 
         /// <summary>
-        /// A value indicating whether an icon for the timer window should be shown in the notification area (system
-        /// tray).
-        /// </summary>
-        private bool showInNotificationArea;
-
-        /// <summary>
         /// A value indicating whether the timer window should be brought to the top of other windows when the timer
         /// expires.
         /// </summary>
@@ -73,7 +67,6 @@ namespace Hourglass
             this.title = string.Empty;
             this.loopTimer = false;
             this.alwaysOnTop = false;
-            this.showInNotificationArea = false;
             this.popUpWhenExpired = true;
             this.closeWhenExpired = false;
             this.sound = SoundManager.Instance.DefaultSound;
@@ -175,29 +168,6 @@ namespace Hourglass
 
                 this.alwaysOnTop = value;
                 this.OnPropertyChanged("AlwaysOnTop");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether an icon for the timer window should be shown in the notification
-        /// area (system tray).
-        /// </summary>
-        public virtual bool ShowInNotificationArea
-        {
-            get
-            {
-                return this.showInNotificationArea;
-            }
-
-            set
-            {
-                if (this.showInNotificationArea == value)
-                {
-                    return;
-                }
-
-                this.showInNotificationArea = value;
-                this.OnPropertyChanged("ShowInNotificationArea");
             }
         }
 
@@ -333,7 +303,6 @@ namespace Hourglass
             this.title = options.title;
             this.loopTimer = options.loopTimer;
             this.alwaysOnTop = options.alwaysOnTop;
-            this.showInNotificationArea = options.showInNotificationArea;
             this.popUpWhenExpired = options.popUpWhenExpired;
             this.closeWhenExpired = options.closeWhenExpired;
             this.sound = options.sound;
@@ -354,7 +323,6 @@ namespace Hourglass
             this.title = optionsInfo.Title;
             this.loopTimer = optionsInfo.LoopTimer;
             this.alwaysOnTop = optionsInfo.AlwaysOnTop;
-            this.showInNotificationArea = optionsInfo.ShowInNotificationArea;
             this.popUpWhenExpired = optionsInfo.PopUpWhenExpired;
             this.closeWhenExpired = optionsInfo.CloseWhenExpired;
             this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
@@ -371,7 +339,6 @@ namespace Hourglass
             info.Title = this.title;
             info.LoopTimer = this.loopTimer;
             info.AlwaysOnTop = this.alwaysOnTop;
-            info.ShowInNotificationArea = this.showInNotificationArea;
             info.PopUpWhenExpired = this.popUpWhenExpired;
             info.CloseWhenExpired = this.closeWhenExpired;
             info.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;

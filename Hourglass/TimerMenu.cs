@@ -14,6 +14,8 @@ namespace Hourglass
     using System.Windows.Media;
     using System.Windows.Threading;
 
+    using Hourglass.Properties;
+
     /// <summary>
     /// A <see cref="ContextMenu"/> for the <see cref="TimerWindow"/>.
     /// </summary>
@@ -32,9 +34,9 @@ namespace Hourglass
         private DispatcherTimer dispatcherTimer;
 
         /// <summary>
-        /// The "Loop timer" <see cref="MenuItem"/>.
+        /// The "New timer" <see cref="MenuItem"/>.
         /// </summary>
-        private MenuItem loopTimerMenuItem;
+        private MenuItem newTimerMenuItem;
 
         /// <summary>
         /// The "Always on top" <see cref="MenuItem"/>.
@@ -45,6 +47,11 @@ namespace Hourglass
         /// The "Show in notification area" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem showInNotificationAreaMenuItem;
+
+        /// <summary>
+        /// The "Loop timer" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem loopTimerMenuItem;
 
         /// <summary>
         /// The "Pop up when expired" <see cref="MenuItem"/>.
@@ -208,6 +215,10 @@ namespace Hourglass
         /// </summary>
         private void UpdateMenuFromOptions()
         {
+            this.alwaysOnTopMenuItem.IsChecked = this.timerWindow.Timer.Options.AlwaysOnTop;
+
+            this.showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
+
             if (!(this.timerWindow.Timer is DateTimeTimer))
             {
                 this.loopTimerMenuItem.IsEnabled = true;
@@ -219,8 +230,6 @@ namespace Hourglass
                 this.loopTimerMenuItem.IsChecked = false;
             }
 
-            this.alwaysOnTopMenuItem.IsChecked = this.timerWindow.Timer.Options.AlwaysOnTop;
-            this.showInNotificationAreaMenuItem.IsChecked = this.timerWindow.Timer.Options.ShowInNotificationArea;
             this.popUpWhenExpiredMenuItem.IsChecked = this.timerWindow.Timer.Options.PopUpWhenExpired;
 
             if ((!this.timerWindow.Timer.Options.LoopTimer || this.timerWindow.Timer is DateTimeTimer) && !this.timerWindow.Timer.Options.LoopSound)
@@ -247,13 +256,15 @@ namespace Hourglass
         /// </summary>
         private void UpdateOptionsFromMenu()
         {
+            this.timerWindow.Timer.Options.AlwaysOnTop = this.alwaysOnTopMenuItem.IsChecked;
+
+            Settings.Default.ShowInNotificationArea = this.showInNotificationAreaMenuItem.IsChecked;
+
             if (this.loopTimerMenuItem.IsEnabled)
             {
                 this.timerWindow.Timer.Options.LoopTimer = this.loopTimerMenuItem.IsChecked;
             }
 
-            this.timerWindow.Timer.Options.AlwaysOnTop = this.alwaysOnTopMenuItem.IsChecked;
-            this.timerWindow.Timer.Options.ShowInNotificationArea = this.showInNotificationAreaMenuItem.IsChecked;
             this.timerWindow.Timer.Options.PopUpWhenExpired = this.popUpWhenExpiredMenuItem.IsChecked;
 
             if (this.closeWhenExpiredMenuItem.IsEnabled)
@@ -267,6 +278,17 @@ namespace Hourglass
             this.timerWindow.Timer.Options.Sound = selectedSoundMenuItem != null ? selectedSoundMenuItem.Tag as Sound : null;
         }
 
+        /// <summary>
+        /// Invoked when a checkable <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void CheckableMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            this.UpdateOptionsFromMenu();
+            this.UpdateMenuFromOptions();
+        }
+
         #endregion
 
         #region Private Methods (Building)
@@ -278,33 +300,43 @@ namespace Hourglass
         {
             this.Items.Clear();
 
-            this.loopTimerMenuItem = new MenuItem();
-            this.loopTimerMenuItem.Header = "Loop timer";
-            this.loopTimerMenuItem.IsCheckable = true;
-            this.Items.Add(this.loopTimerMenuItem);
+            this.newTimerMenuItem = new MenuItem();
+            this.newTimerMenuItem.Header = "New timer";
+            this.newTimerMenuItem.Click += this.NewTimerMenuItemClick;
+            this.Items.Add(this.newTimerMenuItem);
 
             this.Items.Add(new Separator());
 
             this.alwaysOnTopMenuItem = new MenuItem();
             this.alwaysOnTopMenuItem.Header = "Always on top";
             this.alwaysOnTopMenuItem.IsCheckable = true;
+            this.alwaysOnTopMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.alwaysOnTopMenuItem);
 
             this.showInNotificationAreaMenuItem = new MenuItem();
             this.showInNotificationAreaMenuItem.Header = "Show in notification area";
             this.showInNotificationAreaMenuItem.IsCheckable = true;
+            this.showInNotificationAreaMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.showInNotificationAreaMenuItem);
 
             this.Items.Add(new Separator());
 
+            this.loopTimerMenuItem = new MenuItem();
+            this.loopTimerMenuItem.Header = "Loop timer";
+            this.loopTimerMenuItem.IsCheckable = true;
+            this.loopTimerMenuItem.Click += this.CheckableMenuItemClick;
+            this.Items.Add(this.loopTimerMenuItem);
+
             this.popUpWhenExpiredMenuItem = new MenuItem();
             this.popUpWhenExpiredMenuItem.Header = "Pop up when expired";
             this.popUpWhenExpiredMenuItem.IsCheckable = true;
+            this.popUpWhenExpiredMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.popUpWhenExpiredMenuItem);
 
             this.closeWhenExpiredMenuItem = new MenuItem();
             this.closeWhenExpiredMenuItem.Header = "Close when expired";
             this.closeWhenExpiredMenuItem.IsCheckable = true;
+            this.closeWhenExpiredMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.closeWhenExpiredMenuItem);
 
             this.Items.Add(new Separator());
@@ -332,7 +364,22 @@ namespace Hourglass
         }
 
         #endregion
-        
+
+        #region Private Methods (New Timer)
+
+        /// <summary>
+        /// Invoked when the "New timer" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void NewTimerMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            TimerWindow window = new TimerWindow();
+            window.Show();
+        }
+
+        #endregion
+
         #region Private Methods (Recent Timers)
 
         /// <summary>
@@ -510,6 +557,7 @@ namespace Hourglass
             noSoundMenuItem.Header = "No sound";
             noSoundMenuItem.IsCheckable = true;
             noSoundMenuItem.Click += this.SoundMenuItemClick;
+            noSoundMenuItem.Click += this.CheckableMenuItemClick;
 
             this.soundMenuItem.Items.Add(noSoundMenuItem);
             this.selectableSoundMenuItems.Add(noSoundMenuItem);
@@ -526,6 +574,7 @@ namespace Hourglass
                     menuItem.Tag = sound;
                     menuItem.IsCheckable = true;
                     menuItem.Click += this.SoundMenuItemClick;
+                    menuItem.Click += this.CheckableMenuItemClick;
 
                     this.soundMenuItem.Items.Add(menuItem);
                     this.selectableSoundMenuItems.Add(menuItem);
@@ -544,6 +593,7 @@ namespace Hourglass
                     menuItem.Tag = sound;
                     menuItem.IsCheckable = true;
                     menuItem.Click += this.SoundMenuItemClick;
+                    menuItem.Click += this.CheckableMenuItemClick;
 
                     this.soundMenuItem.Items.Add(menuItem);
                     this.selectableSoundMenuItems.Add(menuItem);
@@ -558,6 +608,7 @@ namespace Hourglass
                 this.loopSoundMenuItem = new MenuItem();
                 this.loopSoundMenuItem.Header = "Loop sound";
                 this.loopSoundMenuItem.IsCheckable = true;
+                this.loopSoundMenuItem.Click += this.CheckableMenuItemClick;
             }
 
             this.soundMenuItem.Items.Add(this.loopSoundMenuItem);

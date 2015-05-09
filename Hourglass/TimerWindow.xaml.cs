@@ -91,6 +91,11 @@ namespace Hourglass
         /// </summary>
         private Storyboard validationErrorStoryboard;
 
+        /// <summary>
+        /// The <see cref="Window.WindowState"/> before the window was minimized.
+        /// </summary>
+        private WindowState restoreWindowState = WindowState.Normal;
+
         #endregion
 
         #region Constructors
@@ -292,6 +297,49 @@ namespace Hourglass
             }
         }
 
+        /// <summary>
+        /// Brings the window to the front.
+        /// </summary>
+        public void BringToFront()
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.WindowState = this.restoreWindowState;
+            }
+
+            this.Topmost = false;
+            this.Topmost = true;
+            this.Topmost = this.Timer.Options.AlwaysOnTop;
+        }
+
+        /// <summary>
+        /// Brings the window to the front, activates it, and focusses it.
+        /// </summary>
+        public void BringToFrontAndActivate()
+        {
+            this.BringToFront();
+            this.Activate();
+            this.Focus();
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            if (this.Timer.State == TimerState.Stopped && this.Mode == TimerWindowMode.Input)
+            {
+                string input = string.IsNullOrWhiteSpace(this.TimerTextBox.Text) ? "\u2014" : this.TimerTextBox.Text;
+                string title = this.TitleTextBox.Text;
+                string format = string.IsNullOrWhiteSpace(title) ? "New timer: {0}" : "New timer: {0} \"{1}\"";
+
+                return string.Format(format, input, title);
+            }
+
+            return this.Timer.ToString();
+        }
+
         #endregion
 
         #region Protected Methods
@@ -479,9 +527,7 @@ namespace Hourglass
             // Bring the window to the front if required
             if (this.Timer.Options.PopUpWhenExpired)
             {
-                this.Topmost = false;
-                this.Topmost = true;
-                this.Topmost = this.Timer.Options.AlwaysOnTop;
+                this.BringToFront();
             }
         }
 
@@ -968,6 +1014,19 @@ namespace Hourglass
         {
             this.CancelOrReset();
             e.Handled = true;
+        }
+
+        /// <summary>
+        /// Invoked when the window's WindowState property changes.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowStateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState != WindowState.Minimized)
+            {
+                this.restoreWindowState = this.WindowState;
+            }
         }
 
         /// <summary>

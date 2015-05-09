@@ -13,15 +13,5 @@ namespace Hourglass
     /// </summary>
     public class App : Application
     {
-        /// <summary>
-        /// Invoked just before the application shuts down, and cannot be canceled.
-        /// </summary>
-        /// <param name="e">The event data.</param>
-        protected override void OnExit(ExitEventArgs e)
-        {
-            SettingsManager.Instance.Save();
-
-            base.OnExit(e);
-        }
     }
 }

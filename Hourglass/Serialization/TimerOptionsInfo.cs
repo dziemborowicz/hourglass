@@ -27,12 +27,6 @@ namespace Hourglass.Serialization
         public bool AlwaysOnTop { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether an icon for the timer window should be shown in the notification
-        /// area (system tray).
-        /// </summary>
-        public bool ShowInNotificationArea { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the timer window should be brought to the top of other windows when
         /// the timer expires.
         /// </summary>

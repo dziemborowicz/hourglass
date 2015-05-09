@@ -10,6 +10,8 @@ namespace Hourglass
 
     using Microsoft.VisualBasic.ApplicationServices;
 
+    using ExitEventArgs = System.Windows.ExitEventArgs;
+
     /// <summary>
     /// Handles application start up, command-line arguments, and ensures that only one instance of the application is
     /// running at any time.
@@ -20,6 +22,11 @@ namespace Hourglass
         /// An instance of the <see cref="App"/> class.
         /// </summary>
         private App app;
+
+        /// <summary>
+        /// The icon for the app in the notification area of the taskbar.
+        /// </summary>
+        private TimerNotifyIcon notifyIcon;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppEntry"/> class.
@@ -49,11 +56,11 @@ namespace Hourglass
         protected override bool OnStartup(StartupEventArgs e)
         {
             SettingsManager.Instance.Load();
-
-            TimerWindow window = new TimerWindow();
+            this.notifyIcon = new TimerNotifyIcon();
 
             this.app = new App();
-            this.app.Run(window);
+            this.app.Exit += this.AppExit;
+            this.app.Run(new TimerWindow());
 
             return false;
         }
@@ -67,6 +74,17 @@ namespace Hourglass
         {
             TimerWindow window = new TimerWindow();
             window.Show();
+        }
+
+        /// <summary>
+        /// Invoked just before the application shuts down, and cannot be canceled.
+        /// </summary>
+        /// <param name="sender">The application.</param>
+        /// <param name="e">The event data.</param>
+        private void AppExit(object sender, ExitEventArgs e)
+        {
+            this.notifyIcon.Dispose();
+            SettingsManager.Instance.Save();
         }
     }
 }
