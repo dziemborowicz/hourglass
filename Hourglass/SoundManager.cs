@@ -8,6 +8,7 @@ namespace Hourglass
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -20,6 +21,11 @@ namespace Hourglass
     /// </summary>
     public class SoundManager
     {
+        /// <summary>
+        /// The extensions of the supported sound files.
+        /// </summary>
+        public static readonly ReadOnlyCollection<string> SupportedTypes = new ReadOnlyCollection<string>(new[] { "*.aac", "*.m4a", "*.mid", "*.midi", "*.mp3", "*.wav", "*.wma" });
+
         /// <summary>
         /// Singleton instance of the <see cref="SoundManager"/> class.
         /// </summary>
@@ -115,25 +121,42 @@ namespace Hourglass
         {
             try
             {
+                string appDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".";
+                string soundsDirectory = Path.Combine(appDirectory, "Sounds");
+
+                List<Sound> list = new List<Sound>();
+                list.AddRange(this.GetFileSounds(appDirectory));
+                list.AddRange(this.GetFileSounds(soundsDirectory));
+                list.Sort((a, b) => string.Compare(a.Name, b.Name, CultureInfo.CurrentCulture, CompareOptions.StringSort));
+                return list;
+            }
+            catch
+            {
+                // Not worth raising an exception
+                return new List<Sound>();
+            }
+        }
+
+        /// <summary>
+        /// Loads the collection of sounds stored in the file system at the specified path.
+        /// </summary>
+        /// <param name="path">A path to a directory.</param>
+        /// <returns>A collection of sounds stored in the file system at the specified path.</returns>
+        private IList<Sound> GetFileSounds(string path)
+        {
+            try
+            {
                 List<Sound> list = new List<Sound>();
 
-                string appDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".";
-                if (Directory.Exists(appDirectory))
+                if (Directory.Exists(path))
                 {
-                    IEnumerable<string> paths = Directory.GetFiles(appDirectory, "*.wav");
-                    IEnumerable<Sound> fileSounds = paths.Select(path => new Sound(path));
-                    list.AddRange(fileSounds);
+                    foreach (string supportedType in SupportedTypes)
+                    {
+                        IEnumerable<string> filePaths = Directory.GetFiles(path, supportedType);
+                        IEnumerable<Sound> fileSounds = filePaths.Select(p => new Sound(p));
+                        list.AddRange(fileSounds);
+                    }
                 }
-
-                string soundsDirectory = Path.Combine(appDirectory, "Sounds");
-                if (Directory.Exists(soundsDirectory))
-                {
-                    IEnumerable<string> paths = Directory.GetFiles(soundsDirectory, "*.wav");
-                    IEnumerable<Sound> fileSounds = paths.Select(path => new Sound(path));
-                    list.AddRange(fileSounds);
-                }
-
-                list.Sort((a, b) => string.Compare(a.Name, b.Name, CultureInfo.CurrentCulture, CompareOptions.StringSort));
 
                 return list;
             }
