@@ -15,20 +15,22 @@ namespace Hourglass
     public static class FocusUtility
     {
         /// <summary>
-        /// Removes focus from a <see cref="FrameworkElement"/>.
+        /// Removes focus from the <see cref="FrameworkElement"/>.
         /// </summary>
         /// <param name="element">A <see cref="FrameworkElement"/>.</param>
-        public static void RemoveFocus(FrameworkElement element)
+        public static void Unfocus(this FrameworkElement element)
         {
-            FrameworkElement parent = (FrameworkElement)element.Parent;
-
-            while (parent != null && !((IInputElement)parent).Focusable)
+            if (element.IsFocused)
             {
-                parent = (FrameworkElement)parent.Parent;
-            }
+                FrameworkElement parent = (FrameworkElement)element.Parent;
+                while (parent != null && !((IInputElement)parent).Focusable)
+                {
+                    parent = (FrameworkElement)parent.Parent;
+                }
 
-            DependencyObject scope = FocusManager.GetFocusScope(element);
-            FocusManager.SetFocusedElement(scope, parent);
+                DependencyObject scope = FocusManager.GetFocusScope(element);
+                FocusManager.SetFocusedElement(scope, parent);
+            }
         }
     }
 }

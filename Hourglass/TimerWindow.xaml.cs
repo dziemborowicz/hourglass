@@ -398,8 +398,8 @@ namespace Hourglass
             this.TimerTextBox.Focusable = false;
             this.TimerTextBox.IsReadOnly = true;
 
-            FocusUtility.RemoveFocus(this.TimerTextBox);
-            FocusUtility.RemoveFocus(this.TitleTextBox);
+            this.TimerTextBox.Unfocus();
+            this.TitleTextBox.Unfocus();
 
             this.EndAnimationsAndSounds();
             this.UpdateBoundControls();
@@ -428,8 +428,8 @@ namespace Hourglass
                 case TimerWindowMode.Status:
                     if (this.Timer.State != TimerState.Expired)
                     {
-                        FocusUtility.RemoveFocus(this.TimerTextBox);
-                        FocusUtility.RemoveFocus(this.TitleTextBox);
+                        this.TimerTextBox.Unfocus();
+                        this.TitleTextBox.Unfocus();
                     }
                     else
                     {
@@ -984,7 +984,7 @@ namespace Hourglass
         {
             if (e.Key == Key.Enter && this.Mode == TimerWindowMode.Status)
             {
-                FocusUtility.RemoveFocus(this.TitleTextBox);
+                this.TitleTextBox.Unfocus();
                 e.Handled = true;
             }
         }
