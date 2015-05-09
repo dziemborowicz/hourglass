@@ -60,10 +60,12 @@
     <Compile Include="DateTimeTimer.cs" />
     <Compile Include="DateTimeTimerInput.cs" />
     <Compile Include="DateTimeUtility.cs" />
+    <Compile Include="FileSoundPlayer.cs" />
     <Compile Include="FocusUtility.cs" />
     <Compile Include="HourglassTimer.cs" />
     <Compile Include="MathUtility.cs" />
     <Compile Include="MultiplierConverter.cs" />
+    <Compile Include="ResourceSoundPlayer.cs" />
     <Compile Include="Serialization\DateTimeTimerInfo.cs" />
     <Compile Include="Serialization\DateTimeTimerInputInfo.cs" />
     <Compile Include="Serialization\HourglassTimerInfo.cs" />

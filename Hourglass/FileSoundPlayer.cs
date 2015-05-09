@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SoundPlayer.cs" company="Chris Dziemborowicz">
+// <copyright file="FileSoundPlayer.cs" company="Chris Dziemborowicz">
 //   Copyright (c) Chris Dziemborowicz. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,23 +7,24 @@
 namespace Hourglass
 {
     using System;
+    using System.Windows.Media;
 
     /// <summary>
     /// Plays <see cref="Sound"/>s stored in the file system.
     /// </summary>
-    public class SoundPlayer : IDisposable
+    public class FileSoundPlayer : IDisposable
     {
         #region Private Members
 
         /// <summary>
-        /// Plays <see cref="Sound"/>s stored in the assembly.
+        /// A <see cref="MediaPlayer"/>.
         /// </summary>
-        private readonly ResourceSoundPlayer resourceSoundPlayer;
+        private readonly MediaPlayer mediaPlayer;
 
         /// <summary>
-        /// Plays <see cref="Sound"/>s stored in the file system.
+        /// A value indicating whether the player is looping the sound playback indefinitely.
         /// </summary>
-        private readonly FileSoundPlayer fileSoundPlayer;
+        private bool isLooping;
 
         /// <summary>
         /// Indicates whether this object has been disposed.
@@ -35,19 +36,12 @@ namespace Hourglass
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SoundPlayer"/> class.
+        /// Initializes a new instance of the <see cref="FileSoundPlayer"/> class.
         /// </summary>
-        public SoundPlayer()
+        public FileSoundPlayer()
         {
-            this.resourceSoundPlayer = new ResourceSoundPlayer();
-            this.resourceSoundPlayer.PlaybackStarted += (s, e) => this.OnPlaybackStarted();
-            this.resourceSoundPlayer.PlaybackStopped += (s, e) => this.OnPlaybackStopped();
-            this.resourceSoundPlayer.PlaybackCompleted += (s, e) => this.OnPlaybackCompleted();
-
-            this.fileSoundPlayer = new FileSoundPlayer();
-            this.fileSoundPlayer.PlaybackStarted += (s, e) => this.OnPlaybackStarted();
-            this.fileSoundPlayer.PlaybackStopped += (s, e) => this.OnPlaybackStopped();
-            this.fileSoundPlayer.PlaybackCompleted += (s, e) => this.OnPlaybackCompleted();
+            this.mediaPlayer = new MediaPlayer();
+            this.mediaPlayer.MediaEnded += this.MediaPlayerOnMediaEnded;
         }
 
         #endregion
@@ -95,15 +89,21 @@ namespace Hourglass
                 return true;
             }
 
-            // Play the sound using the right sound player
-            if (sound.IsBuiltIn)
+            // Try to play the sound
+            try
             {
-                return this.resourceSoundPlayer.Play(sound, loop);
+                this.isLooping = loop;
+                this.mediaPlayer.Open(new Uri(sound.Path));
+                this.mediaPlayer.Play();
             }
-            else
+            catch
             {
-                return this.fileSoundPlayer.Play(sound, loop);
+                return false;
             }
+
+            // Raise an event
+            this.OnPlaybackStarted();
+            return true;
         }
 
         /// <summary>
@@ -115,7 +115,20 @@ namespace Hourglass
         {
             this.ThrowIfDisposed();
 
-            return this.resourceSoundPlayer.Stop() && this.fileSoundPlayer.Stop();
+            try
+            {
+                this.isLooping = false;
+                this.mediaPlayer.Stop();
+                this.mediaPlayer.Close();
+            }
+            catch
+            {
+                return false;
+            }
+
+            // Raise an event
+            this.OnPlaybackStopped();
+            return true;
         }
 
         /// <summary>
@@ -147,8 +160,7 @@ namespace Hourglass
 
             if (disposing)
             {
-                this.resourceSoundPlayer.Dispose();
-                this.fileSoundPlayer.Dispose();
+                this.mediaPlayer.Close();
             }
         }
 
@@ -199,6 +211,28 @@ namespace Hourglass
             if (eventHandler != null)
             {
                 eventHandler(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Invoked when when the media has finished playback in the <see cref="MediaPlayer"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="MediaPlayer"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void MediaPlayerOnMediaEnded(object sender, EventArgs e)
+        {
+            if (this.isLooping)
+            {
+                this.mediaPlayer.Position = TimeSpan.Zero;
+                this.mediaPlayer.Play();
+            }
+            else
+            {
+                this.OnPlaybackCompleted();
             }
         }
 

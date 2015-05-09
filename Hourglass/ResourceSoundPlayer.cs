@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SoundPlayer.cs" company="Chris Dziemborowicz">
+// <copyright file="ResourceSoundPlayer.cs" company="Chris Dziemborowicz">
 //   Copyright (c) Chris Dziemborowicz. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,23 +7,24 @@
 namespace Hourglass
 {
     using System;
+    using System.Windows.Threading;
 
     /// <summary>
-    /// Plays <see cref="Sound"/>s stored in the file system.
+    /// Plays <see cref="Sound"/>s stored in the assembly.
     /// </summary>
-    public class SoundPlayer : IDisposable
+    public class ResourceSoundPlayer : IDisposable
     {
         #region Private Members
 
         /// <summary>
-        /// Plays <see cref="Sound"/>s stored in the assembly.
+        /// A <see cref="System.Media.SoundPlayer"/> that can be used to play *.wav files.
         /// </summary>
-        private readonly ResourceSoundPlayer resourceSoundPlayer;
+        private readonly System.Media.SoundPlayer soundPlayer = new System.Media.SoundPlayer();
 
         /// <summary>
-        /// Plays <see cref="Sound"/>s stored in the file system.
+        /// A <see cref="DispatcherTimer"/> used to raise events.
         /// </summary>
-        private readonly FileSoundPlayer fileSoundPlayer;
+        private readonly DispatcherTimer dispatcherTimer;
 
         /// <summary>
         /// Indicates whether this object has been disposed.
@@ -35,19 +36,13 @@ namespace Hourglass
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SoundPlayer"/> class.
+        /// Initializes a new instance of the <see cref="ResourceSoundPlayer"/> class.
         /// </summary>
-        public SoundPlayer()
+        public ResourceSoundPlayer()
         {
-            this.resourceSoundPlayer = new ResourceSoundPlayer();
-            this.resourceSoundPlayer.PlaybackStarted += (s, e) => this.OnPlaybackStarted();
-            this.resourceSoundPlayer.PlaybackStopped += (s, e) => this.OnPlaybackStopped();
-            this.resourceSoundPlayer.PlaybackCompleted += (s, e) => this.OnPlaybackCompleted();
-
-            this.fileSoundPlayer = new FileSoundPlayer();
-            this.fileSoundPlayer.PlaybackStarted += (s, e) => this.OnPlaybackStarted();
-            this.fileSoundPlayer.PlaybackStopped += (s, e) => this.OnPlaybackStopped();
-            this.fileSoundPlayer.PlaybackCompleted += (s, e) => this.OnPlaybackCompleted();
+            this.dispatcherTimer = new DispatcherTimer();
+            this.dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            this.dispatcherTimer.Tick += this.DispatcherTimerTick;
         }
 
         #endregion
@@ -95,15 +90,38 @@ namespace Hourglass
                 return true;
             }
 
-            // Play the sound using the right sound player
-            if (sound.IsBuiltIn)
+            // Try to play the sound
+            try
             {
-                return this.resourceSoundPlayer.Play(sound, loop);
+                // Load the sound data
+                this.soundPlayer.Stream = sound.GetStream();
+
+                if (loop)
+                {
+                    // Asynchronously play looping sound
+                    this.soundPlayer.PlayLooping();
+                }
+                else
+                {
+                    // Asynchronously play sound once
+                    this.soundPlayer.Play();
+
+                    // Start a timer to notify the completion of playback if we know the duration
+                    if (sound.Duration.HasValue)
+                    {
+                        this.dispatcherTimer.Interval = sound.Duration.Value;
+                        this.dispatcherTimer.Start();
+                    }
+                }
             }
-            else
+            catch
             {
-                return this.fileSoundPlayer.Play(sound, loop);
+                return false;
             }
+
+            // Raise an event
+            this.OnPlaybackStarted();
+            return true;
         }
 
         /// <summary>
@@ -115,7 +133,27 @@ namespace Hourglass
         {
             this.ThrowIfDisposed();
 
-            return this.resourceSoundPlayer.Stop() && this.fileSoundPlayer.Stop();
+            try
+            {
+                // Stop playback and prevent a completion event
+                this.soundPlayer.Stop();
+                this.dispatcherTimer.Stop();
+
+                // Dispose the stream to the sound data
+                if (this.soundPlayer.Stream != null)
+                {
+                    this.soundPlayer.Stream.Dispose();
+                    this.soundPlayer.Stream = null;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            // Raise an event
+            this.OnPlaybackStopped();
+            return true;
         }
 
         /// <summary>
@@ -147,8 +185,15 @@ namespace Hourglass
 
             if (disposing)
             {
-                this.resourceSoundPlayer.Dispose();
-                this.fileSoundPlayer.Dispose();
+                this.soundPlayer.Stop();
+                this.soundPlayer.Dispose();
+
+                if (this.soundPlayer.Stream != null)
+                {
+                    this.soundPlayer.Stream.Dispose();
+                }
+
+                this.dispatcherTimer.Stop();
             }
         }
 
@@ -200,6 +245,24 @@ namespace Hourglass
             {
                 eventHandler(this, EventArgs.Empty);
             }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Invoked when the <see cref="dispatcherTimer"/> interval has elapsed.
+        /// </summary>
+        /// <param name="sender">The <see cref="DispatcherTimer"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void DispatcherTimerTick(object sender, EventArgs e)
+        {
+            // Prevent multiple completion events
+            this.dispatcherTimer.Stop();
+
+            // Raise an event
+            this.OnPlaybackCompleted();
         }
 
         #endregion
