@@ -7,6 +7,8 @@
 namespace Hourglass
 {
     using System;
+    using System.Windows.Media;
+    using System.Windows.Threading;
 
     /// <summary>
     /// Plays <see cref="Sound"/>s stored in the file system.
@@ -16,14 +18,24 @@ namespace Hourglass
         #region Private Members
 
         /// <summary>
-        /// Plays <see cref="Sound"/>s stored in the assembly.
+        /// A <see cref="System.Media.SoundPlayer"/> that can play *.wav files.
         /// </summary>
-        private readonly ResourceSoundPlayer resourceSoundPlayer;
+        private readonly System.Media.SoundPlayer soundPlayer;
 
         /// <summary>
-        /// Plays <see cref="Sound"/>s stored in the file system.
+        /// A <see cref="DispatcherTimer"/> used to raise events.
         /// </summary>
-        private readonly FileSoundPlayer fileSoundPlayer;
+        private readonly DispatcherTimer dispatcherTimer;
+
+        /// <summary>
+        /// A <see cref="MediaPlayer"/> that can play most sound files.
+        /// </summary>
+        private readonly MediaPlayer mediaPlayer;
+
+        /// <summary>
+        /// A value indicating whether the player is looping the sound playback indefinitely.
+        /// </summary>
+        private bool isLooping;
 
         /// <summary>
         /// Indicates whether this object has been disposed.
@@ -39,15 +51,16 @@ namespace Hourglass
         /// </summary>
         public SoundPlayer()
         {
-            this.resourceSoundPlayer = new ResourceSoundPlayer();
-            this.resourceSoundPlayer.PlaybackStarted += (s, e) => this.OnPlaybackStarted();
-            this.resourceSoundPlayer.PlaybackStopped += (s, e) => this.OnPlaybackStopped();
-            this.resourceSoundPlayer.PlaybackCompleted += (s, e) => this.OnPlaybackCompleted();
+            // Resource sound player
+            this.soundPlayer = new System.Media.SoundPlayer();
 
-            this.fileSoundPlayer = new FileSoundPlayer();
-            this.fileSoundPlayer.PlaybackStarted += (s, e) => this.OnPlaybackStarted();
-            this.fileSoundPlayer.PlaybackStopped += (s, e) => this.OnPlaybackStopped();
-            this.fileSoundPlayer.PlaybackCompleted += (s, e) => this.OnPlaybackCompleted();
+            this.dispatcherTimer = new DispatcherTimer();
+            this.dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            this.dispatcherTimer.Tick += this.DispatcherTimerTick;
+
+            // File source sound player
+            this.mediaPlayer = new MediaPlayer();
+            this.mediaPlayer.MediaEnded += this.MediaPlayerOnMediaEnded;
         }
 
         #endregion
@@ -95,15 +108,48 @@ namespace Hourglass
                 return true;
             }
 
-            // Play the sound using the right sound player
-            if (sound.IsBuiltIn)
+            try
             {
-                return this.resourceSoundPlayer.Play(sound, loop);
+                this.isLooping = loop;
+
+                if (sound.IsBuiltIn)
+                {
+                    // Use the sound player
+                    this.soundPlayer.Stream = sound.GetStream();
+
+                    if (loop)
+                    {
+                        // Asynchronously play looping sound
+                        this.soundPlayer.PlayLooping();
+                    }
+                    else
+                    {
+                        // Asynchronously play sound once
+                        this.soundPlayer.Play();
+
+                        // Start a timer to notify the completion of playback if we know the duration
+                        if (sound.Duration.HasValue)
+                        {
+                            this.dispatcherTimer.Interval = sound.Duration.Value;
+                            this.dispatcherTimer.Start();
+                        }
+                    }
+                }
+                else
+                {
+                    // Use the media player
+                    this.mediaPlayer.Open(new Uri(sound.Path));
+                    this.mediaPlayer.Play();
+                }
             }
-            else
+            catch
             {
-                return this.fileSoundPlayer.Play(sound, loop);
+                return false;
             }
+
+            // Raise an event
+            this.OnPlaybackStarted();
+            return true;
         }
 
         /// <summary>
@@ -115,7 +161,32 @@ namespace Hourglass
         {
             this.ThrowIfDisposed();
 
-            return this.resourceSoundPlayer.Stop() && this.fileSoundPlayer.Stop();
+            try
+            {
+                this.isLooping = false;
+
+                // Stop the sound player
+                this.soundPlayer.Stop();
+                this.dispatcherTimer.Stop();
+
+                if (this.soundPlayer.Stream != null)
+                {
+                    this.soundPlayer.Stream.Dispose();
+                    this.soundPlayer.Stream = null;
+                }
+
+                // Stop the media player
+                this.mediaPlayer.Stop();
+                this.mediaPlayer.Close();
+            }
+            catch
+            {
+                return false;
+            }
+
+            // Raise an event
+            this.OnPlaybackStopped();
+            return true;
         }
 
         /// <summary>
@@ -147,8 +218,20 @@ namespace Hourglass
 
             if (disposing)
             {
-                this.resourceSoundPlayer.Dispose();
-                this.fileSoundPlayer.Dispose();
+                // Dispose the sound player
+                this.soundPlayer.Stop();
+                this.soundPlayer.Dispose();
+
+                if (this.soundPlayer.Stream != null)
+                {
+                    this.soundPlayer.Stream.Dispose();
+                }
+
+                this.dispatcherTimer.Stop();
+
+                // Dispose the media player
+                this.mediaPlayer.Stop();
+                this.mediaPlayer.Close();
             }
         }
 
@@ -199,6 +282,39 @@ namespace Hourglass
             if (eventHandler != null)
             {
                 eventHandler(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Invoked when the <see cref="DispatcherTimer"/> interval has elapsed.
+        /// </summary>
+        /// <param name="sender">The <see cref="DispatcherTimer"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void DispatcherTimerTick(object sender, EventArgs e)
+        {
+            this.dispatcherTimer.Stop();
+            this.OnPlaybackCompleted();
+        }
+
+        /// <summary>
+        /// Invoked when when the media has finished playback in the <see cref="MediaPlayer"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="MediaPlayer"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void MediaPlayerOnMediaEnded(object sender, EventArgs e)
+        {
+            if (this.isLooping)
+            {
+                this.mediaPlayer.Position = TimeSpan.Zero;
+                this.mediaPlayer.Play();
+            }
+            else
+            {
+                this.OnPlaybackCompleted();
             }
         }
 
