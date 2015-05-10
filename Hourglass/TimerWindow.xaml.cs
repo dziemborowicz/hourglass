@@ -279,8 +279,8 @@ namespace Hourglass
 
             // Start and show a new timer
             this.Timer = HourglassTimer.GetTimerForInput(input);
-            this.Timer.Start(input);
             this.SwitchToStatusMode();
+            this.Timer.Start(input);
             TimerManager.Instance.Add(this.Timer);
 
             // Show the window if it is not already open

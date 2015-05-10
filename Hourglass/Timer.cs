@@ -302,8 +302,8 @@ namespace Hourglass
             this.ThrowIfDisposed();
 
             this.state = TimerState.Running;
-            this.startTime = start;
-            this.endTime = DateTimeUtility.Max(start, end);
+            this.startTime = DateTimeUtility.Min(start, end);
+            this.endTime = end;
             this.timeElapsed = TimeSpan.Zero;
             this.timeLeft = this.endTime - this.startTime;
             this.totalTime = this.timeLeft;
