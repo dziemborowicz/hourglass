@@ -179,6 +179,7 @@ namespace Hourglass
                 this.timerWindow.ResumeButton,
                 this.timerWindow.StopButton,
                 this.timerWindow.ResetButton,
+                this.timerWindow.CloseButton,
                 this.timerWindow.CancelButton
             };
 
