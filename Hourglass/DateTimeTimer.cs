@@ -82,6 +82,28 @@ namespace Hourglass
             this.Start(start, end, timerInput);
         }
 
+        /// <summary>
+        /// Does nothing. The <see cref="DateTimeTimer"/> does not support pausing or resuming the timer.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
+        public override void Pause()
+        {
+            this.ThrowIfDisposed();
+
+            // Do nothing
+        }
+
+        /// <summary>
+        /// Does nothing. The <see cref="DateTimeTimer"/> does not support pausing or resuming the timer.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
+        public override void Resume()
+        {
+            this.ThrowIfDisposed();
+
+            // Do nothing
+        }
+
         #endregion
 
         #region Protected Methods

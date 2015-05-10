@@ -44,11 +44,6 @@ namespace Hourglass
         private TimerWindowMode mode;
 
         /// <summary>
-        /// A value indicating whether controls should be showed even when the mouse is not over the window.
-        /// </summary>
-        private bool alwaysShowControls;
-
-        /// <summary>
         /// The <see cref="TimerMenu"/> for the window.
         /// </summary>
         private TimerMenu menu = new TimerMenu();
@@ -152,29 +147,6 @@ namespace Hourglass
 
                 this.mode = value;
                 this.OnPropertyChanged("mode");
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether controls should be showed even when the mouse is not over the
-        /// window.
-        /// </summary>
-        public bool AlwaysShowControls
-        {
-            get
-            {
-                return this.alwaysShowControls;
-            }
-
-            private set
-            {
-                if (this.alwaysShowControls == value)
-                {
-                    return;
-                }
-
-                this.alwaysShowControls = value;
-                this.OnPropertyChanged("AlwaysShowControls");
             }
         }
 
@@ -397,7 +369,6 @@ namespace Hourglass
         private void SwitchToInputMode()
         {
             this.Mode = TimerWindowMode.Input;
-            this.AlwaysShowControls = true;
 
             this.TimerTextBox.Focusable = true;
             this.TimerTextBox.IsReadOnly = false;
@@ -415,14 +386,11 @@ namespace Hourglass
         private void SwitchToStatusMode()
         {
             this.Mode = TimerWindowMode.Status;
-            this.AlwaysShowControls = false;
 
             this.TimerTextBox.Focusable = false;
             this.TimerTextBox.IsReadOnly = true;
 
-            this.TimerTextBox.Unfocus();
-            this.TitleTextBox.Unfocus();
-
+            this.UnfocusAll();
             this.EndAnimationsAndSounds();
             this.UpdateBoundControls();
         }
@@ -450,8 +418,7 @@ namespace Hourglass
                 case TimerWindowMode.Status:
                     if (this.Timer.State != TimerState.Expired)
                     {
-                        this.TimerTextBox.Unfocus();
-                        this.TitleTextBox.Unfocus();
+                        this.UnfocusAll();
                     }
                     else
                     {
@@ -463,6 +430,23 @@ namespace Hourglass
 
                     return;
             }
+        }
+
+        /// <summary>
+        /// Removes focus from all controls.
+        /// </summary>
+        private void UnfocusAll()
+        {
+            this.TitleTextBox.Unfocus();
+            this.TimerTextBox.Unfocus();
+
+            this.StartButton.Unfocus();
+            this.PauseButton.Unfocus();
+            this.ResumeButton.Unfocus();
+            this.StopButton.Unfocus();
+            this.ResetButton.Unfocus();
+            this.CloseButton.Unfocus();
+            this.CancelButton.Unfocus();
         }
 
         #endregion
@@ -945,6 +929,7 @@ namespace Hourglass
         private void PauseButtonClick(object sender, RoutedEventArgs e)
         {
             this.Timer.Pause();
+            this.ResumeButton.Focus();
         }
 
         /// <summary>
@@ -955,6 +940,7 @@ namespace Hourglass
         private void ResumeButtonClick(object sender, RoutedEventArgs e)
         {
             this.Timer.Resume();
+            this.UnfocusAll();
         }
 
         /// <summary>
@@ -1008,7 +994,7 @@ namespace Hourglass
         {
             if (e.Key == Key.Enter && this.Mode == TimerWindowMode.Status)
             {
-                this.TitleTextBox.Unfocus();
+                this.UnfocusAll();
                 e.Handled = true;
             }
         }
@@ -1034,10 +1020,28 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowKeyDown(object sender, KeyEventArgs e)
         {
+            // Cancel or reset on escape
             if (e.Key == Key.Escape)
             {
                 this.CancelOrReset();
                 e.Handled = true;
+                return;
+            }
+
+            // Pause or resume the timer on space
+            if (e.Key == Key.Space && this.Mode == TimerWindowMode.Status)
+            {
+                if (this.Timer.State == TimerState.Running && !(this.Timer is DateTimeTimer))
+                {
+                    this.Timer.Pause();
+                }
+                else if (this.Timer.State == TimerState.Paused)
+                {
+                    this.Timer.Resume();
+                }
+
+                e.Handled = true;
+                return;
             }
         }
 

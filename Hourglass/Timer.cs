@@ -297,7 +297,7 @@ namespace Hourglass
         /// <param name="start">The <see cref="DateTime"/> the timer was started.</param>
         /// <param name="end">The <see cref="DateTime"/> the timer expires.</param>
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public void Start(DateTime start, DateTime end)
+        public virtual void Start(DateTime start, DateTime end)
         {
             this.ThrowIfDisposed();
 
@@ -322,7 +322,7 @@ namespace Hourglass
         /// If the <see cref="State"/> is not <see cref="TimerState.Running"/>, this method does nothing.
         /// </remarks>
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public void Pause()
+        public virtual void Pause()
         {
             this.ThrowIfDisposed();
 
@@ -351,7 +351,7 @@ namespace Hourglass
         /// If the <see cref="State"/> is not <see cref="TimerState.Paused"/>, this method does nothing.
         /// </remarks>
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public void Resume()
+        public virtual void Resume()
         {
             this.ThrowIfDisposed();
 
@@ -378,7 +378,7 @@ namespace Hourglass
         /// If the <see cref="State"/> is <see cref="TimerState.Stopped"/>, this method does nothing.
         /// </remarks>
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public void Stop()
+        public virtual void Stop()
         {
             this.ThrowIfDisposed();
 
@@ -406,7 +406,7 @@ namespace Hourglass
         /// <remarks>
         /// When the timer is running, this method is periodically invoked to update the state of the timer.
         /// </remarks>
-        public void Update()
+        public virtual void Update()
         {
             this.ThrowIfDisposed();
 
