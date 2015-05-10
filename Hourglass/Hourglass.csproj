@@ -95,6 +95,8 @@
     </Compile>
     <Compile Include="Watermark.cs" />
     <Compile Include="WatermarkAdorner.cs" />
+    <Compile Include="WindowSize.cs" />
+    <Compile Include="WindowSizeExtensions.cs" />
     <Page Include="TimerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

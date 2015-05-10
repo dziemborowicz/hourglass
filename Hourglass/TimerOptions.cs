@@ -55,6 +55,11 @@ namespace Hourglass
         /// </summary>
         private bool loopSound;
 
+        /// <summary>
+        /// The size, position, and state of the timer window.
+        /// </summary>
+        private WindowSize windowSize;
+
         #endregion
 
         #region Constructors
@@ -71,6 +76,7 @@ namespace Hourglass
             this.closeWhenExpired = false;
             this.sound = SoundManager.Instance.DefaultSound;
             this.loopSound = false;
+            this.windowSize = null;
         }
 
         /// <summary>
@@ -108,7 +114,7 @@ namespace Hourglass
         /// <summary>
         /// Gets or sets a user-specified title for the timer.
         /// </summary>
-        public virtual string Title
+        public string Title
         {
             get
             {
@@ -130,7 +136,7 @@ namespace Hourglass
         /// <summary>
         /// Gets or sets a value indicating whether to loop the timer continuously.
         /// </summary>
-        public virtual bool LoopTimer
+        public bool LoopTimer
         {
             get
             {
@@ -152,7 +158,7 @@ namespace Hourglass
         /// <summary>
         /// Gets or sets a value indicating whether the timer window should always be displayed on top of other windows.
         /// </summary>
-        public virtual bool AlwaysOnTop
+        public bool AlwaysOnTop
         {
             get
             {
@@ -175,7 +181,7 @@ namespace Hourglass
         /// Gets or sets a value indicating whether the timer window should be brought to the top of other windows when
         /// the timer expires.
         /// </summary>
-        public virtual bool PopUpWhenExpired
+        public bool PopUpWhenExpired
         {
             get
             {
@@ -197,7 +203,7 @@ namespace Hourglass
         /// <summary>
         /// Gets or sets a value indicating whether the timer window should be closed when the timer expires.
         /// </summary>
-        public virtual bool CloseWhenExpired
+        public bool CloseWhenExpired
         {
             get
             {
@@ -219,7 +225,7 @@ namespace Hourglass
         /// <summary>
         /// Gets or sets the sound to play when the timer expires, or <c>null</c> if no sound is to be played.
         /// </summary>
-        public virtual Sound Sound
+        public Sound Sound
         {
             get
             {
@@ -242,7 +248,7 @@ namespace Hourglass
         /// Gets or sets a value indicating whether the sound that plays when the timer expires should be looped until
         /// stopped by the user.
         /// </summary>
-        public virtual bool LoopSound
+        public bool LoopSound
         {
             get
             {
@@ -258,6 +264,28 @@ namespace Hourglass
 
                 this.loopSound = value;
                 this.OnPropertyChanged("LoopSound");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the size, position, and state of the timer window.
+        /// </summary>
+        public WindowSize WindowSize
+        {
+            get
+            {
+                return this.windowSize;
+            }
+
+            set
+            {
+                if (this.windowSize == value)
+                {
+                    return;
+                }
+
+                this.windowSize = value;
+                this.OnPropertyChanged("WindowSize");
             }
         }
 
@@ -307,6 +335,7 @@ namespace Hourglass
             this.closeWhenExpired = options.closeWhenExpired;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
+            this.windowSize = WindowSize.FromWindowSize(options.WindowSize);
         }
 
         /// <summary>
@@ -327,6 +356,7 @@ namespace Hourglass
             this.closeWhenExpired = optionsInfo.CloseWhenExpired;
             this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
             this.loopSound = optionsInfo.LoopSound;
+            this.windowSize = WindowSize.FromWindowSize(optionsInfo.WindowSize);
         }
 
         /// <summary>
@@ -343,6 +373,7 @@ namespace Hourglass
             info.CloseWhenExpired = this.closeWhenExpired;
             info.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;
             info.LoopSound = this.loopSound;
+            info.WindowSize = WindowSize.FromWindowSize(this.windowSize);
             return info;
         }
 

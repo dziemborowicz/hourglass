@@ -240,6 +240,28 @@ namespace Hourglass
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="Window.WindowState"/> before the window was minimized.
+        /// </summary>
+        public WindowState RestoreWindowState
+        {
+            get
+            {
+                return this.restoreWindowState;
+            }
+
+            private set
+            {
+                if (this.restoreWindowState == value)
+                {
+                    return;
+                }
+
+                this.restoreWindowState = value;
+                this.OnPropertyChanged("RestoreWindowState");
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -308,7 +330,7 @@ namespace Hourglass
 
             if (this.WindowState == WindowState.Minimized)
             {
-                this.WindowState = this.restoreWindowState;
+                this.WindowState = this.RestoreWindowState;
             }
 
             this.Topmost = false;
@@ -795,6 +817,8 @@ namespace Hourglass
             this.Timer.PropertyChanged -= this.TimerPropertyChanged;
             this.Timer.Options.PropertyChanged -= this.TimerOptionsPropertyChanged;
 
+            this.Timer.Options.WindowSize = WindowSize.FromWindow(this /* window */);
+
             if (this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired)
             {
                 TimerManager.Instance.Remove(this.Timer);
@@ -1037,7 +1061,7 @@ namespace Hourglass
         {
             if (this.WindowState != WindowState.Minimized)
             {
-                this.restoreWindowState = this.WindowState;
+                this.RestoreWindowState = this.WindowState;
             }
 
             if (this.WindowState == WindowState.Minimized && Settings.Default.ShowInNotificationArea)
@@ -1057,6 +1081,7 @@ namespace Hourglass
         {
             this.UnbindTimer();
             this.soundPlayer.Dispose();
+            Settings.Default.WindowSize = WindowSize.FromWindow(this /* window */);
             SettingsManager.Instance.Save();
         }
 

@@ -375,6 +375,7 @@ namespace Hourglass
         private void NewTimerMenuItemClick(object sender, RoutedEventArgs e)
         {
             TimerWindow window = new TimerWindow();
+            window.RestoreFromWindow(this.timerWindow);
             window.Show();
         }
 
@@ -433,9 +434,16 @@ namespace Hourglass
             TimerInput input = (TimerInput)menuItem.Tag;
             input.Options.SetFromTimerOptions(this.timerWindow.Timer.Options);
 
-            TimerWindow window = this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired
-                ? this.timerWindow
-                : new TimerWindow();
+            TimerWindow window;
+            if (this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired)
+            {
+                window = this.timerWindow;
+            }
+            else
+            {
+                window = new TimerWindow();
+                window.RestoreFromWindow(this.timerWindow);
+            }
 
             window.Show(input);
         }
@@ -527,6 +535,7 @@ namespace Hourglass
                 ? this.timerWindow
                 : new TimerWindow();
 
+            window.RestoreFromOptions(savedTimer.Options);
             window.Show(savedTimer);
         }
 

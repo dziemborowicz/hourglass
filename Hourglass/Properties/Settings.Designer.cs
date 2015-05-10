@@ -67,5 +67,16 @@ namespace Hourglass.Properties {
                 this["ShowInNotificationArea"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Hourglass.WindowSize WindowSize {
+            get {
+                return ((global::Hourglass.WindowSize)(this["WindowSize"]));
+            }
+            set {
+                this["WindowSize"] = value;
+            }
+        }
     }
 }

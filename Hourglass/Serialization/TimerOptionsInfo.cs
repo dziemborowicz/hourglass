@@ -50,6 +50,11 @@ namespace Hourglass.Serialization
         public bool LoopSound { get; set; }
 
         /// <summary>
+        /// Gets or sets the size, position, and state of the timer window.
+        /// </summary>
+        public WindowSize WindowSize { get; set; }
+
+        /// <summary>
         /// Returns a <see cref="TimerOptionsInfo"/> for the specified <see cref="TimerOptions"/>.
         /// </summary>
         /// <param name="options">A <see cref="TimerOptions"/>.</param>

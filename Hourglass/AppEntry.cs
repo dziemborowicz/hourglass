@@ -58,9 +58,12 @@ namespace Hourglass
             SettingsManager.Instance.Load();
             this.notifyIcon = new TimerNotifyIcon();
 
+            TimerWindow window = new TimerWindow();
+            window.RestoreFromSettings();
+
             this.app = new App();
             this.app.Exit += this.AppExit;
-            this.app.Run(new TimerWindow());
+            this.app.Run(window);
 
             return false;
         }
@@ -73,7 +76,9 @@ namespace Hourglass
         protected override void OnStartupNextInstance(StartupNextInstanceEventArgs e)
         {
             TimerWindow window = new TimerWindow();
+            window.RestoreFromRecentWindow();
             window.Show();
+            window.BringToFrontAndActivate();
         }
 
         /// <summary>
