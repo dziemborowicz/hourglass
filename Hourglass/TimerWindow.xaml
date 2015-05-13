@@ -31,6 +31,7 @@
                         <Condition Binding="{Binding ElementName=CloseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CancelButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=InnerGrid, Path=IsMouseOver}" Value="False"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=hg:TimerWindow}, Path=ContextMenu.IsOpen}" Value="False"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=hg:TimerWindow}, Path=Timer.State}" Value="Running"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value=""/>
                     </MultiDataTrigger.Conditions>
@@ -73,6 +74,7 @@
                         <Condition Binding="{Binding ElementName=CloseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CancelButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=InnerGrid, Path=IsMouseOver}" Value="False"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=hg:TimerWindow}, Path=ContextMenu.IsOpen}" Value="False"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=hg:TimerWindow}, Path=Timer.State}" Value="Running"/>
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.EnterActions>
