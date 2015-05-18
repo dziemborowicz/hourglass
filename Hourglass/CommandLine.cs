@@ -409,7 +409,7 @@ namespace Hourglass
         {
             try
             {
-                double[] values = arg.Split(',').Select(double.Parse).ToArray();
+                double[] values = arg.Split(',', 'x').Select(double.Parse).ToArray();
 
                 if (values.Length != 2)
                 {
