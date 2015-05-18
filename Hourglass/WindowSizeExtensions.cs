@@ -191,8 +191,14 @@ namespace Hourglass
         /// <param name="window">A <see cref="TimerWindow"/>.</param>
         private static void ResetSize(this TimerWindow window)
         {
-            window.Width = Math.Min(TimerWindow.DefaultSize.Width, SystemParameters.WorkArea.Width);
-            window.Height = Math.Min(TimerWindow.DefaultSize.Height, SystemParameters.WorkArea.Height);
+            if (!TimerWindow.DefaultWindowSize.Size.HasValue)
+            {
+                return;
+            }
+
+            Size defaultSize = TimerWindow.DefaultWindowSize.Size.Value;
+            window.Width = Math.Min(defaultSize.Width, SystemParameters.WorkArea.Width);
+            window.Height = Math.Min(defaultSize.Height, SystemParameters.WorkArea.Height);
         }
 
         /// <summary>

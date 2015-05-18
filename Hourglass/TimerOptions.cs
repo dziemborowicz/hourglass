@@ -76,7 +76,7 @@ namespace Hourglass
             this.closeWhenExpired = false;
             this.sound = SoundManager.Instance.DefaultSound;
             this.loopSound = false;
-            this.windowSize = null;
+            this.windowSize = TimerWindow.DefaultWindowSize;
         }
 
         /// <summary>

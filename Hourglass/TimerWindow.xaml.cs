@@ -165,9 +165,17 @@ namespace Hourglass
         /// <summary>
         /// Gets the default size of the window.
         /// </summary>
-        public static Size DefaultSize
+        public static WindowSize DefaultWindowSize
         {
-            get { return new Size(350, 150); }
+            get
+            {
+                return new WindowSize
+                {
+                    Size = new Size(350, 150),
+                    WindowState = WindowState.Normal,
+                    RestoreWindowState = WindowState.Normal
+                };
+            }
         }
 
         /// <summary>
