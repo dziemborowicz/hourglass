@@ -30,31 +30,55 @@ namespace Hourglass
             }
 
             // Restore size
-            window.Left = windowSize.Left;
-            window.Top = windowSize.Top;
-            window.Width = windowSize.Width;
-            window.Height = windowSize.Height;
-
-            // Restore window state (if the window is not loaded yet, setting the state to maximized will maximize the
-            // window on the primary display rather than the display where the window was originally maximized)
-            WindowState windowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState;
-            if (windowState != WindowState.Maximized || window.IsVisible)
+            if (windowSize.Position.HasValue)
             {
-                window.WindowState = windowState;
-            }
-            else
-            {
-                // Do not raise the event twice even if we have previously attached this handler but the window was
-                // never laoded
-                window.Loaded -= WindowLoaded;
-
-                // Maximize the window when it loads
-                window.Loaded += WindowLoaded;
+                Point position = windowSize.Position.Value;
+                window.Left = position.X;
+                window.Top = position.Y;
             }
 
-            // If the window is restored to a size or position that does not fit on the scree, fallback to center
+            // Restore size
+            if (windowSize.Size.HasValue)
+            {
+                Size size = windowSize.Size.Value;
+                window.Width = size.Width;
+                window.Height = size.Height;
+            }
+
+            // Restore state
+            if (windowSize.WindowState.HasValue)
+            {
+                WindowState windowState = windowSize.WindowState == WindowState.Minimized && windowSize.RestoreWindowState.HasValue
+                    ? windowSize.RestoreWindowState.Value
+                    : windowSize.WindowState.Value;
+
+                if (windowState == WindowState.Maximized && !window.IsVisible)
+                {
+                    // If the window is not loaded yet, setting the state to maximized will maximize the window on the
+                    // primary display rather than the display where the window was originally maximized
+
+                    // Remove previously attached handler if there is one
+                    window.Loaded -= WindowLoaded;
+
+                    // Maximize the window when it loads
+                    window.Loaded += WindowLoaded;
+                }
+                else
+                {
+                    window.WindowState = windowState;
+                }
+            }
+
+            // If the window is restored to a size or position that does not fit on the screen, fallback to center
             if (!window.IsOnScreen())
             {
+                window.CenterOnScreen();
+            }
+
+            // If the window still does not fit on the screen, fallback to its default size
+            if (!window.IsOnScreen())
+            {
+                window.ResetSize();
                 window.CenterOnScreen();
             }
         }
@@ -76,7 +100,14 @@ namespace Hourglass
         /// </param>
         public static void RestoreFromOptions(this TimerWindow window, TimerOptions options)
         {
-            window.Restore(options.WindowSize);
+            if (options != null && options.WindowSize != null)
+            {
+                window.Restore(options.WindowSize);
+            }
+            else
+            {
+                window.RestoreFromRecentWindow();
+            }
         }
 
         /// <summary>
@@ -100,6 +131,12 @@ namespace Hourglass
         /// <param name="window">A <see cref="TimerWindow"/>.</param>
         public static void RestoreFromRecentWindow(this TimerWindow window)
         {
+            if (Application.Current == null)
+            {
+                window.RestoreFromSettings();
+                return;
+            }
+
             TimerWindow otherWindow = Application.Current.Windows.OfType<TimerWindow>().FirstOrDefault(w => !w.Equals(window));
             if (otherWindow != null && otherWindow.IsVisible)
             {
@@ -141,10 +178,21 @@ namespace Hourglass
         /// <param name="window">A <see cref="TimerWindow"/>.</param>
         private static void CenterOnScreen(this TimerWindow window)
         {
-            window.Width = Math.Min(350, SystemParameters.WorkArea.Width);
-            window.Height = Math.Min(150, SystemParameters.WorkArea.Height);
+            window.Width = Math.Min(window.Width, SystemParameters.WorkArea.Width);
+            window.Height = Math.Min(window.Height, SystemParameters.WorkArea.Height);
             window.Left = ((SystemParameters.WorkArea.Width - window.Width) / 2) + SystemParameters.WorkArea.Left;
             window.Top = ((SystemParameters.WorkArea.Height - window.Height) / 2) + SystemParameters.WorkArea.Top;
+        }
+
+        /// <summary>
+        /// Resizes a <see cref="TimerWindow"/> to its default size, or the <see cref="SystemParameters.WorkArea"/> if
+        /// it is smaller than the default size of a <see cref="TimerWindow"/>.
+        /// </summary>
+        /// <param name="window">A <see cref="TimerWindow"/>.</param>
+        private static void ResetSize(this TimerWindow window)
+        {
+            window.Width = Math.Min(TimerWindow.DefaultSize.Width, SystemParameters.WorkArea.Width);
+            window.Height = Math.Min(TimerWindow.DefaultSize.Height, SystemParameters.WorkArea.Height);
         }
 
         /// <summary>
@@ -178,10 +226,7 @@ namespace Hourglass
             }
 
             // Center the window as a fallback
-            window.Width = Math.Min(window.Width, SystemParameters.WorkArea.Width);
-            window.Height = Math.Min(window.Height, SystemParameters.WorkArea.Height);
-            window.Left = ((SystemParameters.WorkArea.Width - window.Width) / 2) + SystemParameters.WorkArea.Left;
-            window.Top = ((SystemParameters.WorkArea.Height - window.Height) / 2) + SystemParameters.WorkArea.Top;
+            window.CenterOnScreen();
         }
 
         /// <summary>

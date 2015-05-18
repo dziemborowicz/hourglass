@@ -47,12 +47,12 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.Serialization.TimerOptionsInfo DefaultOptions {
+        public global::Hourglass.Serialization.TimerOptionsInfo MostRecentOptions {
             get {
-                return ((global::Hourglass.Serialization.TimerOptionsInfo)(this["DefaultOptions"]));
+                return ((global::Hourglass.Serialization.TimerOptionsInfo)(this["MostRecentOptions"]));
             }
             set {
-                this["DefaultOptions"] = value;
+                this["MostRecentOptions"] = value;
             }
         }
         

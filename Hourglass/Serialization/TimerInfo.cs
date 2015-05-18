@@ -10,7 +10,7 @@ namespace Hourglass.Serialization
     using System.Xml.Serialization;
 
     /// <summary>
-    /// A representation of the state of a <see cref="Timer"/>.
+    /// The representation of a <see cref="Timer"/> used for XML serialization.
     /// </summary>
     [XmlInclude(typeof(HourglassTimerInfo))]
     [XmlInclude(typeof(DateTimeTimerInfo))]

@@ -56,7 +56,19 @@ namespace Hourglass
         /// <summary>
         /// The <see cref="HourglassTimer"/> backing the window.
         /// </summary>
-        private HourglassTimer timer = new TimeSpanTimer(TimerOptionsManager.Instance.DefaultOptions);
+        private HourglassTimer timer = new TimeSpanTimer(TimerOptionsManager.Instance.MostRecentOptions);
+
+        /// <summary>
+        /// The <see cref="HourglassTimer"/> to resume when the window loads, or <c>null</c> if no <see
+        /// cref="HourglassTimer"/> is to be resumed.
+        /// </summary>
+        private HourglassTimer timerToResumeOnLoad;
+
+        /// <summary>
+        /// The <see cref="TimerInput"/> to start when the window loads, or <c>null</c> if no <see cref="TimerInput"/>
+        /// is to be started.
+        /// </summary>
+        private TimerInput inputToStartOnLoad;
 
         /// <summary>
         /// The last <see cref="TimerInput"/> used to start a timer in the window.
@@ -115,6 +127,28 @@ namespace Hourglass
             TimerManager.Instance.Add(this.Timer);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimerWindow"/> class.
+        /// </summary>
+        /// <param name="timer">The <see cref="HourglassTimer"/> to resume when the window loads, or <c>null</c> if no
+        /// <see cref="HourglassTimer"/> is to be resumed.</param>
+        public TimerWindow(HourglassTimer timer)
+            : this()
+        {
+            this.timerToResumeOnLoad = timer;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimerWindow"/> class.
+        /// </summary>
+        /// <param name="input">The <see cref="TimerInput"/> to start when the window loads, or <c>null</c> if no <see
+        /// cref="TimerInput"/> is to be started.</param>
+        public TimerWindow(TimerInput input)
+            : this()
+        {
+            this.inputToStartOnLoad = input;
+        }
+
         #endregion
 
         #region Events
@@ -127,6 +161,14 @@ namespace Hourglass
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the default size of the window.
+        /// </summary>
+        public static Size DefaultSize
+        {
+            get { return new Size(350, 150); }
+        }
 
         /// <summary>
         /// Gets the <see cref="TimerWindowMode"/> of the window.
@@ -1010,6 +1052,27 @@ namespace Hourglass
             {
                 this.SwitchToInputMode();
                 e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="TimerWindow"/> is laid out, rendered, and ready for interaction.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            if (this.inputToStartOnLoad != null)
+            {
+                this.Show(this.inputToStartOnLoad);
+                this.inputToStartOnLoad = null;
+                this.timerToResumeOnLoad = null;
+            }
+            else if (this.timerToResumeOnLoad != null)
+            {
+                this.Show(this.timerToResumeOnLoad);
+                this.inputToStartOnLoad = null;
+                this.timerToResumeOnLoad = null;
             }
         }
 

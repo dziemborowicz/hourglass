@@ -14,34 +14,48 @@ namespace Hourglass
     public class WindowSize
     {
         /// <summary>
-        /// Gets or sets the position of the window's left edge, in relation to the desktop.
+        /// Initializes a new instance of the <see cref="WindowSize"/> class.
         /// </summary>
-        public double Left { get; set; }
+        public WindowSize()
+        {
+        }
 
         /// <summary>
-        /// Gets or sets the position of the window's top edge, in relation to the desktop.
+        /// Initializes a new instance of the <see cref="WindowSize"/> class.
         /// </summary>
-        public double Top { get; set; }
+        /// <param name="position">The position of the window's top-left corner in relation to the desktop.</param>
+        /// <param name="size">The size of the window.</param>
+        /// <param name="windowState">A value that indicates whether the window is restored, minimized, or maximized.
+        /// </param>
+        /// <param name="restoreWindowState">The window's <see cref="Window.WindowState"/> before the window was
+        /// minimized.</param>
+        public WindowSize(Point? position, Size? size, WindowState? windowState, WindowState? restoreWindowState)
+        {
+            this.Position = position;
+            this.Size = size;
+            this.WindowState = windowState;
+            this.RestoreWindowState = restoreWindowState;
+        }
 
         /// <summary>
-        /// Gets or sets the width of the window.
+        /// Gets or sets the position of the window's top-left corner in relation to the desktop.
         /// </summary>
-        public double Width { get; set; }
+        public Point? Position { get; set; }
 
         /// <summary>
-        /// Gets or sets the height of the window.
+        /// Gets or sets the size of the window.
         /// </summary>
-        public double Height { get; set; }
+        public Size? Size { get; set; }
 
         /// <summary>
         /// Gets or sets a value that indicates whether the window is restored, minimized, or maximized.
         /// </summary>
-        public WindowState WindowState { get; set; }
+        public WindowState? WindowState { get; set; }
 
         /// <summary>
         /// Gets or sets the window's <see cref="Window.WindowState"/> before the window was minimized.
         /// </summary>
-        public WindowState RestoreWindowState { get; set; }
+        public WindowState? RestoreWindowState { get; set; }
 
         /// <summary>
         /// Returns a <see cref="WindowSize"/> for the specified <see cref="WindowSize"/>, or <c>null</c> if the
@@ -57,15 +71,11 @@ namespace Hourglass
                 return null;
             }
 
-            return new WindowSize
-            {
-                Left = windowSize.Left,
-                Top = windowSize.Top,
-                Width = windowSize.Width,
-                Height = windowSize.Height,
-                WindowState = windowSize.WindowState,
-                RestoreWindowState = windowSize.RestoreWindowState
-            };
+            return new WindowSize(
+                windowSize.Position,
+                windowSize.Size,
+                windowSize.WindowState,
+                windowSize.RestoreWindowState);
         }
 
         /// <summary>
@@ -82,15 +92,36 @@ namespace Hourglass
                 return null;
             }
 
-            return new WindowSize
+            return new WindowSize(
+                new Point(window.Left, window.Top),
+                new Size(window.Width, window.Height),
+                window.WindowState,
+                window.RestoreWindowState);
+        }
+
+        /// <summary>
+        /// Combines the properties of <paramref name="baseWindowSize"/> with <paramref name="windowSize"/>, where the
+        /// properties of <paramref name="windowSize"/> take precedence.
+        /// </summary>
+        /// <param name="baseWindowSize">The base <see cref="WindowSize"/>.</param>
+        /// <param name="windowSize">A <see cref="WindowSize"/>.</param>
+        /// <returns>A <see cref="WindowSize"/> with the properties of <paramref name="baseWindowSize"/> and <paramref
+        /// name="windowSize"/>.</returns>
+        public static WindowSize Merge(WindowSize baseWindowSize, WindowSize windowSize)
+        {
+            WindowSize result = WindowSize.FromWindowSize(baseWindowSize ?? windowSize);
+
+            if (windowSize == null)
             {
-                Left = window.Left,
-                Top = window.Top,
-                Width = window.Width,
-                Height = window.Height,
-                WindowState = window.WindowState,
-                RestoreWindowState = window.RestoreWindowState
-            };
+                return result;
+            }
+
+            result.Position = windowSize.Position ?? result.Position;
+            result.Size = windowSize.Size ?? result.Size;
+            result.WindowState = windowSize.WindowState ?? result.WindowState;
+            result.RestoreWindowState = windowSize.RestoreWindowState ?? result.RestoreWindowState;
+
+            return result;
         }
     }
 }

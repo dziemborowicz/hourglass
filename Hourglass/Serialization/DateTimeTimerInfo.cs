@@ -7,7 +7,7 @@
 namespace Hourglass.Serialization
 {
     /// <summary>
-    /// A representation of the state of a <see cref="DateTimeTimer"/>.
+    /// The representation of a <see cref="DateTimeTimer"/> used for XML serialization.
     /// </summary>
     public class DateTimeTimerInfo : HourglassTimerInfo
     {

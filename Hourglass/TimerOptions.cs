@@ -24,14 +24,14 @@ namespace Hourglass
         private string title;
 
         /// <summary>
-        /// A value indicating whether to loop the timer continuously.
-        /// </summary>
-        private bool loopTimer;
-
-        /// <summary>
         /// A value indicating whether the timer window should always be displayed on top of other windows.
         /// </summary>
         private bool alwaysOnTop;
+
+        /// <summary>
+        /// A value indicating whether to loop the timer continuously.
+        /// </summary>
+        private bool loopTimer;
 
         /// <summary>
         /// A value indicating whether the timer window should be brought to the top of other windows when the timer
@@ -70,8 +70,8 @@ namespace Hourglass
         public TimerOptions()
         {
             this.title = string.Empty;
-            this.loopTimer = false;
             this.alwaysOnTop = false;
+            this.loopTimer = false;
             this.popUpWhenExpired = true;
             this.closeWhenExpired = false;
             this.sound = SoundManager.Instance.DefaultSound;
@@ -134,28 +134,6 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to loop the timer continuously.
-        /// </summary>
-        public bool LoopTimer
-        {
-            get
-            {
-                return this.loopTimer;
-            }
-
-            set
-            {
-                if (this.loopTimer == value)
-                {
-                    return;
-                }
-
-                this.loopTimer = value;
-                this.OnPropertyChanged("LoopTimer");
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the timer window should always be displayed on top of other windows.
         /// </summary>
         public bool AlwaysOnTop
@@ -174,6 +152,28 @@ namespace Hourglass
 
                 this.alwaysOnTop = value;
                 this.OnPropertyChanged("AlwaysOnTop");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to loop the timer continuously.
+        /// </summary>
+        public bool LoopTimer
+        {
+            get
+            {
+                return this.loopTimer;
+            }
+
+            set
+            {
+                if (this.loopTimer == value)
+                {
+                    return;
+                }
+
+                this.loopTimer = value;
+                this.OnPropertyChanged("LoopTimer");
             }
         }
 
@@ -329,8 +329,8 @@ namespace Hourglass
             }
 
             this.title = options.title;
-            this.loopTimer = options.loopTimer;
             this.alwaysOnTop = options.alwaysOnTop;
+            this.loopTimer = options.loopTimer;
             this.popUpWhenExpired = options.popUpWhenExpired;
             this.closeWhenExpired = options.closeWhenExpired;
             this.sound = options.sound;
@@ -350,8 +350,8 @@ namespace Hourglass
             }
 
             this.title = optionsInfo.Title;
-            this.loopTimer = optionsInfo.LoopTimer;
             this.alwaysOnTop = optionsInfo.AlwaysOnTop;
+            this.loopTimer = optionsInfo.LoopTimer;
             this.popUpWhenExpired = optionsInfo.PopUpWhenExpired;
             this.closeWhenExpired = optionsInfo.CloseWhenExpired;
             this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
@@ -367,8 +367,8 @@ namespace Hourglass
         {
             TimerOptionsInfo info = new TimerOptionsInfo();
             info.Title = this.title;
-            info.LoopTimer = this.loopTimer;
             info.AlwaysOnTop = this.alwaysOnTop;
+            info.LoopTimer = this.loopTimer;
             info.PopUpWhenExpired = this.popUpWhenExpired;
             info.CloseWhenExpired = this.closeWhenExpired;
             info.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;

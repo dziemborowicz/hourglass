@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="AppEntry.cs" />
+    <Compile Include="CommandLine.cs" />
     <Compile Include="DateTimeTimer.cs" />
     <Compile Include="DateTimeTimerInput.cs" />
     <Compile Include="DateTimeUtility.cs" />
@@ -161,6 +162,7 @@
     <Content Include="Resources\BeepLoud.wav" />
     <Content Include="Resources\BeepNormal.wav" />
     <Content Include="Resources\BeepQuiet.wav" />
+    <None Include="Resources\Usage.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

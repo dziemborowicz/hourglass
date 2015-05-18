@@ -23,9 +23,9 @@ namespace Hourglass
         public static readonly TimerOptionsManager Instance = new TimerOptionsManager();
 
         /// <summary>
-        /// The default <see cref="TimerOptions"/> for new timers.
+        /// The most recent <see cref="TimerOptions"/>.
         /// </summary>
-        private TimerOptions defaultOptions = new TimerOptions();
+        private TimerOptions mostRecentOptions = new TimerOptions();
 
         /// <summary>
         /// Prevents a default instance of the <see cref="TimerOptionsManager"/> class from being created.
@@ -35,15 +35,14 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets the default <see cref="TimerOptions"/> for new timers.
+        /// Gets the most recent <see cref="TimerOptions"/>.
         /// </summary>
-        public TimerOptions DefaultOptions
+        public TimerOptions MostRecentOptions
         {
             get
             {
-                this.UpdateDefaultOptions();
-
-                return this.defaultOptions;
+                this.UpdateMostRecentOptions();
+                return TimerOptions.FromTimerOptions(this.mostRecentOptions);
             }
         }
 
@@ -52,7 +51,7 @@ namespace Hourglass
         /// </summary>
         public void Load()
         {
-            this.defaultOptions = TimerOptions.FromTimerOptionsInfo(Settings.Default.DefaultOptions) ?? new TimerOptions();
+            this.mostRecentOptions = TimerOptions.FromTimerOptionsInfo(Settings.Default.MostRecentOptions) ?? new TimerOptions();
         }
 
         /// <summary>
@@ -60,31 +59,30 @@ namespace Hourglass
         /// </summary>
         public void Save()
         {
-            this.UpdateDefaultOptions();
-
-            Settings.Default.DefaultOptions = TimerOptionsInfo.FromTimerOptions(this.defaultOptions);
+            this.UpdateMostRecentOptions();
+            Settings.Default.MostRecentOptions = TimerOptionsInfo.FromTimerOptions(this.mostRecentOptions);
         }
 
         /// <summary>
-        /// Updates the <see cref="DefaultOptions"/> from the currently opened <see cref="TimerWindow"/>s.
+        /// Updates the <see cref="MostRecentOptions"/> from the currently opened <see cref="TimerWindow"/>s.
         /// </summary>
-        private void UpdateDefaultOptions()
+        private void UpdateMostRecentOptions()
         {
             if (Application.Current == null)
             {
                 return;
             }
 
-            // Set the default options to the options most recently shown to the user from a window that is still open
+            // Get the options most recently shown to the user from a window that is still open
             var q = from window in Application.Current.Windows.OfType<TimerWindow>()
                     where window.IsVisible
                     orderby window.Menu.LastShowed descending
                     select window.Timer.Options;
 
-            this.defaultOptions = TimerOptions.FromTimerOptions(q.FirstOrDefault()) ?? this.defaultOptions;
+            this.mostRecentOptions = TimerOptions.FromTimerOptions(q.FirstOrDefault()) ?? this.mostRecentOptions;
 
-            // Never set a default title
-            this.defaultOptions.Title = string.Empty;
+            // Never save a title
+            this.mostRecentOptions.Title = string.Empty;
         }
     }
 }

@@ -96,5 +96,14 @@ namespace Hourglass.Properties {
                 return ResourceManager.GetStream("BeepQuiet", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Usage {
+            get {
+                return ResourceManager.GetString("Usage", resourceCulture);
+            }
+        }
     }
 }

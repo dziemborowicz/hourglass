@@ -7,10 +7,15 @@
 namespace Hourglass
 {
     using System;
+    using System.Linq;
+    using System.Windows;
+
+    using Hourglass.Properties;
 
     using Microsoft.VisualBasic.ApplicationServices;
 
     using ExitEventArgs = System.Windows.ExitEventArgs;
+    using StartupEventArgs = Microsoft.VisualBasic.ApplicationServices.StartupEventArgs;
 
     /// <summary>
     /// Handles application start up, command-line arguments, and ensures that only one instance of the application is
@@ -56,10 +61,15 @@ namespace Hourglass
         protected override bool OnStartup(StartupEventArgs e)
         {
             SettingsManager.Instance.Load();
+
             this.notifyIcon = new TimerNotifyIcon();
 
-            TimerWindow window = new TimerWindow();
-            window.RestoreFromSettings();
+            TimerWindow window;
+            if (!this.TryGetTimerWindowForArgs(e.CommandLine.ToArray(), out window))
+            {
+                this.ShowCommandLineUsage();
+                return false;
+            }
 
             this.app = new App();
             this.app.Exit += this.AppExit;
@@ -75,10 +85,61 @@ namespace Hourglass
         /// whether the first application instance should be brought to the foreground.</param>
         protected override void OnStartupNextInstance(StartupNextInstanceEventArgs e)
         {
-            TimerWindow window = new TimerWindow();
-            window.RestoreFromRecentWindow();
+            TimerWindow window;
+            if (!this.TryGetTimerWindowForArgs(e.CommandLine.ToArray(), out window))
+            {
+                this.ShowCommandLineUsage();
+                return;
+            }
+
             window.Show();
             window.BringToFrontAndActivate();
+        }
+
+        /// <summary>
+        /// Parses command-line arguments and instantiates a new instance of the <see cref="TimerWindow"/> class.
+        /// </summary>
+        /// <param name="args">The command-line arguments.</param>
+        /// <param name="window">The new instance of the <see cref="TimerWindow"/> class.</param>
+        /// <returns><c>true</c> if a <see cref="TimerWindow"/> was successfully instantiated, or <c>false</c> if the
+        /// command-line arguments were invalid.</returns>
+        private bool TryGetTimerWindowForArgs(string[] args, out TimerWindow window)
+        {
+            // Parse command-line arguments
+            CommandLine arguments;
+            if (!CommandLine.TryParse(args, out arguments))
+            {
+                window = null;
+                return false;
+            }
+
+            // Instantiate window
+            window = new TimerWindow(arguments.Input);
+
+            // Set timer-specific options
+            if (arguments.Options != null)
+            {
+                window.Timer.Options.SetFromTimerOptions(arguments.Options);
+            }
+
+            // Set global options
+            Settings.Default.ShowInNotificationArea = arguments.ShowInNotificationArea ?? Settings.Default.ShowInNotificationArea;
+
+            // Restore window
+            window.RestoreFromOptions(arguments.Options);
+            return true;
+        }
+
+        /// <summary>
+        /// Shows the command-line usage of this application.
+        /// </summary>
+        private void ShowCommandLineUsage()
+        {
+            MessageBox.Show(
+                CommandLine.Usage,
+                "Hourglass",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
 
         /// <summary>

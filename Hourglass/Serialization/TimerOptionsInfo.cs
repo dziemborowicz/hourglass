@@ -17,14 +17,14 @@ namespace Hourglass.Serialization
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to loop the timer continuously.
-        /// </summary>
-        public bool LoopTimer { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the timer window should always be displayed on top of other windows.
         /// </summary>
         public bool AlwaysOnTop { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to loop the timer continuously.
+        /// </summary>
+        public bool LoopTimer { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the timer window should be brought to the top of other windows when

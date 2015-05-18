@@ -101,6 +101,37 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Returns the first sound for the specified name, or <c>null</c> if no such sound is loaded.
+        /// </summary>
+        /// <param name="name">The name for the sound.</param>
+        /// <returns>The first sound for the specified name, or <c>null</c> if no such sound is loaded.</returns>
+        public Sound GetSoundByName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
+
+            return this.sounds.FirstOrDefault(s => s.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        /// <summary>
+        /// Returns the first sound for the specified name, or <see cref="DefaultSound"/> if no such sound is loaded.
+        /// </summary>
+        /// <param name="name">The name for the sound.</param>
+        /// <returns>The first sound for the specified name, or <see cref="DefaultSound"/> if no such sound is loaded.
+        /// </returns>
+        public Sound GetSoundOrDefaultByName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
+
+            return this.GetSoundByName(name) ?? this.DefaultSound;
+        }
+
+        /// <summary>
         /// Loads the collection of sounds stored in the assembly.
         /// </summary>
         /// <returns>A collection of sounds stored in the assembly.</returns>
