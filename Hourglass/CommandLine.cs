@@ -392,7 +392,7 @@ namespace Hourglass
                 position = new Point(values[0], values[1]);
                 return true;
             }
-            catch (Exception)
+            catch
             {
                 position = new Point();
                 return false;
@@ -420,7 +420,7 @@ namespace Hourglass
                 size = new Size(values[0], values[1]);
                 return true;
             }
-            catch (Exception)
+            catch
             {
                 size = new Size();
                 return false;
