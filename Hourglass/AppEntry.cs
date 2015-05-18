@@ -8,7 +8,6 @@ namespace Hourglass
 {
     using System;
     using System.Linq;
-    using System.Windows;
 
     using Hourglass.Properties;
 
@@ -67,7 +66,7 @@ namespace Hourglass
             TimerWindow window;
             if (!this.TryGetTimerWindowForArgs(e.CommandLine.ToArray(), out window))
             {
-                this.ShowCommandLineUsage();
+                CommandLine.ShowUsage();
                 return false;
             }
 
@@ -88,7 +87,7 @@ namespace Hourglass
             TimerWindow window;
             if (!this.TryGetTimerWindowForArgs(e.CommandLine.ToArray(), out window))
             {
-                this.ShowCommandLineUsage();
+                CommandLine.ShowUsage();
                 return;
             }
 
@@ -128,18 +127,6 @@ namespace Hourglass
             // Restore window
             window.RestoreFromOptions(arguments.Options);
             return true;
-        }
-
-        /// <summary>
-        /// Shows the command-line usage of this application.
-        /// </summary>
-        private void ShowCommandLineUsage()
-        {
-            MessageBox.Show(
-                CommandLine.Usage,
-                "Hourglass",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
         }
 
         /// <summary>

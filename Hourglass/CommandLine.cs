@@ -49,6 +49,15 @@ namespace Hourglass
         public bool? ShowInNotificationArea { get; set; }
 
         /// <summary>
+        /// Shows the command-line usage of this application in the console or in a window.
+        /// </summary>
+        public static void ShowUsage()
+        {
+            CommandLineUsageWindow window = new CommandLineUsageWindow();
+            window.ShowDialog();
+        }
+
+        /// <summary>
         /// Tries to create a new instance of the <see cref="CommandLine"/> class from command-line arguments.
         /// </summary>
         /// <param name="args">The command-line arguments.</param>
