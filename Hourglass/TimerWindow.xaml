@@ -141,6 +141,8 @@
                          FontFamily="Segoe UI"
                          Foreground="DarkGray"
                          KeyDown="TitleTextBoxKeyDown"
+                         PreviewMouseDown="TitleTextBoxPreviewMouseDown"
+                         PreviewGotKeyboardFocus="TitleTextBoxPreviewGotKeyboardFocus"
                          Style="{StaticResource TitleTextBoxStyle}"
                          Text="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.Options.Title, UpdateSourceTrigger=PropertyChanged}"
                          TextAlignment="Center"
@@ -151,7 +153,8 @@
                          FontFamily="Segoe UI Light, Segoe UI"
                          FontSize="18"
                          Margin="0 1 0 4"
-                         MouseDown="TimerTextBoxMouseDown"
+                         PreviewMouseDown="TimerTextBoxPreviewMouseDown"
+                         PreviewGotKeyboardFocus="TimerTextBoxPreviewGotKeyboardFocus"
                          TextAlignment="Center"
                          local:Watermark.Hint="Click to enter time or date"/>
                 <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">

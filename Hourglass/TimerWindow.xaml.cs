@@ -9,6 +9,7 @@ namespace Hourglass
     using System;
     using System.ComponentModel;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media.Animation;
     using System.Windows.Shell;
@@ -420,15 +421,17 @@ namespace Hourglass
         /// <summary>
         /// Sets the window to accept user input to start a new <see cref="Timer"/>.
         /// </summary>
-        private void SwitchToInputMode()
+        /// <param name="textBoxToFocus">The <see cref="TextBox"/> to focus. The default is <see cref="TimerTextBox"/>.
+        /// </param>
+        private void SwitchToInputMode(TextBox textBoxToFocus = null)
         {
             this.Mode = TimerWindowMode.Input;
 
-            this.TimerTextBox.Focusable = true;
-            this.TimerTextBox.IsReadOnly = false;
             this.TimerTextBox.Text = this.LastInput != null ? this.LastInput.ToString() : string.Empty;
-            this.TimerTextBox.SelectAll();
-            this.TimerTextBox.Focus();
+
+            textBoxToFocus = textBoxToFocus ?? this.TimerTextBox;
+            textBoxToFocus.SelectAll();
+            textBoxToFocus.Focus();
 
             this.EndAnimationsAndSounds();
             this.UpdateBoundControls();
@@ -440,9 +443,6 @@ namespace Hourglass
         private void SwitchToStatusMode()
         {
             this.Mode = TimerWindowMode.Status;
-
-            this.TimerTextBox.Focusable = false;
-            this.TimerTextBox.IsReadOnly = true;
 
             this.UnfocusAll();
             this.EndAnimationsAndSounds();
@@ -974,7 +974,7 @@ namespace Hourglass
         private void PauseButtonClick(object sender, RoutedEventArgs e)
         {
             this.Timer.Pause();
-            this.ResumeButton.Focus();
+            this.UnfocusAll();
         }
 
         /// <summary>
@@ -1045,16 +1045,78 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when any mouse button is depressed on the <see cref="TimerTextBox"/>.
+        /// Invoked when any mouse button is pressed while the pointer is over the <see cref="TitleTextBox"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="TitleTextBox"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TitleTextBoxPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.Mode != TimerWindowMode.Input && (this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired))
+            {
+                this.SwitchToInputMode(this.TitleTextBox /* textBoxToFocus */);
+                e.Handled = true;
+            }
+            else if (!this.TitleTextBox.IsFocused)
+            {
+                this.TitleTextBox.SelectAll();
+                this.TitleTextBox.Focus();
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="TitleTextBox"/> is in the process of acquiring keyboard focus.
+        /// </summary>
+        /// <param name="sender">The <see cref="TitleTextBox"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TitleTextBoxPreviewGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (this.Mode != TimerWindowMode.Input && (this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired))
+            {
+                this.SwitchToInputMode(this.TitleTextBox /* textBoxToFocus */);
+                e.Handled = true;
+            }
+            else
+            {
+                this.TitleTextBox.SelectAll();
+            }
+        }
+
+        /// <summary>
+        /// Invoked when any mouse button is pressed while the pointer is over the <see cref="TimerTextBox"/>.
         /// </summary>
         /// <param name="sender">The <see cref="TimerTextBox"/>.</param>
         /// <param name="e">The event data.</param>
-        private void TimerTextBoxMouseDown(object sender, MouseButtonEventArgs e)
+        private void TimerTextBoxPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (this.Mode != TimerWindowMode.Input)
             {
                 this.SwitchToInputMode();
                 e.Handled = true;
+            }
+            else if (!this.TimerTextBox.IsFocused)
+            {
+                this.TimerTextBox.SelectAll();
+                this.TimerTextBox.Focus();
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="TimerTextBox"/> is in the process of acquiring keyboard focus.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerTextBox"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TimerTextBoxPreviewGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (this.Mode != TimerWindowMode.Input)
+            {
+                this.SwitchToInputMode();
+                e.Handled = true;
+            }
+            else
+            {
+                this.TimerTextBox.SelectAll();
             }
         }
 
