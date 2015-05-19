@@ -299,17 +299,13 @@ namespace Hourglass
             this.LastInput = input;
             TimerInputManager.Instance.Add(input);
 
-            // Start and show a new timer
-            this.Timer = HourglassTimer.GetTimerForInput(input);
-            this.SwitchToStatusMode();
-            this.Timer.Start(input);
-            TimerManager.Instance.Add(this.Timer);
+            // Start a new timer
+            HourglassTimer newTimer = HourglassTimer.GetTimerForInput(input);
+            newTimer.Start(input);
+            TimerManager.Instance.Add(newTimer);
 
-            // Show the window if it is not already open
-            if (!this.IsVisible)
-            {
-                this.Show();
-            }
+            // Show the window
+            this.Show(newTimer);
         }
 
         /// <summary>
@@ -462,7 +458,6 @@ namespace Hourglass
                     }
 
                     this.EndAnimationsAndSounds();
-
                     return;
 
                 case TimerWindowMode.Status:
@@ -477,7 +472,6 @@ namespace Hourglass
                     }
 
                     this.EndAnimationsAndSounds();
-
                     return;
             }
         }
@@ -870,7 +864,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerStarted(object sender, EventArgs e)
         {
-            this.UpdateBoundControls();
+            // Do nothing
         }
 
         /// <summary>
@@ -880,7 +874,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerPaused(object sender, EventArgs e)
         {
-            this.UpdateBoundControls();
+            // Do nothing
         }
 
         /// <summary>
@@ -890,7 +884,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerResumed(object sender, EventArgs e)
         {
-            this.UpdateBoundControls();
+            // Do nothing
         }
 
         /// <summary>
@@ -900,7 +894,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void TimerStopped(object sender, EventArgs e)
         {
-            this.UpdateBoundControls();
+            // Do nothing
         }
 
         /// <summary>
@@ -911,12 +905,6 @@ namespace Hourglass
         private void TimerExpired(object sender, EventArgs e)
         {
             this.BeginExpirationAnimationAndSound();
-            this.UpdateBoundControls();
-
-            if (this.Mode == TimerWindowMode.Input)
-            {
-                this.Timer.Stop();
-            }
         }
 
         /// <summary>

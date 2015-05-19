@@ -93,8 +93,8 @@ namespace Hourglass
         {
             base.OnExpired();
 
-            // Loop the timer if the option is set
-            if (this.Options.LoopTimer)
+            // Loop the timer if the option is set and the timer has not been stopped
+            if (this.Options.LoopTimer && this.State != TimerState.Stopped)
             {
                 if (!this.EndTime.HasValue)
                 {
