@@ -333,10 +333,12 @@ namespace Hourglass
             if (result.WindowPosition.HasValue || result.WindowSize.HasValue || result.WindowState.HasValue)
             {
                 WindowSize windowSize = new WindowSize(
-                    result.WindowPosition,
-                    result.WindowSize,
-                    result.WindowState,
-                    result.RestoreWindowState);
+                    position: result.WindowPosition,
+                    size: result.WindowSize,
+                    windowState: result.WindowState,
+                    restorePosition: result.WindowPosition,
+                    restoreSize: result.WindowSize,
+                    restoreWindowState: result.RestoreWindowState);
 
                 options.WindowSize = WindowSize.Merge(options.WindowSize, windowSize);
             }

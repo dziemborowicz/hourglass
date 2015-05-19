@@ -27,13 +27,18 @@ namespace Hourglass
         /// <param name="size">The size of the window.</param>
         /// <param name="windowState">A value that indicates whether the window is restored, minimized, or maximized.
         /// </param>
+        /// <param name="restorePosition">The position of the window's top-left corner in relation to the desktop
+        /// before the window was minimized or maximized.</param>
+        /// <param name="restoreSize">The size of the window before the window was minimized or maximized.</param>
         /// <param name="restoreWindowState">The window's <see cref="Window.WindowState"/> before the window was
         /// minimized.</param>
-        public WindowSize(Point? position, Size? size, WindowState? windowState, WindowState? restoreWindowState)
+        public WindowSize(Point? position, Size? size, WindowState? windowState, Point? restorePosition, Size? restoreSize, WindowState? restoreWindowState)
         {
             this.Position = position;
             this.Size = size;
             this.WindowState = windowState;
+            this.RestorePosition = restorePosition;
+            this.RestoreSize = restoreSize;
             this.RestoreWindowState = restoreWindowState;
         }
 
@@ -51,6 +56,17 @@ namespace Hourglass
         /// Gets or sets a value that indicates whether the window is restored, minimized, or maximized.
         /// </summary>
         public WindowState? WindowState { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the position of the window's top-left corner in relation to the desktop before the window was
+        /// minimized or maximized.
+        /// </summary>
+        public Point? RestorePosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the window before the window was minimized or maximized.
+        /// </summary>
+        public Size? RestoreSize { get; set; }
 
         /// <summary>
         /// Gets or sets the window's <see cref="Window.WindowState"/> before the window was minimized.
@@ -75,6 +91,8 @@ namespace Hourglass
                 windowSize.Position,
                 windowSize.Size,
                 windowSize.WindowState,
+                windowSize.RestorePosition,
+                windowSize.RestoreSize,
                 windowSize.RestoreWindowState);
         }
 
@@ -96,6 +114,8 @@ namespace Hourglass
                 new Point(window.Left, window.Top),
                 new Size(window.Width, window.Height),
                 window.WindowState,
+                window.RestoreBounds.TopLeft,
+                window.RestoreBounds.Size,
                 window.RestoreWindowState);
         }
 
@@ -119,6 +139,8 @@ namespace Hourglass
             result.Position = windowSize.Position ?? result.Position;
             result.Size = windowSize.Size ?? result.Size;
             result.WindowState = windowSize.WindowState ?? result.WindowState;
+            result.RestorePosition = windowSize.RestorePosition ?? result.RestorePosition;
+            result.RestoreSize = windowSize.RestoreSize ?? result.RestoreSize;
             result.RestoreWindowState = windowSize.RestoreWindowState ?? result.RestoreWindowState;
 
             return result;

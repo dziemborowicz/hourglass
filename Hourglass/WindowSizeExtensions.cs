@@ -29,8 +29,14 @@ namespace Hourglass
                 return;
             }
 
-            // Restore size
-            if (windowSize.Position.HasValue)
+            // Restore position
+            if (windowSize.WindowState.HasValue && windowSize.WindowState.Value != WindowState.Normal && windowSize.RestorePosition.HasValue)
+            {
+                Point position = windowSize.RestorePosition.Value;
+                window.Left = position.X;
+                window.Top = position.Y;
+            }
+            else if (windowSize.Position.HasValue)
             {
                 Point position = windowSize.Position.Value;
                 window.Left = position.X;
@@ -38,7 +44,13 @@ namespace Hourglass
             }
 
             // Restore size
-            if (windowSize.Size.HasValue)
+            if (windowSize.WindowState.HasValue && windowSize.WindowState.Value != WindowState.Normal && windowSize.RestoreSize.HasValue)
+            {
+                Size size = windowSize.RestoreSize.Value;
+                window.Width = size.Width;
+                window.Height = size.Height;
+            }
+            else if (windowSize.Size.HasValue)
             {
                 Size size = windowSize.Size.Value;
                 window.Width = size.Width;
