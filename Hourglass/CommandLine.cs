@@ -71,8 +71,8 @@ namespace Hourglass
             TimerOptions options;
 
             if (!TryParse(args, out result) ||
-                !TryParseResultToTimerOptions(result, out options) ||
-                !TryParseResultToTimerInput(result, options, out input))
+                !TryParseResultToTimerInput(result, out input) ||
+                !TryParseResultToTimerOptions(result, out options))
             {
                 arguments = null;
                 return false;
@@ -349,12 +349,11 @@ namespace Hourglass
         /// cref="ParseResult"/> class and an instance of the <see cref="TimerOptions"/> class.
         /// </summary>
         /// <param name="result">A <see cref="ParseResult"/>.</param>
-        /// <param name="options">A <see cref="TimerOptions"/>.</param>
         /// <param name="input">The new instance of the <see cref="TimerInput"/> class, or <c>null</c> if the <see
         /// cref="TimerInput"/> could not be created.</param>
         /// <returns><c>true</c> if the <see cref="TimerInput"/> was successfully created, or <c>false</c> otherwise.
         /// </returns>
-        private static bool TryParseResultToTimerInput(ParseResult result, TimerOptions options, out TimerInput input)
+        private static bool TryParseResultToTimerInput(ParseResult result, out TimerInput input)
         {
             if (result.Input == null)
             {
@@ -367,7 +366,6 @@ namespace Hourglass
                 return false;
             }
 
-            input.Options.SetFromTimerOptions(options);
             return true;
         }
 

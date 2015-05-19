@@ -215,14 +215,14 @@ namespace Hourglass
         /// </summary>
         private void UpdateMenuFromOptions()
         {
-            this.alwaysOnTopMenuItem.IsChecked = this.timerWindow.Timer.Options.AlwaysOnTop;
+            this.alwaysOnTopMenuItem.IsChecked = this.timerWindow.Options.AlwaysOnTop;
 
             this.showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
 
             if (!(this.timerWindow.Timer is DateTimeTimer))
             {
                 this.loopTimerMenuItem.IsEnabled = true;
-                this.loopTimerMenuItem.IsChecked = this.timerWindow.Timer.Options.LoopTimer;
+                this.loopTimerMenuItem.IsChecked = this.timerWindow.Options.LoopTimer;
             }
             else
             {
@@ -230,11 +230,11 @@ namespace Hourglass
                 this.loopTimerMenuItem.IsChecked = false;
             }
 
-            this.popUpWhenExpiredMenuItem.IsChecked = this.timerWindow.Timer.Options.PopUpWhenExpired;
+            this.popUpWhenExpiredMenuItem.IsChecked = this.timerWindow.Options.PopUpWhenExpired;
 
-            if ((!this.timerWindow.Timer.Options.LoopTimer || this.timerWindow.Timer is DateTimeTimer) && !this.timerWindow.Timer.Options.LoopSound)
+            if ((!this.timerWindow.Options.LoopTimer || this.timerWindow.Timer is DateTimeTimer) && !this.timerWindow.Options.LoopSound)
             {
-                this.closeWhenExpiredMenuItem.IsChecked = this.timerWindow.Timer.Options.CloseWhenExpired;
+                this.closeWhenExpiredMenuItem.IsChecked = this.timerWindow.Options.CloseWhenExpired;
                 this.closeWhenExpiredMenuItem.IsEnabled = true;
             }
             else
@@ -243,11 +243,11 @@ namespace Hourglass
                 this.closeWhenExpiredMenuItem.IsEnabled = false;
             }
 
-            this.loopSoundMenuItem.IsChecked = this.timerWindow.Timer.Options.LoopSound;
+            this.loopSoundMenuItem.IsChecked = this.timerWindow.Options.LoopSound;
 
             foreach (MenuItem menuItem in this.selectableSoundMenuItems)
             {
-                menuItem.IsChecked = menuItem.Tag == this.timerWindow.Timer.Options.Sound;
+                menuItem.IsChecked = menuItem.Tag == this.timerWindow.Options.Sound;
             }
         }
 
@@ -256,26 +256,26 @@ namespace Hourglass
         /// </summary>
         private void UpdateOptionsFromMenu()
         {
-            this.timerWindow.Timer.Options.AlwaysOnTop = this.alwaysOnTopMenuItem.IsChecked;
+            this.timerWindow.Options.AlwaysOnTop = this.alwaysOnTopMenuItem.IsChecked;
 
             Settings.Default.ShowInNotificationArea = this.showInNotificationAreaMenuItem.IsChecked;
 
             if (this.loopTimerMenuItem.IsEnabled)
             {
-                this.timerWindow.Timer.Options.LoopTimer = this.loopTimerMenuItem.IsChecked;
+                this.timerWindow.Options.LoopTimer = this.loopTimerMenuItem.IsChecked;
             }
 
-            this.timerWindow.Timer.Options.PopUpWhenExpired = this.popUpWhenExpiredMenuItem.IsChecked;
+            this.timerWindow.Options.PopUpWhenExpired = this.popUpWhenExpiredMenuItem.IsChecked;
 
             if (this.closeWhenExpiredMenuItem.IsEnabled)
             {
-                this.timerWindow.Timer.Options.CloseWhenExpired = this.closeWhenExpiredMenuItem.IsChecked;
+                this.timerWindow.Options.CloseWhenExpired = this.closeWhenExpiredMenuItem.IsChecked;
             }
 
-            this.timerWindow.Timer.Options.LoopSound = this.loopSoundMenuItem.IsChecked;
+            this.timerWindow.Options.LoopSound = this.loopSoundMenuItem.IsChecked;
 
             MenuItem selectedSoundMenuItem = this.selectableSoundMenuItems.FirstOrDefault(mi => mi.IsChecked);
-            this.timerWindow.Timer.Options.Sound = selectedSoundMenuItem != null ? selectedSoundMenuItem.Tag as Sound : null;
+            this.timerWindow.Options.Sound = selectedSoundMenuItem != null ? selectedSoundMenuItem.Tag as Sound : null;
         }
 
         /// <summary>
@@ -432,7 +432,6 @@ namespace Hourglass
         {
             MenuItem menuItem = (MenuItem)sender;
             TimerInput input = (TimerInput)menuItem.Tag;
-            input.Options.SetFromTimerOptions(this.timerWindow.Timer.Options);
 
             TimerWindow window;
             if (this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired)
@@ -442,6 +441,7 @@ namespace Hourglass
             else
             {
                 window = new TimerWindow();
+                window.Options.Set(this.timerWindow.Options);
                 window.RestoreFromWindow(this.timerWindow);
             }
 

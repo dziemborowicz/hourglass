@@ -63,7 +63,7 @@ namespace Hourglass
         public void Add(TimerInput input)
         {
             // Remove all equivalent inputs
-            this.timerInputs.RemoveAll(element => element.EqualsExceptForOptions(input));
+            this.timerInputs.Remove(input);
 
             // Add the input to the top of the list
             this.timerInputs.Insert(0, input);

@@ -236,8 +236,16 @@ namespace Hourglass
                 this.UnbindTimer();
                 this.timer = value;
                 this.BindTimer();
-                this.OnPropertyChanged("Timer");
+                this.OnPropertyChanged("Timer", "Options");
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TimerOptions"/> for the <see cref="HourglassTimer"/> backing the window.
+        /// </summary>
+        public TimerOptions Options
+        {
+            get { return this.Timer.Options; }
         }
 
         /// <summary>
@@ -300,7 +308,7 @@ namespace Hourglass
             TimerInputManager.Instance.Add(input);
 
             // Start a new timer
-            HourglassTimer newTimer = HourglassTimer.GetTimerForInput(input);
+            HourglassTimer newTimer = HourglassTimer.GetTimerForInput(input, this.Options);
             newTimer.Start(input);
             TimerManager.Instance.Add(newTimer);
 
@@ -328,7 +336,7 @@ namespace Hourglass
             // Notify expiration if the existing timer is expired
             if (this.Timer.State == TimerState.Expired)
             {
-                if (this.Timer.Options.LoopSound)
+                if (this.Options.LoopSound)
                 {
                     this.BeginExpirationAnimationAndSound();
                 }
@@ -353,7 +361,7 @@ namespace Hourglass
 
             this.Topmost = false;
             this.Topmost = true;
-            this.Topmost = this.Timer.Options.AlwaysOnTop;
+            this.Topmost = this.Options.AlwaysOnTop;
         }
 
         /// <summary>
@@ -579,7 +587,7 @@ namespace Hourglass
             }
 
             // Bring the window to the front if required
-            if (this.Timer.Options.PopUpWhenExpired)
+            if (this.Options.PopUpWhenExpired)
             {
                 this.BringToFront();
             }
@@ -590,7 +598,7 @@ namespace Hourglass
         /// </summary>
         private void BeginExpirationSound()
         {
-            this.soundPlayer.Play(this.Timer.Options.Sound, this.Timer.Options.LoopSound);
+            this.soundPlayer.Play(this.Options.Sound, this.Options.LoopSound);
         }
 
         /// <summary>
@@ -637,7 +645,7 @@ namespace Hourglass
             {
                 case TimerWindowMode.Input:
                     // Flash three times, or flash indefinitely if the sound is looped
-                    if (this.flashExpirationCount < 3 || this.Timer.Options.LoopSound)
+                    if (this.flashExpirationCount < 3 || this.Options.LoopSound)
                     {
                         this.flashExpirationStoryboard.Begin();
                     }
@@ -645,15 +653,15 @@ namespace Hourglass
                     break;
 
                 case TimerWindowMode.Status:
-                    if (this.Timer.Options.LoopTimer && !(this.Timer is DateTimeTimer))
+                    if (this.Options.LoopTimer && !(this.Timer is DateTimeTimer))
                     {
                         // Flash three times, or flash indefinitely if the sound is looped
-                        if (this.flashExpirationCount < 3 || this.Timer.Options.LoopSound)
+                        if (this.flashExpirationCount < 3 || this.Options.LoopSound)
                         {
                             this.flashExpirationStoryboard.Begin();
                         }
                     }
-                    else if (this.Timer.Options.Sound == null && this.Timer.Options.CloseWhenExpired)
+                    else if (this.Options.Sound == null && this.Options.CloseWhenExpired)
                     {
                         // Flash three times and then close
                         if (this.flashExpirationCount < 3)
@@ -668,7 +676,7 @@ namespace Hourglass
                     else
                     {
                         // Flash three times and then glow, or flash indefinitely if the sound is looped
-                        if (this.flashExpirationCount < 2 || this.Timer.Options.LoopSound)
+                        if (this.flashExpirationCount < 2 || this.Options.LoopSound)
                         {
                             this.flashExpirationStoryboard.Begin();
                         }
@@ -709,7 +717,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void SoundPlayerPlaybackCompleted(object sender, EventArgs e)
         {
-            if (this.Timer.Options.CloseWhenExpired && !this.Timer.Options.LoopTimer && this.Mode == TimerWindowMode.Status)
+            if (this.Options.CloseWhenExpired && !this.Options.LoopTimer && this.Mode == TimerWindowMode.Status)
             {
                 this.Close();
             }
@@ -731,7 +739,7 @@ namespace Hourglass
             this.Timer.Expired += this.TimerExpired;
             this.Timer.Tick += this.TimerTick;
             this.Timer.PropertyChanged += this.TimerPropertyChanged;
-            this.Timer.Options.PropertyChanged += this.TimerOptionsPropertyChanged;
+            this.Options.PropertyChanged += this.TimerOptionsPropertyChanged;
 
             this.UpdateBoundControls();
         }
@@ -759,7 +767,7 @@ namespace Hourglass
                     this.CloseButton.IsEnabled = false;
                     this.CancelButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
 
-                    this.Topmost = this.Timer.Options.AlwaysOnTop;
+                    this.Topmost = this.Options.AlwaysOnTop;
                     return;
 
                 case TimerWindowMode.Status:
@@ -779,7 +787,7 @@ namespace Hourglass
                     this.CloseButton.IsEnabled = this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired;
                     this.CancelButton.IsEnabled = false;
 
-                    this.Topmost = this.Timer.Options.AlwaysOnTop;
+                    this.Topmost = this.Options.AlwaysOnTop;
                     return;
             }
         }
@@ -843,9 +851,9 @@ namespace Hourglass
             this.Timer.Expired -= this.TimerExpired;
             this.Timer.Tick -= this.TimerTick;
             this.Timer.PropertyChanged -= this.TimerPropertyChanged;
-            this.Timer.Options.PropertyChanged -= this.TimerOptionsPropertyChanged;
+            this.Options.PropertyChanged -= this.TimerOptionsPropertyChanged;
 
-            this.Timer.Options.WindowSize = WindowSize.FromWindow(this /* window */);
+            this.Options.WindowSize = WindowSize.FromWindow(this /* window */);
 
             if (this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired)
             {
@@ -955,7 +963,6 @@ namespace Hourglass
                 return;
             }
 
-            input.Options.SetFromTimerOptions(this.Timer.Options);
             this.Show(input);
         }
 

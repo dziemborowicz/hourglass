@@ -77,7 +77,7 @@ namespace Hourglass
             var q = from window in Application.Current.Windows.OfType<TimerWindow>()
                     where window.IsVisible
                     orderby window.Menu.LastShowed descending
-                    select window.Timer.Options;
+                    select window.Options;
 
             this.mostRecentOptions = TimerOptions.FromTimerOptions(q.FirstOrDefault()) ?? this.mostRecentOptions;
 

@@ -86,7 +86,7 @@ namespace Hourglass
         /// <param name="options">A <see cref="TimerOptions"/>.</param>
         public TimerOptions(TimerOptions options)
         {
-            this.SetFromTimerOptions(options);
+            this.Set(options);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Hourglass
         /// <param name="optionsInfo">A <see cref="TimerOptionsInfo"/>.</param>
         public TimerOptions(TimerOptionsInfo optionsInfo)
         {
-            this.SetFromTimerOptionsInfo(optionsInfo);
+            this.Set(optionsInfo);
         }
 
         #endregion
@@ -321,7 +321,7 @@ namespace Hourglass
         /// Sets all of the options from another instance of the <see cref="TimerOptions"/> class.
         /// </summary>
         /// <param name="options">A <see cref="TimerOptions"/>.</param>
-        public void SetFromTimerOptions(TimerOptions options)
+        public void Set(TimerOptions options)
         {
             if (options == null)
             {
@@ -342,7 +342,7 @@ namespace Hourglass
         /// Sets all of the options from an instance of the <see cref="TimerOptionsInfo"/> class.
         /// </summary>
         /// <param name="optionsInfo">A <see cref="TimerOptionsInfo"/>.</param>
-        public void SetFromTimerOptionsInfo(TimerOptionsInfo optionsInfo)
+        public void Set(TimerOptionsInfo optionsInfo)
         {
             if (optionsInfo == null)
             {

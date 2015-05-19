@@ -118,7 +118,7 @@ namespace Hourglass
             // Set timer-specific options
             if (arguments.Options != null)
             {
-                window.Timer.Options.SetFromTimerOptions(arguments.Options);
+                window.Options.Set(arguments.Options);
             }
 
             // Set global options

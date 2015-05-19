@@ -16,35 +16,18 @@ namespace Hourglass
     public class TimeSpanTimerInput : TimerInput
     {
         /// <summary>
-        /// The <see cref="TimeSpan"/> for which the <see cref="TimeSpanTimer"/> should count down.
-        /// </summary>
-        private readonly TimeSpan timeSpan;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TimeSpanTimerInput"/> class.
         /// </summary>
         /// <param name="timeSpan">The <see cref="TimeSpan"/> for which the <see cref="TimeSpanTimer"/> should count
         /// down.</param>
         public TimeSpanTimerInput(TimeSpan timeSpan)
-            : this(timeSpan, new TimerOptions())
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanTimerInput"/> class.
-        /// </summary>
-        /// <param name="timeSpan">The <see cref="TimeSpan"/> for which the <see cref="TimeSpanTimer"/> should count
-        /// down.</param>
-        /// <param name="options">The configuration data for the timer.</param>
-        public TimeSpanTimerInput(TimeSpan timeSpan, TimerOptions options)
-            : base(options)
-        {
-            if (this.timeSpan < TimeSpan.Zero)
+            if (this.TimeSpan < TimeSpan.Zero)
             {
                 throw new ArgumentOutOfRangeException("timeSpan");
             }
 
-            this.timeSpan = timeSpan;
+            this.TimeSpan = timeSpan;
         }
 
         /// <summary>
@@ -53,45 +36,49 @@ namespace Hourglass
         /// </summary>
         /// <param name="inputInfo">A <see cref="TimeSpanTimerInputInfo"/>.</param>
         public TimeSpanTimerInput(TimeSpanTimerInputInfo inputInfo)
-            : base(inputInfo)
         {
-            this.timeSpan = inputInfo.TimeSpan;
+            this.TimeSpan = inputInfo.TimeSpan;
         }
 
         /// <summary>
         /// Gets the <see cref="TimeSpan"/> for which the <see cref="TimeSpanTimer"/> should count down.
         /// </summary>
-        public TimeSpan TimeSpan
-        {
-            get { return this.timeSpan; }
-        }
+        public TimeSpan TimeSpan { get; private set; }
 
         /// <summary>
-        /// Returns a value indicating whether the <see cref="TimerInput"/> is equivalent to this <see
-        /// cref="TimerInput"/> except for the <see cref="HourglassTimer.Options"/> field, which is ignored.
+        /// Determines whether the specified object is equal to the current object.
         /// </summary>
-        /// <param name="input">A <see cref="TimerInput"/>.</param>
-        /// <returns>A value indicating whether the <see cref="TimerInput"/> is equivalent to this <see
-        /// cref="TimerInput"/> except for the <see cref="HourglassTimer.Options"/> field.</returns>
-        public override bool EqualsExceptForOptions(TimerInput input)
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns><c>true</c> if the specified object is equal to the current object, or <c>false</c> otherwise.
+        /// </returns>
+        public override bool Equals(object obj)
         {
-            if (object.ReferenceEquals(this, input))
+            if (object.ReferenceEquals(this, obj))
             {
                 return true;
             }
 
-            if (object.ReferenceEquals(input, null))
+            if (object.ReferenceEquals(obj, null))
             {
                 return false;
             }
 
-            if (this.GetType() != input.GetType())
+            if (this.GetType() != obj.GetType())
             {
                 return false;
             }
 
-            TimeSpanTimerInput timeSpanTimerInput = (TimeSpanTimerInput)input;
+            TimeSpanTimerInput timeSpanTimerInput = (TimeSpanTimerInput)obj;
             return this.TimeSpan.Equals(timeSpanTimerInput.TimeSpan);
+        }
+
+        /// <summary>
+        /// Serves as the default hash function.
+        /// </summary>
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode()
+        {
+            return this.TimeSpan.GetHashCode();
         }
 
         /// <summary>
@@ -100,28 +87,16 @@ namespace Hourglass
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return TimeSpanUtility.ToShortNaturalString(this.timeSpan);
+            return TimeSpanUtility.ToShortNaturalString(this.TimeSpan);
         }
 
         /// <summary>
-        /// Returns a new <see cref="TimerInputInfo"/> of the correct type for this class.
+        /// Returns the representation of the <see cref="TimerInput"/> used for XML serialization.
         /// </summary>
-        /// <returns>A new <see cref="TimerInputInfo"/>.</returns>
-        protected override TimerInputInfo GetNewTimerInputInfo()
+        /// <returns>The representation of the <see cref="TimerInput"/> used for XML serialization.</returns>
+        public override TimerInputInfo ToTimerInputInfo()
         {
-            return new TimeSpanTimerInputInfo();
-        }
-
-        /// <summary>
-        /// Sets the properties on a <see cref="TimerInputInfo"/> from the values in this class.
-        /// </summary>
-        /// <param name="timerInputInfo">A <see cref="TimerInputInfo"/>.</param>
-        protected override void SetTimerInputInfo(TimerInputInfo timerInputInfo)
-        {
-            base.SetTimerInputInfo(timerInputInfo);
-
-            TimeSpanTimerInputInfo info = (TimeSpanTimerInputInfo)timerInputInfo;
-            info.TimeSpan = this.timeSpan;
+            return new TimeSpanTimerInputInfo { TimeSpan = this.TimeSpan };
         }
     }
 }

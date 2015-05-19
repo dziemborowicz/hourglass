@@ -186,18 +186,19 @@ namespace Hourglass
         /// Returns a new <see cref="HourglassTimer"/> that can be started with the specified <see cref="TimerInput"/>.
         /// </summary>
         /// <param name="input">A <see cref="TimerInput"/>.</param>
+        /// <param name="options">A <see cref="TimerOptions"/>.</param>
         /// <returns>A new <see cref="HourglassTimer"/> that can be started with the specified <see cref="TimerInput"/>.
         /// </returns>
-        public static HourglassTimer GetTimerForInput(TimerInput input)
+        public static HourglassTimer GetTimerForInput(TimerInput input, TimerOptions options)
         {
             if (input is DateTimeTimerInput)
             {
-                return new DateTimeTimer(input.Options);
+                return new DateTimeTimer(options);
             }
 
             if (input is TimeSpanTimerInput)
             {
-                return new TimeSpanTimer(input.Options);
+                return new TimeSpanTimer(options);
             }
 
             return null;
