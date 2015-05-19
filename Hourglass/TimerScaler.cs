@@ -24,13 +24,13 @@ namespace Hourglass
         private const double BaseButtonMargin = 7;
 
         /// <summary>
-        /// The default margin for the <see cref="Grid"/> controls containing the controls of the <see
+        /// The default margin for the <see cref="Grid"/> control containing the controls of the <see
         /// cref="timerWindow"/>.
         /// </summary>
         private const double BaseControlsGridMargin = 10;
 
         /// <summary>
-        /// The default margin for the <see cref="StackPanel"/> controls containing the controls of the <see
+        /// The default margin for the <see cref="StackPanel"/> control containing the controls of the <see
         /// cref="timerWindow"/>.
         /// </summary>
         private const double BaseControlsPanelMargin = 20;
@@ -41,28 +41,34 @@ namespace Hourglass
         private const double BaseFontSize = 12;
 
         /// <summary>
-        /// The default font size of the larger text controls on the <see cref="timerWindow"/>.
+        /// The default font size of the larger text control on the <see cref="timerWindow"/>.
         /// </summary>
         private const double BasePrimaryTextControlFontSize = 18;
 
         /// <summary>
-        /// The default top margin of the larger text controls on the <see cref="timerWindow"/>.
+        /// The default additional margin of the larger text control on the <see cref="timerWindow"/>, which is used
+        /// when the base scale factor exceeds 1.0.
+        /// </summary>
+        private const double BasePrimaryTextControlAdditionalMargin = 10;
+
+        /// <summary>
+        /// The default top margin of the larger text control on the <see cref="timerWindow"/>.
         /// </summary>
         private const double BasePrimaryTextControlTopMargin = 1;
 
         /// <summary>
-        /// The default bottom margin of the larger text controls on the <see cref="timerWindow"/>.
+        /// The default bottom margin of the larger text control on the <see cref="timerWindow"/>.
         /// </summary>
         private const double BasePrimaryTextControlBottomMargin = 4;
 
         /// <summary>
-        /// The default border thickness for the <see cref="Border"/> controls that visualize validation errors and
+        /// The default border thickness for the <see cref="Border"/> control that visualize validation errors and
         /// expired timer state.
         /// </summary>
         private const double BaseBorderThickness = 1;
 
         /// <summary>
-        /// The default margin for the <see cref="Border"/> controls that visualize validation errors and expired timer
+        /// The default margin for the <see cref="Border"/> control that visualize validation errors and expired timer
         /// state.
         /// </summary>
         private const double BaseBorderMargin = 15;
@@ -231,10 +237,18 @@ namespace Hourglass
         {
             this.innerGrid.Margin = new Thickness(reducedScaleFactor * BaseControlsGridMargin);
 
-            this.controlsPanel.Margin = new Thickness(reducedScaleFactor * BaseControlsPanelMargin, 0, reducedScaleFactor * BaseControlsPanelMargin, 0);
+            this.controlsPanel.Margin = new Thickness(
+                left: reducedScaleFactor * BaseControlsPanelMargin,
+                top: 0,
+                right: reducedScaleFactor * BaseControlsPanelMargin,
+                bottom: 0);
 
             this.timerTextBox.FontSize = baseScaleFactor * BasePrimaryTextControlFontSize;
-            this.timerTextBox.Margin = new Thickness(0, baseScaleFactor * BasePrimaryTextControlTopMargin, 0, baseScaleFactor * BasePrimaryTextControlBottomMargin);
+            this.timerTextBox.Margin = new Thickness(
+                left: 0,
+                top: (baseScaleFactor * BasePrimaryTextControlTopMargin) + (Math.Max(baseScaleFactor - 1, 0) * BasePrimaryTextControlAdditionalMargin),
+                right: 0,
+                bottom: (baseScaleFactor * BasePrimaryTextControlBottomMargin) + (Math.Max(baseScaleFactor - 1, 0) * BasePrimaryTextControlAdditionalMargin));
 
             this.titleTextBox.FontSize = reducedScaleFactor * BaseFontSize;
 
@@ -244,7 +258,11 @@ namespace Hourglass
             foreach (Button button in this.buttons)
             {
                 button.FontSize = reducedScaleFactor * BaseFontSize;
-                button.Margin = new Thickness(baseScaleFactor * BaseButtonMargin, 0, baseScaleFactor * BaseButtonMargin, 0);
+                button.Margin = new Thickness(
+                    left: baseScaleFactor * BaseButtonMargin,
+                    top: 0,
+                    right: baseScaleFactor * BaseButtonMargin,
+                    bottom: 0);
             }
         }
 
