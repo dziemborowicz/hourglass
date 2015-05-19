@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Hourglass.CommandLineUsageWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:hg="clr-namespace:Hourglass"
+        xmlns:local="clr-namespace:Hourglass"
         Title="Hourglass" Height="480" Width="640" MinHeight="240" MinWidth="320">
     <Grid>
         <DockPanel LastChildFill="True">
@@ -11,7 +11,7 @@
                 </StackPanel>
             </Border>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <TextBlock x:Name="UsageTextBlock" FontFamily="Consolas, Courier New, Courier" Margin="20" Text="{Binding Source={x:Static hg:CommandLine.Usage}}"/>
+                <TextBlock x:Name="UsageTextBlock" FontFamily="Consolas, Courier New, Courier" Margin="20" Text="{Binding Source={x:Static local:CommandLine.Usage}}"/>
             </ScrollViewer>
         </DockPanel>
     </Grid>
