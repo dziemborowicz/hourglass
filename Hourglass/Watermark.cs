@@ -88,8 +88,8 @@ namespace Hourglass
                 comboBox.SelectionChanged -= ComboBoxSelectionChanged;
                 comboBox.SelectionChanged += ComboBoxSelectionChanged;
 
-                comboBox.AddHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(ComboBoxTextChanged));
                 comboBox.RemoveHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(ComboBoxTextChanged));
+                comboBox.AddHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(ComboBoxTextChanged));
             }
 
             UpdateWatermark(control);
