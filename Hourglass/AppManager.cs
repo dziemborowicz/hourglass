@@ -21,6 +21,7 @@ namespace Hourglass
         /// </summary>
         private static readonly IManager[] Managers = 
         {
+            ErrorManager.Instance,
             SoundManager.Instance,
             TimerColorManager.Instance,
             TimerInputManager.Instance,
