@@ -67,14 +67,14 @@ namespace Hourglass
         private MenuItem closeWhenExpiredMenuItem;
 
         /// <summary>
-        /// The "Recent timers" <see cref="MenuItem"/>.
+        /// The "Recent inputs" <see cref="MenuItem"/>.
         /// </summary>
-        private MenuItem recentTimersMenuItem;
+        private MenuItem recentInputsMenuItem;
 
         /// <summary>
-        /// The "Clear recent timers" <see cref="MenuItem"/>.
+        /// The "Clear recent inputs" <see cref="MenuItem"/>.
         /// </summary>
-        private MenuItem clearRecentTimersMenuItem;
+        private MenuItem clearRecentInputsMenuItem;
 
         /// <summary>
         /// The "Saved timers" <see cref="MenuItem"/>.
@@ -194,7 +194,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            this.UpdateRecentTimersMenuItem();
+            this.UpdateRecentInputsMenuItem();
             this.UpdateSavedTimersMenuItem();
             this.UpdateColorMenuItem();
             this.UpdateSoundMenuItem();
@@ -390,9 +390,9 @@ namespace Hourglass
 
             this.Items.Add(new Separator());
 
-            this.recentTimersMenuItem = new MenuItem();
-            this.recentTimersMenuItem.Header = "Recent timers";
-            this.Items.Add(this.recentTimersMenuItem);
+            this.recentInputsMenuItem = new MenuItem();
+            this.recentInputsMenuItem.Header = "Recent inputs";
+            this.Items.Add(this.recentInputsMenuItem);
 
             this.savedTimersMenuItem = new MenuItem();
             this.savedTimersMenuItem.Header = "Saved timers";
@@ -434,22 +434,22 @@ namespace Hourglass
 
         #endregion
 
-        #region Private Methods (Recent Timers)
+        #region Private Methods (Recent Inputs)
 
         /// <summary>
-        /// Updates the <see cref="recentTimersMenuItem"/>.
+        /// Updates the <see cref="recentInputsMenuItem"/>.
         /// </summary>
-        private void UpdateRecentTimersMenuItem()
+        private void UpdateRecentInputsMenuItem()
         {
-            this.recentTimersMenuItem.Items.Clear();
+            this.recentInputsMenuItem.Items.Clear();
 
             if (TimerInputManager.Instance.Inputs.Count == 0)
             {
-                MenuItem noRecentTimersMenuItem = new MenuItem();
-                noRecentTimersMenuItem.Header = "No recent timers";
-                noRecentTimersMenuItem.Foreground = Brushes.DarkGray;
+                MenuItem noRecentInputsMenuItem = new MenuItem();
+                noRecentInputsMenuItem.Header = "No recent inputs";
+                noRecentInputsMenuItem.Foreground = Brushes.DarkGray;
 
-                this.recentTimersMenuItem.Items.Add(noRecentTimersMenuItem);
+                this.recentInputsMenuItem.Items.Add(noRecentInputsMenuItem);
             }
             else
             {
@@ -458,22 +458,22 @@ namespace Hourglass
                     MenuItem timerMenuItem = new MenuItem();
                     timerMenuItem.Header = input.ToString();
                     timerMenuItem.Tag = input;
-                    timerMenuItem.Click += this.RecentTimerMenuItemClick;
+                    timerMenuItem.Click += this.RecentInputMenuItemClick;
 
-                    this.recentTimersMenuItem.Items.Add(timerMenuItem);
+                    this.recentInputsMenuItem.Items.Add(timerMenuItem);
                 }
             }
 
-            this.recentTimersMenuItem.Items.Add(new Separator());
+            this.recentInputsMenuItem.Items.Add(new Separator());
 
-            if (this.clearRecentTimersMenuItem == null)
+            if (this.clearRecentInputsMenuItem == null)
             {
-                this.clearRecentTimersMenuItem = new MenuItem();
-                this.clearRecentTimersMenuItem.Header = "Clear recent timers";
-                this.clearRecentTimersMenuItem.Click += this.ClearRecentTimersMenuItemClick;
+                this.clearRecentInputsMenuItem = new MenuItem();
+                this.clearRecentInputsMenuItem.Header = "Clear recent inputs";
+                this.clearRecentInputsMenuItem.Click += this.ClearRecentInputsMenuItemClick;
             }
 
-            this.recentTimersMenuItem.Items.Add(this.clearRecentTimersMenuItem);
+            this.recentInputsMenuItem.Items.Add(this.clearRecentInputsMenuItem);
         }
 
         /// <summary>
@@ -481,7 +481,7 @@ namespace Hourglass
         /// </summary>
         /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
         /// <param name="e">The event data.</param>
-        private void RecentTimerMenuItemClick(object sender, RoutedEventArgs e)
+        private void RecentInputMenuItemClick(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
             TimerInput input = (TimerInput)menuItem.Tag;
@@ -502,11 +502,11 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the "Clear recent timers" <see cref="MenuItem"/> is clicked.
+        /// Invoked when the "Clear recent inputs" <see cref="MenuItem"/> is clicked.
         /// </summary>
         /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
         /// <param name="e">The event data.</param>
-        private void ClearRecentTimersMenuItemClick(object sender, RoutedEventArgs e)
+        private void ClearRecentInputsMenuItemClick(object sender, RoutedEventArgs e)
         {
             TimerInputManager.Instance.Clear();
         }
