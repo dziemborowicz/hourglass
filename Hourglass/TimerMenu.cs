@@ -539,7 +539,8 @@ namespace Hourglass
                     savedTimer.Update();
 
                     MenuItem timerMenuItem = new MenuItem();
-                    timerMenuItem.Header = savedTimer.ToString();
+                    timerMenuItem.Header = this.GetHeaderForTimer(savedTimer);
+                    timerMenuItem.Icon = this.GetIconForTimer(savedTimer);
                     timerMenuItem.Tag = savedTimer;
                     timerMenuItem.Click += this.SavedTimerMenuItemClick;
 
@@ -566,12 +567,62 @@ namespace Hourglass
         {
             foreach (MenuItem menuItem in this.savedTimersMenuItem.Items.OfType<MenuItem>())
             {
-                Timer timer = menuItem.Tag as Timer;
+                HourglassTimer timer = menuItem.Tag as HourglassTimer;
                 if (timer != null)
                 {
-                    menuItem.Header = timer.ToString();
+                    menuItem.Header = this.GetHeaderForTimer(timer);
+                    menuItem.Icon = this.GetIconForTimer(timer);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns an object that can be set for the <see cref="MenuItem.Header"/> of a <see cref="MenuItem"/> that
+        /// displays an <see cref="HourglassTimer"/>.
+        /// </summary>
+        /// <param name="timer">A <see cref="HourglassTimer"/>.</param>
+        /// <returns>An object that can be set for the <see cref="MenuItem.Header"/>.</returns>
+        private object GetHeaderForTimer(HourglassTimer timer)
+        {
+            return timer.ToString();
+        }
+
+        /// <summary>
+        /// Returns an object that can be set for the <see cref="MenuItem.Icon"/> of a <see cref="MenuItem"/> that
+        /// displays an <see cref="HourglassTimer"/>.
+        /// </summary>
+        /// <param name="timer">A <see cref="HourglassTimer"/>.</param>
+        /// <returns>An object that can be set for the <see cref="MenuItem.Icon"/>.</returns>
+        private object GetIconForTimer(HourglassTimer timer)
+        {
+            Border outerBorder = new Border();
+            outerBorder.BorderBrush = new SolidColorBrush(Colors.LightGray);
+            outerBorder.BorderThickness = new Thickness(1);
+            outerBorder.CornerRadius = new CornerRadius(2);
+            outerBorder.Width = 16;
+            outerBorder.Height = 6;
+
+            if (timer.State == TimerState.Expired)
+            {
+                Border progress = new Border();
+                progress.Background = new SolidColorBrush(Color.FromRgb(199, 80, 80));
+                progress.Width = 16;
+                progress.Height = 6;
+
+                outerBorder.Child = progress;
+            }
+            else if (timer.TimeLeftAsPercentage.HasValue)
+            {
+                Border progress = new Border();
+                progress.Background = timer.Options.Color.Brush;
+                progress.HorizontalAlignment = HorizontalAlignment.Left;
+                progress.Width = timer.TimeLeftAsPercentage.Value / 100.0 * 16.0;
+                progress.Height = 6;
+
+                outerBorder.Child = progress;
+            }
+
+            return outerBorder;
         }
 
         /// <summary>
