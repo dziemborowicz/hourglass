@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="AppEntry.cs" />
+    <Compile Include="AppManager.cs" />
     <Compile Include="CommandLine.cs" />
     <Compile Include="CommandLineUsageWindow.xaml.cs">
       <DependentUpon>CommandLineUsageWindow.xaml</DependentUpon>
@@ -86,6 +87,8 @@
     <Compile Include="DateTimeUtility.cs" />
     <Compile Include="FocusUtility.cs" />
     <Compile Include="HourglassTimer.cs" />
+    <Compile Include="IManager.cs" />
+    <Compile Include="Manager.cs" />
     <Compile Include="MathUtility.cs" />
     <Compile Include="MultiplierConverter.cs" />
     <Compile Include="PortableSettingsProvider.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="SoundPlayer.cs" />
+    <Compile Include="TimerNotifyIconManager.cs" />
     <Compile Include="TimeSpanTimer.cs" />
     <Compile Include="TimeSpanTimerInput.cs" />
     <Compile Include="TimeSpanUtility.cs" />

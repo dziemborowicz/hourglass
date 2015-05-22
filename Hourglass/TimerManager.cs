@@ -17,7 +17,7 @@ namespace Hourglass
     /// <summary>
     /// Manages timers.
     /// </summary>
-    public class TimerManager
+    public class TimerManager : Manager
     {
         /// <summary>
         /// The maximum number of timers to persist in settings.
@@ -56,6 +56,33 @@ namespace Hourglass
         public IList<HourglassTimer> ResumableTimers
         {
             get { return this.timers.Where(t => t.State != TimerState.Stopped && !IsBoundToWindow(t)).ToList(); }
+        }
+
+        /// <summary>
+        /// Initializes the class.
+        /// </summary>
+        public override void Initialize()
+        {
+            this.timers.Clear();
+
+            IEnumerable<TimerInfo> timerInfos = Settings.Default.Timers;
+            if (timerInfos != null)
+            {
+                this.timers.AddRange(timerInfos.Select(Timer.FromTimerInfo).OfType<HourglassTimer>());
+            }
+        }
+
+        /// <summary>
+        /// Persists the state of the class.
+        /// </summary>
+        public override void Persist()
+        {
+            IEnumerable<TimerInfo> timerInfos = this.timers
+                .Where(t => t.State != TimerState.Stopped && t.State != TimerState.Expired)
+                .Take(MaxSavedTimers)
+                .Select(TimerInfo.FromTimer);
+
+            Settings.Default.Timers = new TimerInfoList(timerInfos);
         }
 
         /// <summary>
@@ -108,33 +135,6 @@ namespace Hourglass
         public void ClearResumableTimers()
         {
             this.Remove(this.ResumableTimers);
-        }
-
-        /// <summary>
-        /// Loads state from the default settings.
-        /// </summary>
-        public void Load()
-        {
-            this.timers.Clear();
-
-            IEnumerable<TimerInfo> timerInfos = Settings.Default.Timers;
-            if (timerInfos != null)
-            {
-                this.timers.AddRange(timerInfos.Select(Timer.FromTimerInfo).OfType<HourglassTimer>());
-            }
-        }
-
-        /// <summary>
-        /// Saves state to the default settings.
-        /// </summary>
-        public void Save()
-        {
-            IEnumerable<TimerInfo> timerInfos = this.timers
-                .Where(t => t.State != TimerState.Stopped && t.State != TimerState.Expired)
-                .Take(MaxSavedTimers)
-                .Select(TimerInfo.FromTimer);
-
-            Settings.Default.Timers = new TimerInfoList(timerInfos);
         }
 
         /// <summary>

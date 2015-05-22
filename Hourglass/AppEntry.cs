@@ -28,11 +28,6 @@ namespace Hourglass
         private App app;
 
         /// <summary>
-        /// The icon for the app in the notification area of the taskbar.
-        /// </summary>
-        private TimerNotifyIcon notifyIcon;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AppEntry"/> class.
         /// </summary>
         public AppEntry()
@@ -59,9 +54,7 @@ namespace Hourglass
         /// <returns>A value indicating whether the application should continue starting up.</returns>
         protected override bool OnStartup(StartupEventArgs e)
         {
-            SettingsManager.Instance.Load();
-
-            this.notifyIcon = new TimerNotifyIcon();
+            AppManager.Instance.Initialize();
 
             TimerWindow window;
             if (!this.TryGetTimerWindowForArgs(e.CommandLine.ToArray(), out window))
@@ -136,8 +129,8 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void AppExit(object sender, ExitEventArgs e)
         {
-            this.notifyIcon.Dispose();
-            SettingsManager.Instance.Save();
+            AppManager.Instance.Persist();
+            AppManager.Instance.Dispose();
         }
     }
 }

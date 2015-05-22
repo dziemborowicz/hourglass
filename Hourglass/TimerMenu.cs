@@ -228,7 +228,7 @@ namespace Hourglass
             this.lastShowed = DateTime.Now;
             this.dispatcherTimer.Stop();
 
-            SettingsManager.Instance.Save();
+            AppManager.Instance.Persist();
         }
 
         #endregion

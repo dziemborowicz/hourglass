@@ -11,7 +11,7 @@ namespace Hourglass
     /// <summary>
     /// Manages default settings.
     /// </summary>
-    public class SettingsManager
+    public class SettingsManager : Manager
     {
         /// <summary>
         /// Singleton instance of the <see cref="SettingsManager"/> class.
@@ -26,28 +26,10 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Loads state from the default settings.
+        /// Persists the state of the class.
         /// </summary>
-        public void Load()
+        public override void Persist()
         {
-            Settings.Default.Reload();
-
-            TimerColorManager.Instance.Load();
-            TimerManager.Instance.Load();
-            TimerInputManager.Instance.Load();
-            TimerOptionsManager.Instance.Load();
-        }
-
-        /// <summary>
-        /// Saves state to the default settings.
-        /// </summary>
-        public void Save()
-        {
-            TimerColorManager.Instance.Save();
-            TimerManager.Instance.Save();
-            TimerInputManager.Instance.Save();
-            TimerOptionsManager.Instance.Save();
-
             Settings.Default.Save();
         }
     }

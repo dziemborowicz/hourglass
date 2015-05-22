@@ -1216,7 +1216,8 @@ namespace Hourglass
             this.UnbindTimer();
             this.soundPlayer.Dispose();
             Settings.Default.WindowSize = WindowSize.FromWindow(this /* window */);
-            SettingsManager.Instance.Save();
+
+            AppManager.Instance.Persist();
         }
 
         #endregion

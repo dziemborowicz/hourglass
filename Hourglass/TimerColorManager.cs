@@ -16,7 +16,7 @@ namespace Hourglass
     /// <summary>
     /// Manages colors.
     /// </summary>
-    public class TimerColorManager
+    public class TimerColorManager : Manager
     {
         /// <summary>
         /// Singleton instance of the <see cref="TimerColorManager"/> class.
@@ -81,6 +81,32 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Initializes the class.
+        /// </summary>
+        public override void Initialize()
+        {
+            this.RemoveUserProvidedColors();
+
+            IEnumerable<TimerColorInfo> colorInfos = Settings.Default.Colors;
+            if (colorInfos != null)
+            {
+                this.colors.AddRange(colorInfos.Select(TimerColor.FromTimerColorInfo));
+            }
+        }
+
+        /// <summary>
+        /// Persists the state of the class.
+        /// </summary>
+        public override void Persist()
+        {
+            IEnumerable<TimerColorInfo> colorInfos = this.colors
+                .Where(c => !c.IsBuiltIn)
+                .Select(TimerColorInfo.FromTimerColor);
+
+            Settings.Default.Colors = new TimerColorInfoList(colorInfos);
+        }
+
+        /// <summary>
         /// Add a <see cref="TimerColor"/>.
         /// </summary>
         /// <param name="color">The <see cref="TimerColor"/> to add.</param>
@@ -139,32 +165,6 @@ namespace Hourglass
         public TimerColor TryGetColorByColor(Color color, bool isBuiltIn)
         {
             return this.colors.FirstOrDefault(c => object.Equals(c.Color, color) && object.Equals(c.IsBuiltIn, isBuiltIn));
-        }
-
-        /// <summary>
-        /// Loads state from the default settings.
-        /// </summary>
-        public void Load()
-        {
-            this.RemoveUserProvidedColors();
-
-            IEnumerable<TimerColorInfo> colorInfos = Settings.Default.Colors;
-            if (colorInfos != null)
-            {
-                this.colors.AddRange(colorInfos.Select(TimerColor.FromTimerColorInfo));
-            }
-        }
-
-        /// <summary>
-        /// Saves state to the default settings.
-        /// </summary>
-        public void Save()
-        {
-            IEnumerable<TimerColorInfo> colorInfos = this.colors
-                .Where(c => !c.IsBuiltIn)
-                .Select(TimerColorInfo.FromTimerColor);
-
-            Settings.Default.Colors = new TimerColorInfoList(colorInfos);
         }
 
         /// <summary>

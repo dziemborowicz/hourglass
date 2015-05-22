@@ -16,7 +16,7 @@ namespace Hourglass
     /// <summary>
     /// Manages recent <see cref="TimerInput"/>s.
     /// </summary>
-    public class TimerInputManager
+    public class TimerInputManager : Manager
     {
         /// <summary>
         /// The maximum number of <see cref="TimerInput"/>s.
@@ -57,6 +57,29 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Initializes the class.
+        /// </summary>
+        public override void Initialize()
+        {
+            this.timerInputs.Clear();
+
+            IEnumerable<TimerInputInfo> timerInputInfos = Settings.Default.Inputs;
+            if (timerInputInfos != null)
+            {
+                this.timerInputs.AddRange(timerInputInfos.Select(TimerInput.FromTimerInputInfo));
+            }
+        }
+
+        /// <summary>
+        /// Persists the state of the class.
+        /// </summary>
+        public override void Persist()
+        {
+            IEnumerable<TimerInputInfo> timerInputInfos = this.timerInputs.Select(TimerInputInfo.FromTimerInput);
+            Settings.Default.Inputs = new TimerInputInfoList(timerInputInfos);
+        }
+
+        /// <summary>
         /// Adds a <see cref="TimerInput"/> to the list of recent inputs.
         /// </summary>
         /// <param name="input">A <see cref="TimerInput"/>.</param>
@@ -81,29 +104,6 @@ namespace Hourglass
         public void Clear()
         {
             this.timerInputs.Clear();
-        }
-
-        /// <summary>
-        /// Loads state from the default settings.
-        /// </summary>
-        public void Load()
-        {
-            this.timerInputs.Clear();
-
-            IEnumerable<TimerInputInfo> timerInputInfos = Settings.Default.Inputs;
-            if (timerInputInfos != null)
-            {
-                this.timerInputs.AddRange(timerInputInfos.Select(TimerInput.FromTimerInputInfo));
-            }
-        }
-
-        /// <summary>
-        /// Saves state to the default settings.
-        /// </summary>
-        public void Save()
-        {
-            IEnumerable<TimerInputInfo> timerInputInfos = this.timerInputs.Select(TimerInputInfo.FromTimerInput);
-            Settings.Default.Inputs = new TimerInputInfoList(timerInputInfos);
         }
     }
 }

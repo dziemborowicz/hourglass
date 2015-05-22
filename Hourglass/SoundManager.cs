@@ -19,7 +19,7 @@ namespace Hourglass
     /// <summary>
     /// Manages notification sounds.
     /// </summary>
-    public class SoundManager
+    public class SoundManager : Manager
     {
         /// <summary>
         /// The extensions of the supported sound files.
@@ -41,8 +41,6 @@ namespace Hourglass
         /// </summary>
         private SoundManager()
         {
-            this.sounds.AddRange(this.GetResourceSounds());
-            this.sounds.AddRange(this.GetFileSounds());
         }
 
         /// <summary>
@@ -67,6 +65,15 @@ namespace Hourglass
         public IList<Sound> UserProvidedSounds
         {
             get { return this.sounds.Where(s => !s.IsBuiltIn).ToList(); }
+        }
+
+        /// <summary>
+        /// Initializes the class.
+        /// </summary>
+        public override void Initialize()
+        {
+            this.sounds.AddRange(this.GetResourceSounds());
+            this.sounds.AddRange(this.GetFileSounds());
         }
 
         /// <summary>

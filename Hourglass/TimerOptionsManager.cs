@@ -15,7 +15,7 @@ namespace Hourglass
     /// <summary>
     /// Manages <see cref="TimerOptions"/>s.
     /// </summary>
-    public class TimerOptionsManager
+    public class TimerOptionsManager : Manager
     {
         /// <summary>
         /// Singleton instance of the <see cref="TimerOptionsManager"/> class.
@@ -47,17 +47,17 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Loads state from the default settings.
+        /// Initializes the class.
         /// </summary>
-        public void Load()
+        public override void Initialize()
         {
             this.mostRecentOptions = TimerOptions.FromTimerOptionsInfo(Settings.Default.MostRecentOptions) ?? new TimerOptions();
         }
 
         /// <summary>
-        /// Saves state to the default settings.
+        /// Persists the state of the class.
         /// </summary>
-        public void Save()
+        public override void Persist()
         {
             this.UpdateMostRecentOptions();
             Settings.Default.MostRecentOptions = TimerOptionsInfo.FromTimerOptions(this.mostRecentOptions);
