@@ -385,7 +385,7 @@ namespace Hourglass
             this.closeWhenExpired = optionsInfo.CloseWhenExpired;
             this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
             this.loopSound = optionsInfo.LoopSound;
-            this.color = TimerColor.FromTimerColorInfo(optionsInfo.Color);
+            this.color = TimerColor.FromTimerColorInfo(optionsInfo.Color) ?? TimerColor.DefaultColor;
             this.windowSize = WindowSize.FromWindowSize(optionsInfo.WindowSize);
         }
 
