@@ -19,7 +19,7 @@ namespace Hourglass
         /// <summary>
         /// The manager class singleton instances.
         /// </summary>
-        private static readonly IManager[] Managers = 
+        private static readonly Manager[] Managers = 
         {
             ErrorManager.Instance,
             SoundManager.Instance,
@@ -43,7 +43,7 @@ namespace Hourglass
         /// </summary>
         public override void Initialize()
         {
-            foreach (IManager manager in Managers)
+            foreach (Manager manager in Managers)
             {
                 manager.Initialize();
             }
@@ -54,7 +54,7 @@ namespace Hourglass
         /// </summary>
         public override void Persist()
         {
-            foreach (IManager manager in Managers)
+            foreach (Manager manager in Managers)
             {
                 manager.Persist();
             }
@@ -74,7 +74,7 @@ namespace Hourglass
 
             if (disposing)
             {
-                foreach (IManager manager in Managers)
+                foreach (Manager manager in Managers)
                 {
                     manager.Dispose();
                 }

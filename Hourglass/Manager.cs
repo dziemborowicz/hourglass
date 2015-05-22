@@ -11,7 +11,7 @@ namespace Hourglass
     /// <summary>
     /// A base class for singleton manager classes.
     /// </summary>
-    public abstract class Manager : IManager
+    public abstract class Manager : IDisposable
     {
         /// <summary>
         /// Indicates whether this object has been disposed.
