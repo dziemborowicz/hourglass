@@ -7,7 +7,9 @@
 namespace Hourglass
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Windows;
 
@@ -22,9 +24,9 @@ namespace Hourglass
         public static readonly ErrorManager Instance = new ErrorManager();
 
         /// <summary>
-        /// The maximum number of error dump files to write to the temporary folder.
+        /// The maximum number of error dump files to keep in the temporary folder.
         /// </summary>
-        private const int MaxDumpFiles = 100;
+        private const int MaxErrorDumps = 5;
 
         /// <summary>
         /// Prevents a default instance of the <see cref="ErrorManager"/> class from being created.
@@ -50,16 +52,27 @@ namespace Hourglass
         {
             try
             {
+                // Get the error message
                 string errorMessage = e.ExceptionObject.ToString();
 
-                string dumpFilePath;
-                if (TryDumpErrorMessage(errorMessage, out dumpFilePath))
+                // Dump the error to a file
+                string dumpPath;
+                if (TryDumpError(errorMessage, out dumpPath))
                 {
                     errorMessage += Environment.NewLine;
                     errorMessage += Environment.NewLine;
-                    errorMessage += string.Format("The error has been written to \"{0}\".", dumpFilePath);
+                    errorMessage += string.Format("The error has been written to \"{0}\".", dumpPath);
                 }
 
+                // Clean up old error dumps
+                if (!TryCleanErrorDumps())
+                {
+                    errorMessage += Environment.NewLine;
+                    errorMessage += Environment.NewLine;
+                    errorMessage += "Failed to clean old error messages.";
+                }
+
+                // Show an error window
                 ErrorWindow errorWindow = new ErrorWindow();
                 errorWindow.ShowDialog("An unexpected error has occurred.", errorMessage);
             }
@@ -70,57 +83,71 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Tries to write the error message to a file in the temporary files.
+        /// Tries to write an error message to a file in the temporary files folder.
         /// </summary>
         /// <param name="errorMessage">An error message.</param>
-        /// <param name="dumpFilePath">The path of the dump file that was written.</param>
+        /// <param name="dumpPath">The path of the that was written.</param>
         /// <returns><c>true</c> if the error message is successfully written, or <c>false</c> otherwise.</returns>
-        private static bool TryDumpErrorMessage(string errorMessage, out string dumpFilePath)
+        private static bool TryDumpError(string errorMessage, out string dumpPath)
         {
             try
             {
-                // Find an empty dump file slot in the circular buffer
-                int i = 0;
-                while (File.Exists(GetDumpFilePath(i)) && i < MaxDumpFiles)
-                {
-                    i++;
-                }
-
-                // If no empty slot found, default to the first slot
-                if (i == MaxDumpFiles)
-                {
-                    i = 0;
-                }
-
-                // Prepend the date and time to the error message
-                errorMessage = string.Format("[{0:O}] {1}", DateTime.Now, errorMessage);
-
-                // Write the dump file
-                dumpFilePath = GetDumpFilePath(i);
-                File.WriteAllText(dumpFilePath, errorMessage);
-
-                // Delete the next dump file for next time
-                File.Delete(GetDumpFilePath((i + 1) % MaxDumpFiles));
-
+                dumpPath = GetErrorDumpPath(DateTime.Now);
+                File.WriteAllText(dumpPath, errorMessage);
                 return true;
             }
             catch
             {
-                dumpFilePath = null;
+                dumpPath = null;
                 return false;
             }
         }
 
         /// <summary>
-        /// Returns the path for the dump file with the specified suffix.
+        /// Tries to limit the number of error messages written to files in the temporary files folder to <see
+        /// cref="MaxErrorDumps"/>.
         /// </summary>
-        /// <param name="i">A suffix for the dump file name.</param>
-        /// <returns>The path for the dump file with the specified suffix.</returns>
-        private static string GetDumpFilePath(int i)
+        /// <returns><c>true</c> if the limit was successfully applied, or <c>false</c> otherwise.</returns>
+        private static bool TryCleanErrorDumps()
+        {
+            try
+            {
+                // Get the temporary files directory
+                DirectoryInfo directory = new DirectoryInfo(Path.GetTempPath());
+
+                // Get the dump files with newest files first
+                string appName = Assembly.GetExecutingAssembly().GetName().Name;
+                string dumpPathPattern = string.Format("{0}-Crash.*", appName);
+                IList<FileInfo> dumpFiles = (from f in directory.GetFiles(dumpPathPattern)
+                                             orderby f.LastWriteTimeUtc
+                                             select f).ToList();
+
+                // Delete dump files until we have only MaxErrorDumps left
+                while (dumpFiles.Count > MaxErrorDumps)
+                {
+                    FileInfo dumpFile = dumpFiles[0];
+                    dumpFile.Delete();
+                    dumpFiles.Remove(dumpFile);
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns the path for the error dump with the specified suffix.
+        /// </summary>
+        /// <param name="dateTime">The suffix for the error dump path.</param>
+        /// <returns>The path for the error dump with the specified suffix.</returns>
+        private static string GetErrorDumpPath(DateTime dateTime)
         {
             string appName = Assembly.GetExecutingAssembly().GetName().Name;
             string directory = Path.GetTempPath();
-            string filename = string.Format("{0}-Crash.{1}.txt", appName, i);
+            string filename = string.Format("{0}-Crash.{1:yyyyMMdd-HHMMss-fffffff}.txt", appName, dateTime);
             return Path.Combine(directory, filename);
         }
     }
