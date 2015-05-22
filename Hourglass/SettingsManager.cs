@@ -32,6 +32,7 @@ namespace Hourglass
         {
             Settings.Default.Reload();
 
+            TimerColorManager.Instance.Load();
             TimerManager.Instance.Load();
             TimerInputManager.Instance.Load();
             TimerOptionsManager.Instance.Load();
@@ -42,6 +43,7 @@ namespace Hourglass
         /// </summary>
         public void Save()
         {
+            TimerColorManager.Instance.Save();
             TimerManager.Instance.Save();
             TimerInputManager.Instance.Save();
             TimerOptionsManager.Instance.Save();

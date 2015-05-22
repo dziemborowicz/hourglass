@@ -8,13 +8,16 @@
     <Setting Name="Inputs" Type="Hourglass.Serialization.TimerInputInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DefaultOptions" Type="Hourglass.Serialization.TimerOptionsInfo" Scope="User">
+    <Setting Name="MostRecentOptions" Type="Hourglass.Serialization.TimerOptionsInfo" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ShowInNotificationArea" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="WindowSize" Type="Hourglass.WindowSize" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Colors" Type="Hourglass.Serialization.TimerColorInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

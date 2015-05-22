@@ -94,6 +94,8 @@
     <Compile Include="Serialization\HourglassTimerInfo.cs" />
     <Compile Include="Serialization\TimeSpanTimerInfo.cs" />
     <Compile Include="Serialization\TimeSpanTimerInputInfo.cs" />
+    <Compile Include="Serialization\TimerColorInfo.cs" />
+    <Compile Include="Serialization\TimerColorInfoList.cs" />
     <Compile Include="Serialization\TimerInfo.cs" />
     <Compile Include="Serialization\TimerInfoList.cs" />
     <Compile Include="Serialization\TimerInputInfo.cs" />
@@ -103,17 +105,19 @@
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="SoundPlayer.cs" />
-    <Compile Include="TimerNotifyIcon.cs" />
-    <Compile Include="TimerOptionsManager.cs" />
     <Compile Include="TimeSpanTimer.cs" />
     <Compile Include="TimeSpanTimerInput.cs" />
     <Compile Include="TimeSpanUtility.cs" />
     <Compile Include="Timer.cs" />
+    <Compile Include="TimerColor.cs" />
+    <Compile Include="TimerColorManager.cs" />
     <Compile Include="TimerInput.cs" />
     <Compile Include="TimerInputManager.cs" />
     <Compile Include="TimerManager.cs" />
     <Compile Include="TimerMenu.cs" />
+    <Compile Include="TimerNotifyIcon.cs" />
     <Compile Include="TimerOptions.cs" />
+    <Compile Include="TimerOptionsManager.cs" />
     <Compile Include="TimerScaler.cs" />
     <Compile Include="TimerWindow.xaml.cs">
       <DependentUpon>TimerWindow.xaml</DependentUpon>

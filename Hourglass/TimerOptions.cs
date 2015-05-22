@@ -56,6 +56,11 @@ namespace Hourglass
         private bool loopSound;
 
         /// <summary>
+        /// The color of the timer progress bar.
+        /// </summary>
+        private TimerColor color;
+
+        /// <summary>
         /// The size, position, and state of the timer window.
         /// </summary>
         private WindowSize windowSize;
@@ -74,8 +79,9 @@ namespace Hourglass
             this.loopTimer = false;
             this.popUpWhenExpired = true;
             this.closeWhenExpired = false;
-            this.sound = SoundManager.Instance.DefaultSound;
+            this.sound = Sound.DefaultSound;
             this.loopSound = false;
+            this.color = TimerColor.DefaultColor;
             this.windowSize = TimerWindow.DefaultWindowSize;
         }
 
@@ -268,6 +274,28 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Gets or sets the color of the timer progress bar.
+        /// </summary>
+        public TimerColor Color
+        {
+            get
+            {
+                return this.color;
+            }
+
+            set
+            {
+                if (this.color == value)
+                {
+                    return;
+                }
+
+                this.color = value;
+                this.OnPropertyChanged("Color");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the size, position, and state of the timer window.
         /// </summary>
         public WindowSize WindowSize
@@ -335,6 +363,7 @@ namespace Hourglass
             this.closeWhenExpired = options.closeWhenExpired;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
+            this.color = options.color;
             this.windowSize = WindowSize.FromWindowSize(options.WindowSize);
         }
 
@@ -356,6 +385,7 @@ namespace Hourglass
             this.closeWhenExpired = optionsInfo.CloseWhenExpired;
             this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
             this.loopSound = optionsInfo.LoopSound;
+            this.color = TimerColor.FromTimerColorInfo(optionsInfo.Color);
             this.windowSize = WindowSize.FromWindowSize(optionsInfo.WindowSize);
         }
 
@@ -373,6 +403,7 @@ namespace Hourglass
             info.CloseWhenExpired = this.closeWhenExpired;
             info.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;
             info.LoopSound = this.loopSound;
+            info.Color = TimerColorInfo.FromTimerColor(this.color);
             info.WindowSize = WindowSize.FromWindowSize(this.windowSize);
             return info;
         }

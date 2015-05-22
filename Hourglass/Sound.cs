@@ -94,6 +94,22 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Gets the default sound.
+        /// </summary>
+        public static Sound DefaultSound
+        {
+            get { return SoundManager.Instance.DefaultSound; }
+        }
+
+        /// <summary>
+        /// Gets a sound representing no sound.
+        /// </summary>
+        public static Sound NoSound
+        {
+            get { return null; }
+        }
+
+        /// <summary>
         /// Gets the friendly name for this sound.
         /// </summary>
         public string Name

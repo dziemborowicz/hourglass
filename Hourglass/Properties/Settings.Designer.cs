@@ -78,5 +78,16 @@ namespace Hourglass.Properties {
                 this["WindowSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Hourglass.Serialization.TimerColorInfoList Colors {
+            get {
+                return ((global::Hourglass.Serialization.TimerColorInfoList)(this["Colors"]));
+            }
+            set {
+                this["Colors"] = value;
+            }
+        }
     }
 }

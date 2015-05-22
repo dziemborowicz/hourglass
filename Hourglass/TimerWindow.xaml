@@ -12,7 +12,7 @@
                     <ControlTemplate TargetType="{x:Type ProgressBar}">
                         <Grid>
                             <Border Name="PART_Track" Background="#EEEEEE"/>
-                            <Border Name="PART_Indicator" Background="#3665B3" HorizontalAlignment="Left"/>
+                            <Border Name="PART_Indicator" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>

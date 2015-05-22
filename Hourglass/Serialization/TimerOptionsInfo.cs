@@ -50,6 +50,11 @@ namespace Hourglass.Serialization
         public bool LoopSound { get; set; }
 
         /// <summary>
+        /// Gets or sets the color of the timer progress bar.
+        /// </summary>
+        public TimerColorInfo Color { get; set; }
+
+        /// <summary>
         /// Gets or sets the size, position, and state of the timer window.
         /// </summary>
         public WindowSize WindowSize { get; set; }

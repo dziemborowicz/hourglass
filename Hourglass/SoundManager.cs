@@ -56,17 +56,17 @@ namespace Hourglass
         /// <summary>
         /// Gets a collection of sounds stored in the assembly.
         /// </summary>
-        public IEnumerable<Sound> BuiltInSounds
+        public IList<Sound> BuiltInSounds
         {
-            get { return this.sounds.Where(s => s.IsBuiltIn); }
+            get { return this.sounds.Where(s => s.IsBuiltIn).ToList(); }
         }
 
         /// <summary>
         /// Gets a collection of sounds stored in the file system.
         /// </summary>
-        public IEnumerable<Sound> UserProvidedSounds
+        public IList<Sound> UserProvidedSounds
         {
-            get { return this.sounds.Where(s => !s.IsBuiltIn); }
+            get { return this.sounds.Where(s => !s.IsBuiltIn).ToList(); }
         }
 
         /// <summary>

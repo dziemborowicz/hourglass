@@ -756,6 +756,7 @@ namespace Hourglass
                         ? this.Timer.TimeLeftAsString
                         : "Hourglass";
 
+                    this.ProgressBar.Foreground = this.Options.Color.Brush;
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
                     this.UpdateTaskbarProgress();
 
@@ -776,6 +777,7 @@ namespace Hourglass
                         : "Hourglass";
 
                     this.TimerTextBox.Text = this.Timer.TimeLeftAsString;
+                    this.ProgressBar.Foreground = this.Options.Color.Brush;
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
                     this.UpdateTaskbarProgress();
 
