@@ -26,7 +26,7 @@ namespace Hourglass
         {
             get
             {
-                string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+                string assemblyLocation = Assembly.GetEntryAssembly().CodeBase;
                 string assemblyFileName = Path.GetFileName(assemblyLocation);
                 return string.Format(Resources.Usage, assemblyFileName);
             }
