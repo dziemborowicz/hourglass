@@ -47,6 +47,11 @@ namespace Hourglass
         private MenuItem alwaysOnTopMenuItem;
 
         /// <summary>
+        /// The "Full screen" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem fullScreenMenuItem;
+
+        /// <summary>
         /// The "Show in notification area" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem showInNotificationAreaMenuItem;
@@ -243,6 +248,9 @@ namespace Hourglass
             // Always on top
             this.alwaysOnTopMenuItem.IsChecked = this.timerWindow.Options.AlwaysOnTop;
 
+            // Full screen
+            this.fullScreenMenuItem.IsChecked = this.timerWindow.IsFullScreen;
+
             // Show in notification area
             this.showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
 
@@ -296,6 +304,9 @@ namespace Hourglass
         {
             // Always on top
             this.timerWindow.Options.AlwaysOnTop = this.alwaysOnTopMenuItem.IsChecked;
+
+            // Full screen
+            this.timerWindow.IsFullScreen = this.fullScreenMenuItem.IsChecked;
 
             // Show in notification area
             Settings.Default.ShowInNotificationArea = this.showInNotificationAreaMenuItem.IsChecked;
@@ -361,6 +372,12 @@ namespace Hourglass
             this.alwaysOnTopMenuItem.IsCheckable = true;
             this.alwaysOnTopMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.alwaysOnTopMenuItem);
+
+            this.fullScreenMenuItem = new MenuItem();
+            this.fullScreenMenuItem.Header = "Full screen";
+            this.fullScreenMenuItem.IsCheckable = true;
+            this.fullScreenMenuItem.Click += this.CheckableMenuItemClick;
+            this.Items.Add(this.fullScreenMenuItem);
 
             this.showInNotificationAreaMenuItem = new MenuItem();
             this.showInNotificationAreaMenuItem.Header = "Show in notification area";

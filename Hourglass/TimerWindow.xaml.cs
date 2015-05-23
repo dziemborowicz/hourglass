@@ -102,6 +102,11 @@ namespace Hourglass
         private Storyboard validationErrorStoryboard;
 
         /// <summary>
+        /// A value indicating whether the window is in full-screen mode.
+        /// </summary>
+        private bool isFullScreen;
+
+        /// <summary>
         /// The <see cref="Window.WindowState"/> before the window was minimized.
         /// </summary>
         private WindowState restoreWindowState = WindowState.Normal;
@@ -268,6 +273,42 @@ namespace Hourglass
 
                 this.lastInput = value;
                 this.OnPropertyChanged("LastInput");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the window is in full-screen mode.
+        /// </summary>
+        public bool IsFullScreen
+        {
+            get
+            {
+                return this.isFullScreen;
+            }
+
+            set
+            {
+                if (this.isFullScreen == value)
+                {
+                    return;
+                }
+
+                this.isFullScreen = value;
+
+                if (this.isFullScreen)
+                {
+                    this.WindowStyle = WindowStyle.None;
+                    this.WindowState = WindowState.Maximized;
+                    this.ResizeMode = ResizeMode.NoResize;
+                }
+                else
+                {
+                    this.WindowStyle = WindowStyle.SingleBorderWindow;
+                    this.WindowState = this.restoreWindowState;
+                    this.ResizeMode = ResizeMode.CanResize;
+                }
+
+                this.OnPropertyChanged("IsFullScreen");
             }
         }
 
@@ -1193,7 +1234,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowStateChanged(object sender, EventArgs e)
         {
-            if (this.WindowState != WindowState.Minimized)
+            if (this.WindowState != WindowState.Minimized && !this.IsFullScreen)
             {
                 this.RestoreWindowState = this.WindowState;
             }
