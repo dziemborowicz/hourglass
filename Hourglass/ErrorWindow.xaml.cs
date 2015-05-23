@@ -18,7 +18,8 @@ namespace Hourglass
         /// </summary>
         public ErrorWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.InitializeMaxSize();
         }
 
         /// <summary>
@@ -36,15 +37,24 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Initializes the <see cref="Window.MaxWidth"/> and <see cref="Window.MaxHeight"/> properties.
+        /// </summary>
+        private void InitializeMaxSize()
+        {
+            this.MaxWidth = 0.75 * SystemParameters.WorkArea.Width;
+            this.MaxHeight = 0.75 * SystemParameters.WorkArea.Height;
+        }
+
+        /// <summary>
         /// Invoked when the <see cref="DetailsButton"/> is clicked.
         /// </summary>
         /// <param name="sender">The <see cref="DetailsButton"/>.</param>
         /// <param name="e">The event data.</param>
         private void DetailsButtonClick(object sender, RoutedEventArgs e)
         {
-            if (this.DetailsScrollViewer.Visibility != Visibility.Visible)
+            if (this.DetailsBorder.Visibility != Visibility.Visible)
             {
-                this.DetailsScrollViewer.Visibility = Visibility.Visible;
+                this.DetailsBorder.Visibility = Visibility.Visible;
                 this.DetailsButton.IsEnabled = false;
             }
         }

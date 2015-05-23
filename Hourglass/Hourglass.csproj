@@ -79,9 +79,6 @@
     <Compile Include="AppEntry.cs" />
     <Compile Include="AppManager.cs" />
     <Compile Include="CommandLine.cs" />
-    <Compile Include="CommandLineUsageWindow.xaml.cs">
-      <DependentUpon>CommandLineUsageWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DateTimeTimer.cs" />
     <Compile Include="DateTimeTimerInput.cs" />
     <Compile Include="DateTimeUtility.cs" />
@@ -129,19 +126,22 @@
     <Compile Include="TimerWindow.xaml.cs">
       <DependentUpon>TimerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UsageWindow.xaml.cs">
+      <DependentUpon>UsageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Watermark.cs" />
     <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="WindowSize.cs" />
     <Compile Include="WindowSizeExtensions.cs" />
-    <Page Include="CommandLineUsageWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TimerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UsageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

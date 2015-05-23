@@ -7,6 +7,7 @@
 namespace Hourglass
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
@@ -25,8 +26,9 @@ namespace Hourglass
         {
             get
             {
-                string assemblyName = Assembly.GetExecutingAssembly().GetName().Name.ToLowerInvariant();
-                return string.Format(Resources.Usage, assemblyName);
+                string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+                string assemblyFileName = Path.GetFileName(assemblyLocation);
+                return string.Format(Resources.Usage, assemblyFileName);
             }
         }
 
@@ -53,7 +55,7 @@ namespace Hourglass
         /// </summary>
         public static void ShowUsage()
         {
-            CommandLineUsageWindow window = new CommandLineUsageWindow();
+            UsageWindow window = new UsageWindow();
             window.ShowDialog();
         }
 
