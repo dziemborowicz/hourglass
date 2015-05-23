@@ -259,9 +259,9 @@ namespace Hourglass
             {
                 button.FontSize = reducedScaleFactor * BaseFontSize;
                 button.Margin = new Thickness(
-                    left: baseScaleFactor * BaseButtonMargin,
+                    left: Math.Max(baseScaleFactor, reducedScaleFactor) * BaseButtonMargin,
                     top: 0,
-                    right: baseScaleFactor * BaseButtonMargin,
+                    right: Math.Max(baseScaleFactor, reducedScaleFactor) * BaseButtonMargin,
                     bottom: 0);
             }
         }
@@ -313,8 +313,8 @@ namespace Hourglass
         /// <returns>The base scale factor.</returns>
         private double GetBaseScaleFactor()
         {
-            double widthFactor = Math.Max(this.timerWindow.ActualWidth / BaseWindowWidth, 2.0 / 3.0);
-            double heightFactor = Math.Max(this.timerWindow.ActualHeight / BaseWindowHeight, 2.0 / 3.0);
+            double widthFactor = Math.Max(this.timerWindow.ActualWidth / BaseWindowWidth, 1.0);
+            double heightFactor = Math.Max(this.timerWindow.ActualHeight / BaseWindowHeight, 1.0);
             double sizeFactor = Math.Min(widthFactor, heightFactor);
             double reducedSizeFactor = this.GetReducedScaleFactor(sizeFactor, ReductionFactor);
 
@@ -327,8 +327,8 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns the reduced scale factor. The reduced scale factor is computed by multiplying the amount by which
-        /// the base scale factor exceeds 1.0 by the reduction factor. If the base scale factor is less than 1.0, the
+        /// Returns the reduced scale factor. The reduced scale factor is computed by reducing the portion of the scale
+        /// factor that exceeds 1.0 by the reduction factor. If the base scale factor is less than or equal to 1.0, the
         /// reduced scale factor is 1.0.
         /// </summary>
         /// <param name="baseScaleFactor">The base scale factor.</param>
@@ -336,7 +336,7 @@ namespace Hourglass
         /// <returns>The reduced scale factor.</returns>
         private double GetReducedScaleFactor(double baseScaleFactor, double reductionFactor)
         {
-            if (baseScaleFactor < 1.0)
+            if (baseScaleFactor <= 1.0)
             {
                 return 1.0;
             }
