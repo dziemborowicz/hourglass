@@ -29,57 +29,11 @@ namespace Hourglass
                 return;
             }
 
-            // Restore position
-            if (windowSize.WindowState.HasValue && windowSize.WindowState.Value != WindowState.Normal && windowSize.RestorePosition.HasValue)
-            {
-                Point position = windowSize.RestorePosition.Value;
-                window.Left = position.X;
-                window.Top = position.Y;
-            }
-            else if (windowSize.Position.HasValue)
-            {
-                Point position = windowSize.Position.Value;
-                window.Left = position.X;
-                window.Top = position.Y;
-            }
-
-            // Restore size
-            if (windowSize.WindowState.HasValue && windowSize.WindowState.Value != WindowState.Normal && windowSize.RestoreSize.HasValue)
-            {
-                Size size = windowSize.RestoreSize.Value;
-                window.Width = size.Width;
-                window.Height = size.Height;
-            }
-            else if (windowSize.Size.HasValue)
-            {
-                Size size = windowSize.Size.Value;
-                window.Width = size.Width;
-                window.Height = size.Height;
-            }
+            // Restore size and position
+            window.RestoreBounds(windowSize);
 
             // Restore state
-            if (windowSize.WindowState.HasValue)
-            {
-                WindowState windowState = windowSize.WindowState == WindowState.Minimized && windowSize.RestoreWindowState.HasValue
-                    ? windowSize.RestoreWindowState.Value
-                    : windowSize.WindowState.Value;
-
-                if (windowState == WindowState.Maximized && !window.IsVisible)
-                {
-                    // If the window is not loaded yet, setting the state to maximized will maximize the window on the
-                    // primary display rather than the display where the window was originally maximized
-
-                    // Remove previously attached handler if there is one
-                    window.Loaded -= WindowLoaded;
-
-                    // Maximize the window when it loads
-                    window.Loaded += WindowLoaded;
-                }
-                else
-                {
-                    window.WindowState = windowState;
-                }
-            }
+            window.RestoreState(windowSize);
 
             // If the window is restored to a size or position that does not fit on the screen, fallback to center
             if (!window.IsOnScreen())
@@ -175,11 +129,24 @@ namespace Hourglass
                 SystemParameters.VirtualScreenWidth,
                 SystemParameters.VirtualScreenHeight);
 
-            Rect windowRect = new Rect(
-                window.Left,
-                window.Top,
-                window.Width,
-                window.Height);
+            Rect windowRect;
+            if ((window.WindowState == WindowState.Minimized || window.WindowState == WindowState.Maximized)
+                && window.RestoreBounds != Rect.Empty)
+            {
+                windowRect = new Rect(
+                    window.RestoreBounds.Left,
+                    window.RestoreBounds.Top,
+                    window.RestoreBounds.Width,
+                    window.RestoreBounds.Height);
+            }
+            else
+            {
+                windowRect = new Rect(
+                    window.Left,
+                    window.Top,
+                    window.Width,
+                    window.Height);
+            }
 
             return virtualScreenRect.Contains(windowRect);
         }
@@ -194,23 +161,6 @@ namespace Hourglass
             window.Height = Math.Min(window.Height, SystemParameters.WorkArea.Height);
             window.Left = ((SystemParameters.WorkArea.Width - window.Width) / 2) + SystemParameters.WorkArea.Left;
             window.Top = ((SystemParameters.WorkArea.Height - window.Height) / 2) + SystemParameters.WorkArea.Top;
-        }
-
-        /// <summary>
-        /// Resizes a <see cref="TimerWindow"/> to its default size, or the <see cref="SystemParameters.WorkArea"/> if
-        /// it is smaller than the default size of a <see cref="TimerWindow"/>.
-        /// </summary>
-        /// <param name="window">A <see cref="TimerWindow"/>.</param>
-        private static void ResetSize(this TimerWindow window)
-        {
-            if (!TimerWindow.DefaultWindowSize.Size.HasValue)
-            {
-                return;
-            }
-
-            Size defaultSize = TimerWindow.DefaultWindowSize.Size.Value;
-            window.Width = Math.Min(defaultSize.Width, SystemParameters.WorkArea.Width);
-            window.Height = Math.Min(defaultSize.Height, SystemParameters.WorkArea.Height);
         }
 
         /// <summary>
@@ -248,16 +198,119 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when a <see cref="TimerWindow"/> that should be restored to a maximized state is laid out,
-        /// rendered, and ready for interaction.
+        /// Resizes a <see cref="TimerWindow"/> to its default size, or the <see cref="SystemParameters.WorkArea"/> if
+        /// it is smaller than the default size of a <see cref="TimerWindow"/>.
+        /// </summary>
+        /// <param name="window">A <see cref="TimerWindow"/>.</param>
+        private static void ResetSize(this TimerWindow window)
+        {
+            window.Width = Math.Min(TimerWindow.DefaultSize.Width, SystemParameters.WorkArea.Width);
+            window.Height = Math.Min(TimerWindow.DefaultSize.Height, SystemParameters.WorkArea.Height);
+        }
+
+        /// <summary>
+        /// Restores the size and position of a <see cref="Window"/>.
+        /// </summary>
+        /// <param name="window">A <see cref="Window"/>.</param>
+        /// <param name="windowSize">A <see cref="WindowSize"/> specifying the size and position to restore.</param>
+        private static void RestoreBounds(this Window window, WindowSize windowSize)
+        {
+            if (windowSize.RestoreBounds.HasValue)
+            {
+                Rect restoreBounds = windowSize.RestoreBounds.Value;
+                window.Left = restoreBounds.Left;
+                window.Top = restoreBounds.Top;
+                window.Width = restoreBounds.Width;
+                window.Height = restoreBounds.Height;
+            }
+        }
+
+        /// <summary>
+        /// Restores the state of a <see cref="TimerWindow"/>.
+        /// </summary>
+        /// <param name="window">A <see cref="TimerWindow"/>.</param>
+        /// <param name="windowSize">A <see cref="WindowSize"/> specifying the state to restore.</param>
+        private static void RestoreState(this TimerWindow window, WindowSize windowSize)
+        {
+            if (windowSize.WindowState.HasValue || windowSize.IsFullScreen.HasValue)
+            {
+                WindowState windowState = windowSize.WindowState ?? window.WindowState;
+                WindowState restoreWindowState = windowSize.RestoreWindowState ?? windowState;
+                bool isFullScreen = windowSize.IsFullScreen ?? false;
+
+                // The restore state should never be minimized
+                if (restoreWindowState == WindowState.Minimized)
+                {
+                    restoreWindowState = WindowState.Normal;
+                }
+
+                // Setting the state to maximized or full-screen before the has loaded will maximize the window on the
+                // primary display rather than the display where the window was originally maximized or full-screened
+                if (!window.IsVisible)
+                {
+                    if (isFullScreen)
+                    {
+                        // Remove old handlers (if any)
+                        window.Loaded -= FullScreenSenderWindow;
+                        window.Loaded -= MaximizeSenderWindow;
+
+                        // Set the correct state on load
+                        window.Loaded += FullScreenSenderWindow;
+                        window.RestoreWindowState = restoreWindowState;
+                        return;
+                    }
+                    else if (windowState == WindowState.Maximized)
+                    {
+                        // Remove old handlers (if any)
+                        window.Loaded -= FullScreenSenderWindow;
+                        window.Loaded -= MaximizeSenderWindow;
+
+                        // Set the correct state on load
+                        window.Loaded += MaximizeSenderWindow;
+                        window.RestoreWindowState = restoreWindowState;
+                        return;
+                    }
+                }
+
+                // Restore the state
+                if (isFullScreen)
+                {
+                    window.IsFullScreen = true;
+                    window.RestoreWindowState = restoreWindowState;
+                }
+                else
+                {
+                    window.IsFullScreen = false;
+                    window.WindowState = windowState;
+                    window.RestoreWindowState = restoreWindowState;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Invoked when a <see cref="TimerWindow"/> that should be restored to a full-screen state is laid out,
+        /// rendered, and ready for interaction to set the window to full-screen mode.
         /// </summary>
         /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private static void WindowLoaded(object sender, RoutedEventArgs e)
+        private static void FullScreenSenderWindow(object sender, RoutedEventArgs e)
+        {
+            TimerWindow window = (TimerWindow)sender;
+            window.IsFullScreen = true;
+            window.Loaded -= FullScreenSenderWindow;
+        }
+
+        /// <summary>
+        /// Invoked when a <see cref="TimerWindow"/> that should be restored to a maximized state is laid out,
+        /// rendered, and ready for interaction to maximize the window.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private static void MaximizeSenderWindow(object sender, RoutedEventArgs e)
         {
             TimerWindow window = (TimerWindow)sender;
             window.WindowState = WindowState.Maximized;
-            window.Loaded -= WindowLoaded;
+            window.Loaded -= MaximizeSenderWindow;
         }
     }
 }

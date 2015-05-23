@@ -82,7 +82,7 @@ namespace Hourglass
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
             this.color = TimerColor.DefaultColor;
-            this.windowSize = TimerWindow.DefaultWindowSize;
+            this.windowSize = null;
         }
 
         /// <summary>

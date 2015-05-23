@@ -23,55 +23,40 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowSize"/> class.
         /// </summary>
-        /// <param name="position">The position of the window's top-left corner in relation to the desktop.</param>
-        /// <param name="size">The size of the window.</param>
+        /// <param name="restoreBounds">The size and location of the window before being either minimized or maximized.
+        /// </param>
         /// <param name="windowState">A value that indicates whether the window is restored, minimized, or maximized.
         /// </param>
-        /// <param name="restorePosition">The position of the window's top-left corner in relation to the desktop
-        /// before the window was minimized or maximized.</param>
-        /// <param name="restoreSize">The size of the window before the window was minimized or maximized.</param>
         /// <param name="restoreWindowState">The window's <see cref="Window.WindowState"/> before the window was
         /// minimized.</param>
-        public WindowSize(Point? position, Size? size, WindowState? windowState, Point? restorePosition, Size? restoreSize, WindowState? restoreWindowState)
+        /// <param name="isFullScreen">A value indicating whether the window is in full-screen mode.</param>
+        public WindowSize(Rect? restoreBounds, WindowState? windowState, WindowState? restoreWindowState, bool? isFullScreen)
         {
-            this.Position = position;
-            this.Size = size;
+            this.RestoreBounds = restoreBounds;
             this.WindowState = windowState;
-            this.RestorePosition = restorePosition;
-            this.RestoreSize = restoreSize;
             this.RestoreWindowState = restoreWindowState;
+            this.IsFullScreen = isFullScreen;
         }
 
         /// <summary>
-        /// Gets or sets the position of the window's top-left corner in relation to the desktop.
+        /// Gets or sets the size and location of the window before being either minimized or maximized.
         /// </summary>
-        public Point? Position { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the window.
-        /// </summary>
-        public Size? Size { get; set; }
+        public Rect? RestoreBounds { get; set; }
 
         /// <summary>
         /// Gets or sets a value that indicates whether the window is restored, minimized, or maximized.
         /// </summary>
         public WindowState? WindowState { get; set; }
-        
-        /// <summary>
-        /// Gets or sets the position of the window's top-left corner in relation to the desktop before the window was
-        /// minimized or maximized.
-        /// </summary>
-        public Point? RestorePosition { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the window before the window was minimized or maximized.
-        /// </summary>
-        public Size? RestoreSize { get; set; }
 
         /// <summary>
         /// Gets or sets the window's <see cref="Window.WindowState"/> before the window was minimized.
         /// </summary>
         public WindowState? RestoreWindowState { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the window is in full-screen mode.
+        /// </summary>
+        public bool? IsFullScreen { get; set; }
 
         /// <summary>
         /// Returns a <see cref="WindowSize"/> for the specified <see cref="WindowSize"/>, or <c>null</c> if the
@@ -88,12 +73,10 @@ namespace Hourglass
             }
 
             return new WindowSize(
-                windowSize.Position,
-                windowSize.Size,
+                windowSize.RestoreBounds,
                 windowSize.WindowState,
-                windowSize.RestorePosition,
-                windowSize.RestoreSize,
-                windowSize.RestoreWindowState);
+                windowSize.RestoreWindowState,
+                windowSize.IsFullScreen);
         }
 
         /// <summary>
@@ -111,12 +94,10 @@ namespace Hourglass
             }
 
             return new WindowSize(
-                new Point(window.Left, window.Top),
-                new Size(window.Width, window.Height),
+                window.RestoreBounds,
                 window.WindowState,
-                window.RestoreBounds.TopLeft,
-                window.RestoreBounds.Size,
-                window.RestoreWindowState);
+                window.RestoreWindowState,
+                window.IsFullScreen);
         }
 
         /// <summary>
@@ -131,17 +112,15 @@ namespace Hourglass
         {
             WindowSize result = WindowSize.FromWindowSize(baseWindowSize ?? windowSize);
 
-            if (windowSize == null)
+            if (baseWindowSize == null || windowSize == null)
             {
                 return result;
             }
 
-            result.Position = windowSize.Position ?? result.Position;
-            result.Size = windowSize.Size ?? result.Size;
+            result.RestoreBounds = windowSize.RestoreBounds ?? result.RestoreBounds;
             result.WindowState = windowSize.WindowState ?? result.WindowState;
-            result.RestorePosition = windowSize.RestorePosition ?? result.RestorePosition;
-            result.RestoreSize = windowSize.RestoreSize ?? result.RestoreSize;
             result.RestoreWindowState = windowSize.RestoreWindowState ?? result.RestoreWindowState;
+            result.IsFullScreen = windowSize.IsFullScreen ?? result.IsFullScreen;
 
             return result;
         }

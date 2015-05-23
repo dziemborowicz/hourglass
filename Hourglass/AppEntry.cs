@@ -115,7 +115,10 @@ namespace Hourglass
             }
 
             // Set global options
-            Settings.Default.ShowInNotificationArea = arguments.ShowInNotificationArea ?? Settings.Default.ShowInNotificationArea;
+            if (arguments.ShowInNotificationArea.HasValue)
+            {
+                Settings.Default.ShowInNotificationArea = arguments.ShowInNotificationArea.Value;
+            }
 
             // Restore window
             window.RestoreFromOptions(arguments.Options);

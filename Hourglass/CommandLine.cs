@@ -8,7 +8,6 @@ namespace Hourglass
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
     using System.Windows;
 
@@ -146,6 +145,19 @@ namespace Hourglass
                         result.AlwaysOnTop = IsPositiveSwitch(args[i]);
                         break;
 
+                    case "+f":
+                    case "-f":
+                    case "+full-screen":
+                    case "-full-screen":
+                        if (result.IsFullScreen.HasValue)
+                        {
+                            result = null;
+                            return false;
+                        }
+
+                        result.IsFullScreen = IsPositiveSwitch(args[i]);
+                        break;
+
                     case "+n":
                     case "-n":
                     case "+show-in-notification-area":
@@ -202,23 +214,14 @@ namespace Hourglass
                     case "-s":
                     case "+sound":
                     case "-sound":
-                        if (result.NoSound.HasValue || result.SoundName != null)
+                        if (result.SoundNameIsSet)
                         {
                             result = null;
                             return false;
                         }
 
-                        if (IsPositiveSwitch(args[i]))
-                        {
-                            result.NoSound = false;
-                            result.SoundName = ParseNextValue(args, ref i);
-                        }
-                        else
-                        {
-                            result.NoSound = true;
-                            result.SoundName = null;
-                        }
-
+                        result.SoundName = IsPositiveSwitch(args[i]) ? ParseNextValue(args, ref i) : null;
+                        result.SoundNameIsSet = true;
                         break;
 
                     case "+r":
@@ -232,6 +235,24 @@ namespace Hourglass
                         }
 
                         result.LoopSound = IsPositiveSwitch(args[i]);
+                        break;
+
+                    case "+b":
+                    case "+window-bounds":
+                        if (result.WindowBounds.HasValue)
+                        {
+                            result = null;
+                            return false;
+                        }
+
+                        Rect bounds;
+                        if (!TryParseRect(ParseNextValue(args, ref i), out bounds))
+                        {
+                            result = null;
+                            return false;
+                        }
+
+                        result.WindowBounds = bounds;
                         break;
 
                     case "+w":
@@ -252,42 +273,6 @@ namespace Hourglass
 
                         result.WindowState = windowState;
                         result.RestoreWindowState = restoreWindowState;
-                        break;
-
-                    case "+y":
-                    case "+window-position":
-                        if (result.WindowPosition.HasValue)
-                        {
-                            result = null;
-                            return false;
-                        }
-
-                        Point position;
-                        if (!TryParseWindowPosition(ParseNextValue(args, ref i), out position))
-                        {
-                            result = null;
-                            return false;
-                        }
-
-                        result.WindowPosition = position;
-                        break;
-
-                    case "+z":
-                    case "+window-size":
-                        if (result.WindowSize.HasValue)
-                        {
-                            result = null;
-                            return false;
-                        }
-
-                        Size size;
-                        if (!TryParseWindowSize(ParseNextValue(args, ref i), out size))
-                        {
-                            result = null;
-                            return false;
-                        }
-
-                        result.WindowSize = size;
                         break;
 
                     default:
@@ -325,24 +310,26 @@ namespace Hourglass
             options.PopUpWhenExpired = result.PopUpWhenExpired ?? options.PopUpWhenExpired;
             options.CloseWhenExpired = result.CloseWhenExpired ?? options.CloseWhenExpired;
 
-            if (result.NoSound.HasValue)
+            if (result.SoundNameIsSet)
             {
-                options.Sound = !result.NoSound.Value ? SoundManager.Instance.GetSoundOrDefaultByName(result.SoundName) : null;
+                options.Sound = SoundManager.Instance.GetSoundOrDefaultByName(result.SoundName);
             }
 
             options.LoopSound = result.LoopSound ?? options.LoopSound;
 
-            if (result.WindowPosition.HasValue || result.WindowSize.HasValue || result.WindowState.HasValue)
+            if (result.WindowBounds.HasValue || result.WindowState.HasValue || result.IsFullScreen.HasValue)
             {
                 WindowSize windowSize = new WindowSize(
-                    position: result.WindowPosition,
-                    size: result.WindowSize,
-                    windowState: result.WindowState,
-                    restorePosition: result.WindowPosition,
-                    restoreSize: result.WindowSize,
-                    restoreWindowState: result.RestoreWindowState);
+                    result.WindowBounds,
+                    result.WindowState,
+                    result.RestoreWindowState,
+                    result.IsFullScreen);
 
                 options.WindowSize = WindowSize.Merge(options.WindowSize, windowSize);
+            }
+            else
+            {
+                options.WindowSize = null;
             }
 
             return true;
@@ -374,57 +361,21 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Tries to parse a window position from a string.
+        /// Tries to parse a rectangle from a string.
         /// </summary>
-        /// <param name="arg">A <see cref="string"/>.</param>
-        /// <param name="position">The position of the window's top-left corner in relation to the desktop.</param>
-        /// <returns><c>true</c> if the window size was successfully parsed, or <c>false</c> otherwise.</returns>
-        private static bool TryParseWindowPosition(string arg, out Point position)
+        /// <param name="s">A <see cref="string"/>.</param>
+        /// <param name="rect">The parsed rectangle.</param>
+        /// <returns><c>true</c> if the rectangle was successfully parsed, or <c>false</c> otherwise.</returns>
+        private static bool TryParseRect(string s, out Rect rect)
         {
             try
             {
-                double[] values = arg.Split(',').Select(double.Parse).ToArray();
-
-                if (values.Length != 2)
-                {
-                    position = new Point();
-                    return false;
-                }
-
-                position = new Point(values[0], values[1]);
+                rect = Rect.Parse(s);
                 return true;
             }
             catch
             {
-                position = new Point();
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Tries to parse a window size from a string.
-        /// </summary>
-        /// <param name="arg">A <see cref="string"/>.</param>
-        /// <param name="size">The size of the window.</param>
-        /// <returns><c>true</c> if the window size was successfully parsed, or <c>false</c> otherwise.</returns>
-        private static bool TryParseWindowSize(string arg, out Size size)
-        {
-            try
-            {
-                double[] values = arg.Split(',', 'x').Select(double.Parse).ToArray();
-
-                if (values.Length != 2)
-                {
-                    size = new Size();
-                    return false;
-                }
-
-                size = new Size(values[0], values[1]);
-                return true;
-            }
-            catch
-            {
-                size = new Size();
+                rect = Rect.Empty;
                 return false;
             }
         }
@@ -432,41 +383,71 @@ namespace Hourglass
         /// <summary>
         /// Tries to parse a window state from a string.
         /// </summary>
-        /// <param name="arg">A <see cref="string"/>.</param>
+        /// <param name="s">A <see cref="string"/>.</param>
         /// <param name="windowState">A value that indicates whether the window is restored, minimized, or maximized.
         /// </param>
         /// <param name="restoreWindowState">The window's <see cref="Window.WindowState"/> before the window was
         /// minimized.</param>
         /// <returns><c>true</c> if the window state was successfully parsed, or <c>false</c> otherwise.</returns>
-        private static bool TryParseWindowState(string arg, out WindowState windowState, out WindowState restoreWindowState)
+        private static bool TryParseWindowState(string s, out WindowState windowState, out WindowState restoreWindowState)
         {
-            string[] values = arg.Split(',');
+            // Split and count parts
+            string[] values = s.Split(',');
             if (values.Length != 1 && values.Length != 2)
             {
-                windowState = restoreWindowState = WindowState.Normal;
-                return false;
-            }
-
-            if (!Enum.TryParse(values[0], true /* ignoreCase */, out windowState) || !Enum.IsDefined(typeof(WindowState), windowState))
-            {
-                windowState = restoreWindowState = WindowState.Normal;
-                return false;
-            }
-
-            int i = values.Length == 2 ? 1 : 0;
-            if (!Enum.TryParse(values[i], true /* ignoreCase */, out restoreWindowState) || !Enum.IsDefined(typeof(WindowState), restoreWindowState))
-            {
-                windowState = restoreWindowState = WindowState.Normal;
-                return false;
-            }
-
-            if (windowState != WindowState.Minimized)
-            {
-                restoreWindowState = windowState;
-            }
-            else if (restoreWindowState == WindowState.Minimized)
-            {
+                windowState = WindowState.Normal;
                 restoreWindowState = WindowState.Normal;
+                return false;
+            }
+
+            // Parse window state
+            if (!TryParseEnum(values[0], out windowState))
+            {
+                windowState = WindowState.Normal;
+                restoreWindowState = WindowState.Normal;
+                return false;
+            }
+
+            // Parse restore window state
+            if (values.Length == 2)
+            {
+                if (!TryParseEnum(values[1], out restoreWindowState))
+                {
+                    windowState = WindowState.Normal;
+                    restoreWindowState = WindowState.Normal;
+                    return false;
+                }
+            }
+            else
+            {
+                restoreWindowState = windowState != WindowState.Minimized ? windowState : WindowState.Normal;
+            }
+
+            // Validate
+            if (restoreWindowState == WindowState.Minimized)
+            {
+                windowState = WindowState.Normal;
+                restoreWindowState = WindowState.Normal;
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to parse an <c>enum</c> from a string.
+        /// </summary>
+        /// <typeparam name="T">The type of the <c>enum</c> to parse.</typeparam>
+        /// <param name="s">A <see cref="string"/>.</param>
+        /// <param name="value">The parsed <c>enum</c> value.</param>
+        /// <returns><c>true</c> if the <c>enum</c> was successfully parsed, or <c>false</c> otherwise.</returns>
+        private static bool TryParseEnum<T>(string s, out T value)
+            where T : struct
+        {
+            if (!Enum.TryParse(s, true /* ignoreCase */, out value) || !Enum.IsDefined(typeof(T), value))
+            {
+                value = default(T);
+                return false;
             }
 
             return true;
@@ -486,7 +467,16 @@ namespace Hourglass
         {
             if ((i + 1) < args.Length && IsValue(args[i + 1]))
             {
-                return args[++i];
+                string value = args[++i];
+
+                // Values starting with ' are treated as escaped strings, which are necessary if the true value begins
+                // with a + or a - such that if it were unescaped it would be mistaken for a switch
+                if (value.StartsWith("'", StringComparison.Ordinal))
+                {
+                    value = value.Substring(1);
+                }
+
+                return value;
             }
             else
             {
@@ -559,6 +549,11 @@ namespace Hourglass
             public bool? AlwaysOnTop { get; set; }
 
             /// <summary>
+            /// Gets or sets a value indicating whether the timer window should be in full-screen mode.
+            /// </summary>
+            public bool? IsFullScreen { get; set; }
+
+            /// <summary>
             /// Gets or sets a value indicating whether an icon for the app should be visible in the notification area
             /// of the taskbar.
             /// </summary>
@@ -581,30 +576,20 @@ namespace Hourglass
             public bool? CloseWhenExpired { get; set; }
 
             /// <summary>
-            /// Gets or sets a value indicating whether no sound should be played when the timer expires.
-            /// </summary>
-            public bool? NoSound { get; set; }
-
-            /// <summary>
             /// Gets or sets the identifier of the sound to play when the timer expires.
             /// </summary>
             public string SoundName { get; set; }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether <see cref="SoundName"/> has been set.
+            /// </summary>
+            public bool SoundNameIsSet { get; set; }
 
             /// <summary>
             /// Gets or sets a value indicating whether the sound that plays when the timer expires should be looped
             /// until stopped by the user.
             /// </summary>
             public bool? LoopSound { get; set; }
-
-            /// <summary>
-            /// Gets or sets the position of the timer window's top-left corner in relation to the desktop.
-            /// </summary>
-            public Point? WindowPosition { get; set; }
-
-            /// <summary>
-            /// Gets or sets the size of the timer window.
-            /// </summary>
-            public Size? WindowSize { get; set; }
 
             /// <summary>
             /// Gets or sets a value that indicates whether the timer window is restored, minimized, or maximized.
@@ -615,6 +600,11 @@ namespace Hourglass
             /// Gets or sets the timer window's <see cref="Window.WindowState"/> before the window was minimized.
             /// </summary>
             public WindowState? RestoreWindowState { get; set; }
+
+            /// <summary>
+            /// Gets or sets the size and location of the window.
+            /// </summary>
+            public Rect? WindowBounds { get; set; }
         }
     }
 }

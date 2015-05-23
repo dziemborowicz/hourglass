@@ -171,17 +171,9 @@ namespace Hourglass
         /// <summary>
         /// Gets the default size of the window.
         /// </summary>
-        public static WindowSize DefaultWindowSize
+        public static Size DefaultSize
         {
-            get
-            {
-                return new WindowSize
-                {
-                    Size = new Size(350, 150),
-                    WindowState = WindowState.Normal,
-                    RestoreWindowState = WindowState.Normal
-                };
-            }
+            get { return new Size(350, 150); }
         }
 
         /// <summary>
@@ -298,6 +290,7 @@ namespace Hourglass
                 if (this.isFullScreen)
                 {
                     this.WindowStyle = WindowStyle.None;
+                    this.WindowState = WindowState.Normal;
                     this.WindowState = WindowState.Maximized;
                     this.ResizeMode = ResizeMode.NoResize;
                 }
@@ -322,7 +315,7 @@ namespace Hourglass
                 return this.restoreWindowState;
             }
 
-            private set
+            set
             {
                 if (this.restoreWindowState == value)
                 {

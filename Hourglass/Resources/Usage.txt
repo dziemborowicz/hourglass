@@ -18,6 +18,10 @@ Options:
   -a, -always-on-top:
         Display the timer window on top of other windows.
 
+  +f, +full-screen,
+  -f, -full-screen:
+        Display the timer window in full-screen mode.
+
   +n, +show-in-notification-area,
   -n, -show-in-notification-area:
         Show an icon for the app in the notification area (system tray).
@@ -44,13 +48,10 @@ Options:
   -r, -loop-sound:
         Loop the sound that plays when the timer expires.
 
+  +b <left>,<top>,<width>,<height>, +window-bounds <left>,<top>,<width>,<height>
+        Sets the size and position of the timer window.
+
   +w <state>[,<restore-state>], +window-state <state>[,<restore-state>]:
         Sets the state of the timer window. <state> can be Normal, Maximized,
         or Minimized. If <state> is Minimized, you should specify a <restore-
         state> that determines the state when the timer window is restored.
-
-  +y <left>,<top>, +window-position <left>,<top>
-        Sets the position of the timer window.
-
-  +z <width>,<height>, +window-size <width>,<height>:
-        Sets the size of the timer window.
