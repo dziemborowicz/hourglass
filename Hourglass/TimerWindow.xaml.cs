@@ -306,7 +306,7 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets the <see cref="Window.WindowState"/> before the window was minimized.
+        /// Gets or sets the <see cref="Window.WindowState"/> before the window was minimized.
         /// </summary>
         public WindowState RestoreWindowState
         {
