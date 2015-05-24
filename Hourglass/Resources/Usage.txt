@@ -11,7 +11,7 @@ Options:
   -d, -default-options:
         Use the default options, rather than the most recently used options.
 
-  +t, +title:
+  +t <title>, +title <title>:
         The title for the timer.
 
   +a, +always-on-top,
