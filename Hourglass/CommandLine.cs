@@ -305,6 +305,7 @@ namespace Hourglass
                 ? new TimerOptions()
                 : TimerOptionsManager.Instance.MostRecentOptions;
 
+            options.Title = result.Title ?? options.Title;
             options.AlwaysOnTop = result.AlwaysOnTop ?? options.AlwaysOnTop;
             options.LoopTimer = result.LoopTimer ?? options.LoopTimer;
             options.PopUpWhenExpired = result.PopUpWhenExpired ?? options.PopUpWhenExpired;
