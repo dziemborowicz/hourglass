@@ -6,10 +6,11 @@
 
 namespace Hourglass
 {
+    using System.Linq;
     using System.Windows;
 
     /// <summary>
-    /// The size, position, and state of a <see cref="TimerWindow"/>.
+    /// The size, position, and state of a window.
     /// </summary>
     public class WindowSize
     {
@@ -80,13 +81,15 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns a <see cref="WindowSize"/> for the specified <see cref="TimerWindow"/>, or <c>null</c> if the
-        /// specified <see cref="TimerWindow"/> is <c>null</c>.
+        /// Returns a <see cref="WindowSize"/> for the specified window, or <c>null</c> if the specified window is
+        /// <c>null</c>.
         /// </summary>
-        /// <param name="window">A <see cref="TimerWindow"/>.</param>
-        /// <returns>A <see cref="WindowSize"/> for the specified <see cref="TimerWindow"/>, or <c>null</c> if the
-        /// specified <see cref="TimerWindow"/> is <c>null</c>.</returns>
-        public static WindowSize FromWindow(TimerWindow window)
+        /// <typeparam name="T">The type of the window.</typeparam>
+        /// <param name="window">A window.</param>
+        /// <returns>A <see cref="WindowSize"/> for the specified window, or <c>null</c> if the specified window is
+        /// <c>null</c>.</returns>
+        public static WindowSize FromWindow<T>(T window)
+            where T : Window, IRestorableWindow
         {
             if (window == null)
             {
@@ -101,26 +104,53 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Combines the properties of <paramref name="baseWindowSize"/> with <paramref name="windowSize"/>, where the
-        /// properties of <paramref name="windowSize"/> take precedence.
+        /// Returns a <see cref="WindowSize"/> for another visible window of the same type, or <c>null</c> if there is
+        /// no other visible window of the same type.
         /// </summary>
-        /// <param name="baseWindowSize">The base <see cref="WindowSize"/>.</param>
-        /// <param name="windowSize">A <see cref="WindowSize"/>.</param>
-        /// <returns>A <see cref="WindowSize"/> with the properties of <paramref name="baseWindowSize"/> and <paramref
-        /// name="windowSize"/>.</returns>
-        public static WindowSize Merge(WindowSize baseWindowSize, WindowSize windowSize)
+        /// <typeparam name="T">The type of the window.</typeparam>
+        /// <param name="window">A window.</param>
+        /// <returns>A <see cref="WindowSize"/> for another visible window of the same type, or <c>null</c> if there is
+        /// no other visible window of the same type.</returns>
+        public static WindowSize FromSiblingOfWindow<T>(T window)
+            where T : Window, IRestorableWindow
         {
-            WindowSize result = WindowSize.FromWindowSize(baseWindowSize ?? windowSize);
-
-            if (baseWindowSize == null || windowSize == null)
+            if (Application.Current != null)
             {
-                return result;
+                T lastWindow = Application.Current.Windows
+                    .OfType<T>()
+                    .LastOrDefault(w => !w.Equals(window) && w.IsVisible);
+
+                return WindowSize.FromWindow(lastWindow);
             }
 
-            result.RestoreBounds = windowSize.RestoreBounds ?? result.RestoreBounds;
-            result.WindowState = windowSize.WindowState ?? result.WindowState;
-            result.RestoreWindowState = windowSize.RestoreWindowState ?? result.RestoreWindowState;
-            result.IsFullScreen = windowSize.IsFullScreen ?? result.IsFullScreen;
+            return null;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="WindowSize"/> with the merged properties of <paramref name="windowSizes"/>, with the
+        /// last <see cref="WindowSize"/>s taking precedence.
+        /// </summary>
+        /// <remarks>
+        /// This method never returns <c>null</c>. If no <paramref name="windowSizes"/> are specified, or all specified
+        /// <paramref name="windowSizes"/> are <c>null</c>, this method will return a <see cref="WindowSize"/> with no
+        /// properties set.
+        /// </remarks>
+        /// <param name="windowSizes">An collection of <see cref="WindowSize"/>s.</param>
+        /// <returns>A <see cref="WindowSize"/> with the merged properties of <paramref name="windowSizes"/>.</returns>
+        public static WindowSize Merge(params WindowSize[] windowSizes)
+        {
+            WindowSize result = new WindowSize();
+
+            foreach (WindowSize windowSize in windowSizes)
+            {
+                if (windowSize != null)
+                {
+                    result.RestoreBounds = windowSize.RestoreBounds ?? result.RestoreBounds;
+                    result.WindowState = windowSize.WindowState ?? result.WindowState;
+                    result.RestoreWindowState = windowSize.RestoreWindowState ?? result.RestoreWindowState;
+                    result.IsFullScreen = windowSize.IsFullScreen ?? result.IsFullScreen;
+                }
+            }
 
             return result;
         }

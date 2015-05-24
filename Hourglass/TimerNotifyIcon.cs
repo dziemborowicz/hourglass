@@ -204,7 +204,7 @@ namespace Hourglass
         private void NewTimerMenuItemClick(object sender, EventArgs e)
         {
             TimerWindow window = new TimerWindow();
-            window.RestoreFromRecentWindow();
+            window.RestoreFromSibling();
             window.Show();
         }
 

@@ -317,15 +317,13 @@ namespace Hourglass
 
             options.LoopSound = result.LoopSound ?? options.LoopSound;
 
-            if (result.WindowBounds.HasValue || result.WindowState.HasValue || result.IsFullScreen.HasValue)
+            if (result.WindowBounds.HasValue || result.WindowState.HasValue || result.RestoreWindowState.HasValue || result.IsFullScreen.HasValue)
             {
-                WindowSize windowSize = new WindowSize(
+                options.WindowSize = new WindowSize(
                     result.WindowBounds,
                     result.WindowState,
                     result.RestoreWindowState,
                     result.IsFullScreen);
-
-                options.WindowSize = WindowSize.Merge(options.WindowSize, windowSize);
             }
             else
             {

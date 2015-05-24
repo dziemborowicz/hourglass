@@ -35,7 +35,7 @@ namespace Hourglass
     /// <summary>
     /// A timer window.
     /// </summary>
-    public partial class TimerWindow : INotifyPropertyChanged
+    public partial class TimerWindow : INotifyPropertyChanged, IRestorableWindow
     {
         #region Private Members
 
@@ -171,9 +171,17 @@ namespace Hourglass
         /// <summary>
         /// Gets the default size of the window.
         /// </summary>
-        public static Size DefaultSize
+        public Size DefaultSize
         {
             get { return new Size(350, 150); }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="WindowSize"/> for the window persisted in the settings.
+        /// </summary>
+        public WindowSize PersistedSize
+        {
+            get { return Settings.Default.WindowSize; }
         }
 
         /// <summary>

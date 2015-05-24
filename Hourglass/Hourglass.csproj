@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="FocusUtility.cs" />
     <Compile Include="HourglassTimer.cs" />
+    <Compile Include="IRestorableWindow.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="MathUtility.cs" />
     <Compile Include="MultiplierConverter.cs" />

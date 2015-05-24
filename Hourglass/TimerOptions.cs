@@ -285,7 +285,7 @@ namespace Hourglass
 
             set
             {
-                if (this.color == value)
+                if (object.ReferenceEquals(this.color, value))
                 {
                     return;
                 }

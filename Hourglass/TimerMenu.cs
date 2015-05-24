@@ -652,14 +652,49 @@ namespace Hourglass
             MenuItem menuItem = (MenuItem)sender;
             HourglassTimer savedTimer = (HourglassTimer)menuItem.Tag;
 
-            TimerWindow window = this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired
-                ? this.timerWindow
-                : new TimerWindow();
+            if (this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired)
+            {
+                this.ShowSavedTimerInCurrentWindow(savedTimer);
+            }
+            else
+            {
+                this.ShowSavedTimerInNewWindow(savedTimer);
+            }
+        }
 
-            window.RestoreFromOptions(savedTimer.Options);
-            window.Show(savedTimer);
+        /// <summary>
+        /// Shows an existing <see cref="HourglassTimer"/> in the current <see cref="TimerWindow"/>.
+        /// </summary>
+        /// <param name="savedTimer">An existing <see cref="HourglassTimer"/>.</param>
+        private void ShowSavedTimerInCurrentWindow(HourglassTimer savedTimer)
+        {
+            if (savedTimer.Options.WindowSize != null)
+            {
+                this.timerWindow.Restore(savedTimer.Options.WindowSize);
+            }
 
+            this.timerWindow.Show(savedTimer);
             this.UpdateMenuFromOptions();
+        }
+
+        /// <summary>
+        /// Shows an existing <see cref="HourglassTimer"/> in a new <see cref="TimerWindow"/>.
+        /// </summary>
+        /// <param name="savedTimer">An existing <see cref="HourglassTimer"/>.</param>
+        private void ShowSavedTimerInNewWindow(HourglassTimer savedTimer)
+        {
+            TimerWindow newTimerWindow = new TimerWindow();
+
+            if (savedTimer.Options.WindowSize != null)
+            {
+                newTimerWindow.Restore(savedTimer.Options.WindowSize);
+            }
+            else
+            {
+                newTimerWindow.RestoreFromWindow(this.timerWindow);
+            }
+
+            newTimerWindow.Show(savedTimer);
         }
 
         /// <summary>
