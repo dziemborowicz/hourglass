@@ -30,5 +30,15 @@ namespace Hourglass
             this.MaxWidth = 0.75 * SystemParameters.WorkArea.Width;
             this.MaxHeight = 0.75 * SystemParameters.WorkArea.Height;
         }
+
+        /// <summary>
+        /// Invoked when the close button is clicked.
+        /// </summary>
+        /// <param name="sender">The close button.</param>
+        /// <param name="e">The event data.</param>
+        private void CloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -55,7 +55,15 @@ namespace Hourglass
         public static void ShowUsage()
         {
             UsageWindow window = new UsageWindow();
-            window.ShowDialog();
+
+            if (Application.Current != null && Application.Current.Dispatcher != null)
+            {
+                window.Show();
+            }
+            else
+            {
+                window.ShowDialog();
+            }
         }
 
         /// <summary>

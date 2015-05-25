@@ -17,7 +17,7 @@
                        Text="Command-line usage"/>
             <Border DockPanel.Dock="Bottom" Background="#F9F9F9" BorderBrush="#DDDDDD" BorderThickness="0 1 0 0">
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button Content="_Close" Margin="10" Width="100" Height="25" IsDefault="True" IsCancel="True"/>
+                    <Button Click="CloseButtonClick" Content="_Close" Margin="10" Width="100" Height="25" IsDefault="True" IsCancel="True"/>
                 </StackPanel>
             </Border>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
