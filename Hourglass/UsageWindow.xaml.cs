@@ -32,6 +32,16 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Invoked when the window is laid out, rendered, and ready for interaction.
+        /// </summary>
+        /// <param name="sender">The window.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            this.Activate();
+        }
+
+        /// <summary>
         /// Invoked when the close button is clicked.
         /// </summary>
         /// <param name="sender">The close button.</param>
