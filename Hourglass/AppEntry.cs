@@ -8,6 +8,7 @@ namespace Hourglass
 {
     using System;
     using System.Linq;
+    using System.Windows;
 
     using Hourglass.Properties;
 
@@ -86,7 +87,11 @@ namespace Hourglass
             }
 
             window.Show();
-            window.BringToFrontAndActivate();
+
+            if (window.WindowState != WindowState.Minimized)
+            {
+                window.BringToFrontAndActivate();
+            }
         }
 
         /// <summary>
