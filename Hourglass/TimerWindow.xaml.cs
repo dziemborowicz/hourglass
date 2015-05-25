@@ -418,6 +418,26 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Minimizes the window to the notification area of the taskbar.
+        /// </summary>
+        /// <remarks>
+        /// This method does nothing if <see cref="Settings.ShowInNotificationArea"/> is <c>false</c>.
+        /// </remarks>
+        public void MinimizeToNotificationArea()
+        {
+            if (Settings.Default.ShowInNotificationArea)
+            {
+                if (this.WindowState != WindowState.Minimized)
+                {
+                    this.RestoreWindowState = this.WindowState;
+                    this.WindowState = WindowState.Minimized;
+                }
+
+                this.Hide();
+            }
+        }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>A string that represents the current object.</returns>
@@ -1171,6 +1191,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
+            // Deal with any input or timer set in the constructor
             if (this.inputToStartOnLoad != null)
             {
                 this.Show(this.inputToStartOnLoad);
@@ -1182,6 +1203,12 @@ namespace Hourglass
                 this.Show(this.timerToResumeOnLoad);
                 this.inputToStartOnLoad = null;
                 this.timerToResumeOnLoad = null;
+            }
+
+            // Minimize to notification area if required
+            if (this.WindowState == WindowState.Minimized && Settings.Default.ShowInNotificationArea)
+            {
+                this.MinimizeToNotificationArea();
             }
         }
 
@@ -1242,7 +1269,7 @@ namespace Hourglass
 
             if (this.WindowState == WindowState.Minimized && Settings.Default.ShowInNotificationArea)
             {
-                this.Hide();
+                this.MinimizeToNotificationArea();
             }
 
             this.UpdateBoundControls();
