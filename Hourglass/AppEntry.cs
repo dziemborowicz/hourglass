@@ -60,6 +60,7 @@ namespace Hourglass
             if (!TryGetTimerWindowForArgs(e.CommandLine.ToArray(), out window))
             {
                 CommandLine.ShowUsage();
+                AppManager.Instance.Dispose();
                 return false;
             }
 
