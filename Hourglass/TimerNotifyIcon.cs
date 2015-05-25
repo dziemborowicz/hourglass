@@ -110,13 +110,35 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Restores all <see cref="TimerWindow"/>s.
+        /// </summary>
+        private void RestoreAllTimerWindows()
+        {
+            foreach (TimerWindow window in Application.Current.Windows.OfType<TimerWindow>())
+            {
+                window.BringToFrontAndActivate();
+            }
+        }
+
+        /// <summary>
         /// Invoked after the value of an application settings property is changed.
         /// </summary>
         /// <param name="sender">The settings object.</param>
         /// <param name="e">The event data.</param>
         private void SettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            this.IsVisible = Settings.Default.ShowInNotificationArea;
+            if (this.IsVisible != Settings.Default.ShowInNotificationArea)
+            {
+                if (Settings.Default.ShowInNotificationArea)
+                {
+                    this.IsVisible = true;
+                }
+                else
+                {
+                    this.IsVisible = false;
+                    this.RestoreAllTimerWindows();
+                }
+            }
         }
 
         /// <summary>
@@ -129,10 +151,7 @@ namespace Hourglass
         {
             if (e.Button == MouseButtons.Left)
             {
-                foreach (TimerWindow window in Application.Current.Windows.OfType<TimerWindow>())
-                {
-                    window.BringToFrontAndActivate();
-                }
+                this.RestoreAllTimerWindows();
             }
         }
 
