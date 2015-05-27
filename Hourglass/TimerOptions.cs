@@ -79,9 +79,9 @@ namespace Hourglass
             this.loopTimer = false;
             this.popUpWhenExpired = true;
             this.closeWhenExpired = false;
+            this.color = TimerColor.DefaultColor;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
-            this.color = TimerColor.DefaultColor;
             this.windowSize = null;
         }
 
@@ -229,6 +229,28 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Gets or sets the color of the timer progress bar.
+        /// </summary>
+        public TimerColor Color
+        {
+            get
+            {
+                return this.color;
+            }
+
+            set
+            {
+                if (object.ReferenceEquals(this.color, value))
+                {
+                    return;
+                }
+
+                this.color = value;
+                this.OnPropertyChanged("Color");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the sound to play when the timer expires, or <c>null</c> if no sound is to be played.
         /// </summary>
         public Sound Sound
@@ -270,28 +292,6 @@ namespace Hourglass
 
                 this.loopSound = value;
                 this.OnPropertyChanged("LoopSound");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the timer progress bar.
-        /// </summary>
-        public TimerColor Color
-        {
-            get
-            {
-                return this.color;
-            }
-
-            set
-            {
-                if (object.ReferenceEquals(this.color, value))
-                {
-                    return;
-                }
-
-                this.color = value;
-                this.OnPropertyChanged("Color");
             }
         }
 
@@ -361,9 +361,9 @@ namespace Hourglass
             this.loopTimer = options.loopTimer;
             this.popUpWhenExpired = options.popUpWhenExpired;
             this.closeWhenExpired = options.closeWhenExpired;
+            this.color = options.color;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
-            this.color = options.color;
             this.windowSize = WindowSize.FromWindowSize(options.WindowSize);
         }
 
@@ -383,9 +383,9 @@ namespace Hourglass
             this.loopTimer = optionsInfo.LoopTimer;
             this.popUpWhenExpired = optionsInfo.PopUpWhenExpired;
             this.closeWhenExpired = optionsInfo.CloseWhenExpired;
+            this.color = TimerColor.FromTimerColorInfo(optionsInfo.Color) ?? TimerColor.DefaultColor;
             this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
             this.loopSound = optionsInfo.LoopSound;
-            this.color = TimerColor.FromTimerColorInfo(optionsInfo.Color) ?? TimerColor.DefaultColor;
             this.windowSize = WindowSize.FromWindowSize(optionsInfo.WindowSize);
         }
 
@@ -401,9 +401,9 @@ namespace Hourglass
             info.LoopTimer = this.loopTimer;
             info.PopUpWhenExpired = this.popUpWhenExpired;
             info.CloseWhenExpired = this.closeWhenExpired;
+            info.Color = TimerColorInfo.FromTimerColor(this.color);
             info.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;
             info.LoopSound = this.loopSound;
-            info.Color = TimerColorInfo.FromTimerColor(this.color);
             info.WindowSize = WindowSize.FromWindowSize(this.windowSize);
             return info;
         }

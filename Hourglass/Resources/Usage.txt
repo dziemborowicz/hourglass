@@ -2,56 +2,129 @@ Usage: {0} [OPTIONS] [<input>]
 A simple countdown timer for Windows.
 
   <input>
-        The input used to start the timer. For example, "5 minutes 30 seconds"
-        starts a 5-minute-and-30-second timer, and "January 1, 2020" starts a
-        timer until January 1, 2020.
+        The input used to start the timer.
+        
+        For example, "5 minutes 30 seconds" starts a timer that expires in
+        5 minutes and 30 seconds, and "January 1, 2020" starts a timer until
+        January 1, 2020.
 
 Options:
-  +d, +default-options,
-  -d, -default-options:
-        Use the default options, rather than the most recently used options.
+  --title <title>
+        Sets the title for the timer.
 
-  +t <title>, +title <title>:
-        The title for the timer.
+        Required        no
+        Default value   (none)
+        Alias           -t
 
-  +a, +always-on-top,
-  -a, -always-on-top:
-        Display the timer window on top of other windows.
+  --always-on-top on|off|last
+        Displays the timer window on top of other windows.
 
-  +f, +full-screen,
-  -f, -full-screen:
-        Display the timer window in full-screen mode.
+        Required        no
+        Default value   last
+        Alias           -a
 
-  +n, +show-in-notification-area,
-  -n, -show-in-notification-area:
-        Show an icon for the app in the notification area (system tray).
+  --full-screen on|off|last
+        Displays the timer window in full-screen mode.
 
-  +l, +loop-timer,
-  -l, -loop-timer:
-        Loop the timer when it expires.
+        Required        no
+        Default value   last
+        Alias           -f
 
-  +p, +pop-up-when-expired,
-  -p, -pop-up-when-expired:
-        Pop up the timer window when the timer expires.
+  --show-in-notification-area on|off|last
+        Shows an icon for the app in the notification area (system tray).
 
-  +c, +close-when-expired,
-  -c, -close-when-expired:
-        Close the timer window when the timer expires.
+        Required        no
+        Default value   last
+        Alias           -n
 
-  +s [<sound-name>], +sound [<sound-name>],
-  -s, -sound:
-        Play a sound when the timer expires. If <sound-name> is specified, that
-        sound is played when the timer expires. Otherwise, the last used or
-        default sound is played.
+  --loop-timer on|off|last
+        Loops the timer when it expires.
 
-  +r, +loop-sound,
-  -r, -loop-sound:
-        Loop the sound that plays when the timer expires.
+        Required        no
+        Default value   last
+        Alias           -l
 
-  +b <left>,<top>,<width>,<height>, +window-bounds <left>,<top>,<width>,<height>
+  --pop-up-when-expired on|off|last
+        Pops up the timer window when the timer expires.
+
+        Required        no
+        Default value   last
+        Alias           -p
+
+  --close-when-expired on|off|last
+        Closes the timer window when the timer expires.
+
+        Required        no
+        Default value   last
+        Alias           -e
+
+  --color last|<color>
+        Sets the color of the timer window.
+
+        Required        no
+        Default value   last
+        Alias           -c
+
+  --sound none|last|<sound>
+        Plays a sound when the timer expires.
+
+        Required        no
+        Default value   last
+        Alias           -s
+
+  --loop-sound on|off|last
+        Loops the sound that plays when the timer expires.
+
+        Required        no
+        Default value   last
+        Alias           -r
+
+  --window-state normal|maximized|minimized|last
+        Sets the state of the timer window.
+
+        Required        no
+        Default value   last
+        Alias           -w
+
+  --window-bounds <left>,<top>,<width>,<height>
         Sets the size and position of the timer window.
 
-  +w <state>[,<restore-state>], +window-state <state>[,<restore-state>]:
-        Sets the state of the timer window. <state> can be Normal, Maximized,
-        or Minimized. If <state> is Minimized, you should specify a <restore-
-        state> that determines the state when the timer window is restored.
+        <left> and <top> specify the position of the window's left and top
+        edges respectively in relation to the desktop in device-independent
+        pixels. If you specify auto for both <left> and <top>, these values
+        will be determined automatically by Windows.
+
+        <width> and <height> specify the width and height of the window
+        respectively in device-independent pixels.
+
+        Required        no
+        Default value   last
+        Alias           -b
+
+  --use-factory-defaults
+        If specified, any options that are not explicitly set with another
+        switch are set to their factory default setting rather than the last
+        used setting.
+
+        The factory default settings are:
+            --title                         (none)
+            --always-on-top                 off
+            --full-screen                   off
+            --show-in-notification-area     off
+            --loop-timer                    off
+            --pop-up-when-expired           on
+            --close-when-expired            off
+            --color                         blue
+            --sound                         normal beep
+            --loop-sound                    off
+            --window-bounds                 auto,auto,350,150
+            --window-state                  normal
+
+        Required        no
+        Alias           -d
+
+  --help
+        Shows this message.
+
+        Required        no
+        Alias           -h, -?

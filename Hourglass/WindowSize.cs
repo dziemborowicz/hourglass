@@ -104,6 +104,28 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Returns a <see cref="WindowSize"/> for a visible window of type <typeparamref name="T"/>, or <c>null</c> if
+        /// there is no visible window of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the window.</typeparam>
+        /// <returns>A <see cref="WindowSize"/> for a visible window of type <typeparamref name="T"/>, or <c>null</c> if
+        /// there is no visible window of type <typeparamref name="T"/>.</returns>
+        public static WindowSize FromWindowOfType<T>()
+            where T : Window, IRestorableWindow
+        {
+            if (Application.Current != null)
+            {
+                T window = Application.Current.Windows
+                    .OfType<T>()
+                    .LastOrDefault(w => w.IsVisible);
+
+                return WindowSize.FromWindow(window);
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Returns a <see cref="WindowSize"/> for another visible window of the same type, or <c>null</c> if there is
         /// no other visible window of the same type.
         /// </summary>
@@ -116,11 +138,11 @@ namespace Hourglass
         {
             if (Application.Current != null)
             {
-                T lastWindow = Application.Current.Windows
+                T otherWindow = Application.Current.Windows
                     .OfType<T>()
                     .LastOrDefault(w => !w.Equals(window) && w.IsVisible);
 
-                return WindowSize.FromWindow(lastWindow);
+                return WindowSize.FromWindow(otherWindow);
             }
 
             return null;

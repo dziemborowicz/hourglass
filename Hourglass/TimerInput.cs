@@ -25,6 +25,11 @@ namespace Hourglass
         /// cref="string"/> is not a valid input.</returns>
         public static TimerInput FromString(string str)
         {
+            if (string.IsNullOrEmpty(str))
+            {
+                return null;
+            }
+
             if (Regex.IsMatch(str, @"^\s*(un)?till?\s*|^20\d\d$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
             {
                 str = Regex.Replace(str, @"^\s*(un)?till?\s*", string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);

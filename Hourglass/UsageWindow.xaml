@@ -25,7 +25,7 @@
                          FontFamily="Consolas, Courier New, Courier"
                          IsReadOnly="True"
                          Margin="20"
-                         Text="{Binding Source={x:Static local:CommandLine.Usage}, Mode=OneTime}"/>
+                         Text="{Binding Source={x:Static local:CommandLineArguments.Usage}, Mode=OneTime}"/>
             </ScrollViewer>
         </DockPanel>
     </Grid>

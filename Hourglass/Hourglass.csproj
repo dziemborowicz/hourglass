@@ -78,7 +78,8 @@
     <Compile Include="App.cs" />
     <Compile Include="AppEntry.cs" />
     <Compile Include="AppManager.cs" />
-    <Compile Include="CommandLine.cs" />
+    <Compile Include="CommandLineArguments.cs" />
+    <Compile Include="CommandLineParseResult.cs" />
     <Compile Include="DateTimeTimer.cs" />
     <Compile Include="DateTimeTimerInput.cs" />
     <Compile Include="DateTimeUtility.cs" />

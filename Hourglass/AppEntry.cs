@@ -7,7 +7,7 @@
 namespace Hourglass
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
     using System.Windows;
 
     using Hourglass.Properties;
@@ -58,9 +58,10 @@ namespace Hourglass
             AppManager.Instance.Initialize();
 
             TimerWindow window;
-            if (!TryGetTimerWindowForArgs(e.CommandLine.ToArray(), out window))
+            CommandLineParseResult result;
+            if (!TryGetTimerWindowForArgs(e.CommandLine, out window, out result))
             {
-                CommandLine.ShowUsage();
+                CommandLineArguments.ShowUsage(result.ErrorMessage);
                 AppManager.Instance.Dispose();
                 return false;
             }
@@ -80,9 +81,10 @@ namespace Hourglass
         protected override void OnStartupNextInstance(StartupNextInstanceEventArgs e)
         {
             TimerWindow window;
-            if (!TryGetTimerWindowForArgs(e.CommandLine.ToArray(), out window))
+            CommandLineParseResult result;
+            if (!TryGetTimerWindowForArgs(e.CommandLine, out window, out result))
             {
-                CommandLine.ShowUsage();
+                CommandLineArguments.ShowUsage(result.ErrorMessage);
                 return;
             }
 
@@ -99,19 +101,20 @@ namespace Hourglass
         /// </summary>
         /// <param name="args">The command-line arguments.</param>
         /// <param name="window">The new instance of the <see cref="TimerWindow"/> class.</param>
+        /// <param name="result">A <see cref="CommandLineParseResult"/>.</param>
         /// <returns><c>true</c> if a <see cref="TimerWindow"/> was successfully instantiated, or <c>false</c> if the
         /// command-line arguments were invalid.</returns>
-        private static bool TryGetTimerWindowForArgs(string[] args, out TimerWindow window)
+        private static bool TryGetTimerWindowForArgs(IList<string> args, out TimerWindow window, out CommandLineParseResult result)
         {
-            CommandLine arguments;
-            if (!CommandLine.TryParse(args, out arguments))
+            result = CommandLineArguments.Parse(args);
+            if (result.Type != CommandLineParseResultType.Success)
             {
                 window = null;
                 return false;
             }
-            
-            window = GetTimerWindowForArguments(arguments);
-            SetGlobalOptionsFromArguments(arguments);
+
+            window = GetTimerWindowForArguments(result.Arguments);
+            SetGlobalOptionsFromArguments(result.Arguments);
             return true;
         }
 
@@ -120,7 +123,7 @@ namespace Hourglass
         /// </summary>
         /// <param name="arguments">Parsed command-line arguments.</param>
         /// <returns>A new <see cref="TimerWindow"/> from parsed command-line arguments.</returns>
-        private static TimerWindow GetTimerWindowForArguments(CommandLine arguments)
+        private static TimerWindow GetTimerWindowForArguments(CommandLineArguments arguments)
         {
             TimerWindow window = new TimerWindow(arguments.Input);
             SetWindowOptionsFromArguments(window, arguments);
@@ -133,12 +136,9 @@ namespace Hourglass
         /// </summary>
         /// <param name="window">A <see cref="TimerWindow"/>.</param>
         /// <param name="arguments">Parsed command-line arguments.</param>
-        private static void SetWindowOptionsFromArguments(TimerWindow window, CommandLine arguments)
+        private static void SetWindowOptionsFromArguments(TimerWindow window, CommandLineArguments arguments)
         {
-            if (arguments.Options != null)
-            {
-                window.Options.Set(arguments.Options);
-            }
+            window.Options.Set(arguments.ToTimerOptions());
         }
 
         /// <summary>
@@ -146,19 +146,12 @@ namespace Hourglass
         /// </summary>
         /// <param name="window">A <see cref="TimerWindow"/>.</param>
         /// <param name="arguments">Parsed command-line arguments.</param>
-        private static void RestoreWindowFromArguments(TimerWindow window, CommandLine arguments)
+        private static void RestoreWindowFromArguments(TimerWindow window, CommandLineArguments arguments)
         {
-            // If no window size is specified in the options, restore from a sibling
-            if (arguments.Options == null || arguments.Options.WindowSize == null)
-            {
-                window.RestoreFromSibling();
-                return;
-            }
-
             // Work out window size
             WindowSize windowSizeFromSettings = Settings.Default.WindowSize;
             WindowSize windowSizeFromSibling = WindowSize.FromSiblingOfWindow(window);
-            WindowSize windowSizeFromArguments = arguments.Options.WindowSize;
+            WindowSize windowSizeFromArguments = arguments.ToWindowSize();
             WindowSize windowSize = WindowSize.Merge(
                 windowSizeFromSettings,
                 windowSizeFromSibling,
@@ -185,12 +178,9 @@ namespace Hourglass
         /// Sets global options from parsed command-line arguments.
         /// </summary>
         /// <param name="arguments">Parsed command-line arguments.</param>
-        private static void SetGlobalOptionsFromArguments(CommandLine arguments)
+        private static void SetGlobalOptionsFromArguments(CommandLineArguments arguments)
         {
-            if (arguments.ShowInNotificationArea.HasValue)
-            {
-                Settings.Default.ShowInNotificationArea = arguments.ShowInNotificationArea.Value;
-            }
+            Settings.Default.ShowInNotificationArea = arguments.ShowInNotificationArea;
         }
 
         /// <summary>
