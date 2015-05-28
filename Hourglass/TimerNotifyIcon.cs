@@ -114,9 +114,12 @@ namespace Hourglass
         /// </summary>
         private void RestoreAllTimerWindows()
         {
-            foreach (TimerWindow window in Application.Current.Windows.OfType<TimerWindow>())
+            if (Application.Current != null)
             {
-                window.BringToFrontAndActivate();
+                foreach (TimerWindow window in Application.Current.Windows.OfType<TimerWindow>())
+                {
+                    window.BringToFrontAndActivate();
+                }
             }
         }
 
