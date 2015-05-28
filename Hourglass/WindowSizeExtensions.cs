@@ -137,10 +137,18 @@ namespace Hourglass
             if (windowSize.RestoreBounds.HasValue)
             {
                 Rect restoreBounds = windowSize.RestoreBounds.Value;
-                window.Left = restoreBounds.Left;
-                window.Top = restoreBounds.Top;
-                window.Width = restoreBounds.Width;
-                window.Height = restoreBounds.Height;
+
+                if (!double.IsInfinity(restoreBounds.Left) && !double.IsInfinity(restoreBounds.Top))
+                {
+                    window.Left = restoreBounds.Left;
+                    window.Top = restoreBounds.Top;
+                }
+
+                if (!double.IsInfinity(restoreBounds.Width) && !double.IsInfinity(restoreBounds.Height))
+                {
+                    window.Width = restoreBounds.Width;
+                    window.Height = restoreBounds.Height;
+                }
             }
         }
 
