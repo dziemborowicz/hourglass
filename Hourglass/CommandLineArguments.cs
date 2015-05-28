@@ -9,6 +9,7 @@ namespace Hourglass
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Windows;
 
@@ -415,9 +416,11 @@ namespace Hourglass
                             throw new ParseException(message);
                         }
 
-                        ThrowIfDuplicateSwitch(specifiedSwitches, string.Empty);
+                        List<string> inputArgs = remainingArgs.ToList();
+                        inputArgs.Insert(0, arg);
+                        remainingArgs.Clear();
 
-                        TimerInput input = GetTimerInputValue(remainingArgs);
+                        TimerInput input = GetTimerInputValue(inputArgs);
 
                         argumentsBasedOnLastSettings.Input = input;
                         argumentsBasedOnFactoryDefaults.Input = input;
@@ -643,7 +646,7 @@ namespace Hourglass
         /// name="remainingArgs"/></returns>
         /// <exception cref="Exception">If the concatenation of all <paramref name="remainingArgs"/> is not a valid
         /// representation of a <see cref="TimerInput"/>.</exception>
-        private static TimerInput GetTimerInputValue(Queue<string> remainingArgs)
+        private static TimerInput GetTimerInputValue(IEnumerable<string> remainingArgs)
         {
             string value = string.Join(" ", remainingArgs);
             TimerInput input = TimerInput.FromString(value);
