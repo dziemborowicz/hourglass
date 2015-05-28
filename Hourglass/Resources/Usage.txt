@@ -11,10 +11,10 @@ A simple countdown timer for Windows.
         "5 minutes"             count down for 5 minutes
         "5 minutes 30 seconds"  count down for 5 minutes 30 seconds
         "7 hours 30 minutes"    count down for 7 hours 30 minutes
-        "01/01/20"              count down until January 1, 2020*
-        "01/01/2020"            count down until January 1, 2020*
-        "January 1, 2020"       count down until January 1, 2020
-        "January 1"             count down until January 1
+        "01/01/20"*             count down until January 1, 2020
+        "01/01/2020"*           count down until January 1, 2020
+        "January 1, 2020"*      count down until January 1, 2020
+        "January 1"*            count down until January 1
         "2 pm"                  count down until 2 pm
         "2:30 pm"               count down until 2:30 pm
         "noon"                  count down until noon
