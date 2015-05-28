@@ -372,7 +372,9 @@ namespace Hourglass
 
             Rect windowRect = window.GetBoundsForNormalState();
 
-            return virtualScreenRect.Contains(windowRect);
+            return double.IsNaN(windowRect.Left)
+                || double.IsNaN(windowRect.Top)
+                || virtualScreenRect.Contains(windowRect);
         }
 
         /// <summary>
