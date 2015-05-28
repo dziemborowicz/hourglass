@@ -3,10 +3,27 @@ A simple countdown timer for Windows.
 
   <input>
         The input used to start the timer.
-        
-        For example, "5 minutes 30 seconds" starts a timer that expires in
-        5 minutes and 30 seconds, and "January 1, 2020" starts a timer until
-        January 1, 2020.
+
+        For example:
+        "5"                     count down for 5 minutes
+        "5:30"                  count down for 5 minutes 30 seconds
+        "7:30:00"               count down for 7 hours 30 minutes
+        "5 minutes"             count down for 5 minutes
+        "5 minutes 30 seconds"  count down for 5 minutes 30 seconds
+        "7 hours 30 minutes"    count down for 7 hours 30 minutes
+        "01/01/20"              count down until January 1, 2020*
+        "01/01/2020"            count down until January 1, 2020*
+        "January 1, 2020"       count down until January 1, 2020
+        "January 1"             count down until January 1
+        "2 pm"                  count down until 2 pm
+        "2:30 pm"               count down until 2:30 pm
+        "noon"                  count down until noon
+        "midnight"              count down until midnight
+        "Friday"                count down until midnight Friday
+
+        * The order of the day, month, and year depends on your system settings.
+
+        Variations of some of these formats are also supported.
 
 Options:
   --title <title>
@@ -91,11 +108,13 @@ Options:
 
         <left> and <top> specify the position of the window's left and top
         edges respectively in relation to the desktop in device-independent
-        pixels. If you specify auto for both <left> and <top>, these values
-        will be determined automatically by Windows.
+        pixels. If you specify auto for either of the <left> or <top> values,
+        the window will be positioned automatically.
 
         <width> and <height> specify the width and height of the window
-        respectively in device-independent pixels.
+        respectively in device-independent pixels. If you specify auto for
+        either of the <width> or <height> values, the window will be sized
+        automatically.
 
         Required        no
         Default value   last

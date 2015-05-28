@@ -15,6 +15,7 @@ namespace Hourglass
     using System.Windows.Shell;
 
     using Hourglass.Properties;
+    using Hourglass.Serialization;
 
     /// <summary>
     /// The mode of a <see cref="TimerWindow"/>.
@@ -181,7 +182,7 @@ namespace Hourglass
         /// </summary>
         public WindowSize PersistedSize
         {
-            get { return Settings.Default.WindowSize; }
+            get { return WindowSize.FromWindowSizeInfo(Settings.Default.WindowSize); }
         }
 
         /// <summary>
@@ -1284,7 +1285,9 @@ namespace Hourglass
         {
             this.UnbindTimer();
             this.soundPlayer.Dispose();
-            Settings.Default.WindowSize = WindowSize.FromWindow(this /* window */);
+
+            WindowSize windowSize = WindowSize.FromWindow(this /* window */);
+            Settings.Default.WindowSize = WindowSizeInfo.FromWindowSize(windowSize);
 
             AppManager.Instance.Persist();
         }

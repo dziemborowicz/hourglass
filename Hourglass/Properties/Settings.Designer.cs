@@ -70,9 +70,9 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.WindowSize WindowSize {
+        public global::Hourglass.Serialization.WindowSizeInfo WindowSize {
             get {
-                return ((global::Hourglass.WindowSize)(this["WindowSize"]));
+                return ((global::Hourglass.Serialization.WindowSizeInfo)(this["WindowSize"]));
             }
             set {
                 this["WindowSize"] = value;

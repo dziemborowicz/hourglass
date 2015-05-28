@@ -11,6 +11,7 @@ namespace Hourglass
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text.RegularExpressions;
     using System.Windows;
 
     using Hourglass.Properties;
@@ -20,6 +21,8 @@ namespace Hourglass
     /// </summary>
     public class CommandLineArguments
     {
+        #region Properties
+
         /// <summary>
         /// Gets the command-line usage for this application.
         /// </summary>
@@ -98,9 +101,18 @@ namespace Hourglass
         public WindowState WindowState { get; private set; }
 
         /// <summary>
+        /// Gets the window's <see cref="Window.WindowState"/> before the window was minimized.
+        /// </summary>
+        public WindowState RestoreWindowState { get; private set; }
+
+        /// <summary>
         /// Gets the size and location of the window.
         /// </summary>
         public Rect WindowBounds { get; private set; }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Parses command-line arguments.
@@ -109,14 +121,14 @@ namespace Hourglass
         /// <returns>A <see cref="CommandLineParseResult"/>.</returns>
         public static CommandLineParseResult Parse(IList<string> args)
         {
-            if (IsHelpRequest(args))
+            if (ContainsHelpSwitch(args))
             {
-                return CommandLineParseResult.ForHelpRequest();
+                return CommandLineParseResult.ForShowUsage();
             }
 
             try
             {
-                CommandLineArguments arguments = ParseInternal(args);
+                CommandLineArguments arguments = GetCommandLineArguments(args);
                 return CommandLineParseResult.ForCommandLineArguments(arguments);
             }
             catch (ParseException e)
@@ -126,7 +138,7 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Shows the command-line usage of this application in the console or in a window.
+        /// Shows the command-line usage of this application in a window.
         /// </summary>
         /// <param name="errorMessage">An error message to display. (Optional.)</param>
         public static void ShowUsage(string errorMessage = null)
@@ -173,27 +185,28 @@ namespace Hourglass
             return new WindowSize(
                 this.WindowBounds,
                 this.WindowState,
-                null /* restoreWindowState */,
+                this.RestoreWindowState,
                 this.IsFullScreen);
         }
 
+        #endregion
+
+        #region Private Methods
+
         /// <summary>
-        /// Returns an <see cref="CommandLineArguments"/> instance based on the last used settings.
+        /// Returns an <see cref="CommandLineArguments"/> instance based on the most recent options.
         /// </summary>
-        /// <returns>An <see cref="CommandLineArguments"/> instance based on the last used settings.</returns>
-        private static CommandLineArguments GetArgumentsBasedOnLastSettings()
+        /// <returns>An <see cref="CommandLineArguments"/> instance based on the most recent options.</returns>
+        private static CommandLineArguments GetArgumentsFromMostRecentOptions()
         {
             TimerOptions options = TimerOptionsManager.Instance.MostRecentOptions;
-
-            WindowSize windowSizeFromSettings = Settings.Default.WindowSize;
-            WindowSize windowSizeFromSibling = WindowSize.FromWindowOfType<TimerWindow>();
-            WindowSize windowSize = WindowSize.Merge(windowSizeFromSettings, windowSizeFromSibling);
+            WindowSize windowSize = GetMostRecentWindowSize();
 
             return new CommandLineArguments
             {
                 Title = null,
                 AlwaysOnTop = options.AlwaysOnTop,
-                IsFullScreen = windowSize.IsFullScreen ?? false,
+                IsFullScreen = windowSize.IsFullScreen,
                 ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
                 LoopTimer = options.LoopTimer,
                 PopUpWhenExpired = options.PopUpWhenExpired,
@@ -201,8 +214,9 @@ namespace Hourglass
                 Color = options.Color,
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
-                WindowBounds = windowSize.RestoreBounds ?? Rect.Empty,
-                WindowState = windowSize.WindowState ?? WindowState.Normal
+                WindowState = windowSize.WindowState,
+                RestoreWindowState = windowSize.RestoreWindowState,
+                WindowBounds = windowSize.RestoreBounds
             };
         }
 
@@ -210,8 +224,12 @@ namespace Hourglass
         /// Returns an <see cref="CommandLineArguments"/> instance based on the factory default settings.
         /// </summary>
         /// <returns>An <see cref="CommandLineArguments"/> instance based on the factory default settings.</returns>
-        private static CommandLineArguments GetArgumentsBasedOnFactoryDefaults()
+        private static CommandLineArguments GetArgumentsFromFactoryDefaults()
         {
+            WindowSize mostRecentWindowSize = GetMostRecentWindowSize();
+            Rect defaultWindowBounds = new Rect(double.PositiveInfinity, double.PositiveInfinity, 350, 150);
+            Rect defaultWindowBoundsWithLocation = mostRecentWindowSize.RestoreBounds.Merge(defaultWindowBounds);
+
             return new CommandLineArguments
             {
                 Title = null,
@@ -224,9 +242,21 @@ namespace Hourglass
                 Color = TimerColor.DefaultColor,
                 Sound = Sound.DefaultSound,
                 LoopSound = false,
-                WindowBounds = Rect.Empty,
-                WindowState = WindowState.Normal
+                WindowState = WindowState.Normal,
+                RestoreWindowState = WindowState.Normal,
+                WindowBounds = defaultWindowBoundsWithLocation
             };
+        }
+
+        /// <summary>
+        /// Returns the most recent <see cref="WindowSize"/>.
+        /// </summary>
+        /// <returns>The most recent <see cref="WindowSize"/>.</returns>
+        private static WindowSize GetMostRecentWindowSize()
+        {
+            WindowSize windowSizeFromSettings = WindowSize.FromWindowSizeInfo(Settings.Default.WindowSize);
+            WindowSize windowSizeFromSibling = WindowSize.FromWindowOfType<TimerWindow>().Offset();
+            return windowSizeFromSibling ?? windowSizeFromSettings ?? new WindowSize();
         }
 
         /// <summary>
@@ -235,10 +265,10 @@ namespace Hourglass
         /// <param name="args">The command-line arguments.</param>
         /// <returns>The parsed command-line arguments.</returns>
         /// <exception cref="Exception">If the command-line arguments could not be parsed.</exception>
-        private static CommandLineArguments ParseInternal(IEnumerable<string> args)
+        private static CommandLineArguments GetCommandLineArguments(IEnumerable<string> args)
         {
-            CommandLineArguments argumentsBasedOnLastSettings = GetArgumentsBasedOnLastSettings();
-            CommandLineArguments argumentsBasedOnFactoryDefaults = GetArgumentsBasedOnFactoryDefaults();
+            CommandLineArguments argumentsBasedOnMostRecentOptions = GetArgumentsFromMostRecentOptions();
+            CommandLineArguments argumentsBasedOnFactoryDefaults = GetArgumentsFromFactoryDefaults();
             bool useFactoryDefaults = false;
 
             HashSet<string> specifiedSwitches = new HashSet<string>();
@@ -255,7 +285,7 @@ namespace Hourglass
 
                         string title = GetRequiredValue(arg, remainingArgs);
 
-                        argumentsBasedOnLastSettings.Title = title;
+                        argumentsBasedOnMostRecentOptions.Title = title;
                         argumentsBasedOnFactoryDefaults.Title = title;
                         break;
 
@@ -266,9 +296,9 @@ namespace Hourglass
                         bool alwaysOnTop = GetBoolValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.AlwaysOnTop);
+                            argumentsBasedOnMostRecentOptions.AlwaysOnTop);
 
-                        argumentsBasedOnLastSettings.AlwaysOnTop = alwaysOnTop;
+                        argumentsBasedOnMostRecentOptions.AlwaysOnTop = alwaysOnTop;
                         argumentsBasedOnFactoryDefaults.AlwaysOnTop = alwaysOnTop;
                         break;
 
@@ -279,9 +309,9 @@ namespace Hourglass
                         bool isFullScreen = GetBoolValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.IsFullScreen);
+                            argumentsBasedOnMostRecentOptions.IsFullScreen);
 
-                        argumentsBasedOnLastSettings.IsFullScreen = isFullScreen;
+                        argumentsBasedOnMostRecentOptions.IsFullScreen = isFullScreen;
                         argumentsBasedOnFactoryDefaults.IsFullScreen = isFullScreen;
                         break;
 
@@ -292,9 +322,9 @@ namespace Hourglass
                         bool showInNotificationArea = GetBoolValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.ShowInNotificationArea);
+                            argumentsBasedOnMostRecentOptions.ShowInNotificationArea);
 
-                        argumentsBasedOnLastSettings.ShowInNotificationArea = showInNotificationArea;
+                        argumentsBasedOnMostRecentOptions.ShowInNotificationArea = showInNotificationArea;
                         argumentsBasedOnFactoryDefaults.ShowInNotificationArea = showInNotificationArea;
                         break;
 
@@ -305,9 +335,9 @@ namespace Hourglass
                         bool loopTimer = GetBoolValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.LoopTimer);
+                            argumentsBasedOnMostRecentOptions.LoopTimer);
 
-                        argumentsBasedOnLastSettings.LoopTimer = loopTimer;
+                        argumentsBasedOnMostRecentOptions.LoopTimer = loopTimer;
                         argumentsBasedOnFactoryDefaults.LoopTimer = loopTimer;
                         break;
 
@@ -318,9 +348,9 @@ namespace Hourglass
                         bool popUpWhenExpired = GetBoolValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.PopUpWhenExpired);
+                            argumentsBasedOnMostRecentOptions.PopUpWhenExpired);
 
-                        argumentsBasedOnLastSettings.PopUpWhenExpired = popUpWhenExpired;
+                        argumentsBasedOnMostRecentOptions.PopUpWhenExpired = popUpWhenExpired;
                         argumentsBasedOnFactoryDefaults.PopUpWhenExpired = popUpWhenExpired;
                         break;
 
@@ -331,9 +361,9 @@ namespace Hourglass
                         bool closeWhenExpired = GetBoolValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.CloseWhenExpired);
+                            argumentsBasedOnMostRecentOptions.CloseWhenExpired);
 
-                        argumentsBasedOnLastSettings.CloseWhenExpired = closeWhenExpired;
+                        argumentsBasedOnMostRecentOptions.CloseWhenExpired = closeWhenExpired;
                         argumentsBasedOnFactoryDefaults.CloseWhenExpired = closeWhenExpired;
                         break;
 
@@ -344,9 +374,9 @@ namespace Hourglass
                         TimerColor color = GetTimerColorValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.Color);
+                            argumentsBasedOnMostRecentOptions.Color);
 
-                        argumentsBasedOnLastSettings.Color = color;
+                        argumentsBasedOnMostRecentOptions.Color = color;
                         argumentsBasedOnFactoryDefaults.Color = color;
                         break;
 
@@ -357,9 +387,9 @@ namespace Hourglass
                         Sound sound = GetSoundValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.Sound);
+                            argumentsBasedOnMostRecentOptions.Sound);
 
-                        argumentsBasedOnLastSettings.Sound = sound;
+                        argumentsBasedOnMostRecentOptions.Sound = sound;
                         argumentsBasedOnFactoryDefaults.Sound = sound;
                         break;
 
@@ -370,9 +400,9 @@ namespace Hourglass
                         bool loopSound = GetBoolValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.LoopSound);
+                            argumentsBasedOnMostRecentOptions.LoopSound);
 
-                        argumentsBasedOnLastSettings.LoopSound = loopSound;
+                        argumentsBasedOnMostRecentOptions.LoopSound = loopSound;
                         argumentsBasedOnFactoryDefaults.LoopSound = loopSound;
                         break;
 
@@ -383,10 +413,10 @@ namespace Hourglass
                         Rect windowBounds = GetRectValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.WindowBounds);
+                            argumentsBasedOnMostRecentOptions.WindowBounds);
 
-                        argumentsBasedOnLastSettings.WindowBounds = windowBounds;
-                        argumentsBasedOnFactoryDefaults.WindowBounds = windowBounds;
+                        argumentsBasedOnMostRecentOptions.WindowBounds = argumentsBasedOnMostRecentOptions.WindowBounds.Merge(windowBounds);
+                        argumentsBasedOnFactoryDefaults.WindowBounds = argumentsBasedOnFactoryDefaults.WindowBounds.Merge(windowBounds);
                         break;
 
                     case "--window-state":
@@ -396,9 +426,9 @@ namespace Hourglass
                         WindowState windowState = GetWindowStateValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnLastSettings.WindowState);
+                            argumentsBasedOnMostRecentOptions.WindowState);
 
-                        argumentsBasedOnLastSettings.WindowState = windowState;
+                        argumentsBasedOnMostRecentOptions.WindowState = windowState;
                         argumentsBasedOnFactoryDefaults.WindowState = windowState;
                         break;
 
@@ -422,13 +452,13 @@ namespace Hourglass
 
                         TimerInput input = GetTimerInputValue(inputArgs);
 
-                        argumentsBasedOnLastSettings.Input = input;
+                        argumentsBasedOnMostRecentOptions.Input = input;
                         argumentsBasedOnFactoryDefaults.Input = input;
                         break;
                 }
             }
 
-            return useFactoryDefaults ? argumentsBasedOnFactoryDefaults : argumentsBasedOnLastSettings;
+            return useFactoryDefaults ? argumentsBasedOnFactoryDefaults : argumentsBasedOnMostRecentOptions;
         }
 
         /// <summary>
@@ -627,7 +657,13 @@ namespace Hourglass
 
             try
             {
-                return value == "last" ? last : Rect.Parse(value);
+                if (value == "last")
+                {
+                    return last;
+                }
+
+                string adjustedValue = Regex.Replace(value, @"\bauto\b", @"Infinity");
+                return Rect.Parse(adjustedValue);
             }
             catch
             {
@@ -661,6 +697,16 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Returns a value indicating whether the command-line arguments include the help switch.
+        /// </summary>
+        /// <param name="args">The command-line arguments.</param>
+        /// <returns>A value indicating whether the command-line arguments include the help switch.</returns>
+        private static bool ContainsHelpSwitch(IList<string> args)
+        {
+            return args.Contains("--help") || args.Contains("-h") || args.Contains("-?");
+        }
+
+        /// <summary>
         /// Returns a value indicating whether a string is a command-line switch.
         /// </summary>
         /// <param name="arg">A string.</param>
@@ -668,16 +714,6 @@ namespace Hourglass
         private static bool IsSwitch(string arg)
         {
             return arg.StartsWith("-");
-        }
-
-        /// <summary>
-        /// Returns a value indicating whether the command-line arguments are requesting help.
-        /// </summary>
-        /// <param name="args">The command-line arguments.</param>
-        /// <returns>A value indicating whether the command-line arguments are requesting help.</returns>
-        private static bool IsHelpRequest(IList<string> args)
-        {
-            return args.Contains("--help") || args.Contains("-h") || args.Contains("-?");
         }
 
         /// <summary>
@@ -709,8 +745,12 @@ namespace Hourglass
             }
         }
 
+        #endregion
+
+        #region Classes
+
         /// <summary>
-        /// Represents an error during <see cref="ParseInternal"/>.
+        /// Represents an error during <see cref="CommandLineArguments.GetCommandLineArguments"/>.
         /// </summary>
         private class ParseException : Exception
         {
@@ -723,5 +763,7 @@ namespace Hourglass
             {
             }
         }
+
+        #endregion
     }
 }

@@ -14,7 +14,7 @@
     <Setting Name="ShowInNotificationArea" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="WindowSize" Type="Hourglass.WindowSize" Scope="User">
+    <Setting Name="WindowSize" Type="Hourglass.Serialization.WindowSizeInfo" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Colors" Type="Hourglass.Serialization.TimerColorInfoList" Scope="User">

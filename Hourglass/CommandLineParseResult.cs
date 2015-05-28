@@ -24,9 +24,9 @@ namespace Hourglass
         Failure,
 
         /// <summary>
-        /// Indicates that the user has requested command-line usage to be shown.
+        /// Indicates that usage should be showed to the user.
         /// </summary>
-        UsageRequested
+        ShowUsage
     }
 
     /// <summary>
@@ -96,14 +96,15 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns a new instance of the <see cref="CommandLineParseResult"/> class for a help request.
+        /// Returns a new instance of the <see cref="CommandLineParseResult"/> class indicating that usage should be
+        /// showed to the user.
         /// </summary>
         /// <returns>A new instance of the <see cref="CommandLineParseResult"/> class.</returns>
-        public static CommandLineParseResult ForHelpRequest()
+        public static CommandLineParseResult ForShowUsage()
         {
             return new CommandLineParseResult
             {
-                Type = CommandLineParseResultType.UsageRequested
+                Type = CommandLineParseResultType.ShowUsage
             };
         }
     }

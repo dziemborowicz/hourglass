@@ -9,6 +9,8 @@ namespace Hourglass
     using System.Linq;
     using System.Windows;
 
+    using Hourglass.Serialization;
+
     /// <summary>
     /// The size, position, and state of a window.
     /// </summary>
@@ -19,6 +21,10 @@ namespace Hourglass
         /// </summary>
         public WindowSize()
         {
+            this.RestoreBounds = Rect.Empty;
+            this.WindowState = WindowState.Normal;
+            this.RestoreWindowState = WindowState.Normal;
+            this.IsFullScreen = false;
         }
 
         /// <summary>
@@ -31,7 +37,7 @@ namespace Hourglass
         /// <param name="restoreWindowState">The window's <see cref="Window.WindowState"/> before the window was
         /// minimized.</param>
         /// <param name="isFullScreen">A value indicating whether the window is in full-screen mode.</param>
-        public WindowSize(Rect? restoreBounds, WindowState? windowState, WindowState? restoreWindowState, bool? isFullScreen)
+        public WindowSize(Rect restoreBounds, WindowState windowState, WindowState restoreWindowState, bool isFullScreen)
         {
             this.RestoreBounds = restoreBounds;
             this.WindowState = windowState;
@@ -40,24 +46,24 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets or sets the size and location of the window before being either minimized or maximized.
+        /// Gets the size and location of the window before being either minimized or maximized.
         /// </summary>
-        public Rect? RestoreBounds { get; set; }
+        public Rect RestoreBounds { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the window is restored, minimized, or maximized.
+        /// Gets a value that indicates whether the window is restored, minimized, or maximized.
         /// </summary>
-        public WindowState? WindowState { get; set; }
+        public WindowState WindowState { get; private set; }
 
         /// <summary>
-        /// Gets or sets the window's <see cref="Window.WindowState"/> before the window was minimized.
+        /// Gets the window's <see cref="Window.WindowState"/> before the window was minimized.
         /// </summary>
-        public WindowState? RestoreWindowState { get; set; }
+        public WindowState RestoreWindowState { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the window is in full-screen mode.
+        /// Gets a value indicating whether the window is in full-screen mode.
         /// </summary>
-        public bool? IsFullScreen { get; set; }
+        public bool IsFullScreen { get; private set; }
 
         /// <summary>
         /// Returns a <see cref="WindowSize"/> for the specified <see cref="WindowSize"/>, or <c>null</c> if the
@@ -78,6 +84,27 @@ namespace Hourglass
                 windowSize.WindowState,
                 windowSize.RestoreWindowState,
                 windowSize.IsFullScreen);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="WindowSize"/> for the specified <see cref="WindowSizeInfo"/>, or <c>null</c> if the
+        /// specified <see cref="WindowSizeInfo"/> is <c>null</c>.
+        /// </summary>
+        /// <param name="info">A <see cref="WindowSizeInfo"/>.</param>
+        /// <returns>A <see cref="WindowSize"/> for the specified <see cref="WindowSizeInfo"/>, or <c>null</c> if the
+        /// specified <see cref="WindowSizeInfo"/> is <c>null</c>.</returns>
+        public static WindowSize FromWindowSizeInfo(WindowSizeInfo info)
+        {
+            if (info == null)
+            {
+                return null;
+            }
+
+            return new WindowSize(
+                info.RestoreBounds,
+                info.WindowState,
+                info.RestoreWindowState,
+                info.IsFullScreen);
         }
 
         /// <summary>
@@ -149,32 +176,17 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns a <see cref="WindowSize"/> with the merged properties of <paramref name="windowSizes"/>, with the
-        /// last <see cref="WindowSize"/>s taking precedence.
+        /// Returns the representation of the <see cref="WindowSizeInfo"/> used for XML serialization.
         /// </summary>
-        /// <remarks>
-        /// This method never returns <c>null</c>. If no <paramref name="windowSizes"/> are specified, or all specified
-        /// <paramref name="windowSizes"/> are <c>null</c>, this method will return a <see cref="WindowSize"/> with no
-        /// properties set.
-        /// </remarks>
-        /// <param name="windowSizes">An collection of <see cref="WindowSize"/>s.</param>
-        /// <returns>A <see cref="WindowSize"/> with the merged properties of <paramref name="windowSizes"/>.</returns>
-        public static WindowSize Merge(params WindowSize[] windowSizes)
+        /// <returns>The representation of the <see cref="WindowSizeInfo"/> used for XML serialization.</returns>
+        public WindowSizeInfo ToWindowSizeInfo()
         {
-            WindowSize result = new WindowSize();
-
-            foreach (WindowSize windowSize in windowSizes)
-            {
-                if (windowSize != null)
-                {
-                    result.RestoreBounds = windowSize.RestoreBounds ?? result.RestoreBounds;
-                    result.WindowState = windowSize.WindowState ?? result.WindowState;
-                    result.RestoreWindowState = windowSize.RestoreWindowState ?? result.RestoreWindowState;
-                    result.IsFullScreen = windowSize.IsFullScreen ?? result.IsFullScreen;
-                }
-            }
-
-            return result;
+            WindowSizeInfo info = new WindowSizeInfo();
+            info.RestoreBounds = this.RestoreBounds;
+            info.WindowState = this.WindowState;
+            info.RestoreWindowState = this.RestoreWindowState;
+            info.IsFullScreen = this.IsFullScreen;
+            return info;
         }
     }
 }

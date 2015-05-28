@@ -57,7 +57,7 @@ namespace Hourglass.Serialization
         /// <summary>
         /// Gets or sets the size, position, and state of the timer window.
         /// </summary>
-        public WindowSize WindowSize { get; set; }
+        public WindowSizeInfo WindowSize { get; set; }
 
         /// <summary>
         /// Returns a <see cref="TimerOptionsInfo"/> for the specified <see cref="TimerOptions"/>.

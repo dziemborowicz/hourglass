@@ -386,7 +386,7 @@ namespace Hourglass
             this.color = TimerColor.FromTimerColorInfo(optionsInfo.Color) ?? TimerColor.DefaultColor;
             this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
             this.loopSound = optionsInfo.LoopSound;
-            this.windowSize = WindowSize.FromWindowSize(optionsInfo.WindowSize);
+            this.windowSize = WindowSize.FromWindowSizeInfo(optionsInfo.WindowSize);
         }
 
         /// <summary>
@@ -404,7 +404,7 @@ namespace Hourglass
             info.Color = TimerColorInfo.FromTimerColor(this.color);
             info.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;
             info.LoopSound = this.loopSound;
-            info.WindowSize = WindowSize.FromWindowSize(this.windowSize);
+            info.WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize);
             return info;
         }
 

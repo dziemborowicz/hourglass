@@ -7,7 +7,6 @@
 namespace Hourglass
 {
     using System;
-    using System.Collections.Generic;
     using System.Windows;
 
     using Hourglass.Properties;
@@ -57,14 +56,17 @@ namespace Hourglass
         {
             AppManager.Instance.Initialize();
 
-            TimerWindow window;
-            CommandLineParseResult result;
-            if (!TryGetTimerWindowForArgs(e.CommandLine, out window, out result))
+            CommandLineParseResult result = CommandLineArguments.Parse(e.CommandLine);
+            if (result.Type != CommandLineParseResultType.Success)
             {
                 CommandLineArguments.ShowUsage(result.ErrorMessage);
                 AppManager.Instance.Dispose();
                 return false;
             }
+
+            SetGlobalSettingsFromArguments(result.Arguments);
+
+            TimerWindow window = GetTimerWindowFromArguments(result.Arguments);
 
             this.app = new App();
             this.app.Exit += AppExit;
@@ -80,14 +82,16 @@ namespace Hourglass
         /// whether the first application instance should be brought to the foreground.</param>
         protected override void OnStartupNextInstance(StartupNextInstanceEventArgs e)
         {
-            TimerWindow window;
-            CommandLineParseResult result;
-            if (!TryGetTimerWindowForArgs(e.CommandLine, out window, out result))
+            CommandLineParseResult result = CommandLineArguments.Parse(e.CommandLine);
+            if (result.Type != CommandLineParseResultType.Success)
             {
                 CommandLineArguments.ShowUsage(result.ErrorMessage);
                 return;
             }
 
+            SetGlobalSettingsFromArguments(result.Arguments);
+
+            TimerWindow window = GetTimerWindowFromArguments(result.Arguments);
             window.Show();
 
             if (window.WindowState != WindowState.Minimized)
@@ -97,88 +101,23 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Parses command-line arguments and instantiates a new instance of the <see cref="TimerWindow"/> class.
-        /// </summary>
-        /// <param name="args">The command-line arguments.</param>
-        /// <param name="window">The new instance of the <see cref="TimerWindow"/> class.</param>
-        /// <param name="result">A <see cref="CommandLineParseResult"/>.</param>
-        /// <returns><c>true</c> if a <see cref="TimerWindow"/> was successfully instantiated, or <c>false</c> if the
-        /// command-line arguments were invalid.</returns>
-        private static bool TryGetTimerWindowForArgs(IList<string> args, out TimerWindow window, out CommandLineParseResult result)
-        {
-            result = CommandLineArguments.Parse(args);
-            if (result.Type != CommandLineParseResultType.Success)
-            {
-                window = null;
-                return false;
-            }
-
-            window = GetTimerWindowForArguments(result.Arguments);
-            SetGlobalOptionsFromArguments(result.Arguments);
-            return true;
-        }
-
-        /// <summary>
-        /// Returns a new <see cref="TimerWindow"/> from parsed command-line arguments.
+        /// Returns a new instance of the <see cref="TimerWindow"/> class for the parsed command-line arguments.
         /// </summary>
         /// <param name="arguments">Parsed command-line arguments.</param>
-        /// <returns>A new <see cref="TimerWindow"/> from parsed command-line arguments.</returns>
-        private static TimerWindow GetTimerWindowForArguments(CommandLineArguments arguments)
+        /// <returns>A <see cref="TimerWindow"/>.</returns>
+        private static TimerWindow GetTimerWindowFromArguments(CommandLineArguments arguments)
         {
             TimerWindow window = new TimerWindow(arguments.Input);
-            SetWindowOptionsFromArguments(window, arguments);
-            RestoreWindowFromArguments(window, arguments);
-            return window;
-        }
-
-        /// <summary>
-        /// Sets the <see cref="TimerOptions"/> for a <see cref="TimerWindow"/> from parsed command-line arguments.
-        /// </summary>
-        /// <param name="window">A <see cref="TimerWindow"/>.</param>
-        /// <param name="arguments">Parsed command-line arguments.</param>
-        private static void SetWindowOptionsFromArguments(TimerWindow window, CommandLineArguments arguments)
-        {
             window.Options.Set(arguments.ToTimerOptions());
-        }
-
-        /// <summary>
-        /// Restores the size, position, and state of a window from parsed command-line arguments.
-        /// </summary>
-        /// <param name="window">A <see cref="TimerWindow"/>.</param>
-        /// <param name="arguments">Parsed command-line arguments.</param>
-        private static void RestoreWindowFromArguments(TimerWindow window, CommandLineArguments arguments)
-        {
-            // Work out window size
-            WindowSize windowSizeFromSettings = Settings.Default.WindowSize;
-            WindowSize windowSizeFromSibling = WindowSize.FromSiblingOfWindow(window);
-            WindowSize windowSizeFromArguments = arguments.ToWindowSize();
-            WindowSize windowSize = WindowSize.Merge(
-                windowSizeFromSettings,
-                windowSizeFromSibling,
-                windowSizeFromArguments);
-
-            // Work out restore options
-            WindowRestoreOptions restoreOptions = WindowRestoreOptions.None;
-
-            if (windowSizeFromArguments.WindowState.HasValue)
-            {
-                restoreOptions |= WindowRestoreOptions.AllowMinimizedState;
-            }
-
-            if (!windowSizeFromArguments.RestoreBounds.HasValue && windowSizeFromSibling != null && windowSizeFromSibling.RestoreBounds.HasValue)
-            {
-                restoreOptions |= WindowRestoreOptions.Offset;
-            }
-
-            // Restore
-            window.Restore(windowSize, restoreOptions);
+            window.Restore(arguments.ToWindowSize());
+            return window;
         }
 
         /// <summary>
         /// Sets global options from parsed command-line arguments.
         /// </summary>
         /// <param name="arguments">Parsed command-line arguments.</param>
-        private static void SetGlobalOptionsFromArguments(CommandLineArguments arguments)
+        private static void SetGlobalSettingsFromArguments(CommandLineArguments arguments)
         {
             Settings.Default.ShowInNotificationArea = arguments.ShowInNotificationArea;
         }

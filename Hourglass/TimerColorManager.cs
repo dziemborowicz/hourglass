@@ -6,6 +6,7 @@
 
 namespace Hourglass
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Media;
@@ -148,12 +149,12 @@ namespace Hourglass
                 return null;
             }
 
-            if (object.Equals(name, this.defaultColor.Name) && object.Equals(isBuiltIn, this.defaultColor.IsBuiltIn))
+            if (string.Equals(name, this.defaultColor.Name, StringComparison.CurrentCultureIgnoreCase) && object.Equals(isBuiltIn, this.defaultColor.IsBuiltIn))
             {
                 return this.defaultColor;
             }
 
-            return this.colors.FirstOrDefault(c => object.Equals(c.Name, name) && object.Equals(c.IsBuiltIn, isBuiltIn));
+            return this.colors.FirstOrDefault(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase) && object.Equals(c.IsBuiltIn, isBuiltIn));
         }
 
         /// <summary>

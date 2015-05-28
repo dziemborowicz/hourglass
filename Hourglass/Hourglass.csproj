@@ -106,6 +106,7 @@
     <Compile Include="Serialization\TimerInputInfo.cs" />
     <Compile Include="Serialization\TimerInputInfoList.cs" />
     <Compile Include="Serialization\TimerOptionsInfo.cs" />
+    <Compile Include="Serialization\WindowSizeInfo.cs" />
     <Compile Include="SettingsManager.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
