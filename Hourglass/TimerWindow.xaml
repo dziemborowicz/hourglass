@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Hourglass"
         Title="Hourglass" Width="350" Height="150" MinWidth="250" MinHeight="150"
-        Loaded="WindowLoaded" StateChanged="WindowStateChanged" Closing="WindowClosing" MouseDown="WindowMouseDown">
+        Loaded="WindowLoaded" StateChanged="WindowStateChanged" Closing="WindowClosing"
+        MouseDown="WindowMouseDown" MouseDoubleClick="WindowMouseDoubleClick">
     <Window.CommandBindings>
         <CommandBinding Command="local:TimerWindow.StartCommand" Executed="StartCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.PauseCommand" Executed="PauseCommandExecuted"/>

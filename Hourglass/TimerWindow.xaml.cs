@@ -1360,6 +1360,16 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Invoked when a mouse button is clicked two or more times on the <see cref="TimerWindow"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            this.IsFullScreen = !this.IsFullScreen;
+        }
+
+        /// <summary>
         /// Invoked when the window's WindowState property changes.
         /// </summary>
         /// <param name="sender">The <see cref="TimerWindow"/>.</param>
