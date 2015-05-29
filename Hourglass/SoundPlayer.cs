@@ -33,11 +33,6 @@ namespace Hourglass
         private readonly MediaPlayer mediaPlayer;
 
         /// <summary>
-        /// A value indicating whether the player is looping the sound playback indefinitely.
-        /// </summary>
-        private bool isLooping;
-
-        /// <summary>
         /// Indicates whether this object has been disposed.
         /// </summary>
         private bool disposed;
@@ -84,6 +79,20 @@ namespace Hourglass
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether the player is playing a sound.
+        /// </summary>
+        public bool IsPlaying { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the player is looping the sound playback indefinitely.
+        /// </summary>
+        public bool IsLooping { get; private set; }
+
+        #endregion
+
         #region Public Methods
 
         /// <summary>
@@ -110,7 +119,8 @@ namespace Hourglass
 
             try
             {
-                this.isLooping = loop;
+                this.IsPlaying = true;
+                this.IsLooping = loop;
 
                 if (sound.IsBuiltIn)
                 {
@@ -163,7 +173,8 @@ namespace Hourglass
 
             try
             {
-                this.isLooping = false;
+                this.IsPlaying = false;
+                this.IsLooping = false;
 
                 // Stop the sound player
                 this.soundPlayer.Stop();
@@ -218,6 +229,9 @@ namespace Hourglass
 
             if (disposing)
             {
+                this.IsPlaying = false;
+                this.IsLooping = false;
+
                 // Dispose the sound player
                 this.soundPlayer.Stop();
                 this.soundPlayer.Dispose();
@@ -307,7 +321,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void MediaPlayerOnMediaEnded(object sender, EventArgs e)
         {
-            if (this.isLooping)
+            if (this.IsLooping)
             {
                 this.mediaPlayer.Position = TimeSpan.Zero;
                 this.mediaPlayer.Play();

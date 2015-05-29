@@ -3,8 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Hourglass"
         Title="Hourglass" Width="350" Height="150" MinWidth="250" MinHeight="150"
-        Loaded="WindowLoaded" StateChanged="WindowStateChanged" Closing="WindowClosing"
-        KeyDown="WindowKeyDown" MouseDown="WindowMouseDown">
+        Loaded="WindowLoaded" StateChanged="WindowStateChanged" Closing="WindowClosing" MouseDown="WindowMouseDown">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:TimerWindow.StartCommand" Executed="StartCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.PauseCommand" Executed="PauseCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.ResumeCommand" Executed="ResumeCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.PauseResumeCommand" Executed="PauseResumeCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.StopCommand" Executed="StopCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.ResetCommand" Executed="ResetCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.CloseCommand" Executed="CloseCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.CancelCommand" Executed="CancelCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.EscapeCommand" Executed="EscapeCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.FullScreenCommand" Executed="FullScreenCommandExecuted"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="local:TimerWindow.PauseResumeCommand" Gesture="Space"/>
+        <KeyBinding Command="local:TimerWindow.PauseResumeCommand" Gesture="Ctrl+P"/>
+        <KeyBinding Command="local:TimerWindow.StopCommand" Gesture="Ctrl+S"/>
+        <KeyBinding Command="local:TimerWindow.EscapeCommand" Gesture="Esc"/>
+        <KeyBinding Command="local:TimerWindow.FullScreenCommand" Gesture="Alt+Enter"/>
+    </Window.InputBindings>
     <Window.Resources>
         <Style TargetType="{x:Type ProgressBar}">
             <Setter Property="Template">
@@ -158,13 +176,13 @@
                          TextAlignment="Center"
                          local:Watermark.Hint="Click to enter time or date"/>
                 <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">
-                    <Button x:Name="StartButton" Content="Start" Click="StartButtonClick" IsDefault="True"/>
-                    <Button x:Name="PauseButton" Content="Pause" Click="PauseButtonClick"/>
-                    <Button x:Name="ResumeButton" Content="Resume" Click="ResumeButtonClick"/>
-                    <Button x:Name="StopButton" Content="Stop" Click="StopButtonClick"/>
-                    <Button x:Name="ResetButton" Content="Reset" Click="ResetButtonClick"/>
-                    <Button x:Name="CloseButton" Content="Close" Click="CloseButtonClick"/>
-                    <Button x:Name="CancelButton" Content="Cancel" Click="CancelButtonClick" IsCancel="True"/>
+                    <Button x:Name="StartButton" Content="Start" Command="local:TimerWindow.StartCommand" IsDefault="True"/>
+                    <Button x:Name="PauseButton" Content="Pause" Command="local:TimerWindow.PauseCommand"/>
+                    <Button x:Name="ResumeButton" Content="Resume" Command="local:TimerWindow.ResumeCommand"/>
+                    <Button x:Name="StopButton" Content="Stop" Command="local:TimerWindow.StopCommand"/>
+                    <Button x:Name="ResetButton" Content="Reset" Command="local:TimerWindow.ResetCommand"/>
+                    <Button x:Name="CloseButton" Content="Close" Command="local:TimerWindow.CloseCommand"/>
+                    <Button x:Name="CancelButton" Content="Cancel" Command="local:TimerWindow.CancelCommand"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

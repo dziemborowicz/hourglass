@@ -18,7 +18,8 @@ namespace Hourglass
         /// Removes focus from the <see cref="FrameworkElement"/>.
         /// </summary>
         /// <param name="element">A <see cref="FrameworkElement"/>.</param>
-        public static void Unfocus(this FrameworkElement element)
+        /// <returns>A value indicating whether the focus was removed from the element.</returns>
+        public static bool Unfocus(this FrameworkElement element)
         {
             if (element.IsFocused)
             {
@@ -30,7 +31,10 @@ namespace Hourglass
 
                 DependencyObject scope = FocusManager.GetFocusScope(element);
                 FocusManager.SetFocusedElement(scope, parent);
+                return true;
             }
+
+            return false;
         }
     }
 }

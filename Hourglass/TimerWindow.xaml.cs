@@ -38,6 +38,60 @@ namespace Hourglass
     /// </summary>
     public partial class TimerWindow : INotifyPropertyChanged, IRestorableWindow
     {
+        #region Commands
+
+        /// <summary>
+        /// Starts a new timer.
+        /// </summary>
+        public static readonly RoutedCommand StartCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Pauses a running timer.
+        /// </summary>
+        public static readonly RoutedCommand PauseCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Resumes a paused timer.
+        /// </summary>
+        public static readonly RoutedCommand ResumeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Resumes a paused or resumes timer.
+        /// </summary>
+        public static readonly RoutedCommand PauseResumeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Stops a running timer and enters input mode.
+        /// </summary>
+        public static readonly RoutedCommand StopCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Enters input mode.
+        /// </summary>
+        public static readonly RoutedCommand ResetCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Closes the window.
+        /// </summary>
+        public static readonly RoutedCommand CloseCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Cancels editing.
+        /// </summary>
+        public static readonly RoutedCommand CancelCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Exits input mode, enters input mode, or exits full-screen mode depending on the state of the window.
+        /// </summary>
+        public static readonly RoutedCommand EscapeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Toggles full-screen mode.
+        /// </summary>
+        public static readonly RoutedCommand FullScreenCommand = new RoutedCommand();
+
+        #endregion
+
         #region Private Members
 
         /// <summary>
@@ -299,7 +353,7 @@ namespace Hourglass
                 if (this.isFullScreen)
                 {
                     this.WindowStyle = WindowStyle.None;
-                    this.WindowState = WindowState.Normal;
+                    this.WindowState = WindowState.Normal; // Needed to put the window on top of the taskbar
                     this.WindowState = WindowState.Maximized;
                     this.ResizeMode = ResizeMode.NoResize;
                 }
@@ -513,55 +567,77 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Cancels the current action, or resets the interface.
+        /// <para>
+        /// When the window is in input mode, this method switches back to status mode if there is a running or paused
+        /// timer or it stops the notification sound if it is playing.
+        /// </para><para>
+        /// When the window is in status mode, this method switches to input mode if the timer is expired or stops the
+        /// notification sound if it is playing.
+        /// </para>
         /// </summary>
         /// <remarks>
         /// This is invoked when the user presses the Escape key, or performs an equivalent action.
         /// </remarks>
-        private void CancelOrReset()
+        /// <returns>A value indicating whether any action was performed.</returns>
+        private bool CancelOrReset()
         {
             switch (this.Mode)
             {
                 case TimerWindowMode.Input:
+                    // Switch back to showing the running timer if there is one
                     if (this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired)
                     {
                         this.SwitchToStatusMode();
+                        return true;
+                    }
+                    
+                    // Stop playing the notification sound if it is playing
+                    if (this.soundPlayer.IsPlaying)
+                    {
+                        this.EndAnimationsAndSounds();
+                        return true;
                     }
 
-                    this.EndAnimationsAndSounds();
-                    return;
+                    return false;
 
                 case TimerWindowMode.Status:
-                    if (this.Timer.State != TimerState.Expired)
-                    {
-                        this.UnfocusAll();
-                    }
-                    else
+                    // Switch to input mode if the timer is expired
+                    if (this.Timer.State == TimerState.Expired)
                     {
                         this.Timer.Stop();
                         this.SwitchToInputMode();
+                        return true;
+                    }
+                    
+                    // Stop playing the notification sound if it is playing
+                    if (this.soundPlayer.IsPlaying)
+                    {
+                        this.EndAnimationsAndSounds();
+                        return true;
                     }
 
-                    this.EndAnimationsAndSounds();
-                    return;
+                    // Stop editing and unfocus buttons if focused
+                    return this.UnfocusAll();
             }
+
+            return false;
         }
 
         /// <summary>
         /// Removes focus from all controls.
         /// </summary>
-        private void UnfocusAll()
+        /// <returns>A value indicating whether the focus was removed from any element.</returns>
+        private bool UnfocusAll()
         {
-            this.TitleTextBox.Unfocus();
-            this.TimerTextBox.Unfocus();
-
-            this.StartButton.Unfocus();
-            this.PauseButton.Unfocus();
-            this.ResumeButton.Unfocus();
-            this.StopButton.Unfocus();
-            this.ResetButton.Unfocus();
-            this.CloseButton.Unfocus();
-            this.CancelButton.Unfocus();
+            return this.TitleTextBox.Unfocus()
+                || this.TimerTextBox.Unfocus()
+                || this.StartButton.Unfocus()
+                || this.PauseButton.Unfocus()
+                || this.ResumeButton.Unfocus()
+                || this.StopButton.Unfocus()
+                || this.ResetButton.Unfocus()
+                || this.CloseButton.Unfocus()
+                || this.CancelButton.Unfocus();
         }
 
         #endregion
@@ -1012,14 +1088,14 @@ namespace Hourglass
 
         #endregion
 
-        #region Private Methods (Window Events)
+        #region Private Methods (Commands)
 
         /// <summary>
-        /// Invoked when the <see cref="StartButton"/> is clicked.
+        /// Invoked when the <see cref="StartCommand"/> is executed.
         /// </summary>
-        /// <param name="sender">The <see cref="StartButton"/>.</param>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private void StartButtonClick(object sender, RoutedEventArgs e)
+        private void StartCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             TimerInput input = TimerInput.FromString(this.TimerTextBox.Text);
             if (input == null)
@@ -1029,71 +1105,130 @@ namespace Hourglass
             }
 
             this.Show(input);
+            this.StartButton.Unfocus();
         }
 
         /// <summary>
-        /// Invoked when the <see cref="PauseButton"/> is clicked.
+        /// Invoked when the <see cref="PauseCommand"/> is executed.
         /// </summary>
-        /// <param name="sender">The <see cref="PauseButton"/>.</param>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private void PauseButtonClick(object sender, RoutedEventArgs e)
+        private void PauseCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             this.Timer.Pause();
-            this.UnfocusAll();
+            this.PauseButton.Unfocus();
         }
 
         /// <summary>
-        /// Invoked when the <see cref="ResumeButton"/> is clicked.
+        /// Invoked when the <see cref="ResumeCommand"/> is executed.
         /// </summary>
-        /// <param name="sender">The <see cref="ResumeButton"/>.</param>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private void ResumeButtonClick(object sender, RoutedEventArgs e)
+        private void ResumeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             this.Timer.Resume();
-            this.UnfocusAll();
+            this.ResumeButton.Unfocus();
         }
 
         /// <summary>
-        /// Invoked when the <see cref="StopButton"/> is clicked.
+        /// Invoked when the <see cref="PauseResumeCommand"/> is executed.
         /// </summary>
-        /// <param name="sender">The <see cref="StopButton"/>.</param>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private void StopButtonClick(object sender, RoutedEventArgs e)
+        private void PauseResumeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (this.Timer.State == TimerState.Running)
+            {
+                this.Timer.Pause();
+                this.PauseButton.Unfocus();
+            }
+            else if (this.Timer.State == TimerState.Paused)
+            {
+                this.Timer.Resume();
+                this.ResumeButton.Unfocus();
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="StopCommand"/> is executed.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void StopCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             this.Timer.Stop();
             this.SwitchToInputMode();
+            this.StopButton.Unfocus();
         }
 
         /// <summary>
-        /// Invoked when the <see cref="ResetButton"/> is clicked.
+        /// Invoked when the <see cref="ResetCommand"/> is executed.
         /// </summary>
-        /// <param name="sender">The <see cref="ResetButton"/>.</param>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private void ResetButtonClick(object sender, RoutedEventArgs e)
+        private void ResetCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             this.Timer.Stop();
             this.SwitchToInputMode();
+            this.ResetButton.Unfocus();
         }
 
         /// <summary>
-        /// Invoked when the <see cref="CloseButton"/> is clicked.
+        /// Invoked when the <see cref="CloseCommand"/> is executed.
         /// </summary>
-        /// <param name="sender">The <see cref="CloseButton"/>.</param>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private void CloseButtonClick(object sender, RoutedEventArgs e)
+        private void CloseCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             this.Close();
+            this.CloseButton.Unfocus();
         }
 
         /// <summary>
-        /// Invoked when the <see cref="CancelButton"/> is clicked.
+        /// Invoked when the <see cref="CancelCommand"/> is executed.
         /// </summary>
-        /// <param name="sender">The <see cref="CancelButton"/>.</param>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private void CancelButtonClick(object sender, RoutedEventArgs e)
+        private void CancelCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            this.CancelOrReset();
+            // Switch back to showing the running timer if there is one
+            if (this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired)
+            {
+                this.SwitchToStatusMode();
+                this.CancelButton.Unfocus();
+            }
         }
+
+        /// <summary>
+        /// Invoked when the <see cref="EscapeCommand"/> is executed.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void EscapeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            // Cancel or reset
+            bool canceledOrReset = this.CancelOrReset();
+
+            // If nothing changed, exit full-screen mode
+            if (!canceledOrReset && this.IsFullScreen)
+            {
+                this.IsFullScreen = false;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="FullScreenCommand"/> is executed.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void FullScreenCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.IsFullScreen = !this.IsFullScreen;
+        }
+
+        #endregion
+
+        #region Private Methods (Window Events)
 
         /// <summary>
         /// Invoked when a key on the keyboard is pressed in the <see cref="TitleTextBox"/>.
@@ -1104,7 +1239,7 @@ namespace Hourglass
         {
             if (e.Key == Key.Enter && this.Mode == TimerWindowMode.Status)
             {
-                this.UnfocusAll();
+                this.TitleTextBox.Unfocus();
                 e.Handled = true;
             }
         }
@@ -1210,38 +1345,6 @@ namespace Hourglass
             if (this.WindowState == WindowState.Minimized && Settings.Default.ShowInNotificationArea)
             {
                 this.MinimizeToNotificationArea();
-            }
-        }
-
-        /// <summary>
-        /// Invoked when a key on the keyboard is pressed in the <see cref="TimerWindow"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
-        /// <param name="e">The event data.</param>
-        private void WindowKeyDown(object sender, KeyEventArgs e)
-        {
-            // Cancel or reset on escape
-            if (e.Key == Key.Escape)
-            {
-                this.CancelOrReset();
-                e.Handled = true;
-                return;
-            }
-
-            // Pause or resume the timer on space
-            if (e.Key == Key.Space && this.Mode == TimerWindowMode.Status)
-            {
-                if (this.Timer.State == TimerState.Running && !(this.Timer is DateTimeTimer))
-                {
-                    this.Timer.Pause();
-                }
-                else if (this.Timer.State == TimerState.Paused)
-                {
-                    this.Timer.Resume();
-                }
-
-                e.Handled = true;
-                return;
             }
         }
 
