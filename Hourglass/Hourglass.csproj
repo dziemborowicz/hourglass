@@ -90,9 +90,11 @@
     <Compile Include="FocusUtility.cs" />
     <Compile Include="HourglassTimer.cs" />
     <Compile Include="IRestorableWindow.cs" />
+    <Compile Include="KeepAwakeManager.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="MathUtility.cs" />
     <Compile Include="MultiplierConverter.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="PortableSettingsProvider.cs" />
     <Compile Include="Serialization\DateTimeTimerInfo.cs" />
     <Compile Include="Serialization\DateTimeTimerInputInfo.cs" />

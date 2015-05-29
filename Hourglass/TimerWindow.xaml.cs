@@ -908,6 +908,8 @@ namespace Hourglass
                     this.CancelButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
 
                     this.Topmost = this.Options.AlwaysOnTop;
+
+                    this.UpdateKeepAwake();
                     return;
 
                 case TimerWindowMode.Status:
@@ -929,6 +931,8 @@ namespace Hourglass
                     this.CancelButton.IsEnabled = false;
 
                     this.Topmost = this.Options.AlwaysOnTop;
+
+                    this.UpdateKeepAwake();
                     return;
             }
         }
@@ -977,6 +981,22 @@ namespace Hourglass
                     this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
                     this.TaskbarItemInfo.ProgressValue = 1.0;
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Updates the registration of this window in the <see cref="KeepAwakeManager"/> based on the state of the
+        /// timer.
+        /// </summary>
+        private void UpdateKeepAwake()
+        {
+            if (this.Timer.State == TimerState.Running)
+            {
+                KeepAwakeManager.Instance.StartKeepAwakeFor(this);
+            }
+            else
+            {
+                KeepAwakeManager.Instance.StopKeepAwakeFor(this);
             }
         }
 
@@ -1409,6 +1429,7 @@ namespace Hourglass
             WindowSize windowSize = WindowSize.FromWindow(this /* window */);
             Settings.Default.WindowSize = WindowSizeInfo.FromWindowSize(windowSize);
 
+            KeepAwakeManager.Instance.StopKeepAwakeFor(this);
             AppManager.Instance.Persist();
         }
 

@@ -22,6 +22,7 @@ namespace Hourglass
         private static readonly Manager[] Managers = 
         {
             ErrorManager.Instance,
+            KeepAwakeManager.Instance,
             SoundManager.Instance,
             TimerColorManager.Instance,
             TimerInputManager.Instance,
