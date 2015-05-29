@@ -1366,7 +1366,11 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            this.IsFullScreen = !this.IsFullScreen;
+            if (e.OriginalSource is Panel)
+            {
+                this.IsFullScreen = !this.IsFullScreen;
+                e.Handled = true;
+            }
         }
 
         /// <summary>
