@@ -1355,8 +1355,11 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)
         {
-            this.CancelOrReset();
-            e.Handled = true;
+            if (e.OriginalSource is Panel)
+            {
+                this.CancelOrReset();
+                e.Handled = true;
+            }
         }
 
         /// <summary>
