@@ -407,7 +407,15 @@ namespace Hourglass
 
             // Start a new timer
             HourglassTimer newTimer = HourglassTimer.GetTimerForInput(input, this.Options);
-            newTimer.Start(input);
+
+            if (!newTimer.Start(input))
+            {
+                this.Show();
+                this.SwitchToInputMode();
+                this.BeginValidationErrorAnimation();
+                return;
+            }
+
             TimerManager.Instance.Add(newTimer);
 
             // Show the window

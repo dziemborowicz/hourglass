@@ -9,6 +9,7 @@ namespace Hourglass
     using System;
     using System.Text.RegularExpressions;
 
+    using Hourglass.Parsing;
     using Hourglass.Serialization;
 
     /// <summary>
@@ -30,7 +31,7 @@ namespace Hourglass
                 return null;
             }
 
-            if (Regex.IsMatch(str, @"^\s*(un)?till?\s*|^20\d\d$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            if (Regex.IsMatch(str, @"^\s*(un)?till?\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
             {
                 str = Regex.Replace(str, @"^\s*(un)?till?\s*", string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                 return TimerInput.FromDateTimeOrTimeSpanString(str);
@@ -48,14 +49,14 @@ namespace Hourglass
         /// cref="string"/> is not a valid input.</returns>
         public static TimerInput FromDateTimeOrTimeSpanString(string str)
         {
-            DateTime dateTime;
-            if (DateTimeUtility.TryParseNatural(str, out dateTime))
+            DateTimePart dateTimePart;
+            if (DateTimeUtility.TryParseNaturalPart(str, out dateTimePart))
             {
-                return new DateTimeTimerInput(dateTime);
+                return new DateTimeTimerInput(dateTimePart);
             }
 
             TimeSpan timeSpan;
-            if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
+            if (TimeSpanUtility.TryParseNatural(str, out timeSpan) && timeSpan > TimeSpan.Zero)
             {
                 return new TimeSpanTimerInput(timeSpan);
             }
@@ -73,15 +74,15 @@ namespace Hourglass
         public static TimerInput FromTimeSpanOrDateTimeString(string str)
         {
             TimeSpan timeSpan;
-            if (TimeSpanUtility.TryParseNatural(str, out timeSpan))
+            if (TimeSpanUtility.TryParseNatural(str, out timeSpan) && timeSpan > TimeSpan.Zero)
             {
                 return new TimeSpanTimerInput(timeSpan);
             }
 
-            DateTime dateTime;
-            if (DateTimeUtility.TryParseNatural(str, out dateTime))
+            DateTimePart dateTimePart;
+            if (DateTimeUtility.TryParseNaturalPart(str, out dateTimePart))
             {
-                return new DateTimeTimerInput(dateTime);
+                return new DateTimeTimerInput(dateTimePart);
             }
 
             return null;

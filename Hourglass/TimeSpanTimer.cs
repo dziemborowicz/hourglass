@@ -70,9 +70,10 @@ namespace Hourglass
         /// <summary>
         /// Starts the timer.
         /// </summary>
-        /// <param name="timerInput">A <see cref="TimeSpanTimerInput"/>.</param>
+        /// <param name="timerInput">A <see cref="TimerInput"/>.</param>
+        /// <returns>A value indicating whether the timer was started successfully.</returns>
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public override void Start(TimerInput timerInput)
+        public override bool Start(TimerInput timerInput)
         {
             TimeSpanTimerInput timeSpanTimerInput = (TimeSpanTimerInput)timerInput;
 
@@ -80,6 +81,7 @@ namespace Hourglass
             DateTime end = start.Add(timeSpanTimerInput.TimeSpan);
 
             this.Start(start, end, timerInput);
+            return true;
         }
 
         #endregion

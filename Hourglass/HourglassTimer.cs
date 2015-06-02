@@ -212,8 +212,9 @@ namespace Hourglass
         /// Starts the timer.
         /// </summary>
         /// <param name="timerInput">A <see cref="TimerInput"/>.</param>
+        /// <returns>A value indicating whether the timer was started successfully.</returns>
         /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public abstract void Start(TimerInput timerInput);
+        public abstract bool Start(TimerInput timerInput);
 
         /// <summary>
         /// Returns a string that represents the current object.

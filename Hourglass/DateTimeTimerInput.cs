@@ -6,8 +6,7 @@
 
 namespace Hourglass
 {
-    using System;
-
+    using Hourglass.Parsing;
     using Hourglass.Serialization;
 
     /// <summary>
@@ -18,11 +17,11 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeTimerInput"/> class.
         /// </summary>
-        /// <param name="dateTime">The <see cref="DateTime"/> until which the <see cref="DateTimeTimer"/> should count
-        /// down.</param>
-        public DateTimeTimerInput(DateTime dateTime)
+        /// <param name="dateTimePart">A <see cref="DateTimePart"/> representing the date and time until which the <see
+        /// cref="DateTimeTimer"/> should count down.</param>
+        public DateTimeTimerInput(DateTimePart dateTimePart)
         {
-            this.DateTime = dateTime;
+            this.DateTimePart = dateTimePart;
         }
 
         /// <summary>
@@ -32,49 +31,14 @@ namespace Hourglass
         /// <param name="inputInfo">A <see cref="DateTimeTimerInputInfo"/>.</param>
         public DateTimeTimerInput(DateTimeTimerInputInfo inputInfo)
         {
-            this.DateTime = inputInfo.DateTime;
+            this.DateTimePart = inputInfo.DateTimePart;
         }
 
         /// <summary>
-        /// Gets the <see cref="DateTime"/> until which the <see cref="DateTimeTimer"/> should count down.
+        /// Gets the <see cref="DateTimePart"/> representing the date and time until which the <see
+        /// cref="DateTimeTimer"/> should count down.
         /// </summary>
-        public DateTime DateTime { get; private set; }
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns><c>true</c> if the specified object is equal to the current object, or <c>false</c> otherwise.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (object.ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (object.ReferenceEquals(obj, null))
-            {
-                return false;
-            }
-
-            if (this.GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            DateTimeTimerInput dateTimeTimerInput = (DateTimeTimerInput)obj;
-            return this.DateTime.Equals(dateTimeTimerInput.DateTime);
-        }
-
-        /// <summary>
-        /// Serves as the default hash function.
-        /// </summary>
-        /// <returns>A hash code for the current object.</returns>
-        public override int GetHashCode()
-        {
-            return this.DateTime.GetHashCode();
-        }
+        public DateTimePart DateTimePart { get; private set; }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -82,7 +46,14 @@ namespace Hourglass
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return DateTimeUtility.ToNaturalString(this.DateTime);
+            try
+            {
+                return this.DateTimePart.ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         /// <summary>
@@ -91,7 +62,7 @@ namespace Hourglass
         /// <returns>The representation of the <see cref="TimerInput"/> used for XML serialization.</returns>
         public override TimerInputInfo ToTimerInputInfo()
         {
-            return new DateTimeTimerInputInfo { DateTime = this.DateTime };
+            return new DateTimeTimerInputInfo { DateTimePart = this.DateTimePart };
         }
     }
 }
