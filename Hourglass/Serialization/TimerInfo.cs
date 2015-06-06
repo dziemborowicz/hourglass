@@ -12,10 +12,7 @@ namespace Hourglass.Serialization
     /// <summary>
     /// The representation of a <see cref="Timer"/> used for XML serialization.
     /// </summary>
-    [XmlInclude(typeof(HourglassTimerInfo))]
-    [XmlInclude(typeof(DateTimeTimerInfo))]
-    [XmlInclude(typeof(TimeSpanTimerInfo))]
-    public abstract class TimerInfo
+    public class TimerInfo
     {
         /// <summary>
         /// Gets or sets the <see cref="TimerState"/> of this timer.
@@ -98,6 +95,17 @@ namespace Hourglass.Serialization
             get { return this.TotalTime.HasValue ? this.TotalTime.Value.Ticks : (long?)null; }
             set { this.TotalTime = value.HasValue ? new TimeSpan(value.Value) : (TimeSpan?)null; }
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TimerStart"/> used to start this timer, or <c>null</c> if the <see
+        /// cref="TimerBase.State"/> is <see cref="TimerState.Stopped"/>.
+        /// </summary>
+        public TimerStartInfo TimerStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the configuration data for this timer.
+        /// </summary>
+        public TimerOptionsInfo Options { get; set; }
 
         /// <summary>
         /// Returns a <see cref="TimerInfo"/> for the specified <see cref="Timer"/>.

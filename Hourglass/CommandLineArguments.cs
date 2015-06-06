@@ -37,10 +37,10 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets a <see cref="TimerInput"/>, or <c>null</c> if no <see cref="TimerInput"/> was specified on the command
+        /// Gets a <see cref="TimerStart"/>, or <c>null</c> if no <see cref="TimerStart"/> was specified on the command
         /// line.
         /// </summary>
-        public TimerInput Input { get; private set; }
+        public TimerStart TimerStart { get; private set; }
 
         /// <summary>
         /// Gets a user-specified title for the timer.
@@ -264,7 +264,7 @@ namespace Hourglass
         /// </summary>
         /// <param name="args">The command-line arguments.</param>
         /// <returns>The parsed command-line arguments.</returns>
-        /// <exception cref="Exception">If the command-line arguments could not be parsed.</exception>
+        /// <exception cref="ParseException">If the command-line arguments could not be parsed.</exception>
         private static CommandLineArguments GetCommandLineArguments(IEnumerable<string> args)
         {
             CommandLineArguments argumentsBasedOnMostRecentOptions = GetArgumentsFromMostRecentOptions();
@@ -450,10 +450,10 @@ namespace Hourglass
                         inputArgs.Insert(0, arg);
                         remainingArgs.Clear();
 
-                        TimerInput input = GetTimerInputValue(inputArgs);
+                        TimerStart timerStart = GetTimerStartValue(inputArgs);
 
-                        argumentsBasedOnMostRecentOptions.Input = input;
-                        argumentsBasedOnFactoryDefaults.Input = input;
+                        argumentsBasedOnMostRecentOptions.TimerStart = timerStart;
+                        argumentsBasedOnFactoryDefaults.TimerStart = timerStart;
                         break;
                 }
             }
@@ -484,8 +484,8 @@ namespace Hourglass
         /// <param name="arg">The name of the argument for which the value is to be returned.</param>
         /// <param name="remainingArgs">The unparsed arguments.</param>
         /// <returns>The next value in <paramref name="remainingArgs"/>.</returns>
-        /// <exception cref="Exception">If <paramref name="remainingArgs"/> is empty or the next argument in <paramref
-        /// name="remainingArgs"/> is a switch.</exception>
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument in
+        /// <paramref name="remainingArgs"/> is a switch.</exception>
         private static string GetRequiredValue(string arg, Queue<string> remainingArgs)
         {
             string value = GetValue(remainingArgs);
@@ -507,8 +507,8 @@ namespace Hourglass
         /// <param name="remainingArgs">The unparsed arguments.</param>
         /// <param name="last">The value of the argument returned when the user specifies "last".</param>
         /// <returns>The next <see cref="bool"/> value in <paramref name="remainingArgs"/>.</returns>
-        /// <exception cref="Exception">If <paramref name="remainingArgs"/> is empty or the next argument is not "on",
-        /// "off", or "last".</exception>
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
+        /// "on", "off", or "last".</exception>
         private static bool GetBoolValue(string arg, Queue<string> remainingArgs, bool last)
         {
             string value = GetRequiredValue(arg, remainingArgs);
@@ -539,8 +539,8 @@ namespace Hourglass
         /// <param name="remainingArgs">The unparsed arguments.</param>
         /// <param name="last">The value of the argument returned when the user specifies "last".</param>
         /// <returns>The next <see cref="TimerColor"/> value in <paramref name="remainingArgs"/></returns>
-        /// <exception cref="Exception">If <paramref name="remainingArgs"/> is empty or the next argument is not "last"
-        /// or a valid representation of a <see cref="TimerColor"/>.</exception>
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
+        /// "last" or a valid representation of a <see cref="TimerColor"/>.</exception>
         private static TimerColor GetTimerColorValue(string arg, Queue<string> remainingArgs, TimerColor last)
         {
             string value = GetRequiredValue(arg, remainingArgs);
@@ -578,7 +578,7 @@ namespace Hourglass
         /// <param name="remainingArgs">The unparsed arguments.</param>
         /// <param name="last">The value of the argument returned when the user specifies "last".</param>
         /// <returns>The next <see cref="Sound"/> value in <paramref name="remainingArgs"/>.</returns>
-        /// <exception cref="Exception">if <paramref name="remainingArgs"/> is empty or the next argument is not
+        /// <exception cref="ParseException">if <paramref name="remainingArgs"/> is empty or the next argument is not
         /// "none", "last", or a valid representation of a <see cref="Sound"/>.</exception>
         private static Sound GetSoundValue(string arg, Queue<string> remainingArgs, Sound last)
         {
@@ -614,7 +614,7 @@ namespace Hourglass
         /// <param name="remainingArgs">The unparsed arguments.</param>
         /// <param name="last">The value of the argument returned when the user specifies "last".</param>
         /// <returns>The next <see cref="WindowState"/> value in <paramref name="remainingArgs"/>.</returns>
-        /// <exception cref="Exception">If <paramref name="remainingArgs"/> is empty or the next argument is not
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
         /// "normal", "maximized", "minimized", or "last".</exception>
         private static WindowState GetWindowStateValue(string arg, Queue<string> remainingArgs, WindowState last)
         {
@@ -649,7 +649,7 @@ namespace Hourglass
         /// <param name="remainingArgs">The unparsed arguments.</param>
         /// <param name="last">The value of the argument returned when the user specifies "last".</param>
         /// <returns>The next <see cref="Rect"/> value in <paramref name="remainingArgs"/>.</returns>
-        /// <exception cref="Exception">If <paramref name="remainingArgs"/> is empty or the next argument is not a
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not a
         /// valid representation of a <see cref="Rect"/>.</exception>
         private static Rect GetRectValue(string arg, Queue<string> remainingArgs, Rect last)
         {
@@ -673,19 +673,19 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns the <see cref="TimerInput"/> value corresponding to the concatenation of all <paramref
+        /// Returns the <see cref="TimerStart"/> value corresponding to the concatenation of all <paramref
         /// name="remainingArgs"/>, or throws an exception if the concatenation of all <paramref name="remainingArgs"/>
-        /// is not a valid representation of a <see cref="TimerInput"/>.
+        /// is not a valid representation of a <see cref="TimerStart"/>.
         /// </summary>
         /// <param name="remainingArgs">The unparsed arguments.</param>
-        /// <returns>The <see cref="TimerInput"/> value corresponding to the concatenation of all <paramref
+        /// <returns>The <see cref="TimerStart"/> value corresponding to the concatenation of all <paramref
         /// name="remainingArgs"/></returns>
-        /// <exception cref="Exception">If the concatenation of all <paramref name="remainingArgs"/> is not a valid
-        /// representation of a <see cref="TimerInput"/>.</exception>
-        private static TimerInput GetTimerInputValue(IEnumerable<string> remainingArgs)
+        /// <exception cref="ParseException">If the concatenation of all <paramref name="remainingArgs"/> is not a
+        /// valid representation of a <see cref="TimerStart"/>.</exception>
+        private static TimerStart GetTimerStartValue(IEnumerable<string> remainingArgs)
         {
             string value = string.Join(" ", remainingArgs);
-            TimerInput input = TimerInput.FromString(value);
+            TimerStart input = TimerStart.FromString(value);
 
             if (input == null)
             {

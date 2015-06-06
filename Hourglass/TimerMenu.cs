@@ -255,7 +255,7 @@ namespace Hourglass
             this.showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
 
             // Loop timer
-            if (!(this.timerWindow.Timer is DateTimeTimer))
+            if (this.timerWindow.Timer.SupportsLooping)
             {
                 this.loopTimerMenuItem.IsEnabled = true;
                 this.loopTimerMenuItem.IsChecked = this.timerWindow.Options.LoopTimer;
@@ -270,7 +270,7 @@ namespace Hourglass
             this.popUpWhenExpiredMenuItem.IsChecked = this.timerWindow.Options.PopUpWhenExpired;
 
             // Close when expired
-            if ((!this.timerWindow.Options.LoopTimer || this.timerWindow.Timer is DateTimeTimer) && !this.timerWindow.Options.LoopSound)
+            if ((!this.timerWindow.Options.LoopTimer || !this.timerWindow.Timer.SupportsLooping) && !this.timerWindow.Options.LoopSound)
             {
                 this.closeWhenExpiredMenuItem.IsChecked = this.timerWindow.Options.CloseWhenExpired;
                 this.closeWhenExpiredMenuItem.IsEnabled = true;
@@ -460,7 +460,7 @@ namespace Hourglass
         {
             this.recentInputsMenuItem.Items.Clear();
 
-            if (TimerInputManager.Instance.Inputs.Count == 0)
+            if (TimerStartManager.Instance.TimerStarts.Count == 0)
             {
                 MenuItem noRecentInputsMenuItem = new MenuItem();
                 noRecentInputsMenuItem.Header = "No recent inputs";
@@ -470,11 +470,11 @@ namespace Hourglass
             }
             else
             {
-                foreach (TimerInput input in TimerInputManager.Instance.Inputs)
+                foreach (TimerStart timerStart in TimerStartManager.Instance.TimerStarts)
                 {
                     MenuItem timerMenuItem = new MenuItem();
-                    timerMenuItem.Header = input.ToString();
-                    timerMenuItem.Tag = input;
+                    timerMenuItem.Header = timerStart.ToString();
+                    timerMenuItem.Tag = timerStart;
                     timerMenuItem.Click += this.RecentInputMenuItemClick;
 
                     this.recentInputsMenuItem.Items.Add(timerMenuItem);
@@ -494,14 +494,14 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when a recent <see cref="TimerInput"/> <see cref="MenuItem"/> is clicked.
+        /// Invoked when a recent <see cref="TimerStart"/> <see cref="MenuItem"/> is clicked.
         /// </summary>
         /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
         /// <param name="e">The event data.</param>
         private void RecentInputMenuItemClick(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
-            TimerInput input = (TimerInput)menuItem.Tag;
+            TimerStart timerStart = (TimerStart)menuItem.Tag;
 
             TimerWindow window;
             if (this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired)
@@ -515,7 +515,7 @@ namespace Hourglass
                 window.RestoreFromWindow(this.timerWindow);
             }
 
-            window.Show(input);
+            window.Show(timerStart);
         }
 
         /// <summary>
@@ -525,7 +525,7 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void ClearRecentInputsMenuItemClick(object sender, RoutedEventArgs e)
         {
-            TimerInputManager.Instance.Clear();
+            TimerStartManager.Instance.Clear();
         }
 
         #endregion
@@ -539,7 +539,7 @@ namespace Hourglass
         {
             this.savedTimersMenuItem.Items.Clear();
 
-            IList<HourglassTimer> savedTimers = TimerManager.Instance.ResumableTimers;
+            IList<Timer> savedTimers = TimerManager.Instance.ResumableTimers;
 
             if (savedTimers.Count == 0)
             {
@@ -551,7 +551,7 @@ namespace Hourglass
             }
             else
             {
-                foreach (HourglassTimer savedTimer in savedTimers)
+                foreach (Timer savedTimer in savedTimers)
                 {
                     savedTimer.Update();
 
@@ -584,7 +584,7 @@ namespace Hourglass
         {
             foreach (MenuItem menuItem in this.savedTimersMenuItem.Items.OfType<MenuItem>())
             {
-                HourglassTimer timer = menuItem.Tag as HourglassTimer;
+                Timer timer = menuItem.Tag as Timer;
                 if (timer != null)
                 {
                     menuItem.Header = this.GetHeaderForTimer(timer);
@@ -595,22 +595,22 @@ namespace Hourglass
 
         /// <summary>
         /// Returns an object that can be set for the <see cref="MenuItem.Header"/> of a <see cref="MenuItem"/> that
-        /// displays an <see cref="HourglassTimer"/>.
+        /// displays a <see cref="Timer"/>.
         /// </summary>
-        /// <param name="timer">A <see cref="HourglassTimer"/>.</param>
+        /// <param name="timer">A <see cref="Timer"/>.</param>
         /// <returns>An object that can be set for the <see cref="MenuItem.Header"/>.</returns>
-        private object GetHeaderForTimer(HourglassTimer timer)
+        private object GetHeaderForTimer(Timer timer)
         {
             return timer.ToString();
         }
 
         /// <summary>
         /// Returns an object that can be set for the <see cref="MenuItem.Icon"/> of a <see cref="MenuItem"/> that
-        /// displays an <see cref="HourglassTimer"/>.
+        /// displays a <see cref="Timer"/>.
         /// </summary>
-        /// <param name="timer">A <see cref="HourglassTimer"/>.</param>
+        /// <param name="timer">A <see cref="Timer"/>.</param>
         /// <returns>An object that can be set for the <see cref="MenuItem.Icon"/>.</returns>
-        private object GetIconForTimer(HourglassTimer timer)
+        private object GetIconForTimer(Timer timer)
         {
             Border outerBorder = new Border();
             outerBorder.BorderBrush = new SolidColorBrush(Colors.LightGray);
@@ -643,14 +643,14 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when a saved <see cref="Timer"/> <see cref="MenuItem"/> is clicked.
+        /// Invoked when a saved timer <see cref="MenuItem"/> is clicked.
         /// </summary>
         /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
         /// <param name="e">The event data.</param>
         private void SavedTimerMenuItemClick(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
-            HourglassTimer savedTimer = (HourglassTimer)menuItem.Tag;
+            Timer savedTimer = (Timer)menuItem.Tag;
 
             if (this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired)
             {
@@ -663,10 +663,10 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Shows an existing <see cref="HourglassTimer"/> in the current <see cref="TimerWindow"/>.
+        /// Shows an existing <see cref="Timer"/> in the current <see cref="TimerWindow"/>.
         /// </summary>
-        /// <param name="savedTimer">An existing <see cref="HourglassTimer"/>.</param>
-        private void ShowSavedTimerInCurrentWindow(HourglassTimer savedTimer)
+        /// <param name="savedTimer">An existing <see cref="Timer"/>.</param>
+        private void ShowSavedTimerInCurrentWindow(Timer savedTimer)
         {
             if (savedTimer.Options.WindowSize != null)
             {
@@ -678,10 +678,10 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Shows an existing <see cref="HourglassTimer"/> in a new <see cref="TimerWindow"/>.
+        /// Shows an existing <see cref="Timer"/> in a new <see cref="TimerWindow"/>.
         /// </summary>
-        /// <param name="savedTimer">An existing <see cref="HourglassTimer"/>.</param>
-        private void ShowSavedTimerInNewWindow(HourglassTimer savedTimer)
+        /// <param name="savedTimer">An existing <see cref="Timer"/>.</param>
+        private void ShowSavedTimerInNewWindow(Timer savedTimer)
         {
             TimerWindow newTimerWindow = new TimerWindow();
 

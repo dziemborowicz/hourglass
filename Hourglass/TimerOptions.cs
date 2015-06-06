@@ -98,10 +98,10 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerOptions"/> class from a <see cref="TimerOptionsInfo"/>.
         /// </summary>
-        /// <param name="optionsInfo">A <see cref="TimerOptionsInfo"/>.</param>
-        public TimerOptions(TimerOptionsInfo optionsInfo)
+        /// <param name="info">A <see cref="TimerOptionsInfo"/>.</param>
+        public TimerOptions(TimerOptionsInfo info)
         {
-            this.Set(optionsInfo);
+            this.Set(info);
         }
 
         #endregion
@@ -337,12 +337,12 @@ namespace Hourglass
         /// Returns a <see cref="TimerOptions"/> for the specified <see cref="TimerOptionsInfo"/>, or <c>null</c> if
         /// the specified <see cref="TimerOptionsInfo"/> is <c>null</c>.
         /// </summary>
-        /// <param name="optionsInfo">A <see cref="TimerInputInfo"/>.</param>
+        /// <param name="info">A <see cref="TimerOptionsInfo"/>.</param>
         /// <returns>A <see cref="TimerOptions"/> for the specified <see cref="TimerOptionsInfo"/>, or <c>null</c> if
         /// the specified <see cref="TimerOptionsInfo"/> is <c>null</c>.</returns>
-        public static TimerOptions FromTimerOptionsInfo(TimerOptionsInfo optionsInfo)
+        public static TimerOptions FromTimerOptionsInfo(TimerOptionsInfo info)
         {
-            return optionsInfo != null ? new TimerOptions(optionsInfo) : null;
+            return info != null ? new TimerOptions(info) : null;
         }
 
         /// <summary>
@@ -370,23 +370,23 @@ namespace Hourglass
         /// <summary>
         /// Sets all of the options from an instance of the <see cref="TimerOptionsInfo"/> class.
         /// </summary>
-        /// <param name="optionsInfo">A <see cref="TimerOptionsInfo"/>.</param>
-        public void Set(TimerOptionsInfo optionsInfo)
+        /// <param name="info">A <see cref="TimerOptionsInfo"/>.</param>
+        public void Set(TimerOptionsInfo info)
         {
-            if (optionsInfo == null)
+            if (info == null)
             {
-                throw new ArgumentNullException("optionsInfo");
+                throw new ArgumentNullException("info");
             }
 
-            this.title = optionsInfo.Title;
-            this.alwaysOnTop = optionsInfo.AlwaysOnTop;
-            this.loopTimer = optionsInfo.LoopTimer;
-            this.popUpWhenExpired = optionsInfo.PopUpWhenExpired;
-            this.closeWhenExpired = optionsInfo.CloseWhenExpired;
-            this.color = TimerColor.FromTimerColorInfo(optionsInfo.Color) ?? TimerColor.DefaultColor;
-            this.sound = Sound.FromIdentifier(optionsInfo.SoundIdentifier);
-            this.loopSound = optionsInfo.LoopSound;
-            this.windowSize = WindowSize.FromWindowSizeInfo(optionsInfo.WindowSize);
+            this.title = info.Title;
+            this.alwaysOnTop = info.AlwaysOnTop;
+            this.loopTimer = info.LoopTimer;
+            this.popUpWhenExpired = info.PopUpWhenExpired;
+            this.closeWhenExpired = info.CloseWhenExpired;
+            this.color = TimerColor.FromTimerColorInfo(info.Color) ?? TimerColor.DefaultColor;
+            this.sound = Sound.FromIdentifier(info.SoundIdentifier);
+            this.loopSound = info.LoopSound;
+            this.windowSize = WindowSize.FromWindowSizeInfo(info.WindowSize);
         }
 
         /// <summary>
@@ -395,17 +395,18 @@ namespace Hourglass
         /// <returns>The representation of the <see cref="TimerOptions"/> used for XML serialization.</returns>
         public TimerOptionsInfo ToTimerOptionsInfo()
         {
-            TimerOptionsInfo info = new TimerOptionsInfo();
-            info.Title = this.title;
-            info.AlwaysOnTop = this.alwaysOnTop;
-            info.LoopTimer = this.loopTimer;
-            info.PopUpWhenExpired = this.popUpWhenExpired;
-            info.CloseWhenExpired = this.closeWhenExpired;
-            info.Color = TimerColorInfo.FromTimerColor(this.color);
-            info.SoundIdentifier = this.sound != null ? this.sound.Identifier : null;
-            info.LoopSound = this.loopSound;
-            info.WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize);
-            return info;
+            return new TimerOptionsInfo
+            {
+                Title = this.title,
+                AlwaysOnTop = this.alwaysOnTop,
+                LoopTimer = this.loopTimer,
+                PopUpWhenExpired = this.popUpWhenExpired,
+                CloseWhenExpired = this.closeWhenExpired,
+                Color = TimerColorInfo.FromTimerColor(this.color),
+                SoundIdentifier = this.sound != null ? this.sound.Identifier : null,
+                LoopSound = this.loopSound,
+                WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize)
+            };
         }
 
         #endregion

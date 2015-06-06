@@ -24,6 +24,29 @@ namespace Hourglass.Parsing
         public abstract bool IsValid { get; }
 
         /// <summary>
+        /// Returns a <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+        /// supported representation of a <see cref="TimerStartToken"/>.
+        /// </summary>
+        /// <param name="str">A string.</param>
+        /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+        /// supported representation of a <see cref="TimerStartToken"/>.</returns>
+        public static TimerStartToken FromString(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return null;
+            }
+
+            if (Regex.IsMatch(str, @"^\s*(un)?till?\s*", Parser.RegexOptions))
+            {
+                str = Regex.Replace(str, @"^\s*(un)?till?\s*", string.Empty, Parser.RegexOptions);
+                return FromDateTimeOrTimeSpanString(str);
+            }
+
+            return FromTimeSpanOrDateTimeString(str);
+        }
+
+        /// <summary>
         /// Returns the end time for a timer started with this token at a specified time.
         /// </summary>
         /// <param name="startTime">The time the timer is started.</param>
@@ -66,6 +89,56 @@ namespace Hourglass.Parsing
             {
                 throw new InvalidOperationException();
             }
+        }
+
+        /// <summary>
+        /// Returns a <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+        /// supported representation of a <see cref="TimerStartToken"/> favoring a <see cref="DateTimeToken"/> over a
+        /// <see cref="TimeSpanToken"/> in the case ambiguity.
+        /// </summary>
+        /// <param name="str">A string.</param>
+        /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+        /// supported representation of a <see cref="TimerStartToken"/>.</returns>
+        private static TimerStartToken FromDateTimeOrTimeSpanString(string str)
+        {
+            TimerStartToken timerStartToken;
+
+            if (DateTimeToken.Parser.Instance.TryParse(str, out timerStartToken))
+            {
+                return timerStartToken;
+            }
+
+            if (TimeSpanToken.Parser.Instance.TryParse(str, out timerStartToken))
+            {
+                return timerStartToken;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+        /// supported representation of a <see cref="TimerStartToken"/> favoring a <see cref="TimeSpanToken"/> over a
+        /// <see cref="DateTimeToken"/> in the case ambiguity.
+        /// </summary>
+        /// <param name="str">A string.</param>
+        /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+        /// supported representation of a <see cref="TimerStartToken"/>.</returns>
+        private static TimerStartToken FromTimeSpanOrDateTimeString(string str)
+        {
+            TimerStartToken timerStartToken;
+
+            if (TimeSpanToken.Parser.Instance.TryParse(str, out timerStartToken))
+            {
+                return timerStartToken;
+            }
+
+            if (DateTimeToken.Parser.Instance.TryParse(str, out timerStartToken))
+            {
+                return timerStartToken;
+            }
+
+            return null;
         }
 
         /// <summary>

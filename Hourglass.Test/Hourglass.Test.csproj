@@ -69,24 +69,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DateTimeTokenTest.cs" />
-    <Compile Include="DateTimeUtilityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimeSpanTokenTest.cs" />
-    <Compile Include="TimeSpanUtilityTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hourglass\Hourglass.csproj">
       <Project>{4e327d2c-9171-4596-82c5-a9c3cf5028e4}</Project>
       <Name>Hourglass</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DateTimeUtilityParseNaturalTestData.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\TimeSpanUtilityParseNaturalTestData.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

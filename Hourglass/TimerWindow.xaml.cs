@@ -23,12 +23,12 @@ namespace Hourglass
     public enum TimerWindowMode
     {
         /// <summary>
-        /// Indicates that the <see cref="TimerWindow"/> is accepting user input to start a new <see cref="Timer"/>.
+        /// Indicates that the <see cref="TimerWindow"/> is accepting user input to start a new timer.
         /// </summary>
         Input,
 
         /// <summary>
-        /// Indicates that the <see cref="TimerWindow"/> is displaying the status of a <see cref="Timer"/>.
+        /// Indicates that the <see cref="TimerWindow"/> is displaying the status of a timer.
         /// </summary>
         Status
     }
@@ -110,26 +110,25 @@ namespace Hourglass
         private TimerScaler scaler = new TimerScaler();
 
         /// <summary>
-        /// The <see cref="HourglassTimer"/> backing the window.
+        /// The timer backing the window.
         /// </summary>
-        private HourglassTimer timer = new TimeSpanTimer(TimerOptionsManager.Instance.MostRecentOptions);
+        private Timer timer = new Timer(TimerOptionsManager.Instance.MostRecentOptions);
 
         /// <summary>
-        /// The <see cref="HourglassTimer"/> to resume when the window loads, or <c>null</c> if no <see
-        /// cref="HourglassTimer"/> is to be resumed.
+        /// The timer to resume when the window loads, or <c>null</c> if no timer is to be resumed.
         /// </summary>
-        private HourglassTimer timerToResumeOnLoad;
+        private Timer timerToResumeOnLoad;
 
         /// <summary>
-        /// The <see cref="TimerInput"/> to start when the window loads, or <c>null</c> if no <see cref="TimerInput"/>
+        /// The <see cref="TimerStart"/> to start when the window loads, or <c>null</c> if no <see cref="TimerStart"/>
         /// is to be started.
         /// </summary>
-        private TimerInput inputToStartOnLoad;
+        private TimerStart timerStartToStartOnLoad;
 
         /// <summary>
-        /// The last <see cref="TimerInput"/> used to start a timer in the window.
+        /// The last <see cref="TimerStart"/> used to start a timer in the window.
         /// </summary>
-        private TimerInput lastInput = TimerInputManager.Instance.LastInput;
+        private TimerStart lastTimerStart = TimerStartManager.Instance.LastTimerStart;
 
         /// <summary>
         /// The <see cref="SoundPlayer"/> used to play notification sounds.
@@ -191,9 +190,9 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerWindow"/> class.
         /// </summary>
-        /// <param name="timer">The <see cref="HourglassTimer"/> to resume when the window loads, or <c>null</c> if no
-        /// <see cref="HourglassTimer"/> is to be resumed.</param>
-        public TimerWindow(HourglassTimer timer)
+        /// <param name="timer">The timer to resume when the window loads, or <c>null</c> if no timer is to be resumed.
+        /// </param>
+        public TimerWindow(Timer timer)
             : this()
         {
             this.timerToResumeOnLoad = timer;
@@ -202,12 +201,12 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerWindow"/> class.
         /// </summary>
-        /// <param name="input">The <see cref="TimerInput"/> to start when the window loads, or <c>null</c> if no <see
-        /// cref="TimerInput"/> is to be started.</param>
-        public TimerWindow(TimerInput input)
+        /// <param name="timerStart">The <see cref="TimerStart"/> to start when the window loads, or <c>null</c> if no
+        /// <see cref="TimerStart"/> is to be started.</param>
+        public TimerWindow(TimerStart timerStart)
             : this()
         {
-            this.inputToStartOnLoad = input;
+            this.timerStartToStartOnLoad = timerStart;
         }
 
         #endregion
@@ -278,9 +277,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets the <see cref="HourglassTimer"/> backing the window.
+        /// Gets the timer backing the window.
         /// </summary>
-        public HourglassTimer Timer
+        public Timer Timer
         {
             get
             {
@@ -302,7 +301,7 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets the <see cref="TimerOptions"/> for the <see cref="HourglassTimer"/> backing the window.
+        /// Gets the <see cref="TimerOptions"/> for the timer backing the window.
         /// </summary>
         public TimerOptions Options
         {
@@ -310,24 +309,24 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Gets the last <see cref="TimerInput"/> used to start a timer in the window.
+        /// Gets the last <see cref="TimerStart"/> used to start a timer in the window.
         /// </summary>
-        public TimerInput LastInput
+        public TimerStart LastTimerStart
         {
             get
             {
-                return this.lastInput;
+                return this.lastTimerStart;
             }
 
             private set
             {
-                if (this.lastInput == value)
+                if (this.lastTimerStart == value)
                 {
                     return;
                 }
 
-                this.lastInput = value;
-                this.OnPropertyChanged("LastInput");
+                this.lastTimerStart = value;
+                this.OnPropertyChanged("TimerStart");
             }
         }
 
@@ -395,20 +394,20 @@ namespace Hourglass
         #region Public Methods
 
         /// <summary>
-        /// Opens the <see cref="TimerWindow"/> if it is not already open and displays a new <see
-        /// cref="HourglassTimer"/> started with the specified <see cref="TimerInput"/>.
+        /// Opens the <see cref="TimerWindow"/> if it is not already open and displays a new timer started with the
+        /// specified <see cref="TimerStart"/>.
         /// </summary>
-        /// <param name="input">A <see cref="TimerInput"/>.</param>
-        public void Show(TimerInput input)
+        /// <param name="timerStart">A <see cref="TimerStart"/>.</param>
+        public void Show(TimerStart timerStart)
         {
             // Keep track of the input
-            this.LastInput = input;
-            TimerInputManager.Instance.Add(input);
+            this.LastTimerStart = timerStart;
+            TimerStartManager.Instance.Add(timerStart);
 
             // Start a new timer
-            HourglassTimer newTimer = HourglassTimer.GetTimerForInput(input, this.Options);
+            Timer newTimer = new Timer(this.Options);
 
-            if (!newTimer.Start(input))
+            if (!newTimer.Start(timerStart))
             {
                 this.Show();
                 this.SwitchToInputMode();
@@ -423,11 +422,10 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Opens the <see cref="TimerWindow"/> if it is not already open and displays the specified <see
-        /// cref="HourglassTimer"/>.
+        /// Opens the <see cref="TimerWindow"/> if it is not already open and displays the specified timer.
         /// </summary>
-        /// <param name="existingTimer">A <see cref="HourglassTimer"/>.</param>
-        public void Show(HourglassTimer existingTimer)
+        /// <param name="existingTimer">A timer.</param>
+        public void Show(Timer existingTimer)
         {
             // Show the status of the existing timer
             this.Timer = existingTimer;
@@ -552,7 +550,7 @@ namespace Hourglass
         {
             this.Mode = TimerWindowMode.Input;
 
-            this.TimerTextBox.Text = this.LastInput != null ? this.LastInput.ToString() : string.Empty;
+            this.TimerTextBox.Text = this.LastTimerStart != null ? this.LastTimerStart.ToString() : string.Empty;
 
             textBoxToFocus = textBoxToFocus ?? this.TimerTextBox;
             textBoxToFocus.SelectAll();
@@ -800,7 +798,7 @@ namespace Hourglass
                     break;
 
                 case TimerWindowMode.Status:
-                    if (this.Options.LoopTimer && !(this.Timer is DateTimeTimer))
+                    if (this.Options.LoopTimer && this.timer.SupportsLooping)
                     {
                         // Flash three times, or flash indefinitely if the sound is looped
                         if (this.flashExpirationCount < 3 || this.Options.LoopSound)
@@ -875,7 +873,7 @@ namespace Hourglass
         #region Private Methods (Timer Binding)
 
         /// <summary>
-        /// Binds the <see cref="TimerWindow"/> event handlers and controls to a <see cref="HourglassTimer"/>.
+        /// Binds the <see cref="TimerWindow"/> event handlers and controls to a timer.
         /// </summary>
         private void BindTimer()
         {
@@ -892,7 +890,7 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Updates the controls bound to <see cref="HourglassTimer"/> properties.
+        /// Updates the controls bound to timer properties.
         /// </summary>
         private void UpdateBoundControls()
         {
@@ -931,7 +929,7 @@ namespace Hourglass
                     this.UpdateTaskbarProgress();
 
                     this.StartButton.IsEnabled = false;
-                    this.PauseButton.IsEnabled = this.Timer.State == TimerState.Running && !(this.Timer is DateTimeTimer);
+                    this.PauseButton.IsEnabled = this.Timer.State == TimerState.Running && this.Timer.SupportsPause;
                     this.ResumeButton.IsEnabled = this.Timer.State == TimerState.Paused;
                     this.StopButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
                     this.ResetButton.IsEnabled = this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired;
@@ -958,7 +956,7 @@ namespace Hourglass
                     break;
 
                 case TimerState.Running:
-                    if (!(this.Timer is DateTimeTimer))
+                    if (this.Timer.SupportsProgress)
                     {
                         this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
                         this.TaskbarItemInfo.ProgressValue = (this.Timer.TimeLeftAsPercentage ?? 0.0) / 100.0;
@@ -972,7 +970,7 @@ namespace Hourglass
                     break;
 
                 case TimerState.Paused:
-                    if (!(this.Timer is DateTimeTimer))
+                    if (this.Timer.SupportsProgress)
                     {
                         this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Paused;
                         this.TaskbarItemInfo.ProgressValue = (this.Timer.TimeLeftAsPercentage ?? 0.0) / 100.0;
@@ -1009,7 +1007,7 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Unbinds the <see cref="TimerWindow"/> event handlers and controls from a <see cref="HourglassTimer"/>.
+        /// Unbinds the <see cref="TimerWindow"/> event handlers and controls from a timer.
         /// </summary>
         private void UnbindTimer()
         {
@@ -1035,9 +1033,9 @@ namespace Hourglass
         #region Private Methods (Timer Events)
 
         /// <summary>
-        /// Invoked when the <see cref="HourglassTimer"/> is started.
+        /// Invoked when the timer is started.
         /// </summary>
-        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
+        /// <param name="sender">The timer.</param>
         /// <param name="e">The event data.</param>
         private void TimerStarted(object sender, EventArgs e)
         {
@@ -1045,9 +1043,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="HourglassTimer"/> is paused.
+        /// Invoked when the timer is paused.
         /// </summary>
-        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
+        /// <param name="sender">The timer.</param>
         /// <param name="e">The event data.</param>
         private void TimerPaused(object sender, EventArgs e)
         {
@@ -1055,9 +1053,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="HourglassTimer"/> is resumed from a paused state.
+        /// Invoked when the timer is resumed from a paused state.
         /// </summary>
-        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
+        /// <param name="sender">The timer.</param>
         /// <param name="e">The event data.</param>
         private void TimerResumed(object sender, EventArgs e)
         {
@@ -1065,9 +1063,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="HourglassTimer"/> is stopped.
+        /// Invoked when the timer is stopped.
         /// </summary>
-        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
+        /// <param name="sender">The timer.</param>
         /// <param name="e">The event data.</param>
         private void TimerStopped(object sender, EventArgs e)
         {
@@ -1075,9 +1073,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="HourglassTimer"/> expires.
+        /// Invoked when the timer expires.
         /// </summary>
-        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
+        /// <param name="sender">The timer.</param>
         /// <param name="e">The event data.</param>
         private void TimerExpired(object sender, EventArgs e)
         {
@@ -1085,9 +1083,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when the <see cref="HourglassTimer"/> ticks.
+        /// Invoked when the timer ticks.
         /// </summary>
-        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
+        /// <param name="sender">The timer.</param>
         /// <param name="e">The event data.</param>
         private void TimerTick(object sender, EventArgs e)
         {
@@ -1095,9 +1093,9 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Invoked when a <see cref="HourglassTimer"/> property value changes.
+        /// Invoked when a timer property value changes.
         /// </summary>
-        /// <param name="sender">The <see cref="HourglassTimer"/>.</param>
+        /// <param name="sender">The timer.</param>
         /// <param name="e">The event data.</param>
         private void TimerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -1125,14 +1123,14 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void StartCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            TimerInput input = TimerInput.FromString(this.TimerTextBox.Text);
-            if (input == null)
+            TimerStart timerStart = TimerStart.FromString(this.TimerTextBox.Text);
+            if (timerStart == null)
             {
                 this.BeginValidationErrorAnimation();
                 return;
             }
 
-            this.Show(input);
+            this.Show(timerStart);
             this.StartButton.Unfocus();
         }
 
@@ -1356,16 +1354,16 @@ namespace Hourglass
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             // Deal with any input or timer set in the constructor
-            if (this.inputToStartOnLoad != null)
+            if (this.timerStartToStartOnLoad != null)
             {
-                this.Show(this.inputToStartOnLoad);
-                this.inputToStartOnLoad = null;
+                this.Show(this.timerStartToStartOnLoad);
+                this.timerStartToStartOnLoad = null;
                 this.timerToResumeOnLoad = null;
             }
             else if (this.timerToResumeOnLoad != null)
             {
                 this.Show(this.timerToResumeOnLoad);
-                this.inputToStartOnLoad = null;
+                this.timerStartToStartOnLoad = null;
                 this.timerToResumeOnLoad = null;
             }
 

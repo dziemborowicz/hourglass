@@ -107,7 +107,7 @@ namespace Hourglass
         /// <returns>A <see cref="TimerWindow"/>.</returns>
         private static TimerWindow GetTimerWindowFromArguments(CommandLineArguments arguments)
         {
-            TimerWindow window = new TimerWindow(arguments.Input);
+            TimerWindow window = new TimerWindow(arguments.TimerStart);
             window.Options.Set(arguments.ToTimerOptions());
             window.Restore(arguments.ToWindowSize());
             return window;

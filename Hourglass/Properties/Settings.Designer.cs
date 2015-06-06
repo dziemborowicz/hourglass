@@ -36,17 +36,6 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.Serialization.TimerInputInfoList Inputs {
-            get {
-                return ((global::Hourglass.Serialization.TimerInputInfoList)(this["Inputs"]));
-            }
-            set {
-                this["Inputs"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::Hourglass.Serialization.TimerOptionsInfo MostRecentOptions {
             get {
                 return ((global::Hourglass.Serialization.TimerOptionsInfo)(this["MostRecentOptions"]));
@@ -87,6 +76,17 @@ namespace Hourglass.Properties {
             }
             set {
                 this["Colors"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Hourglass.Serialization.TimerStartInfoList TimerStarts {
+            get {
+                return ((global::Hourglass.Serialization.TimerStartInfoList)(this["TimerStarts"]));
+            }
+            set {
+                this["TimerStarts"] = value;
             }
         }
     }

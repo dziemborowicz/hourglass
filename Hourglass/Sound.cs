@@ -11,7 +11,7 @@ namespace Hourglass
     using System.Reflection;
 
     /// <summary>
-    /// A sound that can be used to notify the user that a <see cref="Timer"/> has expired.
+    /// A sound that can be used to notify the user that a timer has expired.
     /// </summary>
     public class Sound
     {

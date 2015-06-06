@@ -14,7 +14,7 @@ namespace Hourglass
 
     /// <summary>
     /// Scales a <see cref="TimerWindow"/> to ensure that controls shrink and grow with the window size, and updates a
-    /// <see cref="Timer"/> interval to ensure smooth animation of the progress bar.
+    /// timer interval to ensure smooth animation of the progress bar.
     /// </summary>
     public class TimerScaler
     {
@@ -198,7 +198,7 @@ namespace Hourglass
 
         /// <summary>
         /// Scales the <see cref="TimerWindow"/> to ensure that controls shrink and grow with the window size, and
-        /// updates the <see cref="Timer"/> interval to ensure smooth animation of the progress bar.
+        /// updates the timer interval to ensure smooth animation of the progress bar.
         /// </summary>
         public void Scale()
         {
@@ -371,12 +371,12 @@ namespace Hourglass
             if (timer.TotalTime.HasValue)
             {
                 double interval = timer.TotalTime.Value.TotalMilliseconds / this.timerWindow.ActualWidth / 2;
-                interval = MathUtility.LimitToRange(interval, 10, Timer.DefaultInterval.TotalMilliseconds);
+                interval = MathUtility.LimitToRange(interval, 10, TimerBase.DefaultInterval.TotalMilliseconds);
                 timer.Interval = TimeSpan.FromMilliseconds(interval);
             }
             else
             {
-                timer.Interval = Timer.DefaultInterval;
+                timer.Interval = TimerBase.DefaultInterval;
             }
         }
 

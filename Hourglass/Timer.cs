@@ -7,100 +7,56 @@
 namespace Hourglass
 {
     using System;
-    using System.ComponentModel;
-    using System.Windows.Threading;
 
     using Hourglass.Serialization;
 
     /// <summary>
-    /// The state of a <see cref="Timer"/>.
-    /// </summary>
-    public enum TimerState
-    {
-        /// <summary>
-        /// Indicates that the <see cref="Timer"/> is stopped.
-        /// </summary>
-        Stopped,
-
-        /// <summary>
-        /// Indicates that the <see cref="Timer"/> is running.
-        /// </summary>
-        Running,
-
-        /// <summary>
-        /// Indicates that the <see cref="Timer"/> is paused.
-        /// </summary>
-        Paused,
-
-        /// <summary>
-        /// Indicates that the <see cref="Timer"/> is expired.
-        /// </summary>
-        Expired
-    }
-
-    /// <summary>
     /// A countdown timer.
     /// </summary>
-    public abstract class Timer : IDisposable, INotifyPropertyChanged
+    public class Timer : TimerBase
     {
-        #region Constants
-
-        /// <summary>
-        /// The default period of time between timer ticks.
-        /// </summary>
-        public static readonly TimeSpan DefaultInterval = TimeSpan.FromMilliseconds(250);
-
-        #endregion
-
         #region Private Members
 
         /// <summary>
-        /// The <see cref="TimerState"/> of this timer.
+        /// Configuration data for this timer.
         /// </summary>
-        private TimerState state = TimerState.Stopped;
+        private readonly TimerOptions options;
 
         /// <summary>
-        /// The <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is <see
-        /// cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+        /// The <see cref="TimerStart"/> used to start this timer, or <c>null</c> if the <see cref="TimerBase.State"/>
+        /// is <see cref="TimerState.Stopped"/>.
         /// </summary>
-        private DateTime? startTime;
-        
-        /// <summary>
-        /// The <see cref="DateTime"/> that this timer will expire or has expired if the <see cref="State"/> is <see
-        /// cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
-        /// </summary>
-        private DateTime? endTime;
+        private TimerStart timerStart;
 
         /// <summary>
-        /// A <see cref="TimeSpan"/> representing the time elapsed since this timer started if the <see cref="State"/>
-        /// is <see cref="TimerState.Running"/>, <see cref="TimerState.Paused"/>, or <see cref="TimerState.Expired"/>,
-        /// or <c>null</c> otherwise.
+        /// The percentage of time left until the timer expires.
         /// </summary>
-        private TimeSpan? timeElapsed;
+        /// <remarks>
+        /// This field is <c>null</c> if <see cref="SupportsProgress"/> is <c>false</c>.
+        /// </remarks>
+        private double? timeLeftAsPercentage;
 
         /// <summary>
-        /// A <see cref="TimeSpan"/> representing the time left until this timer expires if the <see cref="State"/> is
-        /// <see cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, <see cref="TimeSpan.Zero"/> if the
-        /// <see cref="State"/> is <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+        /// The percentage of time elapsed since the timer was started.
         /// </summary>
-        private TimeSpan? timeLeft;
+        /// <remarks>
+        /// This field is <c>null</c> if <see cref="SupportsProgress"/> or <see cref="SupportsTimeElapsed"/> is
+        /// <c>false</c>.
+        /// </remarks>
+        private double? timeElapsedAsPercentage;
 
         /// <summary>
-        /// A <see cref="TimeSpan"/> representing the total time that this timer will run for or has run for if the
-        /// <see cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c>
-        /// otherwise.
+        /// The string representation of the time left until the timer expires.
         /// </summary>
-        private TimeSpan? totalTime;
+        private string timeLeftAsString;
 
         /// <summary>
-        /// A <see cref="DispatcherTimer"/>.
+        /// The string representation of the time elapsed since the timer was started.
         /// </summary>
-        private DispatcherTimer dispatcherTimer;
-
-        /// <summary>
-        /// Indicates whether this object has been disposed.
-        /// </summary>
-        private bool disposed;
+        /// <remarks>
+        /// This field is <c>null</c> if <see cref="SupportsTimeElapsed"/> is <c>false</c>.
+        /// </remarks>
+        private string timeElapsedAsString;
 
         #endregion
 
@@ -109,154 +65,135 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="Timer"/> class.
         /// </summary>
-        protected Timer()
+        public Timer()
+            : this(new TimerOptions())
         {
-            this.dispatcherTimer = new DispatcherTimer();
-            this.dispatcherTimer.Interval = DefaultInterval;
-            this.dispatcherTimer.Tick += (s, e) => this.Update();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Timer"/> class.
         /// </summary>
-        /// <param name="timerInfo">A <see cref="TimerInfo"/> representing the state of the <see cref="Timer"/>.</param>
-        protected Timer(TimerInfo timerInfo)
-            : this()
+        /// <param name="options">Configuration data for this timer.</param>
+        public Timer(TimerOptions options)
         {
-            this.state = timerInfo.State;
-            this.startTime = timerInfo.StartTime;
-            this.endTime = timerInfo.EndTime;
-            this.timeElapsed = timerInfo.TimeElapsed;
-            this.timeLeft = timerInfo.TimeLeft;
-            this.totalTime = timerInfo.TotalTime;
-
-            if (this.state == TimerState.Running)
+            if (options == null)
             {
-                this.dispatcherTimer.Start();
+                throw new ArgumentNullException("options");
             }
+
+            this.timerStart = null;
+            this.options = TimerOptions.FromTimerOptions(options);
+
+            this.UpdateHourglassTimer();
         }
 
-        #endregion
-
-        #region Events
-
         /// <summary>
-        /// Raised when the timer is started.
+        /// Initializes a new instance of the <see cref="Timer"/> class.
         /// </summary>
-        public event EventHandler Started;
+        /// <param name="timerInfo">A <see cref="TimerInfo"/> representing the state of the <see
+        /// cref="Timer"/>.</param>
+        public Timer(TimerInfo timerInfo)
+            : base(timerInfo)
+        {
+            this.timerStart = TimerStart.FromTimerStartInfo(timerInfo.TimerStart);
+            this.options = TimerOptions.FromTimerOptionsInfo(timerInfo.Options) ?? new TimerOptions();
 
-        /// <summary>
-        /// Raised when the timer is paused.
-        /// </summary>
-        public event EventHandler Paused;
-
-        /// <summary>
-        /// Raised when the timer is resumed from a paused state.
-        /// </summary>
-        public event EventHandler Resumed;
-
-        /// <summary>
-        /// Raised when the timer is stopped.
-        /// </summary>
-        public event EventHandler Stopped;
-
-        /// <summary>
-        /// Raised when the timer expires.
-        /// </summary>
-        public event EventHandler Expired;
-
-        /// <summary>
-        /// Raised when the timer ticks.
-        /// </summary>
-        public event EventHandler Tick;
-
-        /// <summary>
-        /// Raised when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+            this.UpdateHourglassTimer();
+        }
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets the <see cref="TimerState"/> of this timer.
+        /// Gets the configuration data for this timer.
         /// </summary>
-        public TimerState State
+        public TimerOptions Options
         {
-            get { return this.state; }
+            get { return this.options; }
         }
 
         /// <summary>
-        /// Gets the <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is <see
-        /// cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+        /// Gets the <see cref="TimerStart"/> used to start this timer, or <c>null</c> if the <see
+        /// cref="TimerBase.State"/> is <see cref="TimerState.Stopped"/>.
         /// </summary>
-        public DateTime? StartTime
+        public TimerStart TimerStart
         {
-            get { return this.startTime; }
+            get { return this.timerStart; }
         }
 
         /// <summary>
-        /// Gets the <see cref="DateTime"/> that this timer will expire or has expired if the <see cref="State"/> is
-        /// <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+        /// Gets the percentage of time left until the timer expires.
         /// </summary>
-        public DateTime? EndTime
+        /// <remarks>
+        /// This property is <c>null</c> if <see cref="SupportsProgress"/> is <c>false</c>.
+        /// </remarks>
+        public double? TimeLeftAsPercentage
         {
-            get { return this.endTime; }
+            get { return this.timeLeftAsPercentage; }
         }
 
         /// <summary>
-        /// Gets a <see cref="TimeSpan"/> representing the time elapsed since this timer started if the <see
-        /// cref="State"/> is <see cref="TimerState.Running"/>, <see cref="TimerState.Paused"/>, or <see
-        /// cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+        /// Gets the percentage of time elapsed since the timer was started.
         /// </summary>
-        public TimeSpan? TimeElapsed
+        /// <remarks>
+        /// This property is <c>null</c> if <see cref="SupportsProgress"/> or <see cref="SupportsTimeElapsed"/> is
+        /// <c>false</c>.
+        /// </remarks>
+        public double? TimeElapsedAsPercentage
         {
-            get { return this.timeElapsed; }
+            get { return this.timeElapsedAsPercentage; }
         }
 
         /// <summary>
-        /// Gets a <see cref="TimeSpan"/> representing the time left until this timer expires if the <see
-        /// cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, <see
-        /// cref="TimeSpan.Zero"/> if the <see cref="State"/> is <see cref="TimerState.Expired"/>, or <c>null</c>
-        /// otherwise.
+        /// Gets the string representation of the time left until the timer expires.
         /// </summary>
-        public TimeSpan? TimeLeft
+        public string TimeLeftAsString
         {
-            get { return this.timeLeft; }
+            get { return this.timeLeftAsString; }
         }
 
         /// <summary>
-        /// Gets a <see cref="TimeSpan"/> representing the total time that this timer will run for or has run for if
-        /// the <see cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or
-        /// <c>null</c> otherwise.
+        /// Gets the string representation of the time elapsed since the timer was started.
         /// </summary>
-        public TimeSpan? TotalTime
+        /// <remarks>
+        /// This property is <c>null</c> if <see cref="SupportsTimeElapsed"/> is <c>false</c>.
+        /// </remarks>
+        public string TimeElapsedAsString
         {
-            get { return this.totalTime; }
+            get { return this.timeElapsedAsString; }
         }
 
         /// <summary>
-        /// Gets or sets the period of time between timer ticks.
+        /// Gets a value indicating whether the timer supports pause.
         /// </summary>
-        /// <seealso cref="Tick"/>
-        public TimeSpan Interval
+        public bool SupportsPause
         {
-            get
-            {
-                return this.dispatcherTimer.Interval; 
-            }
+            get { return this.TimerStart == null || this.TimerStart.Type == TimerStartType.TimeSpan; }
+        }
 
-            set
-            {
-                if (this.dispatcherTimer.Interval == value)
-                {
-                    return;
-                }
+        /// <summary>
+        /// Gets a value indicating whether the timer supports looping.
+        /// </summary>
+        public bool SupportsLooping
+        {
+            get { return this.TimerStart == null || this.TimerStart.Type == TimerStartType.TimeSpan; }
+        }
 
-                this.dispatcherTimer.Interval = value;
-                this.OnPropertyChanged("Interval");
-            }
+        /// <summary>
+        /// Gets a value indicating whether the timer supports displaying a progress value.
+        /// </summary>
+        public bool SupportsProgress
+        {
+            get { return this.TimerStart == null || this.TimerStart.Type == TimerStartType.TimeSpan; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the timer supports displaying the elapsed time since the timer was started.
+        /// </summary>
+        public bool SupportsTimeElapsed
+        {
+            get { return this.TimerStart == null || this.TimerStart.Type == TimerStartType.TimeSpan; }
         }
 
         #endregion
@@ -264,27 +201,18 @@ namespace Hourglass
         #region Static Methods
 
         /// <summary>
-        /// Returns a <see cref="Timer"/> for the specified <see cref="TimerInfo"/>, or <c>null</c> if the <see
-        /// cref="TimerInfo"/> is not a supported type.
+        /// Returns a <see cref="Timer"/> for a <see cref="TimerInfo"/>.
         /// </summary>
         /// <param name="timerInfo">A <see cref="TimerInfo"/>.</param>
-        /// <returns>A <see cref="Timer"/> for the specified <see cref="TimerInfo"/>, or <c>null</c> if the <see
-        /// cref="TimerInfo"/> is not a supported type.</returns>
+        /// <returns>The <see cref="Timer"/> for the <see cref="TimerInfo"/>.</returns>
         public static Timer FromTimerInfo(TimerInfo timerInfo)
         {
-            DateTimeTimerInfo dateTimeTimerInfo = timerInfo as DateTimeTimerInfo;
-            if (dateTimeTimerInfo != null)
+            if (timerInfo == null)
             {
-                return new DateTimeTimer(dateTimeTimerInfo);
+                return null;
             }
 
-            TimeSpanTimerInfo timeSpanTimerInfo = timerInfo as TimeSpanTimerInfo;
-            if (timeSpanTimerInfo != null)
-            {
-                return new TimeSpanTimer(timeSpanTimerInfo);
-            }
-
-            return null;
+            return new Timer(timerInfo);
         }
 
         #endregion
@@ -294,318 +222,287 @@ namespace Hourglass
         /// <summary>
         /// Starts the timer.
         /// </summary>
-        /// <param name="start">The <see cref="DateTime"/> the timer was started.</param>
-        /// <param name="end">The <see cref="DateTime"/> the timer expires.</param>
-        /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public virtual void Start(DateTime start, DateTime end)
+        /// <param name="newTimerStart">A <see cref="TimerStart"/>.</param>
+        /// <returns>A value indicating whether the timer was started successfully.</returns>
+        /// <exception cref="ObjectDisposedException">If the timer has been disposed.</exception>
+        public bool Start(TimerStart newTimerStart)
         {
             this.ThrowIfDisposed();
 
-            this.state = TimerState.Running;
-            this.startTime = DateTimeUtility.Min(start, end);
-            this.endTime = end;
-            this.timeElapsed = TimeSpan.Zero;
-            this.timeLeft = this.endTime - this.startTime;
-            this.totalTime = this.timeLeft;
+            DateTime start = DateTime.Now;
+            DateTime end;
+            if (newTimerStart.TryGetEndTime(start, out end))
+            {
+                this.timerStart = newTimerStart;
+                this.OnPropertyChanged("TimerStart");
 
-            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeElapsed", "TimeLeft", "TotalTime");
-            this.OnStarted();
+                this.Start(start, end);
+                return true;
+            }
 
-            this.Update();
-            this.dispatcherTimer.Start();
+            return false;
         }
 
         /// <summary>
-        /// Pauses the timer.
+        /// Returns a string that represents the current object.
         /// </summary>
-        /// <remarks>
-        /// If the <see cref="State"/> is not <see cref="TimerState.Running"/>, this method does nothing.
-        /// </remarks>
-        /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public virtual void Pause()
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
         {
-            this.ThrowIfDisposed();
-
-            if (this.state != TimerState.Running)
+            string format = string.Empty;
+            switch (this.State)
             {
-                return;
+                case TimerState.Stopped:
+                    format = string.IsNullOrEmpty(this.Options.Title)
+                        ? "Stopped"
+                        : "Stopped \"{2}\"";
+                    break;
+
+                case TimerState.Running:
+                    format = string.IsNullOrEmpty(this.Options.Title)
+                        ? "{0} \u2794 {1}"
+                        : "{0} \u2794 {1} \"{2}\"";
+
+                    if (this.Options.LoopTimer && this.SupportsLooping)
+                    {
+                        format += " (Looped)";
+                    }
+
+                    break;
+
+                case TimerState.Paused:
+                    format = string.IsNullOrEmpty(this.Options.Title)
+                        ? "{0} \u2794 {1} (Paused)"
+                        : "{0} \u2794 {1} \"{2}\" (Paused)";
+                    break;
+
+                case TimerState.Expired:
+                    format = string.IsNullOrEmpty(this.Options.Title)
+                        ? "{1} (Expired)"
+                        : "{1} \"{2}\" (Expired)";
+                    break;
             }
 
-            DateTime now = DateTime.Now;
-            this.state = TimerState.Paused;
-            this.timeElapsed = TimeSpanUtility.Min(now - (this.startTime ?? now), this.totalTime ?? TimeSpan.Zero);
-            this.timeLeft = TimeSpanUtility.Max((this.endTime ?? now) - now, TimeSpan.Zero);
-            this.startTime = null;
-            this.endTime = null;
-
-            this.dispatcherTimer.Stop();
-
-            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeElapsed", "TimeLeft");
-            this.OnPaused();
-        }
-
-        /// <summary>
-        /// Resumes the timer if the timer is paused.
-        /// </summary>
-        /// <remarks>
-        /// If the <see cref="State"/> is not <see cref="TimerState.Paused"/>, this method does nothing.
-        /// </remarks>
-        /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public virtual void Resume()
-        {
-            this.ThrowIfDisposed();
-
-            if (this.state != TimerState.Paused)
-            {
-                return;
-            }
-
-            this.state = TimerState.Running;
-            this.endTime = DateTime.Now + this.timeLeft;
-            this.startTime = this.endTime - this.totalTime;
-
-            this.OnPropertyChanged("State", "StartTime", "EndTime");
-            this.OnResumed();
-
-            this.Update();
-            this.dispatcherTimer.Start();
-        }
-
-        /// <summary>
-        /// Stops the timer.
-        /// </summary>
-        /// <remarks>
-        /// If the <see cref="State"/> is <see cref="TimerState.Stopped"/>, this method does nothing.
-        /// </remarks>
-        /// <exception cref="ObjectDisposedException">If the <see cref="Timer"/> has been disposed.</exception>
-        public virtual void Stop()
-        {
-            this.ThrowIfDisposed();
-
-            if (this.state == TimerState.Stopped)
-            {
-                return;
-            }
-
-            this.state = TimerState.Stopped;
-            this.startTime = null;
-            this.endTime = null;
-            this.timeElapsed = null;
-            this.timeLeft = null;
-            this.totalTime = null;
-
-            this.dispatcherTimer.Stop();
-
-            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime");
-            this.OnStopped();
-        }
-
-        /// <summary>
-        /// Updates the state of the timer.
-        /// </summary>
-        /// <remarks>
-        /// When the timer is running, this method is periodically invoked to update the state of the timer.
-        /// </remarks>
-        public virtual void Update()
-        {
-            this.ThrowIfDisposed();
-
-            if (this.state != TimerState.Running)
-            {
-                return;
-            }
-
-            // Update timer state
-            DateTime now = DateTime.Now;
-            this.timeElapsed = TimeSpanUtility.Min(now - (this.startTime ?? now), this.totalTime ?? TimeSpan.Zero);
-            this.timeLeft = TimeSpanUtility.Max((this.endTime ?? now) - now, TimeSpan.Zero);
-
-            this.OnPropertyChanged("TimeElapsed", "TimeLeft");
-            this.OnTick();
-
-            // Check if the timer has expired
-            if (this.timeLeft <= TimeSpan.Zero)
-            {
-                this.state = TimerState.Expired;
-
-                this.dispatcherTimer.Stop();
-
-                this.OnPropertyChanged("State");
-                this.OnExpired();
-            }
+            return string.Format(format, TimeSpanUtility.ToNaturalString(this.TimeLeft), this.TimerStart, this.Options.Title);
         }
 
         /// <summary>
         /// Returns the representation of the <see cref="TimerInfo"/> used for XML serialization.
         /// </summary>
         /// <returns>The representation of the <see cref="TimerInfo"/> used for XML serialization.</returns>
-        public TimerInfo ToTimerInfo()
+        public override TimerInfo ToTimerInfo()
         {
-            TimerInfo info = this.GetNewTimerInfo();
-            this.SetTimerInputInfo(info);
-            return info;
-        }
-
-        /// <summary>
-        /// Disposes the timer.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true /* disposing */);
-            GC.SuppressFinalize(this);
+            TimerInfo timerInfo = base.ToTimerInfo();
+            timerInfo.TimerStart = TimerStartInfo.FromTimerStart(this.TimerStart);
+            timerInfo.Options = TimerOptionsInfo.FromTimerOptions(this.Options);
+            return timerInfo;
         }
 
         #endregion
 
-        #region Protected Methods
+        #region Protected Methods (Events)
 
         /// <summary>
-        /// Raises the <see cref="Started"/> event.
+        /// Invoked before the <see cref="TimerBase.Started"/> event is raised
         /// </summary>
-        protected virtual void OnStarted()
+        protected override void OnStarted()
         {
-            EventHandler eventHandler = this.Started;
+            this.UpdateHourglassTimer();
+            base.OnStarted();
+        }
 
-            if (eventHandler != null)
+        /// <summary>
+        /// Invoked before the <see cref="TimerBase.Paused"/> event is raised
+        /// </summary>
+        protected override void OnPaused()
+        {
+            this.UpdateHourglassTimer();
+            base.OnPaused();
+        }
+
+        /// <summary>
+        /// Invoked before the <see cref="TimerBase.Resumed"/> event is raised
+        /// </summary>
+        protected override void OnResumed()
+        {
+            this.UpdateHourglassTimer();
+            base.OnResumed();
+        }
+
+        /// <summary>
+        /// Invoked before the <see cref="TimerBase.Stopped"/> event is raised
+        /// </summary>
+        protected override void OnStopped()
+        {
+            this.UpdateHourglassTimer();
+            base.OnStopped();
+        }
+
+        /// <summary>
+        /// Invoked before the <see cref="TimerBase.Expired"/> event is raised
+        /// </summary>
+        protected override void OnExpired()
+        {
+            this.UpdateHourglassTimer();
+            base.OnExpired();
+
+            if (this.Options.LoopTimer && this.SupportsLooping && this.State != TimerState.Stopped)
             {
-                eventHandler(this, EventArgs.Empty);
+                this.Loop();
             }
         }
 
         /// <summary>
-        /// Raises the <see cref="Paused"/> event.
+        /// Invoked before the <see cref="TimerBase.Tick"/> event is raised
         /// </summary>
-        protected virtual void OnPaused()
+        protected override void OnTick()
         {
-            EventHandler eventHandler = this.Paused;
+            this.UpdateHourglassTimer();
+            base.OnTick();
+        }
 
-            if (eventHandler != null)
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Restarts the timer with the current <see cref="TimerStart"/>.
+        /// </summary>
+        private void Loop()
+        {
+            if (!this.EndTime.HasValue || this.EndTime > DateTime.Now)
             {
-                eventHandler(this, EventArgs.Empty);
+                throw new InvalidOperationException();
+            }
+
+            DateTime now = DateTime.Now;
+            DateTime start = this.EndTime.Value;
+            DateTime end;
+
+            // Try to find the current loop iteration
+            int iteration = 0;
+            while (this.TimerStart.TryGetEndTime(start, out end) && end <= now && end > start && iteration++ < 10000)
+            {
+                // Keep looping
+                start = end;
+            }
+
+            // Loop if we found the current loop iteration
+            if (end > now)
+            {
+                this.Start(start, end);
             }
         }
 
         /// <summary>
-        /// Raises the <see cref="Resumed"/> event.
+        /// Updates the <see cref="Timer"/> state.
         /// </summary>
-        protected virtual void OnResumed()
+        private void UpdateHourglassTimer()
         {
-            EventHandler eventHandler = this.Resumed;
+            this.timerStart = this.State != TimerState.Stopped ? this.timerStart : null;
+            this.timeLeftAsPercentage = this.GetTimeLeftAsPercentage();
+            this.timeElapsedAsPercentage = this.GetTimeElapsedAsPercentage();
+            this.timeLeftAsString = this.GetTimeLeftAsString();
+            this.timeElapsedAsString = this.GetTimeElapsedAsString();
 
-            if (eventHandler != null)
-            {
-                eventHandler(this, EventArgs.Empty);
-            }
+            this.OnPropertyChanged("TimerStart", "TimeLeftAsPercentage", "TimeElapsedAsPercentage", "TimeLeftAsString", "TimeElapsedAsString");
         }
 
         /// <summary>
-        /// Raises the <see cref="Stopped"/> event.
+        /// Returns the percentage of time left until the timer expires.
         /// </summary>
-        protected virtual void OnStopped()
+        /// <returns>The percentage of time left until the timer expires.</returns>
+        private double? GetTimeLeftAsPercentage()
         {
-            EventHandler eventHandler = this.Stopped;
-
-            if (eventHandler != null)
+            if (!this.SupportsProgress || this.State == TimerState.Stopped || !this.TimeElapsed.HasValue || !this.TotalTime.HasValue)
             {
-                eventHandler(this, EventArgs.Empty);
+                return null;
             }
+
+            if (this.State == TimerState.Expired)
+            {
+                return 100.0;
+            }
+
+            long timeElapsed = this.TimeElapsed.Value.Ticks;
+            long totalTime = this.TotalTime.Value.Ticks;
+
+            if (totalTime == 0)
+            {
+                return 0.0;
+            }
+
+            return 100.0 * timeElapsed / totalTime;
         }
 
         /// <summary>
-        /// Raises the <see cref="Expired"/> event.
+        /// Returns the percentage of time elapsed since the timer was started.
         /// </summary>
-        protected virtual void OnExpired()
+        /// <returns>The percentage of time elapsed since the timer was started.</returns>
+        private double? GetTimeElapsedAsPercentage()
         {
-            EventHandler eventHandler = this.Expired;
-
-            if (eventHandler != null)
+            if (!this.SupportsProgress || !this.SupportsTimeElapsed || this.State == TimerState.Stopped || !this.TimeLeft.HasValue || !this.TotalTime.HasValue)
             {
-                eventHandler(this, EventArgs.Empty);
+                return null;
             }
+
+            if (this.State == TimerState.Expired)
+            {
+                return 0.0;
+            }
+
+            long timeLeft = this.TimeLeft.Value.Ticks;
+            long totalTime = this.TotalTime.Value.Ticks;
+
+            if (totalTime == 0)
+            {
+                return 100.0;
+            }
+            
+            return 100.0 * timeLeft / totalTime;
         }
 
         /// <summary>
-        /// Raises the <see cref="Tick"/> event.
+        /// Returns the string representation of the time left until the timer expires.
         /// </summary>
-        protected virtual void OnTick()
+        /// <returns>The string representation of the time left until the timer expires.</returns>
+        private string GetTimeLeftAsString()
         {
-            EventHandler eventHandler = this.Tick;
-
-            if (eventHandler != null)
+            if (this.State == TimerState.Stopped)
             {
-                eventHandler(this, EventArgs.Empty);
+                return "Timer stopped";
             }
+
+            if (this.State == TimerState.Expired)
+            {
+                return "Timer expired";
+            }
+
+            return TimeSpanUtility.ToNaturalString(this.TimeLeft);
         }
 
         /// <summary>
-        /// Raises the <see cref="PropertyChanged"/> event.
+        /// Returns the string representation of the time elapsed since the timer was started.
         /// </summary>
-        /// <param name="propertyNames">One or more property names.</param>
-        protected virtual void OnPropertyChanged(params string[] propertyNames)
+        /// <returns>The string representation of the time elapsed since the timer was started.</returns>
+        private string GetTimeElapsedAsString()
         {
-            PropertyChangedEventHandler eventHandler = this.PropertyChanged;
-
-            if (eventHandler != null)
+            if (!this.SupportsTimeElapsed)
             {
-                foreach (string propertyName in propertyNames)
-                {
-                    eventHandler(this, new PropertyChangedEventArgs(propertyName));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns a new <see cref="TimerInfo"/> of the correct type for this class.
-        /// </summary>
-        /// <returns>A new <see cref="TimerInfo"/>.</returns>
-        protected abstract TimerInfo GetNewTimerInfo();
-
-        /// <summary>
-        /// Sets the properties on a <see cref="TimerInfo"/> from the values in this class.
-        /// </summary>
-        /// <param name="timerInfo">A <see cref="TimerInfo"/>.</param>
-        protected virtual void SetTimerInputInfo(TimerInfo timerInfo)
-        {
-            timerInfo.State = this.state;
-            timerInfo.StartTime = this.startTime;
-            timerInfo.EndTime = this.endTime;
-            timerInfo.TimeElapsed = this.timeElapsed;
-            timerInfo.TimeLeft = this.timeLeft;
-            timerInfo.TotalTime = this.totalTime;
-        }
-
-        /// <summary>
-        /// Disposes the timer.
-        /// </summary>
-        /// <param name="disposing">A value indicating whether this method was invoked by an explicit call to <see
-        /// cref="Dispose"/>.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
+                return null;
             }
 
-            this.disposed = true;
-
-            if (disposing)
+            if (this.State == TimerState.Stopped)
             {
-                if (this.dispatcherTimer != null)
-                {
-                    this.dispatcherTimer.Stop();
-                }
+                return "Timer stopped";
             }
-        }
 
-        /// <summary>
-        /// Throws a <see cref="ObjectDisposedException"/> if the object has been disposed.
-        /// </summary>
-        protected void ThrowIfDisposed()
-        {
-            if (this.disposed)
+            if (this.State == TimerState.Expired)
             {
-                throw new ObjectDisposedException(this.GetType().FullName);
+                return "Timer expired";
             }
+
+            return TimeSpanUtility.ToNaturalString(this.TimeElapsed);
         }
 
         #endregion
