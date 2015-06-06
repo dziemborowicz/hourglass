@@ -115,6 +115,7 @@ namespace Hourglass
             }
 
             this.timers.Remove(timer);
+            timer.Dispose();
         }
 
         /// <summary>
