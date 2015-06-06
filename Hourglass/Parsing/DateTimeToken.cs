@@ -73,6 +73,11 @@ namespace Hourglass.Parsing
                 dateTime = this.TimeToken.ToDateTime(startTime, datePart);
             }
 
+            if (dateTime <= startTime)
+            {
+                throw new InvalidOperationException();
+            }
+
             return dateTime;
         }
 

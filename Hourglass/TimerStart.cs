@@ -66,6 +66,18 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Gets a value indicating whether the <see cref="TimerStart"/> can be used to start a timer now.
+        /// </summary>
+        public bool IsCurrent
+        {
+            get
+            {
+                DateTime endTime;
+                return this.timerStartToken.TryGetEndTime(DateTime.Now, out endTime) && endTime > DateTime.Now;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the <see cref="TimerStart"/> is valid.
         /// </summary>
         public bool IsValid

@@ -78,6 +78,7 @@ namespace Hourglass.Parsing
             this.ThrowIfNotValid();
 
             DateTime endTime = startTime;
+
             endTime = endTime.AddSeconds(this.Seconds);
             endTime = endTime.AddMinutes(this.Minutes);
             endTime = endTime.AddHours(this.Hours);
@@ -85,6 +86,12 @@ namespace Hourglass.Parsing
             endTime = endTime.AddWeeks(this.Weeks);
             endTime = endTime.AddMonths(this.Months);
             endTime = endTime.AddYears(this.Years);
+
+            if (endTime <= startTime)
+            {
+                throw new InvalidOperationException();
+            }
+
             return endTime;
         }
 

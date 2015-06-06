@@ -7,7 +7,6 @@
 namespace Hourglass
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
 
     using Hourglass.Properties;
@@ -45,7 +44,7 @@ namespace Hourglass
         /// </summary>
         public IList<TimerStart> TimerStarts
         {
-            get { return new ReadOnlyCollection<TimerStart>(this.timerStarts); }
+            get { return this.timerStarts.Where(e => e.IsCurrent).ToList(); }
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace Hourglass
         /// </summary>
         public TimerStart LastTimerStart
         {
-            get { return this.timerStarts.FirstOrDefault(); }
+            get { return this.timerStarts.FirstOrDefault(e => e.IsCurrent); }
         }
 
         /// <summary>
