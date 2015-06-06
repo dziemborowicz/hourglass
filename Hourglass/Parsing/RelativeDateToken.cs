@@ -39,7 +39,7 @@ namespace Hourglass.Parsing
         {
             new RelativeDateDefinition(
                 RelativeDate.Today,
-                "Today",
+                "today",
                 0 /* yearDelta */,
                 0 /* monthDelta */,
                 0 /* dayDelta */,
@@ -47,7 +47,7 @@ namespace Hourglass.Parsing
                 
             new RelativeDateDefinition(
                 RelativeDate.Tomorrow,
-                "Tomorrow",
+                "tomorrow",
                 0 /* yearDelta */,
                 0 /* monthDelta */,
                 1 /* dayDelta */,
