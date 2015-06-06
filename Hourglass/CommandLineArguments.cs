@@ -685,15 +685,15 @@ namespace Hourglass
         private static TimerStart GetTimerStartValue(IEnumerable<string> remainingArgs)
         {
             string value = string.Join(" ", remainingArgs);
-            TimerStart input = TimerStart.FromString(value);
+            TimerStart timerStart = TimerStart.FromString(value);
 
-            if (input == null)
+            if (timerStart == null)
             {
                 string message = string.Format("Invalid timer input \"{0}\".", value);
                 throw new ParseException(message);
             }
 
-            return input;
+            return timerStart;
         }
 
         /// <summary>

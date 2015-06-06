@@ -402,11 +402,9 @@ namespace Hourglass
         {
             // Keep track of the input
             this.LastTimerStart = timerStart;
-            TimerStartManager.Instance.Add(timerStart);
 
             // Start a new timer
             Timer newTimer = new Timer(this.Options);
-
             if (!newTimer.Start(timerStart))
             {
                 this.Show();
@@ -416,6 +414,7 @@ namespace Hourglass
             }
 
             TimerManager.Instance.Add(newTimer);
+            TimerStartManager.Instance.Add(timerStart);
 
             // Show the window
             this.Show(newTimer);

@@ -231,7 +231,7 @@ namespace Hourglass
 
             DateTime start = DateTime.Now;
             DateTime end;
-            if (newTimerStart.TryGetEndTime(start, out end))
+            if (newTimerStart != null && newTimerStart.TryGetEndTime(start, out end))
             {
                 this.timerStart = newTimerStart;
                 this.OnPropertyChanged("TimerStart");
