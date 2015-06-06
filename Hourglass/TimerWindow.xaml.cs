@@ -1181,7 +1181,9 @@ namespace Hourglass
         /// <param name="e">The event data.</param>
         private void StopCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            this.Timer.Stop();
+            this.Timer = new Timer(this.Options);
+            TimerManager.Instance.Add(this.Timer);
+
             this.SwitchToInputMode();
             this.StopButton.Unfocus();
         }
