@@ -154,28 +154,31 @@
         <Border x:Name="OuterNotificationBorder" Background="#C75050" IsHitTestVisible="False" Opacity="0"/>
         <Grid x:Name="InnerGrid" Background="White" Margin="10">
             <StackPanel x:Name="ControlsPanel" Margin="20 0" VerticalAlignment="Center">
-                <TextBox x:Name="TitleTextBox"
-                         Background="{x:Null}"
-                         BorderBrush="{x:Null}"
-                         FontFamily="Segoe UI"
-                         Foreground="DarkGray"
-                         KeyDown="TitleTextBoxKeyDown"
-                         PreviewMouseDown="TitleTextBoxPreviewMouseDown"
-                         PreviewGotKeyboardFocus="TitleTextBoxPreviewGotKeyboardFocus"
-                         Style="{StaticResource TitleTextBoxStyle}"
-                         Text="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.Options.Title, UpdateSourceTrigger=PropertyChanged}"
-                         TextAlignment="Center"
-                         local:Watermark.Hint="Click to enter title"/>
-                <TextBox x:Name="TimerTextBox"
-                         Background="{x:Null}"
-                         BorderBrush="{x:Null}"
-                         FontFamily="Segoe UI Light, Segoe UI"
-                         FontSize="18"
-                         Margin="0 1 0 4"
-                         PreviewMouseDown="TimerTextBoxPreviewMouseDown"
-                         PreviewGotKeyboardFocus="TimerTextBoxPreviewGotKeyboardFocus"
-                         TextAlignment="Center"
-                         local:Watermark.Hint="Click to enter time or date"/>
+                <local:SizeToFitTextBox x:Name="TitleTextBox"
+                                        Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        FontFamily="Segoe UI"
+                                        Foreground="DarkGray"
+                                        KeyDown="TitleTextBoxKeyDown"
+                                        MaxFontSize="12"
+                                        MinFontSize="8"
+                                        PreviewMouseDown="TitleTextBoxPreviewMouseDown"
+                                        PreviewGotKeyboardFocus="TitleTextBoxPreviewGotKeyboardFocus"
+                                        Style="{StaticResource TitleTextBoxStyle}"
+                                        Text="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.Options.Title, UpdateSourceTrigger=PropertyChanged}"
+                                        TextAlignment="Center"
+                                        local:Watermark.Hint="Click to enter title"/>
+                <local:SizeToFitTextBox x:Name="TimerTextBox"
+                                        Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        FontFamily="Segoe UI Light, Segoe UI"
+                                        Margin="0 1 0 4"
+                                        MaxFontSize="18"
+                                        MinFontSize="8"
+                                        PreviewMouseDown="TimerTextBoxPreviewMouseDown"
+                                        PreviewGotKeyboardFocus="TimerTextBoxPreviewGotKeyboardFocus"
+                                        TextAlignment="Center"
+                                        local:Watermark.Hint="Click to enter time or date"/>
                 <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">
                     <Button x:Name="StartButton" Content="Start" Command="local:TimerWindow.StartCommand" IsDefault="True"/>
                     <Button x:Name="PauseButton" Content="Pause" Command="local:TimerWindow.PauseCommand"/>

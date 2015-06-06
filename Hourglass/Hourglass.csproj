@@ -87,7 +87,6 @@
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="FocusUtility.cs" />
-    <Compile Include="Timer.cs" />
     <Compile Include="IRestorableWindow.cs" />
     <Compile Include="KeepAwakeManager.cs" />
     <Compile Include="Manager.cs" />
@@ -98,34 +97,34 @@
     <Compile Include="Parsing\DateToken.cs" />
     <Compile Include="Parsing\DayOfWeekDateToken.cs" />
     <Compile Include="Parsing\EmptyDateToken.cs" />
+    <Compile Include="Parsing\EmptyTimeToken.cs" />
     <Compile Include="Parsing\NormalDateToken.cs" />
+    <Compile Include="Parsing\NormalTimeToken.cs" />
     <Compile Include="Parsing\RelativeDateToken.cs" />
     <Compile Include="Parsing\SpecialDateToken.cs" />
-    <Compile Include="Parsing\TimerStartToken.cs" />
-    <Compile Include="Parsing\TimeSpanToken.cs" />
-    <Compile Include="Parsing\EmptyTimeToken.cs" />
-    <Compile Include="Parsing\NormalTimeToken.cs" />
     <Compile Include="Parsing\SpecialTimeToken.cs" />
+    <Compile Include="Parsing\TimeSpanToken.cs" />
     <Compile Include="Parsing\TimeToken.cs" />
+    <Compile Include="Parsing\TimerStartToken.cs" />
     <Compile Include="PortableSettingsProvider.cs" />
-    <Compile Include="Serialization\TimerStartInfo.cs" />
     <Compile Include="Serialization\TimerColorInfo.cs" />
     <Compile Include="Serialization\TimerColorInfoList.cs" />
     <Compile Include="Serialization\TimerInfo.cs" />
     <Compile Include="Serialization\TimerInfoList.cs" />
     <Compile Include="Serialization\TimerOptionsInfo.cs" />
+    <Compile Include="Serialization\TimerStartInfo.cs" />
     <Compile Include="Serialization\TimerStartInfoList.cs" />
     <Compile Include="Serialization\WindowSizeInfo.cs" />
     <Compile Include="SettingsManager.cs" />
+    <Compile Include="SizeToFitTextBox.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="SoundPlayer.cs" />
-    <Compile Include="TimerStart.cs" />
     <Compile Include="TimeSpanUtility.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="TimerBase.cs" />
     <Compile Include="TimerColor.cs" />
     <Compile Include="TimerColorManager.cs" />
-    <Compile Include="TimerStartManager.cs" />
     <Compile Include="TimerManager.cs" />
     <Compile Include="TimerMenu.cs" />
     <Compile Include="TimerNotifyIcon.cs" />
@@ -133,12 +132,15 @@
     <Compile Include="TimerOptions.cs" />
     <Compile Include="TimerOptionsManager.cs" />
     <Compile Include="TimerScaler.cs" />
+    <Compile Include="TimerStart.cs" />
+    <Compile Include="TimerStartManager.cs" />
     <Compile Include="TimerWindow.xaml.cs">
       <DependentUpon>TimerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UsageWindow.xaml.cs">
       <DependentUpon>UsageWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VisualTreeExtensions.cs" />
     <Compile Include="Watermark.cs" />
     <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="WindowSize.cs" />
