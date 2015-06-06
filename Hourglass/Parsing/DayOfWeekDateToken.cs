@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DayOfWeekDatePart.cs" company="Chris Dziemborowicz">
+// <copyright file="DayOfWeekDateToken.cs" company="Chris Dziemborowicz">
 //   Copyright (c) Chris Dziemborowicz. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ namespace Hourglass.Parsing
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// Represents the relation between the day of week and the reference date.
+    /// Represents the relation between the day of week and a date.
     /// </summary>
     public enum DayOfWeekRelation
     {
@@ -33,22 +33,22 @@ namespace Hourglass.Parsing
     }
 
     /// <summary>
-    /// Represents a day of week.
+    /// Represents the date part of an instant in time specified as a day of the week.
     /// </summary>
-    public class DayOfWeekDatePart : DatePart
+    public class DayOfWeekDateToken : DateToken
     {
         /// <summary>
-        /// Gets or sets the day of week represented by this part.
+        /// Gets or sets the day of week.
         /// </summary>
         public DayOfWeek? DayOfWeek { get; set; }
 
         /// <summary>
-        /// Gets or sets the relation between the day of week represented by this part and the reference date.
+        /// Gets or sets the relation between the day of week and date.
         /// </summary>
         public DayOfWeekRelation? DayOfWeekRelation { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the part is valid.
+        /// Gets a value indicating whether the token is valid.
         /// </summary>
         public override bool IsValid
         {
@@ -62,17 +62,22 @@ namespace Hourglass.Parsing
         }
 
         /// <summary>
-        /// Returns a concrete date represented by this part on or after the reference date.
+        /// Returns the next date after <paramref name="minDate"/> that is represented by this token.
         /// </summary>
-        /// <param name="referenceDate">A reference date and time.</param>
-        /// <param name="tryExcludeReferenceDate">A value indicating whether a date after (rather than on or after) the
-        /// reference date should be returned if possible.</param>
-        /// <returns>A concrete date represented by this part.</returns>
-        public override DateTime ToDateTime(DateTime referenceDate, bool tryExcludeReferenceDate)
+        /// <remarks>
+        /// This method may return a date that is before <paramref name="minDate"/> if there is no date after <paramref
+        /// name="minDate"/> that is represented by this token.
+        /// </remarks>
+        /// <param name="minDate">The minimum date to return. The time part is ignored.</param>
+        /// <param name="inclusive">A value indicating whether the returned date should be on or after rather than
+        /// strictly after <paramref name="minDate"/>.</param>
+        /// <returns>The next date after <paramref name="minDate"/> that is represented by this token.</returns>
+        /// <exception cref="InvalidOperationException">If this token is not valid.</exception>
+        public override DateTime ToDateTime(DateTime minDate, bool inclusive)
         {
             this.ThrowIfNotValid();
 
-            DateTime date = referenceDate.AddDays(1); // TODO Do we really want this?
+            DateTime date = minDate.Date.AddDays(1);
 
             // Find the next date with the matching weekday
             DayOfWeek dayOfWeek = this.DayOfWeek ?? System.DayOfWeek.Sunday;
@@ -84,7 +89,7 @@ namespace Hourglass.Parsing
             // Advance the date by a week if necessary
             DayOfWeekRelation dayOfWeekRelation = this.DayOfWeekRelation ?? Parsing.DayOfWeekRelation.Next;
             if (dayOfWeekRelation == Parsing.DayOfWeekRelation.AfterNext ||
-                (dayOfWeekRelation == Parsing.DayOfWeekRelation.NextWeek && dayOfWeek > referenceDate.DayOfWeek))
+                (dayOfWeekRelation == Parsing.DayOfWeekRelation.NextWeek && dayOfWeek > minDate.DayOfWeek))
             {
                 date = date.AddDays(7);
             }
@@ -98,28 +103,37 @@ namespace Hourglass.Parsing
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            // Day of week
-            stringBuilder.Append(this.DayOfWeek);
-
-            // Day of week relation
-            if (this.DayOfWeekRelation == Parsing.DayOfWeekRelation.AfterNext)
+            try
             {
-                stringBuilder.Append(" after next");
-            }
-            else if (this.DayOfWeekRelation == Parsing.DayOfWeekRelation.NextWeek)
-            {
-                stringBuilder.Append(" next week");
-            }
+                this.ThrowIfNotValid();
 
-            return stringBuilder.ToString();
+                StringBuilder stringBuilder = new StringBuilder();
+
+                // Day of week
+                stringBuilder.Append(this.DayOfWeek);
+
+                // Day of week relation
+                if (this.DayOfWeekRelation == Parsing.DayOfWeekRelation.AfterNext)
+                {
+                    stringBuilder.Append(" after next");
+                }
+                else if (this.DayOfWeekRelation == Parsing.DayOfWeekRelation.NextWeek)
+                {
+                    stringBuilder.Append(" next week");
+                }
+
+                return stringBuilder.ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         /// <summary>
-        /// Parses <see cref="DayOfWeekDatePart"/>s from <see cref="string"/>s.
+        /// Parses <see cref="DayOfWeekDateToken"/> strings.
         /// </summary>
-        public new class Parser : DatePart.Parser
+        public new class Parser : DateToken.Parser
         {
             /// <summary>
             /// Singleton instance of the <see cref="Parser"/> class.
@@ -142,13 +156,13 @@ namespace Hourglass.Parsing
                     (\s*after)?
                     \s*(?<afternext>next)
                 ";
-            
+
             /// <summary>
             /// A regular expression that matches days of the week next week (e.g., "Sunday next week").
             /// </summary>
             private const string DaysOfWeekNextWeekPattern =
                 @"  (?<weekday>Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*
-                    \s*(?<nextweek>next\s*week)
+                    \s*(?<nextweek>next\s*w(ee)?k)
                 ";
 
             /// <summary>
@@ -159,10 +173,10 @@ namespace Hourglass.Parsing
             }
 
             /// <summary>
-            /// Returns the regular expressions supported by this <see cref="Parser"/>.
+            /// Returns a set of regular expressions supported by this parser.
             /// </summary>
-            /// <param name="provider">An <see cref="IFormatProvider"/> to use when parsing.</param>
-            /// <returns>The regular expressions supported by this <see cref="Parser"/>.</returns>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>A set of regular expressions supported by this parser.</returns>
             public override IEnumerable<string> GetPatterns(IFormatProvider provider)
             {
                 return new[]
@@ -174,53 +188,53 @@ namespace Hourglass.Parsing
             }
 
             /// <summary>
-            /// Parses a <see cref="DatePart"/> from a regular expression <see cref="Match"/>.
+            /// Parses a <see cref="Match"/> into a <see cref="DateToken"/>.
             /// </summary>
-            /// <param name="match">A <see cref="Match"/> corresponding to a pattern returned by <see
-            /// cref="GetPatterns"/>.</param>
-            /// <param name="provider">An <see cref="IFormatProvider"/> to use when parsing.</param>
-            /// <returns>aA<see cref="DatePart"/> from the regular expression <see cref="Match"/>.</returns>
-            protected override DatePart ParseInternal(Match match, IFormatProvider provider)
+            /// <param name="match">A <see cref="Match"/> representation of a <see cref="DateToken"/>.</param>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>The <see cref="DateToken"/> parsed from the <see cref="Match"/>.</returns>
+            /// <exception cref="ArgumentNullException">If <paramref name="match"/> or <paramref name="provider"/> is
+            /// <c>null</c>.</exception>
+            /// <exception cref="FormatException">If the <paramref name="match"/> is not a supported representation of
+            /// a <see cref="DateToken"/>.</exception>
+            protected override DateToken ParseInternal(Match match, IFormatProvider provider)
             {
-                DayOfWeekDatePart datePart = new DayOfWeekDatePart();
+                DayOfWeekDateToken dateToken = new DayOfWeekDateToken();
 
                 // Parse day of week
                 if (match.Groups["weekday"].Success)
                 {
-                    datePart.DayOfWeek = ParseDayOfWeek(match.Groups["weekday"].Value);
+                    dateToken.DayOfWeek = ParseDayOfWeek(match.Groups["weekday"].Value);
                 }
 
                 // Parse day of week relation
                 if (match.Groups["afternext"].Success)
                 {
-                    datePart.DayOfWeekRelation = Parsing.DayOfWeekRelation.AfterNext;
+                    dateToken.DayOfWeekRelation = Parsing.DayOfWeekRelation.AfterNext;
                 }
                 else if (match.Groups["nextweek"].Success)
                 {
-                    datePart.DayOfWeekRelation = Parsing.DayOfWeekRelation.NextWeek;
+                    dateToken.DayOfWeekRelation = Parsing.DayOfWeekRelation.NextWeek;
                 }
                 else
                 {
-                    datePart.DayOfWeekRelation = Parsing.DayOfWeekRelation.Next;
+                    dateToken.DayOfWeekRelation = Parsing.DayOfWeekRelation.Next;
                 }
 
-                return datePart;
+                return dateToken;
             }
 
             /// <summary>
-            /// Returns the <see cref="DayOfWeek"/> for a given <see cref="string"/> representation of a day of the
-            /// week.
+            /// Parses a string into a <see cref="DayOfWeek"/>.
             /// </summary>
             /// <remarks>
-            /// This method only checks the first three characters of the <see cref="string"/> against the <see
-            /// cref="DayOfWeek"/> <c>enum</c>.
+            /// This method only checks the first three characters of the string against the <see cref="DayOfWeek"/>
+            /// <c>enum</c>.
             /// </remarks>
-            /// <param name="str">A <see cref="string"/> representation of a day of the week.</param>
-            /// <returns>The <see cref="DayOfWeek"/> for the <see cref="string"/> representation of the day of the
-            /// week.</returns>
-            /// <exception cref="FormatException">If <paramref name="str"/> is not a valid <see cref="string"/>
-            /// representation of a day of the week.</exception>
-            /// <seealso cref="DayOfWeek"/>
+            /// <param name="str">A string representation of a <see cref="DayOfWeek"/>.</param>
+            /// <returns>The <see cref="DayOfWeek"/> parsed from the string.</returns>
+            /// <exception cref="FormatException">If <paramref name="str"/> is not a supported representation of a day
+            /// of the week.</exception>
             private static DayOfWeek ParseDayOfWeek(string str)
             {
                 foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))

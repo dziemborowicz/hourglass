@@ -71,8 +71,8 @@ namespace Hourglass
         /// time.</exception>
         public static DateTime ParseNatural(string str, DateTime referenceDate, IFormatProvider provider)
         {
-            DateTimePart dateTimePart = ParseNaturalPart(str, provider);
-            return dateTimePart.ToDateTime(referenceDate);
+            DateTimeToken dateTimeToken = ParseNaturalPart(str, provider);
+            return dateTimeToken.GetEndTime(referenceDate);
         }
 
         /// <summary>
@@ -138,74 +138,72 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Parses a <see cref="string"/> representation of a date and time into a <see cref="DateTimePart"/>.
+        /// Parses a <see cref="string"/> representation of a date and time into a <see cref="DateTimeToken"/>.
         /// </summary>
         /// <remarks>
         /// This overload uses the <see cref="CultureInfo.CurrentCulture"/> as the <see cref="IFormatProvider"/> when
         /// parsing.
         /// </remarks>
         /// <param name="str">A <see cref="string"/> representation of a date and time.</param>
-        /// <returns>A <see cref="DateTimePart"/> representation of the date and time.</returns>
+        /// <returns>A <see cref="DateTimeToken"/> representation of the date and time.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="str"/> is <c>null</c>.</exception>
         /// <exception cref="FormatException">If <paramref name="str"/> is not a valid representation of a date and
         /// time.</exception>
-        public static DateTimePart ParseNaturalPart(string str)
+        public static DateTimeToken ParseNaturalPart(string str)
         {
             return ParseNaturalPart(str, CultureInfo.CurrentCulture);
         }
 
         /// <summary>
-        /// Parses a <see cref="string"/> representation of a date and time into a <see cref="DateTimePart"/>.
+        /// Parses a <see cref="string"/> representation of a date and time into a <see cref="DateTimeToken"/>.
         /// </summary>
         /// <param name="str">A <see cref="string"/> representation of a date and time.</param>
         /// <param name="provider">An <see cref="IFormatProvider"/> to use when parsing.</param>
-        /// <returns>A <see cref="DateTimePart"/> representation of the date and time.</returns>
+        /// <returns>A <see cref="DateTimeToken"/> representation of the date and time.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="str"/> is <c>null</c>.</exception>
         /// <exception cref="FormatException">If <paramref name="str"/> is not a valid representation of a date and
         /// time.</exception>
-        public static DateTimePart ParseNaturalPart(string str, IFormatProvider provider)
+        public static DateTimeToken ParseNaturalPart(string str, IFormatProvider provider)
         {
-            return DateTimePart.Parser.Instance.Parse(str, provider);
+            return (DateTimeToken)DateTimeToken.Parser.Instance.Parse(str, provider);
         }
 
         /// <summary>
-        /// Parses a <see cref="string"/> representation of a date and time into a <see cref="DateTimePart"/>.
+        /// Parses a <see cref="string"/> representation of a date and time into a <see cref="DateTimeToken"/>.
         /// </summary>
         /// <remarks>
         /// This overload uses the <see cref="CultureInfo.CurrentCulture"/> as the <see cref="IFormatProvider"/> when
         /// parsing.
         /// </remarks>
         /// <param name="str">A <see cref="string"/> representation of a date and time.</param>
-        /// <param name="dateTimePart">A <see cref="DateTime"/> representation of the date and time, or <c>null</c> if
-        /// this method returns <c>false</c>.</param>
-        /// <returns>A <see cref="DateTimePart"/> representation of the date and time.</returns>
-        /// <returns><c>true</c> if <paramref name="str"/> was successfully parsed into a <see cref="DateTimePart"/>,
+        /// <param name="dateTimeToken">A <see cref="DateTimeToken"/> representation of the date and time, or
+        /// <c>null</c> if this method returns <c>false</c>.</param>
+        /// <returns><c>true</c> if <paramref name="str"/> was successfully parsed into a <see cref="DateTimeToken"/>,
         /// or <c>false</c> otherwise.</returns>
-        public static bool TryParseNaturalPart(string str, out DateTimePart dateTimePart)
+        public static bool TryParseNaturalPart(string str, out DateTimeToken dateTimeToken)
         {
-            return TryParseNaturalPart(str, CultureInfo.CurrentCulture, out dateTimePart);
+            return TryParseNaturalPart(str, CultureInfo.CurrentCulture, out dateTimeToken);
         }
 
         /// <summary>
-        /// Parses a <see cref="string"/> representation of a date and time into a <see cref="DateTimePart"/>.
+        /// Parses a <see cref="string"/> representation of a date and time into a <see cref="DateTimeToken"/>.
         /// </summary>
         /// <param name="str">A <see cref="string"/> representation of a date and time.</param>
         /// <param name="provider">An <see cref="IFormatProvider"/> to use when parsing.</param>
-        /// <param name="dateTimePart">A <see cref="DateTime"/> representation of the date and time, or <c>null</c> if
-        /// this method returns <c>false</c>.</param>
-        /// <returns>A <see cref="DateTimePart"/> representation of the date and time.</returns>
-        /// <returns><c>true</c> if <paramref name="str"/> was successfully parsed into a <see cref="DateTimePart"/>,
+        /// <param name="dateTimeToken">A <see cref="DateTimeToken"/> representation of the date and time, or
+        /// <c>null</c> if this method returns <c>false</c>.</param>
+        /// <returns><c>true</c> if <paramref name="str"/> was successfully parsed into a <see cref="DateTimeToken"/>,
         /// or <c>false</c> otherwise.</returns>
-        public static bool TryParseNaturalPart(string str, IFormatProvider provider, out DateTimePart dateTimePart)
+        public static bool TryParseNaturalPart(string str, IFormatProvider provider, out DateTimeToken dateTimeToken)
         {
             try
             {
-                dateTimePart = ParseNaturalPart(str, provider);
+                dateTimeToken = ParseNaturalPart(str, provider);
                 return true;
             }
             catch
             {
-                dateTimePart = null;
+                dateTimeToken = null;
                 return false;
             }
         }

@@ -8,9 +8,9 @@ namespace Hourglass
 {
     using System;
     using System.Globalization;
-    using System.Linq;
     using System.Text;
-    using System.Text.RegularExpressions;
+
+    using Hourglass.Parsing;
 
     /// <summary>
     /// A utility class for converting a <see cref="string"/> representation of a time interval to a <see
@@ -19,12 +19,6 @@ namespace Hourglass
     /// </summary>
     public static class TimeSpanUtility
     {
-        /// <summary>
-        /// The <see cref="RegexOptions"/> used by this class by default when matching an input <see cref="string"/>
-        /// against a <see cref="Regex"/> pattern.
-        /// </summary>
-        private static readonly RegexOptions RegexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
-
         /// <summary>
         /// Parses a <see cref="string"/> representation of a time interval into a <see cref="TimeSpan"/>.
         /// </summary>
@@ -53,19 +47,10 @@ namespace Hourglass
         /// interval.</exception>
         public static TimeSpan ParseNatural(string str, IFormatProvider provider)
         {
-            TimeSpan timeSpan;
-
-            if (str == null)
-            {
-                throw new ArgumentNullException("str");
-            }
-
-            if (!TryParseNatural(str, provider, out timeSpan))
-            {
-                throw new FormatException();
-            }
-
-            return timeSpan;
+            TimeSpanToken timeSpanToken = (TimeSpanToken)TimeSpanToken.Parser.Instance.Parse(str, provider);
+            DateTime startTime = new DateTime(2000, 1, 1);
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+            return endTime - startTime;
         }
 
         /// <summary>
@@ -96,198 +81,16 @@ namespace Hourglass
         /// <c>false</c> otherwise.</returns>
         public static bool TryParseNatural(string str, IFormatProvider provider, out TimeSpan timeSpan)
         {
-            timeSpan = TimeSpan.Zero;
-
-            // Null or empty input
-            if (string.IsNullOrWhiteSpace(str))
+            try
             {
-                return false;
-            }
-
-            // Trim whitespace
-            str = str.Trim(' ', '\t', '\r', '\n');
-
-            // Integer input
-            if (Regex.IsMatch(str, @"^\d+$", RegexOptions))
-            {
-                int minutes;
-                if (!int.TryParse(str, out minutes))
-                {
-                    return false;
-                }
-
-                timeSpan = TimeSpan.FromMinutes(minutes);
+                timeSpan = ParseNatural(str, provider);
                 return true;
             }
-
-            // Multi-part input
-            string[] parts;
-            if (Regex.IsMatch(str, @"^[\d.,;:]+$", RegexOptions))
+            catch
             {
-                parts = Regex.Split(str, @"[.,;:]", RegexOptions);
+                timeSpan = TimeSpan.Zero;
+                return false;
             }
-            else
-            {
-                parts = Regex.Split(str, @"\s+(?=[+\-\d\.])|(?<![+\-\d\.])(?=[+\-\d\.])", RegexOptions);
-            }
-
-            // Get rid of empty parts
-            parts = parts.Where(s => !string.IsNullOrEmpty(s)).ToArray();
-
-            // Get values
-            double[] values = new double[parts.Length];
-            for (int i = 0; i < parts.Length; i++)
-            {
-                string part = parts[i];
-                Match match = Regex.Match(part, @"^[+\-]?\d+(\.\d*)?|^[+\-]?\.\d+", RegexOptions);
-                if (match.Success)
-                {
-                    if (!double.TryParse(match.Value, out values[i]))
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            // Get explicit units
-            int[] units = new int[parts.Length];
-            for (int i = 0; i < parts.Length; i++)
-            {
-                string part = parts[i];
-                if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(y|yrs?|years?)$", RegexOptions))
-                {
-                    units[i] = 365 * 24 * 60 * 60;
-                }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(mo|mons?|months?)$", RegexOptions))
-                {
-                    units[i] = 30 * 24 * 60 * 60;
-                }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(w|wks?|weeks?)$", RegexOptions))
-                {
-                    units[i] = 7 * 24 * 60 * 60;
-                }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(d|dys?|days?)$", RegexOptions))
-                {
-                    units[i] = 24 * 60 * 60;
-                }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(h|hrs?|hours?)$", RegexOptions))
-                {
-                    units[i] = 60 * 60;
-                }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(m|mins?|minutes?)$", RegexOptions))
-                {
-                    units[i] = 60;
-                }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)\s*(s|secs?|seconds?)$", RegexOptions))
-                {
-                    units[i] = 1;
-                }
-                else if (Regex.IsMatch(part, @"^([+-])?(\d+(\.\d*)?|\.\d+?)$", RegexOptions))
-                {
-                    units[i] = 0;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            // Fill units implicitly left
-            int lastUnit = units[0];
-            for (int i = 1; i < units.Length; i++)
-            {
-                if (units[i] == 0)
-                {
-                    if (lastUnit == 365 * 24 * 60 * 60)
-                    {
-                        units[i] = 30 * 24 * 60 * 60;
-                    }
-                    else if (lastUnit == 30 * 24 * 60 * 60)
-                    {
-                        units[i] = 7 * 24 * 60 * 60;
-                    }
-                    else if (lastUnit == 7 * 24 * 60 * 60)
-                    {
-                        units[i] = 24 * 60 * 60;
-                    }
-                    else if (lastUnit == 24 * 60 * 60)
-                    {
-                        units[i] = 60 * 60;
-                    }
-                    else if (lastUnit == 60 * 60)
-                    {
-                        units[i] = 60;
-                    }
-                    else if (lastUnit == 60)
-                    {
-                        units[i] = 1;
-                    }
-                    else if (lastUnit != 0)
-                    {
-                        return false;
-                    }
-                }
-
-                lastUnit = units[i];
-            }
-
-            // Fill units positionally if required
-            if (lastUnit == 0)
-            {
-                lastUnit = units[units.Length - 1] = 1;
-            }
-
-            // Fill units implicitly right
-            for (int i = units.Length - 2; i >= 0; i--)
-            {
-                if (units[i] == 0)
-                {
-                    if (lastUnit == 1)
-                    {
-                        units[i] = 60;
-                    }
-                    else if (lastUnit == 60)
-                    {
-                        units[i] = 60 * 60;
-                    }
-                    else if (lastUnit == 60 * 60)
-                    {
-                        units[i] = 24 * 60 * 60;
-                    }
-                    else if (lastUnit == 24 * 60 * 60)
-                    {
-                        units[i] = 7 * 24 * 60 * 60;
-                    }
-                    else if (lastUnit == 7 * 24 * 60 * 60)
-                    {
-                        units[i] = 30 * 24 * 60 * 60;
-                    }
-                    else if (lastUnit == 30 * 24 * 60 * 60)
-                    {
-                        units[i] = 365 * 24 * 60 * 60;
-                    }
-                    else if (lastUnit != 0)
-                    {
-                        return false;
-                    }
-                }
-
-                lastUnit = units[i];
-            }
-
-            // Calculate time
-            long ticks = 0L;
-            for (int i = 0; i < parts.Length; i++)
-            {
-                ticks += (long)(values[i] * units[i] * 10000000L);
-            }
-
-            timeSpan = new TimeSpan(ticks);
-            return true;
         }
 
         /// <summary>

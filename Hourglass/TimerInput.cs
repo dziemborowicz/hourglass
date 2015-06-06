@@ -49,10 +49,10 @@ namespace Hourglass
         /// cref="string"/> is not a valid input.</returns>
         public static TimerInput FromDateTimeOrTimeSpanString(string str)
         {
-            DateTimePart dateTimePart;
-            if (DateTimeUtility.TryParseNaturalPart(str, out dateTimePart))
+            DateTimeToken dateTimeToken;
+            if (DateTimeUtility.TryParseNaturalPart(str, out dateTimeToken))
             {
-                return new DateTimeTimerInput(dateTimePart);
+                return new DateTimeTimerInput(dateTimeToken);
             }
 
             TimeSpan timeSpan;
@@ -79,10 +79,10 @@ namespace Hourglass
                 return new TimeSpanTimerInput(timeSpan);
             }
 
-            DateTimePart dateTimePart;
-            if (DateTimeUtility.TryParseNaturalPart(str, out dateTimePart))
+            DateTimeToken dateTimeToken;
+            if (DateTimeUtility.TryParseNaturalPart(str, out dateTimeToken))
             {
-                return new DateTimeTimerInput(dateTimePart);
+                return new DateTimeTimerInput(dateTimeToken);
             }
 
             return null;

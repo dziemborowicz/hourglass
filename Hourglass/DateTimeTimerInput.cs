@@ -17,11 +17,11 @@ namespace Hourglass
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeTimerInput"/> class.
         /// </summary>
-        /// <param name="dateTimePart">A <see cref="DateTimePart"/> representing the date and time until which the <see
-        /// cref="DateTimeTimer"/> should count down.</param>
-        public DateTimeTimerInput(DateTimePart dateTimePart)
+        /// <param name="dateTimeToken">A <see cref="DateTimeToken"/> representing the date and time until which the
+        /// <see cref="DateTimeTimer"/> should count down.</param>
+        public DateTimeTimerInput(DateTimeToken dateTimeToken)
         {
-            this.DateTimePart = dateTimePart;
+            this.DateTimeToken = dateTimeToken;
         }
 
         /// <summary>
@@ -31,14 +31,14 @@ namespace Hourglass
         /// <param name="inputInfo">A <see cref="DateTimeTimerInputInfo"/>.</param>
         public DateTimeTimerInput(DateTimeTimerInputInfo inputInfo)
         {
-            this.DateTimePart = inputInfo.DateTimePart;
+            this.DateTimeToken = inputInfo.DateTimeToken;
         }
 
         /// <summary>
-        /// Gets the <see cref="DateTimePart"/> representing the date and time until which the <see
+        /// Gets the <see cref="DateTimeToken"/> representing the date and time until which the <see
         /// cref="DateTimeTimer"/> should count down.
         /// </summary>
-        public DateTimePart DateTimePart { get; private set; }
+        public DateTimeToken DateTimeToken { get; private set; }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -48,7 +48,7 @@ namespace Hourglass
         {
             try
             {
-                return this.DateTimePart.ToString();
+                return this.DateTimeToken.ToString();
             }
             catch
             {
@@ -62,7 +62,7 @@ namespace Hourglass
         /// <returns>The representation of the <see cref="TimerInput"/> used for XML serialization.</returns>
         public override TimerInputInfo ToTimerInputInfo()
         {
-            return new DateTimeTimerInputInfo { DateTimePart = this.DateTimePart };
+            return new DateTimeTimerInputInfo { DateTimeToken = this.DateTimeToken };
         }
     }
 }

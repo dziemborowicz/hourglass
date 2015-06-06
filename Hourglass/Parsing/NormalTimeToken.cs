@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StandardTimePart.cs" company="Chris Dziemborowicz">
+// <copyright file="NormalTimeToken.cs" company="Chris Dziemborowicz">
 //   Copyright (c) Chris Dziemborowicz. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -24,31 +24,36 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Post meridiem.
         /// </summary>
-        Pm
+        Pm,
+
+        /// <summary>
+        /// 24-hour time.
+        /// </summary>
+        Military
     }
 
     /// <summary>
-    /// Represents a time of day specified as an hour, minute, and second.
+    /// Represents the time part of an instant in time specified as an hour, minute, and second.
     /// </summary>
-    public class StandardTimePart : TimePart
+    public class NormalTimeToken : TimeToken
     {
         /// <summary>
-        /// Gets or sets the period of an hour (AM or PM) represented by this part.
+        /// Gets or sets the period of an hour (AM or PM).
         /// </summary>
         public HourPeriod? HourPeriod { get; set; }
 
         /// <summary>
-        /// Gets or sets the hour represented by this part.
+        /// Gets or sets the hour.
         /// </summary>
         public int? Hour { get; set; }
 
         /// <summary>
-        /// Gets or sets the minute represented by this part.
+        /// Gets or sets the minute.
         /// </summary>
         public int? Minute { get; set; }
 
         /// <summary>
-        /// Gets or sets the second represented by this part.
+        /// Gets or sets the second.
         /// </summary>
         public int? Second { get; set; }
 
@@ -64,13 +69,13 @@ namespace Hourglass.Parsing
                 {
                     return 0;
                 }
-                
+
                 // Convert 1-11 pm to 1300-2300h
                 if (this.HourPeriod == Parsing.HourPeriod.Pm && this.Hour.HasValue && this.Hour < 12)
                 {
                     return this.Hour + 12;
                 }
-                
+
                 // Convert 12 to 0000h
                 if (!this.HourPeriod.HasValue && this.Hour == 12)
                 {
@@ -83,25 +88,57 @@ namespace Hourglass.Parsing
         }
 
         /// <summary>
-        /// Gets a value indicating whether the part is valid.
+        /// Gets a value indicating whether this token represents midnight.
+        /// </summary>
+        public bool IsMidnight
+        {
+            get
+            {
+                return (this.Hour == 0 || (this.Hour == 12 && this.HourPeriod == Parsing.HourPeriod.Am))
+                    && (this.Minute ?? 0) == 0
+                    && (this.Second ?? 0) == 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this token represents noon.
+        /// </summary>
+        public bool IsNoon
+        {
+            get
+            {
+                return (this.Hour == 12 && (this.HourPeriod == Parsing.HourPeriod.Pm || this.HourPeriod == Parsing.HourPeriod.Military))
+                    && (this.Minute ?? 0) == 0
+                    && (this.Second ?? 0) == 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the token is valid.
         /// </summary>
         public override bool IsValid
         {
             get
             {
-                return (!this.Hour.HasValue || (this.Hour >= 0 && this.Hour < 24))
+                return (this.Hour.HasValue && this.Hour >= 0 && this.Hour < 24)
                     && (!this.Minute.HasValue || (this.Minute >= 0 && this.Minute < 60))
                     && (!this.Second.HasValue || (this.Second >= 0 && this.Second < 60));
             }
         }
 
         /// <summary>
-        /// Returns a concrete time represented by this part on or after the reference date and time.
+        /// Returns the next date and time after <paramref name="minDate"/> that is represented by this token.
         /// </summary>
-        /// <param name="referenceDate">A reference date and time.</param>
-        /// <param name="datePart">The concrete date represented by the corresponding <see cref="DatePart"/>.</param>
-        /// <returns>A concrete time represented by this part.</returns>
-        public override DateTime ToDateTime(DateTime referenceDate, DateTime datePart)
+        /// <remarks>
+        /// This method may return a date and time that is before <paramref name="minDate"/> if there is no date and
+        /// time after <paramref name="minDate"/> that is represented by this token.
+        /// </remarks>
+        /// <param name="minDate">The minimum date and time to return.</param>
+        /// <param name="datePart">The date part of the date and time to return.</param>
+        /// <returns>The next date and time after <paramref name="minDate"/> that is represented by this token.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">If this token is not valid.</exception>
+        public override DateTime ToDateTime(DateTime minDate, DateTime datePart)
         {
             this.ThrowIfNotValid();
 
@@ -117,18 +154,18 @@ namespace Hourglass.Parsing
             if (!this.HourPeriod.HasValue &&
                 this.NormalizedHour.HasValue &&
                 this.NormalizedHour < 12 &&
-                dateTime <= referenceDate &&
-                dateTime.AddHours(12) > referenceDate)
+                dateTime <= minDate &&
+                dateTime.AddHours(12) > minDate)
             {
                 dateTime = dateTime.AddHours(12);
             }
 
-            // If hour period is not specified, prefer daytime hours (except on reference date)
+            // If hour period is not specified, prefer daytime hours (except on the same day as the minimum date)
             if (!this.HourPeriod.HasValue &&
                 this.NormalizedHour.HasValue &&
                 this.NormalizedHour > 0 &&
                 this.NormalizedHour < 8 &&
-                dateTime.Date != referenceDate.Date)
+                dateTime.Date != minDate.Date)
             {
                 dateTime = dateTime.AddHours(12);
             }
@@ -142,33 +179,35 @@ namespace Hourglass.Parsing
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            // Hour
-            if (this.Hour.HasValue)
+            try
             {
-                stringBuilder.Append(this.Hour == 0 ? 12 : this.Hour.Value);
+                this.ThrowIfNotValid();
+
+                StringBuilder stringBuilder = new StringBuilder();
+
+                // Hour
+                stringBuilder.Append(this.Hour == 0 ? 12 : this.Hour);
 
                 // Minute
-                if (this.Minute.HasValue)
+                if ((this.Minute ?? 0) != 0 || (this.Second ?? 0) != 0)
                 {
-                    stringBuilder.AppendFormat(":{0:00}", this.Minute.Value);
+                    stringBuilder.AppendFormat(":{0:00}", this.Minute ?? 0);
 
                     // Second
-                    if (this.Second.HasValue)
+                    if ((this.Second ?? 0) != 0)
                     {
-                        stringBuilder.AppendFormat(":{0:00}", this.Second.Value);
+                        stringBuilder.AppendFormat(":{0:00}", this.Second ?? 0);
                     }
                 }
 
-                // AM/PM
+                // Hour period
                 if (this.HourPeriod.HasValue)
                 {
-                    if (this.Hour == 0 || (this.Hour == 12 && this.HourPeriod == Parsing.HourPeriod.Am))
+                    if (this.IsMidnight)
                     {
                         stringBuilder.Append(" midnight");
                     }
-                    else if (this.Hour == 12 && this.HourPeriod == Parsing.HourPeriod.Pm)
+                    else if (this.IsNoon)
                     {
                         stringBuilder.Append(" noon");
                     }
@@ -177,19 +216,23 @@ namespace Hourglass.Parsing
                         stringBuilder.Append(this.HourPeriod == Parsing.HourPeriod.Am ? " am" : " pm");
                     }
                 }
-                else if (!this.Minute.HasValue)
+                else if ((this.Minute ?? 0) == 0 && (this.Second ?? 0) == 0)
                 {
                     stringBuilder.Append(" o'clock");
                 }
-            }
 
-            return stringBuilder.ToString();
+                return stringBuilder.ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         /// <summary>
-        /// Parses <see cref="StandardTimePart"/>s from <see cref="string"/>s.
+        /// Parses <see cref="NormalTimeToken"/> strings.
         /// </summary>
-        public new class Parser : TimePart.Parser
+        public new class Parser : TimeToken.Parser
         {
             /// <summary>
             /// Singleton instance of the <see cref="Parser"/> class.
@@ -212,7 +255,7 @@ namespace Hourglass.Parsing
                     )?
                     \s*
                     (
-                        (?<ampm>
+                        (?<period>
                             (a|p)\.?
                             (\s*m\.?)?
                             |
@@ -235,7 +278,7 @@ namespace Hourglass.Parsing
                     )?
                     \s*
                     (
-                        (?<ampm>
+                        (?<period>
                             (a|p)\.?
                             (\s*m\.?)?
                             |
@@ -254,10 +297,10 @@ namespace Hourglass.Parsing
             }
 
             /// <summary>
-            /// Returns the regular expressions supported by this <see cref="Parser"/>.
+            /// Returns a set of regular expressions supported by this parser.
             /// </summary>
-            /// <param name="provider">An <see cref="IFormatProvider"/> to use when parsing.</param>
-            /// <returns>The regular expressions supported by this <see cref="Parser"/>.</returns>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>A set of regular expressions supported by this parser.</returns>
             public override IEnumerable<string> GetPatterns(IFormatProvider provider)
             {
                 return new[]
@@ -268,48 +311,55 @@ namespace Hourglass.Parsing
             }
 
             /// <summary>
-            /// Parses a <see cref="TimePart"/> from a regular expression <see cref="Match"/>.
+            /// Parses a <see cref="Match"/> into a <see cref="TimeToken"/>.
             /// </summary>
-            /// <param name="match">A <see cref="Match"/> corresponding to a pattern returned by <see
-            /// cref="GetPatterns"/>.</param>
-            /// <param name="provider">An <see cref="IFormatProvider"/> to use when parsing.</param>
-            /// <returns>aA<see cref="TimePart"/> from the regular expression <see cref="Match"/>.</returns>
-            protected override TimePart ParseInternal(Match match, IFormatProvider provider)
+            /// <param name="match">A <see cref="Match"/> representation of a <see cref="TimeToken"/>.</param>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>The <see cref="TimeToken"/> parsed from the <see cref="Match"/>.</returns>
+            /// <exception cref="ArgumentNullException">If <paramref name="match"/> or <paramref name="provider"/> is
+            /// <c>null</c>.</exception>
+            /// <exception cref="FormatException">If the <paramref name="match"/> is not a supported representation of
+            /// a <see cref="TimeToken"/>.</exception>
+            protected override TimeToken ParseInternal(Match match, IFormatProvider provider)
             {
-                StandardTimePart timePart = new StandardTimePart();
+                NormalTimeToken timeToken = new NormalTimeToken();
 
                 // Parse hour period
-                if (match.Groups["ampm"].Success)
+                if (match.Groups["period"].Success)
                 {
-                    if (match.Groups["ampm"].Value.StartsWith("a", StringComparison.InvariantCultureIgnoreCase))
+                    if (match.Groups["period"].Value.StartsWith("a", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        timePart.HourPeriod = Parsing.HourPeriod.Am;
+                        timeToken.HourPeriod = Parsing.HourPeriod.Am;
                     }
-                    else if (match.Groups["ampm"].Value.StartsWith("p", StringComparison.InvariantCultureIgnoreCase))
+                    else if (match.Groups["period"].Value.StartsWith("p", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        timePart.HourPeriod = Parsing.HourPeriod.Pm;
+                        timeToken.HourPeriod = Parsing.HourPeriod.Pm;
+                    }
+                    else if (match.Groups["period"].Value.StartsWith("h", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        timeToken.HourPeriod = Parsing.HourPeriod.Military;
                     }
                 }
 
                 // Parse hour
                 if (match.Groups["hour"].Success)
                 {
-                    timePart.Hour = int.Parse(match.Groups["hour"].Value, provider);
+                    timeToken.Hour = int.Parse(match.Groups["hour"].Value, provider);
                 }
 
                 // Parse minute
                 if (match.Groups["minute"].Success)
                 {
-                    timePart.Minute = int.Parse(match.Groups["minute"].Value, provider);
+                    timeToken.Minute = int.Parse(match.Groups["minute"].Value, provider);
                 }
 
                 // Parse second
                 if (match.Groups["second"].Success)
                 {
-                    timePart.Second = int.Parse(match.Groups["second"].Value, provider);
+                    timeToken.Second = int.Parse(match.Groups["second"].Value, provider);
                 }
 
-                return timePart;
+                return timeToken;
             }
         }
     }

@@ -68,8 +68,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DateTimeTokenTest.cs" />
     <Compile Include="DateTimeUtilityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeSpanTokenTest.cs" />
     <Compile Include="TimeSpanUtilityTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,14 +81,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\DateTimeUtilityParseNaturalTestData.csv">
+    <None Include="Resources\DateTimeUtilityParseNaturalTestData.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\TimeSpanUtilityParseNaturalTestData.csv">
+    </None>
+    <None Include="Resources\TimeSpanUtilityParseNaturalTestData.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

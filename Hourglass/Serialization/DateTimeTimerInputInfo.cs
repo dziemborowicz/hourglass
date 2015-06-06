@@ -14,9 +14,9 @@ namespace Hourglass.Serialization
     public class DateTimeTimerInputInfo : TimerInputInfo
     {
         /// <summary>
-        /// Gets or sets the <see cref="DateTimePart"/> representing the date and time until which the <see
+        /// Gets or sets the <see cref="DateTimeToken"/> representing the date and time until which the <see
         /// cref="DateTimeTimer"/> should count down.
         /// </summary>
-        public DateTimePart DateTimePart { get; set; }
+        public DateTimeToken DateTimeToken { get; set; }
     }
 }

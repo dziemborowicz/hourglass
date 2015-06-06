@@ -79,7 +79,7 @@ namespace Hourglass
 
             DateTime start = DateTime.Now;
             DateTime end;
-            if (!dateTimeTimerInput.DateTimePart.TryToDateTime(start, out end) || end <= start)
+            if (!dateTimeTimerInput.DateTimeToken.TryGetEndTime(start, out end) || end <= start)
             {
                 return false;
             }

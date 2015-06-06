@@ -80,6 +80,8 @@
     <Compile Include="AppManager.cs" />
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="CommandLineParseResult.cs" />
+    <Compile Include="CultureInfoExtensions.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="DateTimeTimer.cs" />
     <Compile Include="DateTimeTimerInput.cs" />
     <Compile Include="DateTimeUtility.cs" />
@@ -95,19 +97,19 @@
     <Compile Include="MathUtility.cs" />
     <Compile Include="MultiplierConverter.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="Parsing\DatePart.cs" />
-    <Compile Include="Parsing\DateTimePart.cs" />
-    <Compile Include="Parsing\DayOfWeekDatePart.cs" />
-    <Compile Include="Parsing\EmptyDatePart.cs" />
-    <Compile Include="Parsing\EmptyTimePart.cs" />
-    <Compile Include="Parsing\NewYearDatePart.cs" />
-    <Compile Include="Parsing\SpecialDatePart.cs" />
-    <Compile Include="Parsing\SpecialTimePart.cs" />
-    <Compile Include="Parsing\StandardDatePart.cs" />
-    <Compile Include="Parsing\StandardTimePart.cs" />
-    <Compile Include="Parsing\TimePart.cs" />
-    <Compile Include="Parsing\TodayDatePart.cs" />
-    <Compile Include="Parsing\TomorrowDatePart.cs" />
+    <Compile Include="Parsing\DateTimeToken.cs" />
+    <Compile Include="Parsing\DateToken.cs" />
+    <Compile Include="Parsing\DayOfWeekDateToken.cs" />
+    <Compile Include="Parsing\EmptyDateToken.cs" />
+    <Compile Include="Parsing\NormalDateToken.cs" />
+    <Compile Include="Parsing\RelativeDateToken.cs" />
+    <Compile Include="Parsing\SpecialDateToken.cs" />
+    <Compile Include="Parsing\TimerStartToken.cs" />
+    <Compile Include="Parsing\TimeSpanToken.cs" />
+    <Compile Include="Parsing\EmptyTimeToken.cs" />
+    <Compile Include="Parsing\NormalTimeToken.cs" />
+    <Compile Include="Parsing\SpecialTimeToken.cs" />
+    <Compile Include="Parsing\TimeToken.cs" />
     <Compile Include="PortableSettingsProvider.cs" />
     <Compile Include="Serialization\DateTimeTimerInfo.cs" />
     <Compile Include="Serialization\DateTimeTimerInputInfo.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="SoundPlayer.cs" />
+    <Compile Include="TimerStart.cs" />
     <Compile Include="TimeSpanTimer.cs" />
     <Compile Include="TimeSpanTimerInput.cs" />
     <Compile Include="TimeSpanUtility.cs" />
@@ -204,5 +207,6 @@
     <Content Include="Resources\BeepQuiet.wav" />
     <None Include="Resources\Usage.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
