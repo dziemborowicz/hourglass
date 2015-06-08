@@ -6,13 +6,11 @@
 
 namespace Hourglass.Properties
 {
-    using System.Configuration;
-
     /// <summary>
     /// Application settings.
     /// </summary>
 #if PORTABLE
-    [SettingsProvider(typeof(PortableSettingsProvider))]
+    [System.Configuration.SettingsProvider(typeof(PortableSettingsProvider))]
 #endif
     internal sealed partial class Settings 
     {

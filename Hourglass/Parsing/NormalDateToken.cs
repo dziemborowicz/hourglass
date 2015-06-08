@@ -11,6 +11,8 @@ namespace Hourglass.Parsing
     using System.Globalization;
     using System.Text.RegularExpressions;
 
+    using Hourglass.Extensions;
+
     /// <summary>
     /// Represents the date part of an instant in time specified as year, month, and day.
     /// </summary>

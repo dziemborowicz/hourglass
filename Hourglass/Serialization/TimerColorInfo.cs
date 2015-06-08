@@ -8,6 +8,8 @@ namespace Hourglass.Serialization
 {
     using System.Windows.Media;
 
+    using Hourglass.Timing;
+
     /// <summary>
     /// The representation of a <see cref="TimerColor"/> used for XML serialization.
     /// </summary>

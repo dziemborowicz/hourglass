@@ -205,7 +205,7 @@ namespace Hourglass.Parsing
             {
                 List<PatternDefinition> list = new List<PatternDefinition>();
 
-                foreach (DateToken.Parser dateTokenParser in Parsing.DateToken.Parsers)
+                foreach (DateToken.Parser dateTokenParser in DateToken.Parsers)
                 {
                     list.AddRange(GetDateTimePatternDefinitions(dateTokenParser, EmptyTimeToken.Parser.Instance, provider));
                 }
@@ -223,7 +223,7 @@ namespace Hourglass.Parsing
             {
                 List<PatternDefinition> list = new List<PatternDefinition>();
 
-                foreach (TimeToken.Parser timeTokenParser in Parsing.TimeToken.Parsers)
+                foreach (TimeToken.Parser timeTokenParser in TimeToken.Parsers)
                 {
                     list.AddRange(GetDateTimePatternDefinitions(EmptyDateToken.Parser.Instance, timeTokenParser, provider));
                 }
@@ -241,9 +241,9 @@ namespace Hourglass.Parsing
             {
                 List<PatternDefinition> list = new List<PatternDefinition>();
 
-                foreach (DateToken.Parser dateTokenParser in Parsing.DateToken.Parsers)
+                foreach (DateToken.Parser dateTokenParser in DateToken.Parsers)
                 {
-                    foreach (TimeToken.Parser timeTokenParser in Parsing.TimeToken.Parsers)
+                    foreach (TimeToken.Parser timeTokenParser in TimeToken.Parsers)
                     {
                         list.AddRange(GetDateTimePatternDefinitions(dateTokenParser, timeTokenParser, provider));
                     }

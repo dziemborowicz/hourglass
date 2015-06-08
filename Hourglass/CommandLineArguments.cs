@@ -14,7 +14,11 @@ namespace Hourglass
     using System.Text.RegularExpressions;
     using System.Windows;
 
+    using Hourglass.Extensions;
+    using Hourglass.Managers;
     using Hourglass.Properties;
+    using Hourglass.Timing;
+    using Hourglass.Windows;
 
     /// <summary>
     /// Parsed command-line arguments.
@@ -143,16 +147,16 @@ namespace Hourglass
         /// <param name="errorMessage">An error message to display. (Optional.)</param>
         public static void ShowUsage(string errorMessage = null)
         {
-            UsageWindow window = new UsageWindow();
-            window.ErrorMessage = errorMessage;
+            UsageDialog usageDialog = new UsageDialog();
+            usageDialog.ErrorMessage = errorMessage;
 
             if (Application.Current != null && Application.Current.Dispatcher != null)
             {
-                window.Show();
+                usageDialog.Show();
             }
             else
             {
-                window.ShowDialog();
+                usageDialog.ShowDialog();
             }
         }
 

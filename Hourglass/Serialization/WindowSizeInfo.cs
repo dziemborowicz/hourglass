@@ -8,6 +8,8 @@ namespace Hourglass.Serialization
 {
     using System.Windows;
 
+    using Hourglass.Windows;
+
     /// <summary>
     /// The representation of a <see cref="WindowSize"/> used for XML serialization.
     /// </summary>

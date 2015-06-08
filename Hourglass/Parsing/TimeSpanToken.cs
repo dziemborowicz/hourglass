@@ -11,6 +11,8 @@ namespace Hourglass.Parsing
     using System.Text;
     using System.Text.RegularExpressions;
 
+    using Hourglass.Extensions;
+
     /// <summary>
     /// Represents a time interval.
     /// </summary>

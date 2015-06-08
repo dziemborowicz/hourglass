@@ -9,7 +9,10 @@ namespace Hourglass
     using System;
     using System.Windows;
 
+    using Hourglass.Extensions;
+    using Hourglass.Managers;
     using Hourglass.Properties;
+    using Hourglass.Windows;
 
     using Microsoft.VisualBasic.ApplicationServices;
 

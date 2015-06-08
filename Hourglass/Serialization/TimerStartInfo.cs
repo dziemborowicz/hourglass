@@ -7,6 +7,7 @@
 namespace Hourglass.Serialization
 {
     using Hourglass.Parsing;
+    using Hourglass.Timing;
 
     /// <summary>
     /// The representation of a <see cref="TimerStart"/> used for XML serialization.

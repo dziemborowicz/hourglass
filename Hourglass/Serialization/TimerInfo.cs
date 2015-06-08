@@ -9,6 +9,8 @@ namespace Hourglass.Serialization
     using System;
     using System.Xml.Serialization;
 
+    using Hourglass.Timing;
+
     /// <summary>
     /// The representation of a <see cref="Timer"/> used for XML serialization.
     /// </summary>
