@@ -59,17 +59,17 @@ namespace Hourglass
         {
             AppManager.Instance.Initialize();
 
-            CommandLineParseResult result = CommandLineArguments.Parse(e.CommandLine);
-            if (result.Type != CommandLineParseResultType.Success)
+            CommandLineArguments arguments = CommandLineArguments.Parse(e.CommandLine);
+            if (arguments.ShouldShowUsage || arguments.HasParseError)
             {
-                CommandLineArguments.ShowUsage(result.ErrorMessage);
+                CommandLineArguments.ShowUsage(arguments.ParseErrorMessage);
                 AppManager.Instance.Dispose();
                 return false;
             }
 
-            SetGlobalSettingsFromArguments(result.Arguments);
+            SetGlobalSettingsFromArguments(arguments);
 
-            TimerWindow window = GetTimerWindowFromArguments(result.Arguments);
+            TimerWindow window = GetTimerWindowFromArguments(arguments);
 
             this.app = new App();
             this.app.Exit += AppExit;
@@ -85,16 +85,16 @@ namespace Hourglass
         /// whether the first application instance should be brought to the foreground.</param>
         protected override void OnStartupNextInstance(StartupNextInstanceEventArgs e)
         {
-            CommandLineParseResult result = CommandLineArguments.Parse(e.CommandLine);
-            if (result.Type != CommandLineParseResultType.Success)
+            CommandLineArguments arguments = CommandLineArguments.Parse(e.CommandLine);
+            if (arguments.ShouldShowUsage || arguments.HasParseError)
             {
-                CommandLineArguments.ShowUsage(result.ErrorMessage);
+                CommandLineArguments.ShowUsage(arguments.ParseErrorMessage);
                 return;
             }
 
-            SetGlobalSettingsFromArguments(result.Arguments);
+            SetGlobalSettingsFromArguments(arguments);
 
-            TimerWindow window = GetTimerWindowFromArguments(result.Arguments);
+            TimerWindow window = GetTimerWindowFromArguments(arguments);
             window.Show();
 
             if (window.WindowState != WindowState.Minimized)

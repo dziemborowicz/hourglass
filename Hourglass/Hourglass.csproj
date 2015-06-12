@@ -80,7 +80,6 @@
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Managers\AppManager.cs" />
     <Compile Include="CommandLineArguments.cs" />
-    <Compile Include="CommandLineParseResult.cs" />
     <Compile Include="Extensions\CultureInfoExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Managers\ErrorManager.cs" />

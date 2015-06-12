@@ -41,6 +41,21 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Gets a value indicating whether the command-line arguments were not successfully parsed.
+        /// </summary>
+        public bool HasParseError { get; private set; }
+
+        /// <summary>
+        /// Gets an error message if the command-line arguments were not successfully parsed, or <c>null</c> otherwise.
+        /// </summary>
+        public string ParseErrorMessage { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether command-line usage information should be showed to the user.
+        /// </summary>
+        public bool ShouldShowUsage { get; private set; }
+
+        /// <summary>
         /// Gets a <see cref="TimerStart"/>, or <c>null</c> if no <see cref="TimerStart"/> was specified on the command
         /// line.
         /// </summary>
@@ -122,22 +137,20 @@ namespace Hourglass
         /// Parses command-line arguments.
         /// </summary>
         /// <param name="args">The command-line arguments.</param>
-        /// <returns>A <see cref="CommandLineParseResult"/>.</returns>
-        public static CommandLineParseResult Parse(IList<string> args)
+        /// <returns>A <see cref="CommandLineArguments"/> object.</returns>
+        public static CommandLineArguments Parse(IList<string> args)
         {
-            if (ContainsHelpSwitch(args))
-            {
-                return CommandLineParseResult.ForShowUsage();
-            }
-
             try
             {
-                CommandLineArguments arguments = GetCommandLineArguments(args);
-                return CommandLineParseResult.ForCommandLineArguments(arguments);
+                return GetCommandLineArguments(args);
             }
             catch (ParseException e)
             {
-                return CommandLineParseResult.ForException(e);
+                return new CommandLineArguments
+                {
+                    HasParseError = true,
+                    ParseErrorMessage = e.Message
+                };
             }
         }
 
@@ -443,6 +456,15 @@ namespace Hourglass
                         useFactoryDefaults = true;
                         break;
 
+                    case "--help":
+                    case "-h":
+                    case "-?":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--help");
+
+                        argumentsBasedOnMostRecentOptions.ShouldShowUsage = true;
+                        argumentsBasedOnFactoryDefaults.ShouldShowUsage = true;
+                        break;
+
                     default:
                         if (IsSwitch(arg))
                         {
@@ -700,16 +722,6 @@ namespace Hourglass
             }
 
             return timerStart;
-        }
-
-        /// <summary>
-        /// Returns a value indicating whether the command-line arguments include the help switch.
-        /// </summary>
-        /// <param name="args">The command-line arguments.</param>
-        /// <returns>A value indicating whether the command-line arguments include the help switch.</returns>
-        private static bool ContainsHelpSwitch(IList<string> args)
-        {
-            return args.Contains("--help") || args.Contains("-h") || args.Contains("-?");
         }
 
         /// <summary>
