@@ -238,7 +238,7 @@ namespace Hourglass.Windows
         /// </summary>
         public WindowSize PersistedSize
         {
-            get { return WindowSize.FromWindowSizeInfo(Settings.Default.WindowSize); }
+            get { return Settings.Default.WindowSize; }
         }
 
         /// <summary>
@@ -1436,8 +1436,7 @@ namespace Hourglass.Windows
             this.UnbindTimer();
             this.soundPlayer.Dispose();
 
-            WindowSize windowSize = WindowSize.FromWindow(this /* window */);
-            Settings.Default.WindowSize = WindowSizeInfo.FromWindowSize(windowSize);
+            Settings.Default.WindowSize = WindowSize.FromWindow(this /* window */);
 
             KeepAwakeManager.Instance.StopKeepAwakeFor(this);
             AppManager.Instance.Persist();

@@ -25,23 +25,12 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.Serialization.TimerInfoList Timers {
+        public global::Hourglass.Serialization.TimerOptionsInfo MostRecentOptionsInfo {
             get {
-                return ((global::Hourglass.Serialization.TimerInfoList)(this["Timers"]));
+                return ((global::Hourglass.Serialization.TimerOptionsInfo)(this["MostRecentOptionsInfo"]));
             }
             set {
-                this["Timers"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.Serialization.TimerOptionsInfo MostRecentOptions {
-            get {
-                return ((global::Hourglass.Serialization.TimerOptionsInfo)(this["MostRecentOptions"]));
-            }
-            set {
-                this["MostRecentOptions"] = value;
+                this["MostRecentOptionsInfo"] = value;
             }
         }
         
@@ -59,34 +48,45 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.Serialization.WindowSizeInfo WindowSize {
+        public global::Hourglass.Serialization.TimerInfoList TimerInfos {
             get {
-                return ((global::Hourglass.Serialization.WindowSizeInfo)(this["WindowSize"]));
+                return ((global::Hourglass.Serialization.TimerInfoList)(this["TimerInfos"]));
             }
             set {
-                this["WindowSize"] = value;
+                this["TimerInfos"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.Serialization.TimerStartInfoList TimerStarts {
+        public global::Hourglass.Serialization.TimerStartInfoList TimerStartInfos {
             get {
-                return ((global::Hourglass.Serialization.TimerStartInfoList)(this["TimerStarts"]));
+                return ((global::Hourglass.Serialization.TimerStartInfoList)(this["TimerStartInfos"]));
             }
             set {
-                this["TimerStarts"] = value;
+                this["TimerStartInfos"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection UserProvidedColors {
+        public global::System.Collections.Specialized.StringCollection UserProvidedColorIdentifiers {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["UserProvidedColors"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["UserProvidedColorIdentifiers"]));
             }
             set {
-                this["UserProvidedColors"] = value;
+                this["UserProvidedColorIdentifiers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Hourglass.Serialization.WindowSizeInfo WindowSizeInfo {
+            get {
+                return ((global::Hourglass.Serialization.WindowSizeInfo)(this["WindowSizeInfo"]));
+            }
+            set {
+                this["WindowSizeInfo"] = value;
             }
         }
     }

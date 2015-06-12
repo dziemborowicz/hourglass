@@ -8,7 +8,6 @@ namespace Hourglass.Managers
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Linq;
 
     using Hourglass.Properties;
@@ -83,9 +82,7 @@ namespace Hourglass.Managers
         /// </summary>
         public override void Persist()
         {
-            StringCollection userProvidedColorIdentifiers = new StringCollection();
-            userProvidedColorIdentifiers.AddRange(this.UserProvidedColors.Select(c => c.Identifier).ToArray());
-            Settings.Default.UserProvidedColors = userProvidedColorIdentifiers;
+            Settings.Default.UserProvidedColors = this.UserProvidedColors;
         }
 
         /// <summary>
@@ -224,18 +221,7 @@ namespace Hourglass.Managers
         /// <returns>A collection of sounds defined by the user.</returns>
         private IList<Color> GetUserProvidedColors()
         {
-            List<Color> userProvidedColors = new List<Color>();
-
-            StringCollection userProvidedColorIdentifiers = Settings.Default.UserProvidedColors;
-            if (userProvidedColorIdentifiers != null)
-            {
-                foreach (string identifier in userProvidedColorIdentifiers)
-                {
-                    userProvidedColors.Add(Color.FromIdentifier(identifier));
-                }
-            }
-
-            return userProvidedColors;
+            return Settings.Default.UserProvidedColors;
         }
     }
 }

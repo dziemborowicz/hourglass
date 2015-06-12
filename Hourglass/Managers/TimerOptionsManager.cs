@@ -53,7 +53,7 @@ namespace Hourglass.Managers
         /// </summary>
         public override void Initialize()
         {
-            this.mostRecentOptions = TimerOptions.FromTimerOptionsInfo(Settings.Default.MostRecentOptions) ?? new TimerOptions();
+            this.mostRecentOptions = Settings.Default.MostRecentOptions ?? new TimerOptions();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Hourglass.Managers
         public override void Persist()
         {
             this.UpdateMostRecentOptions();
-            Settings.Default.MostRecentOptions = TimerOptionsInfo.FromTimerOptions(this.mostRecentOptions);
+            Settings.Default.MostRecentOptions = this.mostRecentOptions;
         }
 
         /// <summary>

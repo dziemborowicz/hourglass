@@ -271,7 +271,7 @@ namespace Hourglass
         /// <returns>The most recent <see cref="WindowSize"/>.</returns>
         private static WindowSize GetMostRecentWindowSize()
         {
-            WindowSize windowSizeFromSettings = WindowSize.FromWindowSizeInfo(Settings.Default.WindowSize);
+            WindowSize windowSizeFromSettings = Settings.Default.WindowSize;
             WindowSize windowSizeFromSibling = WindowSize.FromWindowOfType<TimerWindow>().Offset();
             return windowSizeFromSibling ?? windowSizeFromSettings ?? new WindowSize();
         }

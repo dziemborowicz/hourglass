@@ -66,12 +66,7 @@ namespace Hourglass.Managers
         public override void Initialize()
         {
             this.timers.Clear();
-
-            IEnumerable<TimerInfo> timerInfos = Settings.Default.Timers;
-            if (timerInfos != null)
-            {
-                this.timers.AddRange(timerInfos.Select(Timer.FromTimerInfo));
-            }
+            this.timers.AddRange(Settings.Default.Timers);
         }
 
         /// <summary>
@@ -79,12 +74,10 @@ namespace Hourglass.Managers
         /// </summary>
         public override void Persist()
         {
-            IEnumerable<TimerInfo> timerInfos = this.timers
+            Settings.Default.Timers = this.timers
                 .Where(t => t.State != TimerState.Stopped && t.State != TimerState.Expired)
                 .Take(MaxSavedTimers)
-                .Select(TimerInfo.FromTimer);
-
-            Settings.Default.Timers = new TimerInfoList(timerInfos);
+                .ToList();
         }
 
         /// <summary>

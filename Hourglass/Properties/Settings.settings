@@ -2,22 +2,22 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Hourglass.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Timers" Type="Hourglass.Serialization.TimerInfoList" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MostRecentOptions" Type="Hourglass.Serialization.TimerOptionsInfo" Scope="User">
+    <Setting Name="MostRecentOptionsInfo" Type="Hourglass.Serialization.TimerOptionsInfo" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ShowInNotificationArea" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="WindowSize" Type="Hourglass.Serialization.WindowSizeInfo" Scope="User">
+    <Setting Name="TimerInfos" Type="Hourglass.Serialization.TimerInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="TimerStarts" Type="Hourglass.Serialization.TimerStartInfoList" Scope="User">
+    <Setting Name="TimerStartInfos" Type="Hourglass.Serialization.TimerStartInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="UserProvidedColors" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="UserProvidedColorIdentifiers" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WindowSizeInfo" Type="Hourglass.Serialization.WindowSizeInfo" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
