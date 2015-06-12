@@ -731,7 +731,7 @@ namespace Hourglass.Windows
 
             // Colors
             this.CreateColorMenuItem(Color.DefaultColor);
-            this.CreateColorMenuItemsFromList(ColorManager.Instance.BuiltInColors);
+            this.CreateColorMenuItemsFromList(ColorManager.Instance.BuiltInColors.Where(c => c != Color.DefaultColor).ToList());
             this.CreateColorMenuItemsFromList(ColorManager.Instance.UserProvidedColors);
 
             // Custom color actions
@@ -837,7 +837,10 @@ namespace Hourglass.Windows
             ColorDialog dialog = new ColorDialog();
             dialog.AnyColor = true;
             dialog.FullOpen = true;
-            dialog.CustomColors = ColorManager.Instance.AllColors.Select(c => c.ToInt()).ToArray();
+            dialog.CustomColors = ColorManager.Instance.AllColors
+                .Where(c => c != Color.DefaultColor)
+                .Select(c => c.ToInt())
+                .ToArray();
 
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK)
