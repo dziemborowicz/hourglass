@@ -86,7 +86,7 @@ namespace Hourglass
         /// <summary>
         /// Gets the color of the timer progress bar.
         /// </summary>
-        public TimerColor Color { get; private set; }
+        public Color Color { get; private set; }
 
         /// <summary>
         /// Gets the sound to play when the timer expires, or <c>null</c> if no sound is to be played.
@@ -161,10 +161,10 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns a <see cref="TimerOptions"/> instance based on the parsed command-line arguments.
+        /// Returns the <see cref="TimerOptions"/> specified in the parsed command-line arguments.
         /// </summary>
-        /// <returns>A <see cref="TimerOptions"/> instance based on the parsed command-line arguments.</returns>
-        public TimerOptions ToTimerOptions()
+        /// <returns>The <see cref="TimerOptions"/> specified in the parsed command-line arguments.</returns>
+        public TimerOptions GetTimerOptions()
         {
             return new TimerOptions
             {
@@ -176,15 +176,15 @@ namespace Hourglass
                 Color = this.Color,
                 Sound = this.Sound,
                 LoopSound = this.LoopSound,
-                WindowSize = this.ToWindowSize()
+                WindowSize = this.GetWindowSize()
             };
         }
 
         /// <summary>
-        /// Returns a <see cref="WindowSize"/> instance based on the parsed command-line arguments.
+        /// Returns the <see cref="WindowSize"/> specified in the parsed command-line arguments.
         /// </summary>
-        /// <returns>A <see cref="WindowSize"/> instance based on the parsed command-line arguments.</returns>
-        public WindowSize ToWindowSize()
+        /// <returns>The <see cref="WindowSize"/> specified in the parsed command-line arguments.</returns>
+        public WindowSize GetWindowSize()
         {
             return new WindowSize(
                 this.WindowBounds,
@@ -243,7 +243,7 @@ namespace Hourglass
                 LoopTimer = false,
                 PopUpWhenExpired = true,
                 CloseWhenExpired = false,
-                Color = TimerColor.DefaultColor,
+                Color = Color.DefaultColor,
                 Sound = Sound.DefaultSound,
                 LoopSound = false,
                 WindowState = WindowState.Normal,
@@ -375,7 +375,7 @@ namespace Hourglass
                     case "-c":
                         ThrowIfDuplicateSwitch(specifiedSwitches, "--color");
 
-                        TimerColor color = GetTimerColorValue(
+                        Color color = GetColorValue(
                             arg,
                             remainingArgs,
                             argumentsBasedOnMostRecentOptions.Color);
@@ -535,17 +535,17 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns the next <see cref="TimerColor"/> value in <paramref name="remainingArgs"/>, or throws an exception
-        /// if <paramref name="remainingArgs"/> is empty or the next argument is not "last" or a valid representation
-        /// of a <see cref="TimerColor"/>.
+        /// Returns the next <see cref="Color"/> value in <paramref name="remainingArgs"/>, or throws an exception if
+        /// <paramref name="remainingArgs"/> is empty or the next argument is not "last" or a valid representation of a
+        /// <see cref="Color"/>.
         /// </summary>
         /// <param name="arg">The name of the argument for which the value is to be returned.</param>
         /// <param name="remainingArgs">The unparsed arguments.</param>
         /// <param name="last">The value of the argument returned when the user specifies "last".</param>
-        /// <returns>The next <see cref="TimerColor"/> value in <paramref name="remainingArgs"/></returns>
+        /// <returns>The next <see cref="Color"/> value in <paramref name="remainingArgs"/></returns>
         /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
-        /// "last" or a valid representation of a <see cref="TimerColor"/>.</exception>
-        private static TimerColor GetTimerColorValue(string arg, Queue<string> remainingArgs, TimerColor last)
+        /// "last" or a valid representation of a <see cref="Color"/>.</exception>
+        private static Color GetColorValue(string arg, Queue<string> remainingArgs, Color last)
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
@@ -555,21 +555,23 @@ namespace Hourglass
                     return last;
 
                 default:
-                    TimerColor color = TimerColorManager.Instance.TryGetColorByName(value, true /* isBuiltIn */);
-                    if (color != null)
+                    Color color = ColorManager.Instance.GetColorByName(value, StringComparison.CurrentCultureIgnoreCase);
+
+                    if (color == null)
                     {
-                        return color;
+                        try
+                        {
+                            color = new Color(value);
+                            ColorManager.Instance.Add(color);
+                        }
+                        catch
+                        {
+                            string message = string.Format("Invalid value \"{1}\" for switch \"{0}\".", arg, value);
+                            throw new ParseException(message);
+                        }
                     }
 
-                    try
-                    {
-                        return new TimerColor(value);
-                    }
-                    catch
-                    {
-                        string message = string.Format("Invalid value \"{1}\" for switch \"{0}\".", arg, value);
-                        throw new ParseException(message);
-                    }
+                    return color;
             }
         }
 
@@ -597,7 +599,7 @@ namespace Hourglass
                     return last;
 
                 default:
-                    Sound sound = SoundManager.Instance.GetSoundByName(value);
+                    Sound sound = SoundManager.Instance.GetSoundByName(value, StringComparison.CurrentCultureIgnoreCase);
 
                     if (sound == null)
                     {

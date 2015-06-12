@@ -160,7 +160,7 @@ namespace Hourglass.Timing
         /// <c>null</c> or empty.</returns>
         public static Sound FromIdentifier(string identifier)
         {
-            return SoundManager.Instance.GetSoundOrDefault(identifier);
+            return SoundManager.Instance.GetSoundOrDefaultByIdentifier(identifier);
         }
 
         /// <summary>

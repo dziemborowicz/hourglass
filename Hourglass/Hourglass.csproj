@@ -108,8 +108,6 @@
     <Compile Include="Parsing\TimeToken.cs" />
     <Compile Include="Parsing\TimerStartToken.cs" />
     <Compile Include="Properties\PortableSettingsProvider.cs" />
-    <Compile Include="Serialization\TimerColorInfo.cs" />
-    <Compile Include="Serialization\TimerColorInfoList.cs" />
     <Compile Include="Serialization\TimerInfo.cs" />
     <Compile Include="Serialization\TimerInfoList.cs" />
     <Compile Include="Serialization\TimerOptionsInfo.cs" />
@@ -123,8 +121,8 @@
     <Compile Include="Windows\SoundPlayer.cs" />
     <Compile Include="Timing\Timer.cs" />
     <Compile Include="Timing\TimerBase.cs" />
-    <Compile Include="Timing\TimerColor.cs" />
-    <Compile Include="Managers\TimerColorManager.cs" />
+    <Compile Include="Timing\Color.cs" />
+    <Compile Include="Managers\ColorManager.cs" />
     <Compile Include="Managers\TimerManager.cs" />
     <Compile Include="Windows\ContextMenu.cs" />
     <Compile Include="Windows\NotificationAreaIcon.cs" />

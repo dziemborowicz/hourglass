@@ -40,9 +40,9 @@ namespace Hourglass.Serialization
         public bool CloseWhenExpired { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the timer progress bar.
+        /// Gets or sets the identifier of the color of the timer progress bar.
         /// </summary>
-        public TimerColorInfo Color { get; set; }
+        public string ColorIdentifier { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the sound to play when the timer expires, or <c>null</c> if no sound is to

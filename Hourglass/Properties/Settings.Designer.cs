@@ -70,23 +70,23 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Hourglass.Serialization.TimerColorInfoList Colors {
-            get {
-                return ((global::Hourglass.Serialization.TimerColorInfoList)(this["Colors"]));
-            }
-            set {
-                this["Colors"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::Hourglass.Serialization.TimerStartInfoList TimerStarts {
             get {
                 return ((global::Hourglass.Serialization.TimerStartInfoList)(this["TimerStarts"]));
             }
             set {
                 this["TimerStarts"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection UserProvidedColors {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["UserProvidedColors"]));
+            }
+            set {
+                this["UserProvidedColors"] = value;
             }
         }
     }

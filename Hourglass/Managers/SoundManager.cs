@@ -8,7 +8,6 @@ namespace Hourglass.Managers
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -23,14 +22,23 @@ namespace Hourglass.Managers
     public class SoundManager : Manager
     {
         /// <summary>
-        /// The extensions of the supported sound files.
-        /// </summary>
-        public static readonly ReadOnlyCollection<string> SupportedTypes = new ReadOnlyCollection<string>(new[] { "*.aac", "*.m4a", "*.mid", "*.midi", "*.mp3", "*.wav", "*.wma" });
-
-        /// <summary>
         /// Singleton instance of the <see cref="SoundManager"/> class.
         /// </summary>
         public static readonly SoundManager Instance = new SoundManager();
+
+        /// <summary>
+        /// The extensions of the supported sound files.
+        /// </summary>
+        private static readonly string[] SupportedTypes =
+        {
+            "*.aac",
+            "*.m4a",
+            "*.mid",
+            "*.midi",
+            "*.mp3",
+            "*.wav",
+            "*.wma"
+        };
 
         /// <summary>
         /// A collection of sounds.
@@ -49,11 +57,19 @@ namespace Hourglass.Managers
         /// </summary>
         public Sound DefaultSound
         {
-            get { return this.GetSound("resource:Normal beep"); }
+            get { return this.GetSoundByIdentifier("resource:Normal beep"); }
         }
 
         /// <summary>
-        /// Gets a collection of sounds stored in the assembly.
+        /// Gets a collection of all sounds.
+        /// </summary>
+        public IList<Sound> AllSounds
+        {
+            get { return this.sounds.ToList(); }
+        }
+
+        /// <summary>
+        /// Gets a collection of the sounds stored in the assembly.
         /// </summary>
         public IList<Sound> BuiltInSounds
         {
@@ -61,7 +77,7 @@ namespace Hourglass.Managers
         }
 
         /// <summary>
-        /// Gets a collection of sounds stored in the file system.
+        /// Gets a collection of the sounds stored in the file system.
         /// </summary>
         public IList<Sound> UserProvidedSounds
         {
@@ -73,8 +89,9 @@ namespace Hourglass.Managers
         /// </summary>
         public override void Initialize()
         {
-            this.sounds.AddRange(this.GetResourceSounds());
-            this.sounds.AddRange(this.GetFileSounds());
+            this.sounds.Clear();
+            this.sounds.AddRange(this.GetBuiltInSounds());
+            this.sounds.AddRange(this.GetUserProvidedSounds());
         }
 
         /// <summary>
@@ -82,7 +99,7 @@ namespace Hourglass.Managers
         /// </summary>
         /// <param name="identifier">The identifier for the sound.</param>
         /// <returns>The sound for the specified identifier, or <c>null</c> if no such sound is loaded.</returns>
-        public Sound GetSound(string identifier)
+        public Sound GetSoundByIdentifier(string identifier)
         {
             if (string.IsNullOrEmpty(identifier))
             {
@@ -98,65 +115,81 @@ namespace Hourglass.Managers
         /// <param name="identifier">The identifier for the sound.</param>
         /// <returns>The sound for the specified identifier, or <see cref="DefaultSound"/> if no such sound is loaded.
         /// </returns>
-        public Sound GetSoundOrDefault(string identifier)
+        public Sound GetSoundOrDefaultByIdentifier(string identifier)
         {
             if (string.IsNullOrEmpty(identifier))
             {
                 return null;
             }
 
-            return this.GetSound(identifier) ?? this.DefaultSound;
+            return this.GetSoundByIdentifier(identifier) ?? this.DefaultSound;
         }
 
         /// <summary>
         /// Returns the first sound for the specified name, or <c>null</c> if no such sound is loaded.
         /// </summary>
         /// <param name="name">The name for the sound.</param>
+        /// <param name="stringComparison">One of the enumeration values that specifies how the strings will be
+        /// compared.</param>
         /// <returns>The first sound for the specified name, or <c>null</c> if no such sound is loaded.</returns>
-        public Sound GetSoundByName(string name)
+        public Sound GetSoundByName(string name, StringComparison stringComparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(name))
             {
                 return null;
             }
 
-            return this.sounds.FirstOrDefault(s => s.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            return this.sounds.FirstOrDefault(s => string.Equals(s.Name, name, stringComparison));
         }
 
         /// <summary>
         /// Returns the first sound for the specified name, or <see cref="DefaultSound"/> if no such sound is loaded.
         /// </summary>
         /// <param name="name">The name for the sound.</param>
+        /// <param name="stringComparison">One of the enumeration values that specifies how the strings will be
+        /// compared.</param>
         /// <returns>The first sound for the specified name, or <see cref="DefaultSound"/> if no such sound is loaded.
         /// </returns>
-        public Sound GetSoundOrDefaultByName(string name)
+        public Sound GetSoundOrDefaultByName(string name, StringComparison stringComparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(name))
             {
                 return null;
             }
 
-            return this.GetSoundByName(name) ?? this.DefaultSound;
+            return this.GetSoundByName(name, stringComparison) ?? this.DefaultSound;
         }
 
         /// <summary>
         /// Loads the collection of sounds stored in the assembly.
         /// </summary>
         /// <returns>A collection of sounds stored in the assembly.</returns>
-        private IList<Sound> GetResourceSounds()
+        private IList<Sound> GetBuiltInSounds()
         {
-            List<Sound> list = new List<Sound>();
-            list.Add(new Sound("Loud beep", () => Resources.BeepLoud, TimeSpan.FromMilliseconds(600)));
-            list.Add(new Sound("Normal beep", () => Resources.BeepNormal, TimeSpan.FromMilliseconds(600)));
-            list.Add(new Sound("Quiet beep", () => Resources.BeepQuiet, TimeSpan.FromMilliseconds(600)));
-            return list;
+            return new List<Sound>
+            {
+                new Sound(
+                    "Loud beep",
+                    () => Resources.BeepLoud,
+                    TimeSpan.FromMilliseconds(600)),
+
+                new Sound(
+                    "Normal beep",
+                    () => Resources.BeepNormal,
+                    TimeSpan.FromMilliseconds(600)),
+
+                new Sound(
+                    "Quiet beep",
+                    () => Resources.BeepQuiet,
+                    TimeSpan.FromMilliseconds(600))
+            };
         }
 
         /// <summary>
         /// Loads the collection of sounds stored in the file system.
         /// </summary>
         /// <returns>A collection of sounds stored in the file system.</returns>
-        private IList<Sound> GetFileSounds()
+        private IList<Sound> GetUserProvidedSounds()
         {
             try
             {
@@ -164,8 +197,8 @@ namespace Hourglass.Managers
                 string soundsDirectory = Path.Combine(appDirectory, "Sounds");
 
                 List<Sound> list = new List<Sound>();
-                list.AddRange(this.GetFileSounds(appDirectory));
-                list.AddRange(this.GetFileSounds(soundsDirectory));
+                list.AddRange(this.GetUserProvidedSounds(appDirectory));
+                list.AddRange(this.GetUserProvidedSounds(soundsDirectory));
                 list.Sort((a, b) => string.Compare(a.Name, b.Name, CultureInfo.CurrentCulture, CompareOptions.StringSort));
                 return list;
             }
@@ -181,7 +214,7 @@ namespace Hourglass.Managers
         /// </summary>
         /// <param name="path">A path to a directory.</param>
         /// <returns>A collection of sounds stored in the file system at the specified path.</returns>
-        private IList<Sound> GetFileSounds(string path)
+        private IList<Sound> GetUserProvidedSounds(string path)
         {
             try
             {

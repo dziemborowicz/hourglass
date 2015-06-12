@@ -111,8 +111,8 @@ namespace Hourglass
         private static TimerWindow GetTimerWindowFromArguments(CommandLineArguments arguments)
         {
             TimerWindow window = new TimerWindow(arguments.TimerStart);
-            window.Options.Set(arguments.ToTimerOptions());
-            window.Restore(arguments.ToWindowSize());
+            window.Options.Set(arguments.GetTimerOptions());
+            window.Restore(arguments.GetWindowSize());
             return window;
         }
 

@@ -19,6 +19,7 @@ namespace Hourglass.Windows
     using Hourglass.Properties;
     using Hourglass.Timing;
 
+    using Color = Hourglass.Timing.Color;
     using ColorDialog = System.Windows.Forms.ColorDialog;
     using DialogResult = System.Windows.Forms.DialogResult;
 
@@ -100,7 +101,7 @@ namespace Hourglass.Windows
         private MenuItem colorMenuItem;
 
         /// <summary>
-        /// The "Color" <see cref="MenuItem"/>s associated with <see cref="TimerColor"/>s.
+        /// The "Color" <see cref="MenuItem"/>s associated with <see cref="Color"/>s.
         /// </summary>
         private IList<MenuItem> selectableColorMenuItems;
 
@@ -331,7 +332,7 @@ namespace Hourglass.Windows
 
             // Color
             MenuItem selectedColorMenuItem = this.selectableColorMenuItems.FirstOrDefault(mi => mi.IsChecked);
-            this.timerWindow.Options.Color = selectedColorMenuItem != null ? selectedColorMenuItem.Tag as TimerColor : TimerColor.DefaultColor;
+            this.timerWindow.Options.Color = selectedColorMenuItem != null ? selectedColorMenuItem.Tag as Color : Color.DefaultColor;
 
             // Sound
             MenuItem selectedSoundMenuItem = this.selectableSoundMenuItems.FirstOrDefault(mi => mi.IsChecked);
@@ -625,7 +626,7 @@ namespace Hourglass.Windows
             if (timer.State == TimerState.Expired)
             {
                 Border progress = new Border();
-                progress.Background = new SolidColorBrush(Color.FromRgb(199, 80, 80));
+                progress.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(199, 80, 80));
                 progress.Width = 16;
                 progress.Height = 6;
 
@@ -725,13 +726,13 @@ namespace Hourglass.Windows
             // Ensure the current timer color is registered
             if (!this.timerWindow.Options.Color.IsBuiltIn)
             {
-                TimerColorManager.Instance.Add(this.timerWindow.Options.Color);
+                ColorManager.Instance.Add(this.timerWindow.Options.Color);
             }
 
             // Colors
-            this.CreateColorMenuItem(TimerColor.DefaultColor);
-            this.CreateColorMenuItemsFromList(TimerColorManager.Instance.BuiltInColors);
-            this.CreateColorMenuItemsFromList(TimerColorManager.Instance.UserProvidedColors);
+            this.CreateColorMenuItem(Color.DefaultColor);
+            this.CreateColorMenuItemsFromList(ColorManager.Instance.BuiltInColors);
+            this.CreateColorMenuItemsFromList(ColorManager.Instance.UserProvidedColors);
 
             // Custom color actions
             this.colorMenuItem.Items.Add(new Separator());
@@ -756,10 +757,10 @@ namespace Hourglass.Windows
         }
 
         /// <summary>
-        /// Creates a <see cref="MenuItem"/> for a <see cref="TimerColor"/>.
+        /// Creates a <see cref="MenuItem"/> for a <see cref="Color"/>.
         /// </summary>
-        /// <param name="color">A <see cref="TimerColor"/>.</param>
-        private void CreateColorMenuItem(TimerColor color)
+        /// <param name="color">A <see cref="Color"/>.</param>
+        private void CreateColorMenuItem(Color color)
         {
             MenuItem menuItem = new MenuItem();
             menuItem.Header = this.GetHeaderForColor(color);
@@ -773,15 +774,15 @@ namespace Hourglass.Windows
         }
 
         /// <summary>
-        /// Creates a <see cref="MenuItem"/> for each <see cref="TimerColor"/> in the collection.
+        /// Creates a <see cref="MenuItem"/> for each <see cref="Color"/> in the collection.
         /// </summary>
-        /// <param name="colors">A collection of <see cref="TimerColor"/>s.</param>
-        private void CreateColorMenuItemsFromList(IList<TimerColor> colors)
+        /// <param name="colors">A collection of <see cref="Color"/>s.</param>
+        private void CreateColorMenuItemsFromList(IList<Color> colors)
         {
             if (colors.Count > 0)
             {
                 this.colorMenuItem.Items.Add(new Separator());
-                foreach (TimerColor color in colors)
+                foreach (Color color in colors)
                 {
                     this.CreateColorMenuItem(color);
                 }
@@ -790,11 +791,11 @@ namespace Hourglass.Windows
 
         /// <summary>
         /// Returns an object that can be set for the <see cref="MenuItem.Header"/> of a <see cref="MenuItem"/> that
-        /// displays a <see cref="TimerColor"/>.
+        /// displays a <see cref="Color"/>.
         /// </summary>
-        /// <param name="color">A <see cref="TimerColor"/>.</param>
+        /// <param name="color">A <see cref="Color"/>.</param>
         /// <returns>An object that can be set for the <see cref="MenuItem.Header"/>.</returns>
-        private object GetHeaderForColor(TimerColor color)
+        private object GetHeaderForColor(Color color)
         {
             Border border = new Border();
             border.Background = color.Brush;
@@ -836,13 +837,13 @@ namespace Hourglass.Windows
             ColorDialog dialog = new ColorDialog();
             dialog.AnyColor = true;
             dialog.FullOpen = true;
-            dialog.CustomColors = TimerColorManager.Instance.Colors.Select(c => c.ToInt()).ToArray();
+            dialog.CustomColors = ColorManager.Instance.AllColors.Select(c => c.ToInt()).ToArray();
 
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                TimerColor color = new TimerColor(dialog.Color.R, dialog.Color.G, dialog.Color.B);
-                TimerColorManager.Instance.Add(color);
+                Color color = new Color(dialog.Color.R, dialog.Color.G, dialog.Color.B);
+                ColorManager.Instance.Add(color);
                 this.timerWindow.Options.Color = color;
             }
         }
@@ -854,7 +855,7 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void ClearCustomColorsMenuItemClick(object sender, RoutedEventArgs e)
         {
-            TimerColorManager.Instance.RemoveUserProvidedColors();
+            ColorManager.Instance.ClearUserProvidedColors();
         }
 
         #endregion

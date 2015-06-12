@@ -14,10 +14,10 @@
     <Setting Name="WindowSize" Type="Hourglass.Serialization.WindowSizeInfo" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Colors" Type="Hourglass.Serialization.TimerColorInfoList" Scope="User">
+    <Setting Name="TimerStarts" Type="Hourglass.Serialization.TimerStartInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="TimerStarts" Type="Hourglass.Serialization.TimerStartInfoList" Scope="User">
+    <Setting Name="UserProvidedColors" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

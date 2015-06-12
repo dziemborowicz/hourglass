@@ -59,7 +59,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// The color of the timer progress bar.
         /// </summary>
-        private TimerColor color;
+        private Color color;
 
         /// <summary>
         /// The size, position, and state of the timer window.
@@ -80,7 +80,7 @@ namespace Hourglass.Timing
             this.loopTimer = false;
             this.popUpWhenExpired = true;
             this.closeWhenExpired = false;
-            this.color = TimerColor.DefaultColor;
+            this.color = Color.DefaultColor;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
             this.windowSize = null;
@@ -232,7 +232,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// Gets or sets the color of the timer progress bar.
         /// </summary>
-        public TimerColor Color
+        public Color Color
         {
             get
             {
@@ -384,7 +384,7 @@ namespace Hourglass.Timing
             this.loopTimer = info.LoopTimer;
             this.popUpWhenExpired = info.PopUpWhenExpired;
             this.closeWhenExpired = info.CloseWhenExpired;
-            this.color = TimerColor.FromTimerColorInfo(info.Color) ?? TimerColor.DefaultColor;
+            this.color = Color.FromIdentifier(info.ColorIdentifier);
             this.sound = Sound.FromIdentifier(info.SoundIdentifier);
             this.loopSound = info.LoopSound;
             this.windowSize = WindowSize.FromWindowSizeInfo(info.WindowSize);
@@ -403,7 +403,7 @@ namespace Hourglass.Timing
                 LoopTimer = this.loopTimer,
                 PopUpWhenExpired = this.popUpWhenExpired,
                 CloseWhenExpired = this.closeWhenExpired,
-                Color = TimerColorInfo.FromTimerColor(this.color),
+                ColorIdentifier = this.color != null ? this.color.Identifier : null,
                 SoundIdentifier = this.sound != null ? this.sound.Identifier : null,
                 LoopSound = this.loopSound,
                 WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize)
