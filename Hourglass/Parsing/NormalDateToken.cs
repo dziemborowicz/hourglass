@@ -172,11 +172,11 @@ namespace Hourglass.Parsing
                 }
 
                 // Unsupported
-                return string.Empty;
+                return this.GetType().ToString();
             }
             catch
             {
-                return string.Empty;
+                return this.GetType().ToString();
             }
         }
 

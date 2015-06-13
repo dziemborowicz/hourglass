@@ -242,7 +242,7 @@ namespace Hourglass.Parsing
             }
             catch
             {
-                return string.Empty;
+                return this.GetType().ToString();
             }
         }
 
