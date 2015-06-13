@@ -77,23 +77,27 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="AppEntry.cs" />
-    <Compile Include="Extensions\TimeSpanExtensions.cs" />
-    <Compile Include="Managers\AppManager.cs" />
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="Extensions\CultureInfoExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Managers\ErrorManager.cs" />
-    <Compile Include="Managers\UpdateManager.cs" />
-    <Compile Include="Serialization\UpdateInfo.cs" />
-    <Compile Include="Windows\ErrorDialog.xaml.cs">
-      <DependentUpon>ErrorDialog.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Extensions\IRestorableWindow.cs" />
+    <Compile Include="Extensions\MathExtensions.cs" />
+    <Compile Include="Extensions\TimeSpanExtensions.cs" />
+    <Compile Include="Extensions\WindowExtensions.cs" />
+    <Compile Include="Managers\AppManager.cs" />
+    <Compile Include="Managers\ColorManager.cs" />
+    <Compile Include="Managers\ErrorManager.cs" />
     <Compile Include="Managers\KeepAwakeManager.cs" />
     <Compile Include="Managers\Manager.cs" />
-    <Compile Include="Extensions\MathExtensions.cs" />
-    <Compile Include="Windows\MultiplierConverter.cs" />
+    <Compile Include="Managers\NotificationAreaIconManager.cs" />
+    <Compile Include="Managers\SettingsManager.cs" />
+    <Compile Include="Managers\SoundManager.cs" />
+    <Compile Include="Managers\TimerManager.cs" />
+    <Compile Include="Managers\TimerOptionsManager.cs" />
+    <Compile Include="Managers\TimerStartManager.cs" />
+    <Compile Include="Managers\UpdateManager.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Parsing\DateTimeToken.cs" />
     <Compile Include="Parsing\DateToken.cs" />
@@ -114,36 +118,32 @@
     <Compile Include="Serialization\TimerOptionsInfo.cs" />
     <Compile Include="Serialization\TimerStartInfo.cs" />
     <Compile Include="Serialization\TimerStartInfoList.cs" />
+    <Compile Include="Serialization\UpdateInfo.cs" />
     <Compile Include="Serialization\WindowSizeInfo.cs" />
-    <Compile Include="Managers\SettingsManager.cs" />
-    <Compile Include="Windows\SizeToFitTextBox.cs" />
+    <Compile Include="Timing\Color.cs" />
     <Compile Include="Timing\Sound.cs" />
-    <Compile Include="Managers\SoundManager.cs" />
-    <Compile Include="Windows\SoundPlayer.cs" />
     <Compile Include="Timing\Timer.cs" />
     <Compile Include="Timing\TimerBase.cs" />
-    <Compile Include="Timing\Color.cs" />
-    <Compile Include="Managers\ColorManager.cs" />
-    <Compile Include="Managers\TimerManager.cs" />
-    <Compile Include="Windows\ContextMenu.cs" />
-    <Compile Include="Windows\NotificationAreaIcon.cs" />
-    <Compile Include="Managers\NotificationAreaIconManager.cs" />
     <Compile Include="Timing\TimerOptions.cs" />
-    <Compile Include="Managers\TimerOptionsManager.cs" />
-    <Compile Include="Windows\InterfaceScaler.cs" />
     <Compile Include="Timing\TimerStart.cs" />
-    <Compile Include="Managers\TimerStartManager.cs" />
+    <Compile Include="Windows\ContextMenu.cs" />
+    <Compile Include="Windows\ErrorDialog.xaml.cs">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\InterfaceScaler.cs" />
+    <Compile Include="Windows\MultiplierConverter.cs" />
+    <Compile Include="Windows\NotificationAreaIcon.cs" />
+    <Compile Include="Windows\SizeToFitTextBox.cs" />
+    <Compile Include="Windows\SoundPlayer.cs" />
     <Compile Include="Windows\TimerWindow.xaml.cs">
       <DependentUpon>TimerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UsageDialog.xaml.cs">
       <DependentUpon>UsageDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Windows\Watermark.cs" />
     <Compile Include="Windows\WatermarkAdorner.cs" />
     <Compile Include="Windows\WindowSize.cs" />
-    <Compile Include="Extensions\WindowExtensions.cs" />
     <Page Include="Windows\ErrorDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
