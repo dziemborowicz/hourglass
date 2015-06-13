@@ -231,7 +231,7 @@ namespace Hourglass
                 Color = options.Color,
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
-                WindowState = windowSize.WindowState,
+                WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
                 RestoreWindowState = windowSize.RestoreWindowState,
                 WindowBounds = windowSize.RestoreBounds
             };

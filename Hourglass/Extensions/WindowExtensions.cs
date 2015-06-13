@@ -12,6 +12,23 @@ namespace Hourglass.Extensions
     using Hourglass.Windows;
 
     /// <summary>
+    /// Specifies options for restoring a <see cref="WindowSize"/> to a <see cref="Window"/>.
+    /// </summary>
+    [Flags]
+    public enum RestoreOptions
+    {
+        /// <summary>
+        /// Specifies that no options are set.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Allows restoring a window to a minimized state.
+        /// </summary>
+        AllowMinimized
+    }
+
+    /// <summary>
     /// Provides extensions methods for the <see cref="Window"/> class, and helper methods for manipulating the size,
     /// position, and state of windows through the <see cref="WindowSize"/> class.
     /// </summary>
@@ -62,11 +79,12 @@ namespace Hourglass.Extensions
         /// </summary>
         /// <typeparam name="T">The type of the window.</typeparam>
         /// <param name="window">A window.</param>
-        public static void RestoreFromSettings<T>(this T window)
+        /// <param name="options">Options for performing the restore.</param>
+        public static void RestoreFromSettings<T>(this T window, RestoreOptions options = RestoreOptions.None)
             where T : Window, IRestorableWindow
         {
             WindowSize windowSize = window.PersistedSize;
-            window.Restore(windowSize);
+            window.Restore(windowSize, options);
         }
 
         /// <summary>
@@ -78,12 +96,13 @@ namespace Hourglass.Extensions
         /// <typeparam name="T">The type of the window.</typeparam>
         /// <param name="window">A window.</param>
         /// <param name="otherWindow">The window from which to copy the size, position, and state.</param>
-        public static void RestoreFromWindow<T>(this T window, T otherWindow)
+        /// <param name="options">Options for performing the restore.</param>
+        public static void RestoreFromWindow<T>(this T window, T otherWindow, RestoreOptions options = RestoreOptions.None)
             where T : Window, IRestorableWindow
         {
             WindowSize windowSize = WindowSize.FromWindow(otherWindow);
             WindowSize offsetWindowSize = windowSize.Offset();
-            window.Restore(offsetWindowSize);
+            window.Restore(offsetWindowSize, options);
         }
 
         /// <summary>
@@ -95,18 +114,19 @@ namespace Hourglass.Extensions
         /// </remarks>
         /// <typeparam name="T">The type of the window.</typeparam>
         /// <param name="window">A window.</param>
-        public static void RestoreFromSibling<T>(this T window)
+        /// <param name="options">Options for performing the restore.</param>
+        public static void RestoreFromSibling<T>(this T window, RestoreOptions options = RestoreOptions.None)
             where T : Window, IRestorableWindow
         {
             WindowSize windowSize = WindowSize.FromSiblingOfWindow(window);
             if (windowSize != null)
             {
                 WindowSize offsetWindowSize = windowSize.Offset();
-                window.Restore(offsetWindowSize);
+                window.Restore(offsetWindowSize, options);
             }
             else
             {
-                window.RestoreFromSettings();
+                window.RestoreFromSettings(options);
             }
         }
 
@@ -116,7 +136,8 @@ namespace Hourglass.Extensions
         /// <typeparam name="T">The type of the window.</typeparam>
         /// <param name="window">A window.</param>
         /// <param name="windowSize">The size, position, and state to restore.</param>
-        public static void Restore<T>(this T window, WindowSize windowSize)
+        /// <param name="options">Options for performing the restore.</param>
+        public static void Restore<T>(this T window, WindowSize windowSize, RestoreOptions options = RestoreOptions.None)
             where T : Window, IRestorableWindow
         {
             if (window == null || windowSize == null)
@@ -128,10 +149,20 @@ namespace Hourglass.Extensions
             window.RestoreBounds(windowSize.RestoreBounds);
 
             // Restore state
-            window.RestoreState(
-                windowSize.WindowState,
-                windowSize.RestoreWindowState,
-                windowSize.IsFullScreen);
+            if (windowSize.WindowState == WindowState.Minimized && !options.HasFlag(RestoreOptions.AllowMinimized))
+            {
+                window.RestoreState(
+                    windowSize.RestoreWindowState,
+                    windowSize.RestoreWindowState,
+                    windowSize.IsFullScreen);
+            }
+            else
+            {
+                window.RestoreState(
+                    windowSize.WindowState,
+                    windowSize.RestoreWindowState,
+                    windowSize.IsFullScreen);
+            }
 
             // If the window is restored to a size or position that does not fit on the screen, fallback to center
             if (!window.IsOnScreen())

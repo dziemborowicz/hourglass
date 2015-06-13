@@ -112,7 +112,7 @@ namespace Hourglass
         {
             TimerWindow window = new TimerWindow(arguments.TimerStart);
             window.Options.Set(arguments.GetTimerOptions());
-            window.Restore(arguments.GetWindowSize());
+            window.Restore(arguments.GetWindowSize(), RestoreOptions.AllowMinimized);
             return window;
         }
 
