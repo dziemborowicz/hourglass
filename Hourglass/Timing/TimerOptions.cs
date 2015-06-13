@@ -8,6 +8,7 @@ namespace Hourglass.Timing
 {
     using System;
     using System.ComponentModel;
+    using System.Windows;
 
     using Hourglass.Serialization;
     using Hourglass.Windows;
@@ -83,7 +84,11 @@ namespace Hourglass.Timing
             this.color = Color.DefaultColor;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
-            this.windowSize = null;
+            this.windowSize = new WindowSize(
+                new Rect(double.PositiveInfinity, double.PositiveInfinity, 350, 150),
+                WindowState.Normal,
+                WindowState.Normal,
+                false /* isFullScreen */);
         }
 
         /// <summary>

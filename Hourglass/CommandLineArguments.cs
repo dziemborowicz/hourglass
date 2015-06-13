@@ -243,24 +243,26 @@ namespace Hourglass
         /// <returns>An <see cref="CommandLineArguments"/> instance based on the factory default settings.</returns>
         private static CommandLineArguments GetArgumentsFromFactoryDefaults()
         {
+            TimerOptions defaultOptions = new TimerOptions();
+
             WindowSize mostRecentWindowSize = GetMostRecentWindowSize();
-            Rect defaultWindowBounds = new Rect(double.PositiveInfinity, double.PositiveInfinity, 350, 150);
+            Rect defaultWindowBounds = defaultOptions.WindowSize.RestoreBounds;
             Rect defaultWindowBoundsWithLocation = mostRecentWindowSize.RestoreBounds.Merge(defaultWindowBounds);
 
             return new CommandLineArguments
             {
-                Title = null,
-                AlwaysOnTop = false,
-                IsFullScreen = false,
+                Title = defaultOptions.Title,
+                AlwaysOnTop = defaultOptions.AlwaysOnTop,
+                IsFullScreen = defaultOptions.WindowSize.IsFullScreen,
                 ShowInNotificationArea = false,
-                LoopTimer = false,
-                PopUpWhenExpired = true,
-                CloseWhenExpired = false,
-                Color = Color.DefaultColor,
-                Sound = Sound.DefaultSound,
-                LoopSound = false,
-                WindowState = WindowState.Normal,
-                RestoreWindowState = WindowState.Normal,
+                LoopTimer = defaultOptions.LoopTimer,
+                PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
+                CloseWhenExpired = defaultOptions.CloseWhenExpired,
+                Color = defaultOptions.Color,
+                Sound = defaultOptions.Sound,
+                LoopSound = defaultOptions.LoopSound,
+                WindowState = defaultOptions.WindowSize.WindowState,
+                RestoreWindowState = defaultOptions.WindowSize.RestoreWindowState,
                 WindowBounds = defaultWindowBoundsWithLocation
             };
         }

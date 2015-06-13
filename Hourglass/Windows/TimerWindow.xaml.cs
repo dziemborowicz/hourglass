@@ -236,7 +236,14 @@ namespace Hourglass.Windows
         /// </summary>
         public Size DefaultSize
         {
-            get { return new Size(350, 150); }
+            get
+            {
+                TimerOptions defaultOptions = new TimerOptions();
+
+                return new Size(
+                    defaultOptions.WindowSize.RestoreBounds.Width,
+                    defaultOptions.WindowSize.RestoreBounds.Height);
+            }
         }
 
         /// <summary>
