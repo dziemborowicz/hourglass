@@ -8,6 +8,7 @@ namespace Hourglass.Windows
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -17,7 +18,6 @@ namespace Hourglass.Windows
     using Hourglass.Extensions;
     using Hourglass.Managers;
     using Hourglass.Properties;
-    using Hourglass.Serialization;
     using Hourglass.Timing;
 
     /// <summary>
@@ -82,6 +82,11 @@ namespace Hourglass.Windows
         /// Cancels editing.
         /// </summary>
         public static readonly RoutedCommand CancelCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Updates the app.
+        /// </summary>
+        public static readonly RoutedCommand UpdateCommand = new RoutedCommand();
 
         /// <summary>
         /// Exits input mode, enters input mode, or exits full-screen mode depending on the state of the window.
@@ -180,6 +185,7 @@ namespace Hourglass.Windows
             this.InitializeComponent();
             this.InitializeAnimations();
             this.InitializeSoundPlayer();
+            this.InitializeUpdateButton();
 
             this.BindTimer();
             this.SwitchToInputMode();
@@ -645,7 +651,8 @@ namespace Hourglass.Windows
                 || this.StopButton.Unfocus()
                 || this.ResetButton.Unfocus()
                 || this.CloseButton.Unfocus()
-                || this.CancelButton.Unfocus();
+                || this.CancelButton.Unfocus()
+                || this.UpdateButton.Unfocus();
         }
 
         #endregion
@@ -868,6 +875,32 @@ namespace Hourglass.Windows
             {
                 this.Close();
             }
+        }
+
+        #endregion
+
+        #region Private Methods (Update Button)
+        
+        /// <summary>
+        /// Initializes the update button.
+        /// </summary>
+        private void InitializeUpdateButton()
+        {
+            UpdateManager.Instance.PropertyChanged += this.UpdateManagerPropertyChanged;
+            this.UpdateButton.IsEnabled = UpdateManager.Instance.HasUpdates;
+        }
+        
+        /// <summary>
+        /// Invoked when a <see cref="UpdateManager"/> property value changes.
+        /// </summary>
+        /// <param name="sender">The <see cref="UpdateManager"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void UpdateManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.UpdateButton.IsEnabled = UpdateManager.Instance.HasUpdates;
+            }));
         }
 
         #endregion
@@ -1226,6 +1259,20 @@ namespace Hourglass.Windows
             {
                 this.SwitchToStatusMode();
                 this.CancelButton.Unfocus();
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="UpdateCommand"/> is executed.
+        /// </summary>
+        /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void UpdateCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Uri updateUri = UpdateManager.Instance.UpdateUri;
+            if (updateUri != null && (updateUri.Scheme == Uri.UriSchemeHttp || updateUri.Scheme == Uri.UriSchemeHttps))
+            {
+                Process.Start(updateUri.ToString());
             }
         }
 

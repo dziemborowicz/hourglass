@@ -83,6 +83,8 @@
     <Compile Include="Extensions\CultureInfoExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Managers\ErrorManager.cs" />
+    <Compile Include="Managers\UpdateManager.cs" />
+    <Compile Include="Serialization\UpdateInfo.cs" />
     <Compile Include="Windows\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
     </Compile>

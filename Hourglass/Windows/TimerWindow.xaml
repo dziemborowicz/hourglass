@@ -14,6 +14,7 @@
         <CommandBinding Command="local:TimerWindow.ResetCommand" Executed="ResetCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.CloseCommand" Executed="CloseCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.CancelCommand" Executed="CancelCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.UpdateCommand" Executed="UpdateCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.EscapeCommand" Executed="EscapeCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.FullScreenCommand" Executed="FullScreenCommandExecuted"/>
     </Window.CommandBindings>
@@ -50,6 +51,7 @@
                         <Condition Binding="{Binding ElementName=ResetButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CloseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CancelButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=UpdateButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=InnerGrid, Path=IsMouseOver}" Value="False"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=ContextMenu.IsOpen}" Value="False"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.State}" Value="Running"/>
@@ -93,6 +95,7 @@
                         <Condition Binding="{Binding ElementName=ResetButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CloseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CancelButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=UpdateButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=InnerGrid, Path=IsMouseOver}" Value="False"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=ContextMenu.IsOpen}" Value="False"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.State}" Value="Running"/>
@@ -180,13 +183,14 @@
                                         TextAlignment="Center"
                                         local:Watermark.Hint="Click to enter time or date"/>
                 <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">
-                    <Button x:Name="StartButton" Content="Start" Command="local:TimerWindow.StartCommand" IsDefault="True"/>
-                    <Button x:Name="PauseButton" Content="Pause" Command="local:TimerWindow.PauseCommand"/>
-                    <Button x:Name="ResumeButton" Content="Resume" Command="local:TimerWindow.ResumeCommand"/>
-                    <Button x:Name="StopButton" Content="Stop" Command="local:TimerWindow.StopCommand"/>
-                    <Button x:Name="ResetButton" Content="Reset" Command="local:TimerWindow.ResetCommand"/>
-                    <Button x:Name="CloseButton" Content="Close" Command="local:TimerWindow.CloseCommand"/>
-                    <Button x:Name="CancelButton" Content="Cancel" Command="local:TimerWindow.CancelCommand"/>
+                    <Button x:Name="StartButton" Content="_Start" Command="local:TimerWindow.StartCommand" IsDefault="True"/>
+                    <Button x:Name="PauseButton" Content="_Pause" Command="local:TimerWindow.PauseCommand"/>
+                    <Button x:Name="ResumeButton" Content="_Resume" Command="local:TimerWindow.ResumeCommand"/>
+                    <Button x:Name="StopButton" Content="_Stop" Command="local:TimerWindow.StopCommand"/>
+                    <Button x:Name="ResetButton" Content="_Reset" Command="local:TimerWindow.ResetCommand"/>
+                    <Button x:Name="CloseButton" Content="_Close" Command="local:TimerWindow.CloseCommand"/>
+                    <Button x:Name="CancelButton" Content="_Cancel" Command="local:TimerWindow.CancelCommand"/>
+                    <Button x:Name="UpdateButton" Content="_Update" Command="local:TimerWindow.UpdateCommand"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

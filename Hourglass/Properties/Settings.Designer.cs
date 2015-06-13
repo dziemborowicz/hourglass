@@ -59,6 +59,18 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid UniqueId {
+            get {
+                return ((global::System.Guid)(this["UniqueId"]));
+            }
+            set {
+                this["UniqueId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::Hourglass.Serialization.TimerStartInfoList TimerStartInfos {
             get {
                 return ((global::Hourglass.Serialization.TimerStartInfoList)(this["TimerStartInfos"]));
