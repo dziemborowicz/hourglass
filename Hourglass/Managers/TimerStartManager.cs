@@ -10,7 +10,6 @@ namespace Hourglass.Managers
     using System.Linq;
 
     using Hourglass.Properties;
-    using Hourglass.Serialization;
     using Hourglass.Timing;
 
     /// <summary>
