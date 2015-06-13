@@ -10,6 +10,9 @@ namespace Hourglass.Parsing
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
+    using Hourglass.Extensions;
+    using Hourglass.Properties;
+
     /// <summary>
     /// Represents an instant in time.
     /// </summary>
@@ -84,32 +87,43 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
+        public override string ToString(IFormatProvider provider)
         {
             try
             {
                 this.ThrowIfNotValid();
 
-                string datePart = this.DateToken.ToString();
-                string timePart = this.TimeToken.ToString();
+                string datePart = this.DateToken.ToString(provider);
+                string timePart = this.TimeToken.ToString(provider);
 
                 // Date and time
                 if (!string.IsNullOrWhiteSpace(datePart) && !string.IsNullOrWhiteSpace(timePart))
                 {
-                    return string.Format("{0} at {1}", this.DateToken, this.TimeToken);
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("DateTimeTokenDateTimeFormatString", provider),
+                        datePart,
+                        timePart);
                 }
 
                 // Date only
                 if (!string.IsNullOrWhiteSpace(datePart))
                 {
-                    return datePart;
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("DateTimeTokenDateOnlyFormatString", provider),
+                        datePart);
                 }
 
                 // Time only
                 if (!string.IsNullOrWhiteSpace(timePart))
                 {
-                    return string.Format("until {0}", timePart);
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("DateTimeTokenTimeOnlyFormatString", provider),
+                        timePart);
                 }
 
                 // Empty
@@ -273,10 +287,10 @@ namespace Hourglass.Parsing
                 {
                     foreach (string timePartPattern in timeTokenParser.GetPatterns(provider))
                     {
-                        string dateTimePattern = GetDateTimePattern(datePartPattern, timePartPattern);
+                        string dateTimePattern = GetDateTimePattern(datePartPattern, timePartPattern, provider);
                         list.Add(new PatternDefinition(dateTokenParser, timeTokenParser, dateTimePattern));
 
-                        string timeDatePattern = GetTimeDatePattern(timePartPattern, datePartPattern);
+                        string timeDatePattern = GetTimeDatePattern(timePartPattern, datePartPattern, provider);
                         list.Add(new PatternDefinition(dateTokenParser, timeTokenParser, timeDatePattern));
                     }
                 }
@@ -290,9 +304,10 @@ namespace Hourglass.Parsing
             /// </summary>
             /// <param name="datePartPattern">A date part regular expression.</param>
             /// <param name="timePartPattern">A time part regular expression.</param>
+            /// <param name="provider">The <see cref="IFormatProvider"/> that will be used when parsing.</param>
             /// <returns>A regular expression that is the concatenation of a date token pattern and a time token
             /// pattern.</returns>
-            private static string GetDateTimePattern(string datePartPattern, string timePartPattern)
+            private static string GetDateTimePattern(string datePartPattern, string timePartPattern, IFormatProvider provider)
             {
                 if (string.IsNullOrWhiteSpace(datePartPattern) && string.IsNullOrWhiteSpace(timePartPattern))
                 {
@@ -302,17 +317,27 @@ namespace Hourglass.Parsing
                 // Date pattern only
                 if (string.IsNullOrWhiteSpace(timePartPattern))
                 {
-                    return "^(" + datePartPattern + ")$";
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("DateTimeTokenDateOnlyPatternFormatString", provider),
+                        datePartPattern);
                 }
 
                 // Time pattern only
                 if (string.IsNullOrWhiteSpace(datePartPattern))
                 {
-                    return "^(" + timePartPattern + ")$";
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("DateTimeTokenTimeOnlyPatternFormatString", provider),
+                        timePartPattern);
                 }
 
                 // Date and time pattern
-                return "^(" + datePartPattern + @")\s+(at\s+)?(" + timePartPattern + ")$";
+                return string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(provider),
+                    Resources.ResourceManager.GetString("DateTimeTokenDateTimePatternFormatString", provider),
+                    datePartPattern,
+                    timePartPattern);
             }
 
             /// <summary>
@@ -321,9 +346,10 @@ namespace Hourglass.Parsing
             /// </summary>
             /// <param name="timePartPattern">A time part regular expression.</param>
             /// <param name="datePartPattern">A date part regular expression.</param>
+            /// <param name="provider">The <see cref="IFormatProvider"/> that will be used when parsing.</param>
             /// <returns>A regular expression that is the concatenation of a time token pattern and a date token
             /// pattern.</returns>
-            private static string GetTimeDatePattern(string timePartPattern, string datePartPattern)
+            private static string GetTimeDatePattern(string timePartPattern, string datePartPattern, IFormatProvider provider)
             {
                 if (string.IsNullOrWhiteSpace(timePartPattern) && string.IsNullOrWhiteSpace(datePartPattern))
                 {
@@ -333,17 +359,27 @@ namespace Hourglass.Parsing
                 // Time pattern only
                 if (string.IsNullOrWhiteSpace(datePartPattern))
                 {
-                    return "^(" + timePartPattern + ")$";
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("DateTimeTokenTimeOnlyPatternFormatString", provider),
+                        timePartPattern);
                 }
 
                 // Date pattern only
                 if (string.IsNullOrWhiteSpace(timePartPattern))
                 {
-                    return "^(" + datePartPattern + ")$";
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("DateTimeTokenDateOnlyPatternFormatString", provider),
+                        datePartPattern);
                 }
 
                 // Time and date pattern
-                return "^(" + timePartPattern + @")\s+(on\s+)?(" + datePartPattern + ")$";
+                return string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(provider),
+                    Resources.ResourceManager.GetString("DateTimeTokenTimeDatePatternFormatString", provider),
+                    timePartPattern,
+                    datePartPattern);
             }
 
             /// <summary>

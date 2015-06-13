@@ -8,6 +8,7 @@ namespace Hourglass.Parsing
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using System.Xml.Serialization;
 
@@ -58,7 +59,17 @@ namespace Hourglass.Parsing
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>A string that represents the current object.</returns>
-        public abstract override string ToString();
+        public sealed override string ToString()
+        {
+            return this.ToString(CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
+        /// <returns>A string that represents the current object.</returns>
+        public abstract string ToString(IFormatProvider provider);
 
         /// <summary>
         /// Throws an <see cref="InvalidOperationException"/> if <see cref="IsValid"/> is <c>false</c>.

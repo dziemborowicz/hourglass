@@ -8,6 +8,7 @@ namespace Hourglass.Managers
 {
     using System;
     using System.ComponentModel;
+    using System.IO;
     using System.Net;
     using System.Reflection;
     using System.Threading.Tasks;
@@ -153,8 +154,16 @@ namespace Hourglass.Managers
 
                 using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(UpdateInfo));
-                    return (UpdateInfo)serializer.Deserialize(response.GetResponseStream());
+                    Stream responseStream = response.GetResponseStream();
+                    if (responseStream != null)
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(UpdateInfo));
+                        return (UpdateInfo)serializer.Deserialize(responseStream);
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
             catch

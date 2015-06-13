@@ -12,6 +12,7 @@ namespace Hourglass.Parsing
     using System.Text.RegularExpressions;
 
     using Hourglass.Extensions;
+    using Hourglass.Properties;
 
     /// <summary>
     /// Represents the date part of an instant in time specified as year, month, and day.
@@ -96,18 +97,9 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
-        /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
-        {
-            return this.ToString(CultureInfo.CurrentCulture);
-        }
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
         /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
         /// <returns>A string that represents the current object.</returns>
-        public string ToString(IFormatProvider provider)
+        public override string ToString(IFormatProvider provider)
         {
             try
             {
@@ -116,50 +108,67 @@ namespace Hourglass.Parsing
                 // Day only
                 if (this.Day.HasValue && !this.Month.HasValue && !this.Year.HasValue)
                 {
-                    return DateTimeExtensions.ToOrdinalDayString(this.Day.Value);
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("NormalDateTokenDayOnlyFormatString", provider),
+                        DateTimeExtensions.GetOrdinalDayString(this.Day.Value, provider));
                 }
 
                 // Day and month
                 if (this.Day.HasValue && this.Month.HasValue && !this.Year.HasValue)
                 {
+                    string formatString = provider.IsMonthFirst()
+                        ? Resources.ResourceManager.GetString("NormalDateTokenMonthAndDayFormatString", provider)
+                        : Resources.ResourceManager.GetString("NormalDateTokenDayAndMonthFormatString", provider);
+                    
                     return string.Format(
-                        provider,
-                        provider.IsMonthFirst() ? "{1} {0}" : "{0} {1}",
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        formatString,
                         this.Day.Value,
-                        DateTimeExtensions.ToMonthString(this.Month.Value));
+                        DateTimeExtensions.GetMonthString(this.Month.Value, provider));
                 }
 
                 // Day, month, and year
                 if (this.Day.HasValue && this.Month.HasValue && this.Year.HasValue)
                 {
+                    string formatString = provider.IsMonthFirst()
+                        ? Resources.ResourceManager.GetString("NormalDateTokenMonthDayAndYearFormatString", provider)
+                        : Resources.ResourceManager.GetString("NormalDateTokenDayMonthAndYearFormatString", provider);
+
                     return string.Format(
-                        provider,
-                        provider.IsMonthFirst() ? "{1} {0}, {2}" : "{0} {1} {2}",
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        formatString,
                         this.Day.Value,
-                        DateTimeExtensions.ToMonthString(this.Month.Value),
+                        DateTimeExtensions.GetMonthString(this.Month.Value, provider),
                         this.Year.Value);
                 }
 
                 // Month only
                 if (!this.Day.HasValue && this.Month.HasValue && !this.Year.HasValue)
                 {
-                    return DateTimeExtensions.ToMonthString(this.Month.Value);
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("NormalDateTokenMonthOnlyFormatString", provider),
+                        DateTimeExtensions.GetMonthString(this.Month.Value, provider));
                 }
 
                 // Month and year
                 if (!this.Day.HasValue && this.Month.HasValue && this.Year.HasValue)
                 {
                     return string.Format(
-                        provider,
-                        "{0} {1}",
-                        DateTimeExtensions.ToMonthString(this.Month.Value),
-                        this.Year.Value);
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("NormalDateTokenMonthAndYearFormatString", provider),
+                        DateTimeExtensions.GetMonthString(this.Month.Value, provider),
+                        this.Year);
                 }
 
                 // Year
                 if (!this.Day.HasValue && !this.Month.HasValue && this.Year.HasValue)
                 {
-                    return this.Year.Value.ToString(provider);
+                    return string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("NormalDateTokenYearOnlyFormatString", provider),
+                        this.Year);
                 }
 
                 // Unsupported
@@ -182,161 +191,6 @@ namespace Hourglass.Parsing
             public static readonly Parser Instance = new Parser();
 
             /// <summary>
-            /// A regular expression that matches spelled dates with day first and optional year (e.g., "14 February",
-            /// "14 February 2003").
-            /// </summary>
-            private const string SpelledDateWithDayFirstPattern =
-                @"  (?<day>\d\d?)
-                    (\s*(st|nd|rd|th))?
-                    (\s*of)?
-                    \s*(?<month>(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)
-                    (
-                        \s*,?\s*
-                        (?<year>(\d\d)?\d\d)
-                    )?
-                ";
-
-            /// <summary>
-            /// A regular expression that matches spelled dates with month first and optional year (e.g., "February 14",
-            /// "February 14, 2003").
-            /// </summary>
-            private const string SpelledDateWithMonthFirstPattern =
-                @"  (?<month>(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)
-                    \s*(?<day>\d\d?)
-                    (\s*(st|nd|rd|th))?
-                    (
-                        \s*[\s,]\s*
-                        (?<year>(\d\d)?\d\d)
-                    )?
-                ";
-
-            /// <summary>
-            /// A regular expression that matches numerical dates with day first (e.g., "14/02", "14/02/2003").
-            /// </summary>
-            private const string NumericalDateWithDayFirstPattern =
-                @"  (?<day>\d\d?)
-                    [.\-/]
-                    (?<month>\d\d?)
-                    (
-                        [.\-/]
-                        (?<year>(\d\d)?\d\d)
-                    )?
-                ";
-
-            /// <summary>
-            /// A regular expression that matches numerical dates with month first (e.g., "02/14", "02/14/2003").
-            /// </summary>
-            private const string NumericalDateWithMonthFirstPattern =
-                @"  (?<month>\d\d?)
-                    [.\-/]
-                    (?<day>\d\d?)
-                    (
-                        [.\-/]
-                        (?<year>(\d\d)?\d\d)
-                    )?
-                ";
-
-            /// <summary>
-            /// A regular expression that matches numerical dates with year first (e.g., "03.02.14", "2003.02.14").
-            /// </summary>
-            private const string NumericalDateWithYearFirstPattern =
-                @"  (
-                        (?<year>(\d\d)?\d\d)
-                        [.\-/]
-                    )?
-                    (?<month>\d\d?)
-                    [.\-/]
-                    (?<day>\d\d?)
-                ";
-
-            /// <summary>
-            /// A regular expression that matches days by themselves.
-            /// </summary>
-            private const string DayOnlyPattern =
-                @"  (the\s*)?
-                    (?<day>\d\d?)
-                    (\s*(st|nd|rd|th))
-                ";
-
-            /// <summary>
-            /// A regular expression that matches spelled months with optional years (e.g., "Jan", "Feb 2015").
-            /// </summary>
-            private const string SpelledMonthAndOptionalYearPattern =
-                @"  (?<month>(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)
-                    (
-                        \s*,?\s*
-                        (?<year>\d\d\d\d)
-                    )?
-                ";
-
-            /// <summary>
-            /// A regular expression that matches months with years (e.g., "2/2015", "02/2015").
-            /// </summary>
-            private const string NumericalMonthAndYearPattern =
-                @"  (?<month>\d\d?)
-                    [.\-/]
-                    (?<year>\d\d\d\d)
-                    |
-                    (?<year>\d\d\d\d)
-                    [.\-/]
-                    (?<month>\d\d?)
-                ";
-
-            /// <summary>
-            /// A set of regular expressions for matching dates. In the case of ambiguity, these patterns favor
-            /// interpreting matching strings specifying a day, month, and year in that order.
-            /// </summary>
-            /// <seealso cref="PatternsWithMonthFirst"/>
-            /// <seealso cref="PatternsWithYearFirst"/>
-            private static readonly string[] PatternsWithDayFirst =
-            {
-                SpelledDateWithDayFirstPattern,
-                SpelledDateWithMonthFirstPattern,
-                NumericalDateWithDayFirstPattern,
-                NumericalDateWithMonthFirstPattern,
-                NumericalDateWithYearFirstPattern,
-                DayOnlyPattern,
-                SpelledMonthAndOptionalYearPattern,
-                NumericalMonthAndYearPattern
-            };
-
-            /// <summary>
-            /// A set of regular expressions for matching dates. In the case of ambiguity, these patterns favor
-            /// interpreting matching strings specifying a month, day, and year in that order.
-            /// </summary>
-            /// <seealso cref="PatternsWithDayFirst"/>
-            /// <seealso cref="PatternsWithYearFirst"/>
-            private static readonly string[] PatternsWithMonthFirst =
-            {
-                SpelledDateWithMonthFirstPattern,
-                SpelledDateWithDayFirstPattern,
-                NumericalDateWithMonthFirstPattern,
-                NumericalDateWithDayFirstPattern,
-                NumericalDateWithYearFirstPattern,
-                DayOnlyPattern,
-                SpelledMonthAndOptionalYearPattern,
-                NumericalMonthAndYearPattern
-            };
-
-            /// <summary>
-            /// A set of regular expressions for matching dates. In the case of ambiguity, these patterns favor
-            /// interpreting matching strings specifying a year, month, and day in that order.
-            /// </summary>
-            /// <seealso cref="PatternsWithDayFirst"/>
-            /// <seealso cref="PatternsWithMonthFirst"/>
-            private static readonly string[] PatternsWithYearFirst =
-            {
-                SpelledDateWithDayFirstPattern,
-                SpelledDateWithMonthFirstPattern,
-                NumericalDateWithYearFirstPattern,
-                NumericalDateWithDayFirstPattern,
-                NumericalDateWithMonthFirstPattern,
-                DayOnlyPattern,
-                SpelledMonthAndOptionalYearPattern,
-                NumericalMonthAndYearPattern
-            };
-
-            /// <summary>
             /// Prevents a default instance of the <see cref="Parser"/> class from being created.
             /// </summary>
             private Parser()
@@ -352,15 +206,16 @@ namespace Hourglass.Parsing
             {
                 if (provider.IsMonthFirst())
                 {
-                    return PatternsWithMonthFirst;
+                    return GetPatternsWithMonthFirst(provider);
                 }
-
-                if (provider.IsYearFirst())
+                else if (provider.IsYearFirst())
                 {
-                    return PatternsWithYearFirst;
+                    return GetPatternsWithYearFirst(provider);
                 }
-
-                return PatternsWithDayFirst;
+                else
+                {
+                    return GetPatternsWithDayFirst(provider);
+                }
             }
 
             /// <summary>
@@ -377,6 +232,8 @@ namespace Hourglass.Parsing
             {
                 NormalDateToken dateToken = new NormalDateToken();
 
+                provider = Resources.ResourceManager.GetEffectiveProvider(provider);
+
                 // Parse day
                 if (match.Groups["day"].Success)
                 {
@@ -386,13 +243,14 @@ namespace Hourglass.Parsing
                 // Parse month
                 if (match.Groups["month"].Success)
                 {
-                    if (Regex.IsMatch(match.Groups["month"].Value, @"^\d+$", TimerStartToken.Parser.RegexOptions))
+                    int month;
+                    if (int.TryParse(match.Groups["month"].Value, NumberStyles.None, provider, out month))
                     {
-                        dateToken.Month = int.Parse(match.Groups["month"].Value, provider);
+                        dateToken.Month = month;
                     }
                     else
                     {
-                        dateToken.Month = DateTimeExtensions.ParseMonth(match.Groups["month"].Value);
+                        dateToken.Month = DateTimeExtensions.ParseMonth(match.Groups["month"].Value, provider);
                     }
                 }
 
@@ -408,6 +266,69 @@ namespace Hourglass.Parsing
                 }
 
                 return dateToken;
+            }
+
+            /// <summary>
+            /// Returns a set of regular expressions for matching dates. In the case of ambiguity, these patterns favor
+            /// interpreting matching strings specifying a day, month, and year in that order.
+            /// </summary>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>A set of regular expressions supported by this parser.</returns>
+            private static IEnumerable<string> GetPatternsWithDayFirst(IFormatProvider provider)
+            {
+                return new[]
+                {
+                    Resources.ResourceManager.GetString("NormalDateTokenSpelledDateWithDayFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenSpelledDateWithMonthFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalDateWithDayFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalDateWithMonthFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalDateWithYearFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenDayOnlyPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenSpelledMonthAndOptionalYearPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalMonthAndYearPattern", provider)
+                };
+            }
+
+            /// <summary>
+            /// Returns a set of regular expressions for matching dates. In the case of ambiguity, these patterns favor
+            /// interpreting matching strings specifying a month, day, and year in that order.
+            /// </summary>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>A set of regular expressions supported by this parser.</returns>
+            private static IEnumerable<string> GetPatternsWithMonthFirst(IFormatProvider provider)
+            {
+                return new[]
+                {
+                    Resources.ResourceManager.GetString("NormalDateTokenSpelledDateWithMonthFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenSpelledDateWithDayFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalDateWithMonthFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalDateWithDayFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalDateWithYearFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenDayOnlyPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenSpelledMonthAndOptionalYearPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalMonthAndYearPattern", provider)
+                };
+            }
+
+            /// <summary>
+            /// Returns a set of regular expressions for matching dates. In the case of ambiguity, these patterns favor
+            /// interpreting matching strings specifying a year, month, and day in that order.
+            /// </summary>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>A set of regular expressions supported by this parser.</returns>
+            private static IEnumerable<string> GetPatternsWithYearFirst(IFormatProvider provider)
+            {
+                return new[]
+                {
+                    Resources.ResourceManager.GetString("NormalDateTokenSpelledDateWithDayFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenSpelledDateWithMonthFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalDateWithYearFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalDateWithDayFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalDateWithMonthFirstPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenDayOnlyPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenSpelledMonthAndOptionalYearPattern", provider),
+                    Resources.ResourceManager.GetString("NormalDateTokenNumericalMonthAndYearPattern", provider)
+                };
             }
         }
     }

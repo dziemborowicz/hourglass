@@ -11,12 +11,13 @@ namespace Hourglass.Extensions
     using System.Text.RegularExpressions;
     
     /// <summary>
-    /// Provides extensions methods for classes implementing the <see cref="IFormatProvider"/> interface.
+    /// Provides extensions methods for the <see cref="CultureInfo"/> class and the related <see
+    /// cref="IFormatProvider"/> interface.
     /// </summary>
     public static class CultureInfoExtensions
     {
         /// <summary>
-        /// Returns a value indicating whether a <see cref="IFormatProvider"/> prefers the month-day-year ordering in
+        /// Returns a value indicating whether an <see cref="IFormatProvider"/> prefers the month-day-year ordering in
         /// date representations.
         /// </summary>
         /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
@@ -29,7 +30,7 @@ namespace Hourglass.Extensions
         }
 
         /// <summary>
-        /// Returns a value indicating whether a <see cref="IFormatProvider"/> prefers the year-month-day ordering in
+        /// Returns a value indicating whether an <see cref="IFormatProvider"/> prefers the year-month-day ordering in
         /// date representations.
         /// </summary>
         /// <param name="provider">An <see cref="IFormatProvider"/>.</param>

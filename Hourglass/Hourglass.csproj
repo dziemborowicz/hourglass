@@ -80,10 +80,12 @@
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="Extensions\CultureInfoExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DayOfWeekExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />
     <Compile Include="Extensions\IRestorableWindow.cs" />
     <Compile Include="Extensions\MathExtensions.cs" />
+    <Compile Include="Extensions\ResourceManagerExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Managers\AppManager.cs" />

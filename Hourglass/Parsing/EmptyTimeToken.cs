@@ -45,8 +45,9 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
+        public override string ToString(IFormatProvider provider)
         {
             return string.Empty;
         }

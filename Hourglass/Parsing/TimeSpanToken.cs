@@ -7,11 +7,12 @@
 namespace Hourglass.Parsing
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
-    using System.Text;
     using System.Text.RegularExpressions;
 
     using Hourglass.Extensions;
+    using Hourglass.Properties;
 
     /// <summary>
     /// Represents a time interval.
@@ -100,86 +101,88 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
+        public override string ToString(IFormatProvider provider)
         {
             try
             {
                 this.ThrowIfNotValid();
 
-                // Build string
-                StringBuilder stringBuilder = new StringBuilder();
+                List<string> parts = new List<string>();
 
                 // Years
                 if (!double.Equals(this.Years, 0.0))
                 {
-                    stringBuilder.AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        double.Equals(this.Years, 1.0) ? "{0} year " : "{0} years ",
-                        this.Years);
+                    parts.Add(GetStringWithUnits(this.Years, "Year", provider));
                 }
 
                 // Months
                 if (!double.Equals(this.Months, 0.0))
                 {
-                    stringBuilder.AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        double.Equals(this.Months, 1.0) ? "{0} month " : "{0} months ",
-                        this.Months);
+                    parts.Add(GetStringWithUnits(this.Months, "Month", provider));
                 }
 
                 // Weeks
                 if (!double.Equals(this.Weeks, 0.0))
                 {
-                    stringBuilder.AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        double.Equals(this.Weeks, 1.0) ? "{0} week " : "{0} weeks ",
-                        this.Weeks);
+                    parts.Add(GetStringWithUnits(this.Weeks, "Week", provider));
                 }
 
                 // Days
                 if (!double.Equals(this.Days, 0.0))
                 {
-                    stringBuilder.AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        double.Equals(this.Days, 1.0) ? "{0} day " : "{0} days ",
-                        this.Days);
+                    parts.Add(GetStringWithUnits(this.Days, "Day", provider));
                 }
 
                 // Hours
                 if (!double.Equals(this.Hours, 0.0))
                 {
-                    stringBuilder.AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        double.Equals(this.Hours, 1.0) ? "{0} hour " : "{0} hours ",
-                        this.Hours);
+                    parts.Add(GetStringWithUnits(this.Hours, "Hour", provider));
                 }
 
                 // Minutes
                 if (!double.Equals(this.Minutes, 0.0))
                 {
-                    stringBuilder.AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        double.Equals(this.Minutes, 1.0) ? "{0} minute " : "{0} minutes ",
-                        this.Minutes);
+                    parts.Add(GetStringWithUnits(this.Minutes, "Minute", provider));
                 }
 
                 // Seconds
-                if (!double.Equals(this.Seconds, 0.0) || stringBuilder.Length == 0)
+                if (!double.Equals(this.Seconds, 0.0) || parts.Count == 0)
                 {
-                    stringBuilder.AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        double.Equals(this.Seconds, 1.0) ? "{0} second " : "{0} seconds ",
-                        this.Seconds);
+                    parts.Add(GetStringWithUnits(this.Seconds, "Second", provider));
                 }
 
                 // Trim the last character
-                return stringBuilder.ToString(0, stringBuilder.Length - 1);
+                return string.Join(
+                    Resources.ResourceManager.GetString("TimeSpanTokenUnitSeparator", provider),
+                    parts);
             }
             catch
             {
                 return string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Returns a string for the specified value with the specified unit (e.g., "5 minutes").
+        /// </summary>
+        /// <param name="value">A value.</param>
+        /// <param name="unit">The unit part of the resource name for the unit string.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+        /// <returns>A string for the specified value with the specified unit.</returns>
+        private static string GetStringWithUnits(double value, string unit, IFormatProvider provider)
+        {
+            string resourceName = string.Format(
+                CultureInfo.InvariantCulture,
+                "TimeSpanToken{0}{1}",
+                double.Equals(value, 1.0) ? "1" : "N",
+                double.Equals(value, 1.0) ? unit : unit + "s");
+
+            return string.Format(
+                Resources.ResourceManager.GetEffectiveProvider(provider),
+                Resources.ResourceManager.GetString(resourceName, provider),
+                value);
         }
 
         /// <summary>
@@ -191,142 +194,6 @@ namespace Hourglass.Parsing
             /// Singleton instance of the <see cref="Parser"/> class.
             /// </summary>
             public static readonly Parser Instance = new Parser();
-
-            /// <summary>
-            /// A regular expression that matches integer minutes by themselves (e.g., "5", "15").
-            /// </summary>
-            private const string MinutesOnlyPattern =
-                @"  ^
-                    \s*
-                    (?<minutes>\d+)
-                    \s*
-                    $
-                ";
-
-            /// <summary>
-            /// A regular expression that matches time spans in a short format (e.g., "5:30", "1:15:30:00", "7:30").
-            /// </summary>
-            private const string ShortFormPattern =
-                @"  ^
-                    \s*
-                    (
-                        (
-                            (
-                                (
-                                    (?<years>\d+)
-                                    \s*[.,:\s]\s*
-                                )?
-                                (?<months>\d+)
-                                \s*[.,:\s]\s*
-                            )?
-                            (?<days>\d+)
-                            \s*[.,:\s]\s*
-                        )?
-                        (?<hours>\d+)
-                        \s*[.,:\s]\s*
-                    )?
-                    (?<minutes>\d+)
-                    \s*[.,:\s]\s*
-                    (?<seconds>\d+)
-                    \s*
-                    $
-                ";
-
-            /// <summary>
-            /// A regular expression that matches time spans in a long format (e.g., "5 minutes 30 seconds", "1 day 15
-            /// hours 30 minutes", "7 minutes 30", "1.5 hours").
-            /// </summary>
-            private const string LongFormPattern =
-                @"  ^
-                    (
-                        \s*
-                        (
-                            (
-                                (?<years>\d+|\d*[.,]\d+)
-                                \s*
-                                (y|yrs?|years?)
-                                (
-                                    \s*
-                                    (?<months>\d+|\d*[.,]\d+)
-                                    (\s+|$)
-                                )?
-                            )
-                            |
-                            (
-                                (?<months>\d+|\d*[.,]\d+)
-                                \s*
-                                (mo|mon?s?|months?)
-                                (
-                                    \s*
-                                    (?<days>\d+|\d*[.,]\d+)
-                                    (\s+|$)
-                                )?
-                            )
-                            |
-                            (
-                                (?<weeks>\d+|\d*[.,]\d+)
-                                \s*
-                                (w|wks?|weeks?)
-                                (
-                                    \s*
-                                    (?<days>\d+|\d*[.,]\d+)
-                                    (\s+|$)
-                                )?
-                            )
-                            |
-                            (
-                                (?<days>\d+|\d*[.,]\d+)
-                                \s*
-                                (d|dys?|days?)
-                                (
-                                    \s*
-                                    (?<hours>\d+|\d*[.,]\d+)
-                                    (\s+|$)
-                                )?
-                            )
-                            |
-                            (
-                                (?<hours>\d+|\d*[.,]\d+)
-                                \s*
-                                (h|hrs?|hours?)
-                                (
-                                    \s*
-                                    (?<minutes>\d+|\d*[.,]\d+)
-                                    (\s+|$)
-                                )?
-                            )
-                            |
-                            (
-                                (?<minutes>\d+|\d*[.,]\d+)
-                                \s*
-                                (m|mins?|minutes?)
-                                (
-                                    \s*
-                                    (?<seconds>\d+|\d*[.,]\d+)
-                                    (\s+|$)
-                                )?
-                            )
-                            |
-                            (
-                                (?<seconds>\d+|\d*[.,]\d+)
-                                \s*
-                                (s|secs?|seconds?)
-                            )
-                        )
-                        \s*
-                    )+
-                    $
-                ";
-
-            /// <summary>
-            /// A set of regular expressions for matching time spans.
-            /// </summary>
-            private static readonly string[] Patterns =
-            {
-                MinutesOnlyPattern,
-                ShortFormPattern,
-                LongFormPattern
-            };
 
             /// <summary>
             /// Prevents a default instance of the <see cref="Parser"/> class from being created.
@@ -347,7 +214,9 @@ namespace Hourglass.Parsing
             /// cref="TimerStartToken"/>.</exception>
             protected override TimerStartToken ParseInternal(string str, IFormatProvider provider)
             {
-                foreach (string pattern in Patterns)
+                provider = Resources.ResourceManager.GetEffectiveProvider(provider);
+
+                foreach (string pattern in GetPatterns(provider))
                 {
                     try
                     {
@@ -410,6 +279,21 @@ namespace Hourglass.Parsing
 
                 // Could not find a matching pattern
                 throw new FormatException();
+            }
+
+            /// <summary>
+            /// Returns a set of regular expressions for matching time spans.
+            /// </summary>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>A set of regular expressions for matching time spans.</returns>
+            private static IEnumerable<string> GetPatterns(IFormatProvider provider)
+            {
+                return new[]
+                {
+                    Resources.ResourceManager.GetString("TimeSpanTokenMinutesOnlyPattern", provider),
+                    Resources.ResourceManager.GetString("TimeSpanTokenShortFormPattern", provider),
+                    Resources.ResourceManager.GetString("TimeSpanTokenLongFormPattern", provider)
+                };
             }
         }
     }

@@ -7,31 +7,17 @@
 namespace Hourglass.Extensions
 {
     using System;
-    
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using Hourglass.Properties;
+
     /// <summary>
     /// Provides extensions methods for the <see cref="DateTime"/> class.
     /// </summary>
     public static class DateTimeExtensions
     {
-        /// <summary>
-        /// The months of the year.
-        /// </summary>
-        private static readonly string[] Months =
-        {
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-        };
-
         /// <summary>
         /// Returns a new <see cref="DateTime"/> that adds the specified number of weeks to the value of this instance.
         /// </summary>
@@ -90,6 +76,68 @@ namespace Hourglass.Extensions
         }
 
         /// <summary>
+        /// Converts a month number to a string representation of the month.
+        /// </summary>
+        /// <param name="month">A month number between 1 and 12 inclusive.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+        /// <returns>The string representation of the month.</returns>
+        public static string GetMonthString(int month, IFormatProvider provider)
+        {
+            IDictionary<int, string> months = GetMonthStrings(provider);
+            
+            string monthString;
+            if (!months.TryGetValue(month, out monthString))
+            {
+                throw new ArgumentOutOfRangeException("month");
+            }
+
+            return monthString;
+        }
+
+        /// <summary>
+        /// Converts a day number to a ordinal string representation of the day.
+        /// </summary>
+        /// <param name="day">A day number between 1 and 31 inclusive.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+        /// <returns>The ordinal string representation of the day.</returns>
+        public static string GetOrdinalDayString(int day, IFormatProvider provider)
+        {
+            if (day < 1 || day > 31)
+            {
+                throw new ArgumentOutOfRangeException("day");
+            }
+
+            if (day % 10 == 1 && day / 10 != 1)
+            {
+                return string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(provider),
+                    Resources.ResourceManager.GetString("DateTimeExtensionsNstFormatString", provider),
+                    day);
+            }
+            else if (day % 10 == 2 && day / 10 != 1)
+            {
+                return string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(provider),
+                    Resources.ResourceManager.GetString("DateTimeExtensionsNndFormatString", provider),
+                    day);
+            }
+            else if (day % 10 == 3 && day / 10 != 1)
+            {
+                return string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(provider),
+                    Resources.ResourceManager.GetString("DateTimeExtensionsNrdFormatString", provider),
+                    day);
+            }
+            else
+            {
+                return string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(provider),
+                    Resources.ResourceManager.GetString("DateTimeExtensionsNthFormatString", provider),
+                    day);
+            }
+        }
+
+        /// <summary>
         /// Increments a month by one.
         /// </summary>
         /// <param name="year">A year.</param>
@@ -139,71 +187,23 @@ namespace Hourglass.Extensions
         /// <summary>
         /// Parses a string into a month number between 1 and 12 inclusive.
         /// </summary>
-        /// <remarks>
-        /// This method only checks the first three characters of the string against the first three characters of the
-        /// strings in the <see cref="Months"/> list.
-        /// </remarks>
         /// <param name="str">A string representation of a month.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
         /// <returns>The month number parsed from the string.</returns>
         /// <exception cref="FormatException">If <paramref name="str"/> is not a supported representation of a month.
         /// </exception>
-        /// <seealso cref="Months"/>
-        public static int ParseMonth(string str)
+        public static int ParseMonth(string str, IFormatProvider provider)
         {
-            for (int i = 0; i < Months.Length; i++)
+            IList<KeyValuePair<int, string>> matches = GetMonthStrings(provider)
+                .Where(e => e.Value.StartsWith(str, true /* ignoreCase */, (CultureInfo)provider))
+                .ToList();
+
+            if (matches.Count != 1)
             {
-                if (str.StartsWith(Months[i].Substring(0, 3), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return i + 1;
-                }
+                throw new FormatException();
             }
 
-            throw new FormatException();
-        }
-
-        /// <summary>
-        /// Converts a month number to a string representation of the month.
-        /// </summary>
-        /// <param name="month">A month number between 1 and 12 inclusive.</param>
-        /// <returns>The string representation of the month.</returns>
-        public static string ToMonthString(int month)
-        {
-            if (month < 1 || month > 12)
-            {
-                throw new ArgumentOutOfRangeException("month");
-            }
-
-            return Months[month - 1];
-        }
-
-        /// <summary>
-        /// Converts a day number to a ordinal string representation of the day.
-        /// </summary>
-        /// <param name="day">A day number between 1 and 31 inclusive.</param>
-        /// <returns>The ordinal string representation of the day.</returns>
-        public static string ToOrdinalDayString(int day)
-        {
-            if (day < 1 || day > 31)
-            {
-                throw new ArgumentOutOfRangeException("day");
-            }
-
-            if (day % 10 == 1 && day / 10 != 1)
-            {
-                return string.Format("{0}st", day);
-            }
-
-            if (day % 10 == 1 && day / 10 != 1)
-            {
-                return string.Format("{0}nd", day);
-            }
-
-            if (day % 10 == 1 && day / 10 != 1)
-            {
-                return string.Format("{0}rd", day);
-            }
-
-            return string.Format("{0}th", day);
+            return matches.First().Key;
         }
 
         /// <summary>
@@ -227,6 +227,31 @@ namespace Hourglass.Extensions
                 dateTime = DateTime.MinValue;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Returns a dictionary mapping month values to their localized string representations.
+        /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+        /// <returns>A dictionary mapping month values to their localized string representations.
+        /// </returns>
+        private static IDictionary<int, string> GetMonthStrings(IFormatProvider provider)
+        {
+            return new Dictionary<int, string>
+            {
+                { 1, Resources.ResourceManager.GetString("DateTimeExtensionsJanuary", provider) },
+                { 2, Resources.ResourceManager.GetString("DateTimeExtensionsFebruary", provider) },
+                { 3, Resources.ResourceManager.GetString("DateTimeExtensionsMarch", provider) },
+                { 4, Resources.ResourceManager.GetString("DateTimeExtensionsApril", provider) },
+                { 5, Resources.ResourceManager.GetString("DateTimeExtensionsMay", provider) },
+                { 6, Resources.ResourceManager.GetString("DateTimeExtensionsJune", provider) },
+                { 7, Resources.ResourceManager.GetString("DateTimeExtensionsJuly", provider) },
+                { 8, Resources.ResourceManager.GetString("DateTimeExtensionsAugust", provider) },
+                { 9, Resources.ResourceManager.GetString("DateTimeExtensionsSeptember", provider) },
+                { 10, Resources.ResourceManager.GetString("DateTimeExtensionsOctober", provider) },
+                { 11, Resources.ResourceManager.GetString("DateTimeExtensionsNovember", provider) },
+                { 12, Resources.ResourceManager.GetString("DateTimeExtensionsDecember", provider) }
+            };
         }
     }
 }

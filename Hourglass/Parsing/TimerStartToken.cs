@@ -11,6 +11,10 @@ namespace Hourglass.Parsing
     using System.Text.RegularExpressions;
     using System.Xml.Serialization;
 
+    using Hourglass.Extensions;
+    using Hourglass.Properties;
+    using Hourglass.Timing;
+
     /// <summary>
     /// Represents a <see cref="TimerStart"/>.
     /// </summary>
@@ -32,14 +36,28 @@ namespace Hourglass.Parsing
         /// supported representation of a <see cref="TimerStartToken"/>.</returns>
         public static TimerStartToken FromString(string str)
         {
+            return FromString(str, CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+        /// supported representation of a <see cref="TimerStartToken"/>.
+        /// </summary>
+        /// <param name="str">A string.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+        /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+        /// supported representation of a <see cref="TimerStartToken"/>.</returns>
+        public static TimerStartToken FromString(string str, IFormatProvider provider)
+        {
             if (string.IsNullOrEmpty(str))
             {
                 return null;
             }
 
-            if (Regex.IsMatch(str, @"^\s*(un)?till?\s*", Parser.RegexOptions))
+            string preferDateTimePattern = Resources.ResourceManager.GetString("TimerStartTokenPreferDateTimeHintPattern", provider);
+            if (Regex.IsMatch(str, preferDateTimePattern, Parser.RegexOptions))
             {
-                str = Regex.Replace(str, @"^\s*(un)?till?\s*", string.Empty, Parser.RegexOptions);
+                str = Regex.Replace(str, preferDateTimePattern, string.Empty, Parser.RegexOptions);
                 return FromDateTimeOrTimeSpanString(str);
             }
 
@@ -78,7 +96,17 @@ namespace Hourglass.Parsing
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>A string that represents the current object.</returns>
-        public abstract override string ToString();
+        public sealed override string ToString()
+        {
+            return this.ToString(CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
+        /// <returns>A string that represents the current object.</returns>
+        public abstract string ToString(IFormatProvider provider);
 
         /// <summary>
         /// Throws an <see cref="InvalidOperationException"/> if <see cref="IsValid"/> is <c>false</c>.

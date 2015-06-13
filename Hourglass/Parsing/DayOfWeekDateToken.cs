@@ -8,8 +8,11 @@ namespace Hourglass.Parsing
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.Globalization;
     using System.Text.RegularExpressions;
+
+    using Hourglass.Extensions;
+    using Hourglass.Properties;
 
     /// <summary>
     /// Represents the relation between the day of week and a date.
@@ -100,29 +103,25 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
+        public override string ToString(IFormatProvider provider)
         {
             try
             {
                 this.ThrowIfNotValid();
 
-                StringBuilder stringBuilder = new StringBuilder();
+                provider = Resources.ResourceManager.GetEffectiveProvider(provider);
 
-                // Day of week
-                stringBuilder.Append(this.DayOfWeek);
+                string formatStringName = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "DayOfWeekDateToken{0}FormatString",
+                    this.DayOfWeekRelation);
 
-                // Day of week relation
-                if (this.DayOfWeekRelation == Parsing.DayOfWeekRelation.AfterNext)
-                {
-                    stringBuilder.Append(" after next");
-                }
-                else if (this.DayOfWeekRelation == Parsing.DayOfWeekRelation.NextWeek)
-                {
-                    stringBuilder.Append(" next week");
-                }
-
-                return stringBuilder.ToString();
+                return string.Format(
+                    provider,
+                    Resources.ResourceManager.GetString(formatStringName, provider),
+                    this.DayOfWeek.ToLocalizedString(provider));
             }
             catch
             {
@@ -141,31 +140,6 @@ namespace Hourglass.Parsing
             public static readonly Parser Instance = new Parser();
 
             /// <summary>
-            /// A regular expression that matches days of the week (e.g., "Sunday", "this Sunday", "next Sunday").
-            /// </summary>
-            private const string DaysOfWeekNextPattern =
-                @"  ((this|next)\s*)?
-                    (?<weekday>Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*
-                ";
-
-            /// <summary>
-            /// A regular expression that matches days of the week after next (e.g., "Sunday next", "Sunday after next").
-            /// </summary>
-            private const string DaysOfWeekAfterNextPattern =
-                @"  (?<weekday>Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*
-                    (\s*after)?
-                    \s*(?<afternext>next)
-                ";
-
-            /// <summary>
-            /// A regular expression that matches days of the week next week (e.g., "Sunday next week").
-            /// </summary>
-            private const string DaysOfWeekNextWeekPattern =
-                @"  (?<weekday>Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*
-                    \s*(?<nextweek>next\s*w(ee)?k)
-                ";
-
-            /// <summary>
             /// Prevents a default instance of the <see cref="Parser"/> class from being created.
             /// </summary>
             private Parser()
@@ -181,9 +155,9 @@ namespace Hourglass.Parsing
             {
                 return new[]
                 {
-                    DaysOfWeekNextPattern,
-                    DaysOfWeekAfterNextPattern,
-                    DaysOfWeekNextWeekPattern
+                    Resources.ResourceManager.GetString("DayOfWeekDateTokenDaysOfWeekNextPattern", provider),
+                    Resources.ResourceManager.GetString("DayOfWeekDateTokenDaysOfWeekAfterNextPattern", provider),
+                    Resources.ResourceManager.GetString("DayOfWeekDateTokenDaysOfWeekNextWeekPattern", provider)
                 };
             }
 
@@ -199,12 +173,14 @@ namespace Hourglass.Parsing
             /// a <see cref="DateToken"/>.</exception>
             protected override DateToken ParseInternal(Match match, IFormatProvider provider)
             {
+                provider = Resources.ResourceManager.GetEffectiveProvider(provider);
+
                 DayOfWeekDateToken dateToken = new DayOfWeekDateToken();
 
                 // Parse day of week
                 if (match.Groups["weekday"].Success)
                 {
-                    dateToken.DayOfWeek = ParseDayOfWeek(match.Groups["weekday"].Value);
+                    dateToken.DayOfWeek = DayOfWeekExtensions.ParseDayOfWeek(match.Groups["weekday"].Value, provider);
                 }
 
                 // Parse day of week relation
@@ -222,30 +198,6 @@ namespace Hourglass.Parsing
                 }
 
                 return dateToken;
-            }
-
-            /// <summary>
-            /// Parses a string into a <see cref="DayOfWeek"/>.
-            /// </summary>
-            /// <remarks>
-            /// This method only checks the first three characters of the string against the <see cref="DayOfWeek"/>
-            /// <c>enum</c>.
-            /// </remarks>
-            /// <param name="str">A string representation of a <see cref="DayOfWeek"/>.</param>
-            /// <returns>The <see cref="DayOfWeek"/> parsed from the string.</returns>
-            /// <exception cref="FormatException">If <paramref name="str"/> is not a supported representation of a day
-            /// of the week.</exception>
-            private static DayOfWeek ParseDayOfWeek(string str)
-            {
-                foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
-                {
-                    if (str.StartsWith(day.ToString().Substring(0, 3), StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return day;
-                    }
-                }
-
-                throw new FormatException();
             }
         }
     }

@@ -98,7 +98,1015 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to en-US.
+        /// </summary>
+        internal static string CultureName {
+            get {
+                return ResourceManager.GetString("CultureName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to April.
+        /// </summary>
+        internal static string DateTimeExtensionsApril {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsApril", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to August.
+        /// </summary>
+        internal static string DateTimeExtensionsAugust {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsAugust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to December.
+        /// </summary>
+        internal static string DateTimeExtensionsDecember {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsDecember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to February.
+        /// </summary>
+        internal static string DateTimeExtensionsFebruary {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsFebruary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to January.
+        /// </summary>
+        internal static string DateTimeExtensionsJanuary {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsJanuary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to July.
+        /// </summary>
+        internal static string DateTimeExtensionsJuly {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsJuly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to June.
+        /// </summary>
+        internal static string DateTimeExtensionsJune {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsJune", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to March.
+        /// </summary>
+        internal static string DateTimeExtensionsMarch {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsMarch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to May.
+        /// </summary>
+        internal static string DateTimeExtensionsMay {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsMay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}nd.
+        /// </summary>
+        internal static string DateTimeExtensionsNndFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsNndFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to November.
+        /// </summary>
+        internal static string DateTimeExtensionsNovember {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsNovember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}rd.
+        /// </summary>
+        internal static string DateTimeExtensionsNrdFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsNrdFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}st.
+        /// </summary>
+        internal static string DateTimeExtensionsNstFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsNstFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}th.
+        /// </summary>
+        internal static string DateTimeExtensionsNthFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsNthFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to October.
+        /// </summary>
+        internal static string DateTimeExtensionsOctober {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsOctober", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to September.
+        /// </summary>
+        internal static string DateTimeExtensionsSeptember {
+            get {
+                return ResourceManager.GetString("DateTimeExtensionsSeptember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.
+        /// </summary>
+        internal static string DateTimeTokenDateOnlyFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeTokenDateOnlyFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^({0})$.
+        /// </summary>
+        internal static string DateTimeTokenDateOnlyPatternFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeTokenDateOnlyPatternFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} at {1}.
+        /// </summary>
+        internal static string DateTimeTokenDateTimeFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeTokenDateTimeFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^({0})\s+(at\s+)?({1})$.
+        /// </summary>
+        internal static string DateTimeTokenDateTimePatternFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeTokenDateTimePatternFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^({0})\s+(on\s+)?({1})$.
+        /// </summary>
+        internal static string DateTimeTokenTimeDatePatternFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeTokenTimeDatePatternFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to until {0}.
+        /// </summary>
+        internal static string DateTimeTokenTimeOnlyFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeTokenTimeOnlyFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^({0})$.
+        /// </summary>
+        internal static string DateTimeTokenTimeOnlyPatternFormatString {
+            get {
+                return ResourceManager.GetString("DateTimeTokenTimeOnlyPatternFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} after next.
+        /// </summary>
+        internal static string DayOfWeekDateTokenAfterNextFormatString {
+            get {
+                return ResourceManager.GetString("DayOfWeekDateTokenAfterNextFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;weekday&gt;(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*)
+        ///(\s*after)?
+        ///\s*(?&lt;afternext&gt;next).
+        /// </summary>
+        internal static string DayOfWeekDateTokenDaysOfWeekAfterNextPattern {
+            get {
+                return ResourceManager.GetString("DayOfWeekDateTokenDaysOfWeekAfterNextPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ((this|next)\s*)?
+        ///(?&lt;weekday&gt;(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*).
+        /// </summary>
+        internal static string DayOfWeekDateTokenDaysOfWeekNextPattern {
+            get {
+                return ResourceManager.GetString("DayOfWeekDateTokenDaysOfWeekNextPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;weekday&gt;(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*)
+        ///\s*(?&lt;nextweek&gt;next\s*w(ee)?k).
+        /// </summary>
+        internal static string DayOfWeekDateTokenDaysOfWeekNextWeekPattern {
+            get {
+                return ResourceManager.GetString("DayOfWeekDateTokenDaysOfWeekNextWeekPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.
+        /// </summary>
+        internal static string DayOfWeekDateTokenNextFormatString {
+            get {
+                return ResourceManager.GetString("DayOfWeekDateTokenNextFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} next week.
+        /// </summary>
+        internal static string DayOfWeekDateTokenNextWeekFormatString {
+            get {
+                return ResourceManager.GetString("DayOfWeekDateTokenNextWeekFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friday.
+        /// </summary>
+        internal static string DayOfWeekExtensionsFriday {
+            get {
+                return ResourceManager.GetString("DayOfWeekExtensionsFriday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monday.
+        /// </summary>
+        internal static string DayOfWeekExtensionsMonday {
+            get {
+                return ResourceManager.GetString("DayOfWeekExtensionsMonday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saturday.
+        /// </summary>
+        internal static string DayOfWeekExtensionsSaturday {
+            get {
+                return ResourceManager.GetString("DayOfWeekExtensionsSaturday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sunday.
+        /// </summary>
+        internal static string DayOfWeekExtensionsSunday {
+            get {
+                return ResourceManager.GetString("DayOfWeekExtensionsSunday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thursday.
+        /// </summary>
+        internal static string DayOfWeekExtensionsThursday {
+            get {
+                return ResourceManager.GetString("DayOfWeekExtensionsThursday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tuesday.
+        /// </summary>
+        internal static string DayOfWeekExtensionsTuesday {
+            get {
+                return ResourceManager.GetString("DayOfWeekExtensionsTuesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wednesday.
+        /// </summary>
+        internal static string DayOfWeekExtensionsWednesday {
+            get {
+                return ResourceManager.GetString("DayOfWeekExtensionsWednesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1}.
+        /// </summary>
+        internal static string NormalDateTokenDayAndMonthFormatString {
+            get {
+                return ResourceManager.GetString("NormalDateTokenDayAndMonthFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1} {2}.
+        /// </summary>
+        internal static string NormalDateTokenDayMonthAndYearFormatString {
+            get {
+                return ResourceManager.GetString("NormalDateTokenDayMonthAndYearFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.
+        /// </summary>
+        internal static string NormalDateTokenDayOnlyFormatString {
+            get {
+                return ResourceManager.GetString("NormalDateTokenDayOnlyFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (the\s*)?
+        ///(?&lt;day&gt;\d\d?)
+        ///(\s*(st|nd|rd|th)).
+        /// </summary>
+        internal static string NormalDateTokenDayOnlyPattern {
+            get {
+                return ResourceManager.GetString("NormalDateTokenDayOnlyPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1} {0}.
+        /// </summary>
+        internal static string NormalDateTokenMonthAndDayFormatString {
+            get {
+                return ResourceManager.GetString("NormalDateTokenMonthAndDayFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1}.
+        /// </summary>
+        internal static string NormalDateTokenMonthAndYearFormatString {
+            get {
+                return ResourceManager.GetString("NormalDateTokenMonthAndYearFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1} {0}, {2}.
+        /// </summary>
+        internal static string NormalDateTokenMonthDayAndYearFormatString {
+            get {
+                return ResourceManager.GetString("NormalDateTokenMonthDayAndYearFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.
+        /// </summary>
+        internal static string NormalDateTokenMonthOnlyFormatString {
+            get {
+                return ResourceManager.GetString("NormalDateTokenMonthOnlyFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;day&gt;\d\d?)
+        ///[.\-/]
+        ///(?&lt;month&gt;\d\d?)
+        ///(
+        ///    [.\-/]
+        ///    (?&lt;year&gt;(\d\d)?\d\d)
+        ///)?.
+        /// </summary>
+        internal static string NormalDateTokenNumericalDateWithDayFirstPattern {
+            get {
+                return ResourceManager.GetString("NormalDateTokenNumericalDateWithDayFirstPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;month&gt;\d\d?)
+        ///[.\-/]
+        ///(?&lt;day&gt;\d\d?)
+        ///(
+        ///    [.\-/]
+        ///    (?&lt;year&gt;(\d\d)?\d\d)
+        ///)?.
+        /// </summary>
+        internal static string NormalDateTokenNumericalDateWithMonthFirstPattern {
+            get {
+                return ResourceManager.GetString("NormalDateTokenNumericalDateWithMonthFirstPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (
+        ///    (?&lt;year&gt;(\d\d)?\d\d)
+        ///    [.\-/]
+        ///)?
+        ///(?&lt;month&gt;\d\d?)
+        ///[.\-/]
+        ///(?&lt;day&gt;\d\d?).
+        /// </summary>
+        internal static string NormalDateTokenNumericalDateWithYearFirstPattern {
+            get {
+                return ResourceManager.GetString("NormalDateTokenNumericalDateWithYearFirstPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;month&gt;\d\d?)
+        ///[.\-/]
+        ///(?&lt;year&gt;\d\d\d\d)
+        ///|
+        ///(?&lt;year&gt;\d\d\d\d)
+        ///[.\-/]
+        ///(?&lt;month&gt;\d\d?).
+        /// </summary>
+        internal static string NormalDateTokenNumericalMonthAndYearPattern {
+            get {
+                return ResourceManager.GetString("NormalDateTokenNumericalMonthAndYearPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;day&gt;\d\d?)
+        ///(\s*(st|nd|rd|th))?
+        ///(\s*of)?
+        ///\s*(?&lt;month&gt;(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)
+        ///(
+        ///    \s*,?\s*
+        ///    (?&lt;year&gt;(\d\d)?\d\d)
+        ///)?.
+        /// </summary>
+        internal static string NormalDateTokenSpelledDateWithDayFirstPattern {
+            get {
+                return ResourceManager.GetString("NormalDateTokenSpelledDateWithDayFirstPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;month&gt;(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)
+        ///\s*(?&lt;day&gt;\d\d?)
+        ///(\s*(st|nd|rd|th))?
+        ///(
+        ///    \s*[\s,]\s*
+        ///    (?&lt;year&gt;(\d\d)?\d\d)
+        ///)?.
+        /// </summary>
+        internal static string NormalDateTokenSpelledDateWithMonthFirstPattern {
+            get {
+                return ResourceManager.GetString("NormalDateTokenSpelledDateWithMonthFirstPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;month&gt;(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)
+        ///(
+        ///    \s*,?\s*
+        ///    (?&lt;year&gt;\d\d\d\d)
+        ///)?.
+        /// </summary>
+        internal static string NormalDateTokenSpelledMonthAndOptionalYearPattern {
+            get {
+                return ResourceManager.GetString("NormalDateTokenSpelledMonthAndOptionalYearPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.
+        /// </summary>
+        internal static string NormalDateTokenYearOnlyFormatString {
+            get {
+                return ResourceManager.GetString("NormalDateTokenYearOnlyFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  am.
+        /// </summary>
+        internal static string NormalTimeTokenAmSuffix {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenAmSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.
+        /// </summary>
+        internal static string NormalTimeTokenHourPartFormatString {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenHourPartFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  noon.
+        /// </summary>
+        internal static string NormalTimeTokenMiddaySuffix {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenMiddaySuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  midnight.
+        /// </summary>
+        internal static string NormalTimeTokenMidnightSuffix {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenMidnightSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to :{0:00}.
+        /// </summary>
+        internal static string NormalTimeTokenMinutePartFormatString {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenMinutePartFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  o&apos;clock.
+        /// </summary>
+        internal static string NormalTimeTokenOclockSuffix {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenOclockSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  pm.
+        /// </summary>
+        internal static string NormalTimeTokenPmSuffix {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenPmSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to :{0:00}.
+        /// </summary>
+        internal static string NormalTimeTokenSecondPartFormatString {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenSecondPartFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;hour&gt;\d\d?)
+        ///(
+        ///    (?&lt;minute&gt;\d\d)
+        ///    (?&lt;second&gt;\d\d)?
+        ///)?
+        ///\s*
+        ///(
+        ///    (?&lt;am&gt;a\.?(\s*m\.?)?)
+        ///    |
+        ///    (?&lt;pm&gt;p\.?(\s*m\.?)?)
+        ///    |
+        ///    (?&lt;military&gt;h|hrs|hours)
+        ///    |
+        ///    o&apos;?clock
+        ///)?.
+        /// </summary>
+        internal static string NormalTimeTokenTimeWithoutSeparatorsPattern {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenTimeWithoutSeparatorsPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (?&lt;hour&gt;\d\d?)
+        ///(
+        ///    [.:]
+        ///    (?&lt;minute&gt;\d\d?)
+        ///    (
+        ///        [.:]
+        ///        (?&lt;second&gt;\d\d?)
+        ///    )?
+        ///)?
+        ///\s*
+        ///(
+        ///    (?&lt;am&gt;a\.?(\s*m\.?)?)
+        ///    |
+        ///    (?&lt;pm&gt;p\.?(\s*m\.?)?)
+        ///    |
+        ///    (?&lt;military&gt;h|hrs|hours)
+        ///    |
+        ///    o&apos;?clock
+        ///)?.
+        /// </summary>
+        internal static string NormalTimeTokenTimeWithSeparatorsPattern {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenTimeWithSeparatorsPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to today.
+        /// </summary>
+        internal static string RelativeDateTokenTodayName {
+            get {
+                return ResourceManager.GetString("RelativeDateTokenTodayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to todd?ay.
+        /// </summary>
+        internal static string RelativeDateTokenTodayPattern {
+            get {
+                return ResourceManager.GetString("RelativeDateTokenTodayPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tomorrow.
+        /// </summary>
+        internal static string RelativeDateTokenTomorrowName {
+            get {
+                return ResourceManager.GetString("RelativeDateTokenTomorrowName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tomm?orr?ow.
+        /// </summary>
+        internal static string RelativeDateTokenTomorrowPattern {
+            get {
+                return ResourceManager.GetString("RelativeDateTokenTomorrowPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Christmas Day.
+        /// </summary>
+        internal static string SpecialDateTokenChristmasDayName {
+            get {
+                return ResourceManager.GetString("SpecialDateTokenChristmasDayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (ch?rist?|x)-?mass?(\s*day)?.
+        /// </summary>
+        internal static string SpecialDateTokenChristmasDayPattern {
+            get {
+                return ResourceManager.GetString("SpecialDateTokenChristmasDayPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Year.
+        /// </summary>
+        internal static string SpecialDateTokenNewYearName {
+            get {
+                return ResourceManager.GetString("SpecialDateTokenNewYearName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ny|new\s*year.
+        /// </summary>
+        internal static string SpecialDateTokenNewYearPattern {
+            get {
+                return ResourceManager.GetString("SpecialDateTokenNewYearPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Year&apos;s Eve.
+        /// </summary>
+        internal static string SpecialDateTokenNewYearsEveName {
+            get {
+                return ResourceManager.GetString("SpecialDateTokenNewYearsEveName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nye|new\s*year(&apos;?s)?\s*eve.
+        /// </summary>
+        internal static string SpecialDateTokenNewYearsEvePattern {
+            get {
+                return ResourceManager.GetString("SpecialDateTokenNewYearsEvePattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 12 noon.
+        /// </summary>
+        internal static string SpecialTimeTokenMiddayName {
+            get {
+                return ResourceManager.GetString("SpecialTimeTokenMiddayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (12([.:]00([.:]00)?)?\s*)?(noon|mid(-?d)?ay).
+        /// </summary>
+        internal static string SpecialTimeTokenMiddayPattern {
+            get {
+                return ResourceManager.GetString("SpecialTimeTokenMiddayPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 12 midnight.
+        /// </summary>
+        internal static string SpecialTimeTokenMidnightName {
+            get {
+                return ResourceManager.GetString("SpecialTimeTokenMidnightName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (12([.:]00([.:]00)?)?\s*)?mid-?night.
+        /// </summary>
+        internal static string SpecialTimeTokenMidnightPattern {
+            get {
+                return ResourceManager.GetString("SpecialTimeTokenMidnightPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^\s*(un)?till?\s*.
+        /// </summary>
+        internal static string TimerStartTokenPreferDateTimeHintPattern {
+            get {
+                return ResourceManager.GetString("TimerStartTokenPreferDateTimeHintPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} day.
+        /// </summary>
+        internal static string TimeSpanToken1Day {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hour.
+        /// </summary>
+        internal static string TimeSpanToken1Hour {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1Hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} minute.
+        /// </summary>
+        internal static string TimeSpanToken1Minute {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1Minute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} month.
+        /// </summary>
+        internal static string TimeSpanToken1Month {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} second.
+        /// </summary>
+        internal static string TimeSpanToken1Second {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1Second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} week.
+        /// </summary>
+        internal static string TimeSpanToken1Week {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1Week", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} year.
+        /// </summary>
+        internal static string TimeSpanToken1Year {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^
+        ///(
+        ///    \s*
+        ///    (
+        ///        (
+        ///            (?&lt;years&gt;\d+|\d*[.,]\d+)
+        ///            \s*
+        ///            (y|yrs?|years?)
+        ///            (
+        ///                \s*
+        ///                (?&lt;months&gt;\d+|\d*[.,]\d+)
+        ///                (\s+|$)
+        ///            )?
+        ///        )
+        ///        |
+        ///        (
+        ///            (?&lt;months&gt;\d+|\d*[.,]\d+)
+        ///            \s*
+        ///            (mo|mon?s?|months?)
+        ///            (
+        ///                \s*
+        ///                (?&lt;days&gt;\d+|\d*[.,]\d+)
+        ///                (\s+|$)
+        ///            )?
+        ///        )
+        ///        |
+        ///        (
+        ///   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TimeSpanTokenLongFormPattern {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenLongFormPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^
+        ///\s*
+        ///(?&lt;minutes&gt;\d+)
+        ///\s*
+        ///$.
+        /// </summary>
+        internal static string TimeSpanTokenMinutesOnlyPattern {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenMinutesOnlyPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} days.
+        /// </summary>
+        internal static string TimeSpanTokenNDays {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenNDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hours.
+        /// </summary>
+        internal static string TimeSpanTokenNHours {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenNHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} minutes.
+        /// </summary>
+        internal static string TimeSpanTokenNMinutes {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenNMinutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} months.
+        /// </summary>
+        internal static string TimeSpanTokenNMonths {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenNMonths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} seconds.
+        /// </summary>
+        internal static string TimeSpanTokenNSeconds {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenNSeconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} weeks.
+        /// </summary>
+        internal static string TimeSpanTokenNWeeks {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenNWeeks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} years.
+        /// </summary>
+        internal static string TimeSpanTokenNYears {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenNYears", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^
+        ///\s*
+        ///(
+        ///    (
+        ///        (
+        ///            (
+        ///                (?&lt;years&gt;\d+)
+        ///                \s*[.,:\s]\s*
+        ///            )?
+        ///            (?&lt;months&gt;\d+)
+        ///            \s*[.,:\s]\s*
+        ///        )?
+        ///        (?&lt;days&gt;\d+)
+        ///        \s*[.,:\s]\s*
+        ///    )?
+        ///    (?&lt;hours&gt;\d+)
+        ///    \s*[.,:\s]\s*
+        ///)?
+        ///(?&lt;minutes&gt;\d+)
+        ///\s*[.,:\s]\s*
+        ///(?&lt;seconds&gt;\d+)
+        ///\s*
+        ///$.
+        /// </summary>
+        internal static string TimeSpanTokenShortFormPattern {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenShortFormPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  .
+        /// </summary>
+        internal static string TimeSpanTokenUnitSeparator {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenUnitSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usage: {0} [OPTIONS] [&lt;input&gt;]
+        ///A simple countdown timer for Windows.
+        ///
+        ///  &lt;input&gt;
+        ///        The input used to start the timer.
+        ///
+        ///        For example:
+        ///        &quot;5&quot;                     count down for 5 minutes
+        ///        &quot;5:30&quot;                  count down for 5 minutes 30 seconds
+        ///        &quot;7:30:00&quot;               count down for 7 hours 30 minutes
+        ///        &quot;5 minutes&quot;             count down for 5 minutes
+        ///        &quot;5 minutes 30 seconds&quot;  count down for 5 minutes 30 seconds
+        ///        &quot;7 hours 30 minutes&quot;    count d [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Usage {
             get {

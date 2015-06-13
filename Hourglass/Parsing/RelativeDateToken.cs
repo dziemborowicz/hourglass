@@ -8,8 +8,12 @@ namespace Hourglass.Parsing
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
+
+    using Hourglass.Extensions;
+    using Hourglass.Properties;
 
     /// <summary>
     /// Represents a relative date.
@@ -39,19 +43,15 @@ namespace Hourglass.Parsing
         {
             new RelativeDateDefinition(
                 RelativeDate.Today,
-                "today",
                 0 /* yearDelta */,
                 0 /* monthDelta */,
-                0 /* dayDelta */,
-                @"todd?ay"),
+                0 /* dayDelta */),
                 
             new RelativeDateDefinition(
                 RelativeDate.Tomorrow,
-                "tomorrow",
                 0 /* yearDelta */,
                 0 /* monthDelta */,
-                1 /* dayDelta */,
-                @"tomm?orr?ow")
+                1 /* dayDelta */)
         };
 
         /// <summary>
@@ -95,15 +95,16 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
+        public override string ToString(IFormatProvider provider)
         {
             try
             {
                 this.ThrowIfNotValid();
 
                 RelativeDateDefinition relativeDateDefinition = this.GetRelativeDateDefinition();
-                return relativeDateDefinition.Name;
+                return relativeDateDefinition.GetName(provider);
             }
             catch
             {
@@ -154,7 +155,7 @@ namespace Hourglass.Parsing
             /// <returns>A set of regular expressions supported by this parser.</returns>
             public override IEnumerable<string> GetPatterns(IFormatProvider provider)
             {
-                return RelativeDates.Select(e => e.Pattern);
+                return RelativeDates.Select(e => e.GetPattern(provider));
             }
 
             /// <summary>
@@ -189,21 +190,17 @@ namespace Hourglass.Parsing
             /// Initializes a new instance of the <see cref="RelativeDateDefinition"/> class.
             /// </summary>
             /// <param name="relativeDate">The <see cref="relativeDate"/>.</param>
-            /// <param name="name">The friendly name for the relative date.</param>
             /// <param name="yearDelta">The year delta.</param>
             /// <param name="monthDelta">The month delta.</param>
             /// <param name="dayDelta">The day delta.</param>
-            /// <param name="pattern">A regular expression that matches the relative date.</param>
-            public RelativeDateDefinition(RelativeDate relativeDate, string name, int yearDelta, int monthDelta, int dayDelta, string pattern)
+            public RelativeDateDefinition(RelativeDate relativeDate, int yearDelta, int monthDelta, int dayDelta)
             {
                 this.RelativeDate = relativeDate;
-                this.Name = name;
 
                 this.YearDelta = yearDelta;
                 this.MonthDelta = monthDelta;
                 this.DayDelta = dayDelta;
 
-                this.Pattern = string.Format(@"(?<{0}>{1})", relativeDate, pattern);
                 this.MatchGroup = relativeDate.ToString();
             }
 
@@ -211,11 +208,6 @@ namespace Hourglass.Parsing
             /// Gets the <see cref="RelativeDate"/>.
             /// </summary>
             public RelativeDate RelativeDate { get; private set; }
-
-            /// <summary>
-            /// Gets the friendly name for the relative date.
-            /// </summary>
-            public string Name { get; private set; }
 
             /// <summary>
             /// Gets the year delta.
@@ -233,14 +225,40 @@ namespace Hourglass.Parsing
             public int DayDelta { get; private set; }
 
             /// <summary>
-            /// Gets the regular expression that matches the relative date.
-            /// </summary>
-            public string Pattern { get; private set; }
-
-            /// <summary>
             /// Gets the name of the regular expression match group that identifies the relative date in a match.
             /// </summary>
             public string MatchGroup { get; private set; }
+
+            /// <summary>
+            /// Returns the friendly name for the relative date.
+            /// </summary>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>The friendly name for the relative date.</returns>
+            public string GetName(IFormatProvider provider)
+            {
+                string resourceName = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "RelativeDateToken{0}Name",
+                    this.RelativeDate);
+
+                return Resources.ResourceManager.GetString(resourceName, provider);
+            }
+
+            /// <summary>
+            /// Returns the regular expression that matches the relative date.
+            /// </summary>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>The regular expression that matches the relative date.</returns>
+            public string GetPattern(IFormatProvider provider)
+            {
+                string resourceName = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "RelativeDateToken{0}Pattern",
+                    this.RelativeDate);
+
+                string pattern = Resources.ResourceManager.GetString(resourceName, provider);
+                return string.Format(CultureInfo.InvariantCulture, @"(?<{0}>{1})", this.RelativeDate, pattern);
+            }
         }
     }
 }

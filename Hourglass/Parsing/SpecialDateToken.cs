@@ -8,8 +8,12 @@ namespace Hourglass.Parsing
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
+
+    using Hourglass.Extensions;
+    using Hourglass.Properties;
 
     /// <summary>
     /// Represents a special date.
@@ -44,24 +48,18 @@ namespace Hourglass.Parsing
         {
             new SpecialDateDefinition(
                 SpecialDate.NewYear,
-                "New Year",
                 1 /* month */,
-                1 /* day */,
-                @"ny|new\s*year"),
+                1 /* day */),
 
             new SpecialDateDefinition(
                 SpecialDate.ChristmasDay,
-                "Christmas Day",
                 12 /* month */,
-                25 /* day */,
-                @"(ch?rist?|x)-?mass?(\s*day)?"),
+                25 /* day */),
 
             new SpecialDateDefinition(
                 SpecialDate.NewYearsEve,
-                "New Year's Eve",
                 12 /* month */,
-                31 /* day */,
-                @"nye|new\s*year('?s)?\s*eve")
+                31 /* day */)
         };
 
         /// <summary>
@@ -112,15 +110,16 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
+        public override string ToString(IFormatProvider provider)
         {
             try
             {
                 this.ThrowIfNotValid();
 
                 SpecialDateDefinition specialDateDefinition = this.GetSpecialDateDefinition();
-                return specialDateDefinition.Name;
+                return specialDateDefinition.GetName(provider);
             }
             catch
             {
@@ -171,7 +170,7 @@ namespace Hourglass.Parsing
             /// <returns>A set of regular expressions supported by this parser.</returns>
             public override IEnumerable<string> GetPatterns(IFormatProvider provider)
             {
-                return SpecialDates.Select(e => e.Pattern);
+                return SpecialDates.Select(e => e.GetPattern(provider));
             }
 
             /// <summary>
@@ -206,19 +205,15 @@ namespace Hourglass.Parsing
             /// Initializes a new instance of the <see cref="SpecialDateDefinition"/> class.
             /// </summary>
             /// <param name="specialDate">The <see cref="SpecialDate"/>.</param>
-            /// <param name="name">The friendly name for the special date.</param>
             /// <param name="month">The month.</param>
             /// <param name="day">The day.</param>
-            /// <param name="pattern">A regular expression that matches the special date.</param>
-            public SpecialDateDefinition(SpecialDate specialDate, string name, int month, int day, string pattern)
+            public SpecialDateDefinition(SpecialDate specialDate, int month, int day)
             {
                 this.SpecialDate = specialDate;
-                this.Name = name;
 
                 this.Month = month;
                 this.Day = day;
 
-                this.Pattern = string.Format(@"(?<{0}>{1})", specialDate, pattern);
                 this.MatchGroup = specialDate.ToString();
             }
 
@@ -226,11 +221,6 @@ namespace Hourglass.Parsing
             /// Gets the <see cref="SpecialDate"/>.
             /// </summary>
             public SpecialDate SpecialDate { get; private set; }
-
-            /// <summary>
-            /// Gets the friendly name for the special date.
-            /// </summary>
-            public string Name { get; private set; }
 
             /// <summary>
             /// Gets the month.
@@ -243,14 +233,40 @@ namespace Hourglass.Parsing
             public int Day { get; private set; }
 
             /// <summary>
-            /// Gets the regular expression that matches the special date.
-            /// </summary>
-            public string Pattern { get; private set; }
-
-            /// <summary>
             /// Gets the name of the regular expression match group that identifies the special date in a match.
             /// </summary>
             public string MatchGroup { get; private set; }
+
+            /// <summary>
+            /// Returns the friendly name for the special date.
+            /// </summary>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>The friendly name for the special date.</returns>
+            public string GetName(IFormatProvider provider)
+            {
+                string resourceName = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "SpecialDateToken{0}Name",
+                    this.SpecialDate);
+
+                return Resources.ResourceManager.GetString(resourceName, provider);
+            }
+
+            /// <summary>
+            /// Returns the regular expression that matches the special date.
+            /// </summary>
+            /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+            /// <returns>The regular expression that matches the special date.</returns>
+            public string GetPattern(IFormatProvider provider)
+            {
+                string resourceName = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "SpecialDateToken{0}Pattern",
+                    this.SpecialDate);
+
+                string pattern = Resources.ResourceManager.GetString(resourceName, provider);
+                return string.Format(CultureInfo.InvariantCulture, @"(?<{0}>{1})", this.SpecialDate, pattern);
+            }
         }
     }
 }

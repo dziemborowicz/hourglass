@@ -11,6 +11,9 @@ namespace Hourglass.Parsing
     using System.Text;
     using System.Text.RegularExpressions;
 
+    using Hourglass.Extensions;
+    using Hourglass.Properties;
+
     /// <summary>
     /// Represents the period of an hour.
     /// </summary>
@@ -103,7 +106,7 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Gets a value indicating whether this token represents noon.
         /// </summary>
-        public bool IsNoon
+        public bool IsMidday
         {
             get
             {
@@ -176,8 +179,9 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
+        /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
+        public override string ToString(IFormatProvider provider)
         {
             try
             {
@@ -186,39 +190,52 @@ namespace Hourglass.Parsing
                 StringBuilder stringBuilder = new StringBuilder();
 
                 // Hour
-                stringBuilder.Append(this.Hour == 0 ? 12 : this.Hour);
+                stringBuilder.AppendFormat(
+                    Resources.ResourceManager.GetEffectiveProvider(provider),
+                    Resources.ResourceManager.GetString("NormalTimeTokenHourPartFormatString", provider),
+                    this.Hour == 0 ? 12 : this.Hour);
 
                 // Minute
                 if ((this.Minute ?? 0) != 0 || (this.Second ?? 0) != 0)
                 {
-                    stringBuilder.AppendFormat(":{0:00}", this.Minute ?? 0);
+                    stringBuilder.AppendFormat(
+                        Resources.ResourceManager.GetEffectiveProvider(provider),
+                        Resources.ResourceManager.GetString("NormalTimeTokenMinutePartFormatString", provider),
+                        this.Minute ?? 0);
 
                     // Second
                     if ((this.Second ?? 0) != 0)
                     {
-                        stringBuilder.AppendFormat(":{0:00}", this.Second ?? 0);
+                        stringBuilder.AppendFormat(
+                            Resources.ResourceManager.GetEffectiveProvider(provider),
+                            Resources.ResourceManager.GetString("NormalTimeTokenSecondPartFormatString", provider),
+                            this.Second ?? 0);
                     }
                 }
 
                 // Hour period
                 if (this.HourPeriod.HasValue)
                 {
-                    if (this.IsMidnight)
+                    if (this.IsMidday)
                     {
-                        stringBuilder.Append(" midnight");
+                        stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenMiddaySuffix", provider));
                     }
-                    else if (this.IsNoon)
+                    else if (this.IsMidnight)
                     {
-                        stringBuilder.Append(" noon");
+                        stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenMidnightSuffix", provider));
+                    }
+                    else if (this.HourPeriod == Parsing.HourPeriod.Am)
+                    {
+                        stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenAmSuffix", provider));
                     }
                     else
                     {
-                        stringBuilder.Append(this.HourPeriod == Parsing.HourPeriod.Am ? " am" : " pm");
+                        stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenPmSuffix", provider));
                     }
                 }
                 else if ((this.Minute ?? 0) == 0 && (this.Second ?? 0) == 0)
                 {
-                    stringBuilder.Append(" o'clock");
+                    stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenOclockSuffix", provider));
                 }
 
                 return stringBuilder.ToString();
@@ -240,56 +257,6 @@ namespace Hourglass.Parsing
             public static readonly Parser Instance = new Parser();
 
             /// <summary>
-            /// A regular expression that matches times with separators (e.g., "5", "5p", "5 pm", "5:30", "5:30 p.m.",
-            /// "5:30:45 p.m.", "17:30h").
-            /// </summary>
-            private const string TimeWithSeparatorsPattern =
-                @"  (?<hour>\d\d?)
-                    (
-                        [.:]
-                        (?<minute>\d\d?)
-                        (
-                            [.:]
-                            (?<second>\d\d?)
-                        )?
-                    )?
-                    \s*
-                    (
-                        (?<period>
-                            (a|p)\.?
-                            (\s*m\.?)?
-                            |
-                            h[a-z]*
-                        )?
-                        |
-                        o'?clock
-                    )
-                ";
-
-            /// <summary>
-            /// A regular expression that matches times without separators (e.g., "5", "5p", "5 pm", "530", "530 p.m.",
-            /// "53045 p.m.", "1730h").
-            /// </summary>
-            private const string TimeWithoutSeparatorsPattern =
-                @"  (?<hour>\d\d?)
-                    (
-                        (?<minute>\d\d)
-                        (?<second>\d\d)?
-                    )?
-                    \s*
-                    (
-                        (?<period>
-                            (a|p)\.?
-                            (\s*m\.?)?
-                            |
-                            h[a-z]*
-                        )?
-                        |
-                        o'?clock
-                    )
-                ";
-
-            /// <summary>
             /// Prevents a default instance of the <see cref="Parser"/> class from being created.
             /// </summary>
             private Parser()
@@ -305,8 +272,8 @@ namespace Hourglass.Parsing
             {
                 return new[]
                 {
-                    TimeWithSeparatorsPattern,
-                    TimeWithoutSeparatorsPattern
+                    Resources.ResourceManager.GetString("NormalTimeTokenTimeWithSeparatorsPattern", provider),
+                    Resources.ResourceManager.GetString("NormalTimeTokenTimeWithoutSeparatorsPattern", provider)
                 };
             }
 
@@ -324,21 +291,20 @@ namespace Hourglass.Parsing
             {
                 NormalTimeToken timeToken = new NormalTimeToken();
 
+                provider = Resources.ResourceManager.GetEffectiveProvider(provider);
+
                 // Parse hour period
-                if (match.Groups["period"].Success)
+                if (match.Groups["am"].Success)
                 {
-                    if (match.Groups["period"].Value.StartsWith("a", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        timeToken.HourPeriod = Parsing.HourPeriod.Am;
-                    }
-                    else if (match.Groups["period"].Value.StartsWith("p", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        timeToken.HourPeriod = Parsing.HourPeriod.Pm;
-                    }
-                    else if (match.Groups["period"].Value.StartsWith("h", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        timeToken.HourPeriod = Parsing.HourPeriod.Military;
-                    }
+                    timeToken.HourPeriod = Parsing.HourPeriod.Am;
+                }
+                else if (match.Groups["pm"].Success)
+                {
+                    timeToken.HourPeriod = Parsing.HourPeriod.Pm;
+                }
+                else if (match.Groups["military"].Success)
+                {
+                    timeToken.HourPeriod = Parsing.HourPeriod.Military;
                 }
 
                 // Parse hour
