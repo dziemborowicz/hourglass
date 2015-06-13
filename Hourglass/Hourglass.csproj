@@ -191,6 +191,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\AppIcon.ai" />
     <None Include="Resources\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
