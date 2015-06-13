@@ -271,73 +271,73 @@
     \s*
     (
         (
-            (?&lt;years&gt;\d+|\d*[.,]\d+)
+            (?&lt;years&gt;\d+|\d*[.,/]\d+)
             \s*
             (y|yrs?|years?)
             (
                 \s*
-                (?&lt;months&gt;\d+|\d*[.,]\d+)
+                (?&lt;months&gt;\d+|\d*[.,/]\d+)
                 (\s+|$)
             )?
         )
         |
         (
-            (?&lt;months&gt;\d+|\d*[.,]\d+)
+            (?&lt;months&gt;\d+|\d*[.,/]\d+)
             \s*
             (mo|mon?s?|months?)
             (
                 \s*
-                (?&lt;days&gt;\d+|\d*[.,]\d+)
+                (?&lt;days&gt;\d+|\d*[.,/]\d+)
                 (\s+|$)
             )?
         )
         |
         (
-            (?&lt;weeks&gt;\d+|\d*[.,]\d+)
+            (?&lt;weeks&gt;\d+|\d*[.,/]\d+)
             \s*
             (w|wks?|weeks?)
             (
                 \s*
-                (?&lt;days&gt;\d+|\d*[.,]\d+)
+                (?&lt;days&gt;\d+|\d*[.,/]\d+)
                 (\s+|$)
             )?
         )
         |
         (
-            (?&lt;days&gt;\d+|\d*[.,]\d+)
+            (?&lt;days&gt;\d+|\d*[.,/]\d+)
             \s*
             (d|dys?|days?)
             (
                 \s*
-                (?&lt;hours&gt;\d+|\d*[.,]\d+)
+                (?&lt;hours&gt;\d+|\d*[.,/]\d+)
                 (\s+|$)
             )?
         )
         |
         (
-            (?&lt;hours&gt;\d+|\d*[.,]\d+)
+            (?&lt;hours&gt;\d+|\d*[.,/]\d+)
             \s*
             (h|hrs?|hours?)
             (
                 \s*
-                (?&lt;minutes&gt;\d+|\d*[.,]\d+)
+                (?&lt;minutes&gt;\d+|\d*[.,/]\d+)
                 (\s+|$)
             )?
         )
         |
         (
-            (?&lt;minutes&gt;\d+|\d*[.,]\d+)
+            (?&lt;minutes&gt;\d+|\d*[.,/]\d+)
             \s*
             (m|mins?|minutes?)
             (
                 \s*
-                (?&lt;seconds&gt;\d+|\d*[.,]\d+)
+                (?&lt;seconds&gt;\d+|\d*[.,/]\d+)
                 (\s+|$)
             )?
         )
         |
         (
-            (?&lt;seconds&gt;\d+|\d*[.,]\d+)
+            (?&lt;seconds&gt;\d+|\d*[.,/]\d+)
             \s*
             (s|secs?|seconds?)
         )

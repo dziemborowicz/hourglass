@@ -947,29 +947,28 @@ namespace Hourglass.Properties {
         ///    \s*
         ///    (
         ///        (
-        ///            (?&lt;years&gt;\d+|\d*[.,]\d+)
+        ///            (?&lt;years&gt;\d+|\d*[.,/]\d+)
         ///            \s*
         ///            (y|yrs?|years?)
         ///            (
         ///                \s*
-        ///                (?&lt;months&gt;\d+|\d*[.,]\d+)
+        ///                (?&lt;months&gt;\d+|\d*[.,/]\d+)
         ///                (\s+|$)
         ///            )?
         ///        )
         ///        |
         ///        (
-        ///            (?&lt;months&gt;\d+|\d*[.,]\d+)
+        ///            (?&lt;months&gt;\d+|\d*[.,/]\d+)
         ///            \s*
         ///            (mo|mon?s?|months?)
         ///            (
         ///                \s*
-        ///                (?&lt;days&gt;\d+|\d*[.,]\d+)
+        ///                (?&lt;days&gt;\d+|\d*[.,/]\d+)
         ///                (\s+|$)
         ///            )?
         ///        )
         ///        |
-        ///        (
-        ///   [rest of string was truncated]&quot;;.
+        ///        ( [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TimeSpanTokenLongFormPattern {
             get {
