@@ -490,7 +490,6 @@ namespace Hourglass.Windows
         {
             this.BringToFront();
             this.Activate();
-            this.Focus();
         }
 
         /// <summary>
