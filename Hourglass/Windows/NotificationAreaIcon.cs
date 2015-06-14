@@ -93,6 +93,7 @@ namespace Hourglass.Windows
 
             if (disposing)
             {
+                this.dispatcherTimer.Stop();
                 this.notifyIcon.Dispose();
 
                 Settings.Default.PropertyChanged -= this.SettingsPropertyChanged;
@@ -203,7 +204,11 @@ namespace Hourglass.Windows
                 TimerWindow window = menuItem.Tag as TimerWindow;
                 if (window != null)
                 {
-                    window.Timer.Update();
+                    if (!window.Timer.Disposed)
+                    {
+                        window.Timer.Update();
+                    }
+
                     menuItem.Text = window.ToString();
                 }
             }
@@ -212,6 +217,9 @@ namespace Hourglass.Windows
         /// <summary>
         /// Invoked when the shortcut menu collapses.
         /// </summary>
+        /// <remarks>
+        /// The Microsoft .NET Framework does not call this method consistently.
+        /// </remarks>
         /// <param name="sender">The notify icon context menu.</param>
         /// <param name="e">The event data.</param>
         private void ContextMenuCollapse(object sender, EventArgs e)

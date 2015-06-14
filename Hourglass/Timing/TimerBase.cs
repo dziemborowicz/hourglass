@@ -260,6 +260,14 @@ namespace Hourglass.Timing
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this object has been disposed.
+        /// </summary>
+        public bool Disposed
+        {
+            get { return this.disposed; }
+        }
+
         #endregion
 
         #region Public Methods
