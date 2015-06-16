@@ -220,7 +220,7 @@ namespace Hourglass.Windows
         /// </summary>
         /// <param name="disposing">A value indicating whether this method was invoked by an explicit call to <see
         /// cref="Dispose"/>.</param>
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (this.disposed)
             {

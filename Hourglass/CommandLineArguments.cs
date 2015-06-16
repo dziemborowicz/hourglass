@@ -813,6 +813,7 @@ namespace Hourglass
         /// <summary>
         /// Represents an error during <see cref="CommandLineArguments.GetCommandLineArguments"/>.
         /// </summary>
+        [Serializable]
         private class ParseException : Exception
         {
             /// <summary>
