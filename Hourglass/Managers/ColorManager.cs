@@ -73,8 +73,8 @@ namespace Hourglass.Managers
         public override void Initialize()
         {
             this.colors.Clear();
-            this.colors.AddRange(this.GetBuiltInColors());
-            this.colors.AddRange(this.GetUserProvidedColors());
+            this.AddRange(this.GetBuiltInColors());
+            this.AddRange(this.GetUserProvidedColors());
         }
 
         /// <summary>
@@ -94,6 +94,18 @@ namespace Hourglass.Managers
             if (this.GetColorByIdentifier(color.Identifier) == null)
             {
                 this.colors.Add(color);
+            }
+        }
+
+        /// <summary>
+        /// Adds the colors of the specified collection.
+        /// </summary>
+        /// <param name="collection">A collection of <see cref="Color"/>s.</param>
+        public void AddRange(IEnumerable<Color> collection)
+        {
+            foreach (Color color in collection)
+            {
+                this.Add(color);
             }
         }
 
