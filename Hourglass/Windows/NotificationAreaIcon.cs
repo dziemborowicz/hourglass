@@ -169,7 +169,7 @@ namespace Hourglass.Windows
         {
             this.notifyIcon.ContextMenu.MenuItems.Clear();
 
-            MenuItem newTimerMenuItem = new MenuItem("New timer");
+            MenuItem newTimerMenuItem = new MenuItem(Resources.NotificationAreaIconNewTimerMenuItem);
             newTimerMenuItem.Click += this.NewTimerMenuItemClick;
             this.notifyIcon.ContextMenu.MenuItems.Add(newTimerMenuItem);
 
@@ -185,7 +185,7 @@ namespace Hourglass.Windows
 
             this.notifyIcon.ContextMenu.MenuItems.Add("-" /* separator */);
 
-            MenuItem exitMenuItem = new MenuItem("Exit");
+            MenuItem exitMenuItem = new MenuItem(Resources.NotificationAreaIconExitMenuItem);
             exitMenuItem.Click += this.ExitMenuItemClick;
             this.notifyIcon.ContextMenu.MenuItems.Add(exitMenuItem);
 

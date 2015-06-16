@@ -19,6 +19,7 @@ namespace Hourglass.Windows
         public ErrorDialog()
         {
             this.InitializeComponent();
+            this.InitializeResources();
             this.InitializeMaxSize();
         }
 
@@ -31,9 +32,20 @@ namespace Hourglass.Windows
         {
             this.MessageTextBlock.Text = message;
             this.DetailsTextBox.Text = details ?? string.Empty;
-            this.DetailsButton.IsEnabled = !string.IsNullOrEmpty(details);
+            this.ShowDetailsButton.IsEnabled = !string.IsNullOrEmpty(details);
 
             this.ShowDialog();
+        }
+
+        /// <summary>
+        /// Initializes localized resources.
+        /// </summary>
+        private void InitializeResources()
+        {
+            this.Title = Properties.Resources.ErrorDialogTitle;
+            this.MessageTextBlock.Text = Properties.Resources.ErrorDialogDefaultMessageText;
+            this.ShowDetailsButton.Content = Properties.Resources.ErrorDialogShowDetailsButtonContent;
+            this.CloseButton.Content = Properties.Resources.ErrorDialogCloseButtonContent;
         }
 
         /// <summary>
@@ -46,16 +58,16 @@ namespace Hourglass.Windows
         }
 
         /// <summary>
-        /// Invoked when the <see cref="DetailsButton"/> is clicked.
+        /// Invoked when the <see cref="ShowDetailsButton"/> is clicked.
         /// </summary>
-        /// <param name="sender">The <see cref="DetailsButton"/>.</param>
+        /// <param name="sender">The <see cref="ShowDetailsButton"/>.</param>
         /// <param name="e">The event data.</param>
-        private void DetailsButtonClick(object sender, RoutedEventArgs e)
+        private void ShowDetailsButtonClick(object sender, RoutedEventArgs e)
         {
             if (this.DetailsBorder.Visibility != Visibility.Visible)
             {
                 this.DetailsBorder.Visibility = Visibility.Visible;
-                this.DetailsButton.IsEnabled = false;
+                this.ShowDetailsButton.IsEnabled = false;
             }
         }
     }

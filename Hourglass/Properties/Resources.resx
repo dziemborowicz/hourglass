@@ -202,61 +202,93 @@
     <value>(12([.:]00([.:]00)?)?\s*)?mid-?night</value>
     <comment>The regular expression that matches 12 midnight</comment>
   </data>
-  <data name="TimeSpanToken1Day" xml:space="preserve">
+  <data name="TimeSpanExtensions1DayFormatString" xml:space="preserve">
     <value>{0} day</value>
-    <comment>The units for one day, where {0} is the number of days with a possible fraction part (e.g., "{0} day" =&gt; "1 day")</comment>
+    <comment>A format string for one day with units, where {0} is the number of days with a possible fraction part (e.g., "{0} day" =&gt; "1 day")</comment>
   </data>
-  <data name="TimeSpanTokenNDays" xml:space="preserve">
+  <data name="TimeSpanExtensionsNDaysFormatString" xml:space="preserve">
     <value>{0} days</value>
-    <comment>The units for days, where {0} is the number of days with a possible fraction part (e.g., "{0} days" =&gt; "5 days")</comment>
+    <comment>A format string for N days with units, where {0} is the number of days with a possible fraction part (e.g., "{0} days" =&gt; "5 days")</comment>
   </data>
-  <data name="TimeSpanToken1Hour" xml:space="preserve">
+  <data name="TimeSpanExtensions1HourFormatString" xml:space="preserve">
     <value>{0} hour</value>
-    <comment>The units for one hour, where {0} is the number of hours with a possible fraction part (e.g., "{0} hour" =&gt; "1 hour")</comment>
+    <comment>A format string for one hour with units, where {0} is the number of hours with a possible fraction part (e.g., "{0} hour" =&gt; "1 hour")</comment>
   </data>
-  <data name="TimeSpanTokenNHours" xml:space="preserve">
+  <data name="TimeSpanExtensionsNHoursFormatString" xml:space="preserve">
     <value>{0} hours</value>
-    <comment>The units for hours, where {0} is the number of hours with a possible fraction part (e.g., "{0} hours" =&gt; "5 hours")</comment>
+    <comment>A format string for N hours with units, where {0} is the number of hours with a possible fraction part (e.g., "{0} hours" =&gt; "5 hours")</comment>
   </data>
-  <data name="TimeSpanToken1Minute" xml:space="preserve">
+  <data name="TimeSpanExtensions1MinuteFormatString" xml:space="preserve">
     <value>{0} minute</value>
-    <comment>The units for one minute, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minute" =&gt; "1 minute")</comment>
+    <comment>A format string for one minute with units, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minute" =&gt; "1 minute")</comment>
   </data>
-  <data name="TimeSpanTokenNMinutes" xml:space="preserve">
+  <data name="TimeSpanExtensionsNMinutesFormatString" xml:space="preserve">
     <value>{0} minutes</value>
-    <comment>The units for minutes, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minutes" =&gt; "5 minutes")</comment>
+    <comment>A format string for N minutes with units, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minutes" =&gt; "5 minutes")</comment>
   </data>
-  <data name="TimeSpanToken1Month" xml:space="preserve">
-    <value>{0} month</value>
-    <comment>The units for one month, where {0} is the number of months with a possible fraction part (e.g., "{0} month" =&gt; "1 month")</comment>
-  </data>
-  <data name="TimeSpanTokenNMonths" xml:space="preserve">
-    <value>{0} months</value>
-    <comment>The units for months, where {0} is the number of months with a possible fraction part (e.g., "{0} months" =&gt; "5 months")</comment>
-  </data>
-  <data name="TimeSpanToken1Second" xml:space="preserve">
+  <data name="TimeSpanExtensions1SecondFormatString" xml:space="preserve">
     <value>{0} second</value>
-    <comment>The units for one second, where {0} is the number of seconds with a possible fraction part (e.g., "{0} second" =&gt; "1 second")</comment>
+    <comment>A format string for one second with units, where {0} is the number of seconds with a possible fraction part (e.g., "{0} second" =&gt; "1 second")</comment>
   </data>
-  <data name="TimeSpanTokenNSeconds" xml:space="preserve">
+  <data name="TimeSpanExtensionsNSecondsFormatString" xml:space="preserve">
     <value>{0} seconds</value>
-    <comment>The units for seconds, where {0} is the number of seconds with a possible fraction part (e.g., "{0} seconds" =&gt; "5 seconds")</comment>
+    <comment>A format string for N seconds with units, where {0} is the number of seconds with a possible fraction part (e.g., "{0} seconds" =&gt; "5 seconds")</comment>
   </data>
-  <data name="TimeSpanToken1Week" xml:space="preserve">
+  <data name="TimeSpanToken1DayFormatString" xml:space="preserve">
+    <value>{0} day</value>
+    <comment>A format string for one day with units, where {0} is the number of days with a possible fraction part (e.g., "{0} day" =&gt; "1 day")</comment>
+  </data>
+  <data name="TimeSpanTokenNDaysFormatString" xml:space="preserve">
+    <value>{0} days</value>
+    <comment>A format string for N days with units, where {0} is the number of days with a possible fraction part (e.g., "{0} days" =&gt; "5 days")</comment>
+  </data>
+  <data name="TimeSpanToken1HourFormatString" xml:space="preserve">
+    <value>{0} hour</value>
+    <comment>A format string for one hour with units, where {0} is the number of hours with a possible fraction part (e.g., "{0} hour" =&gt; "1 hour")</comment>
+  </data>
+  <data name="TimeSpanTokenNHoursFormatString" xml:space="preserve">
+    <value>{0} hours</value>
+    <comment>A format string for N hours with units, where {0} is the number of hours with a possible fraction part (e.g., "{0} hours" =&gt; "5 hours")</comment>
+  </data>
+  <data name="TimeSpanToken1MinuteFormatString" xml:space="preserve">
+    <value>{0} minute</value>
+    <comment>A format string for one minute with units, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minute" =&gt; "1 minute")</comment>
+  </data>
+  <data name="TimeSpanTokenNMinutesFormatString" xml:space="preserve">
+    <value>{0} minutes</value>
+    <comment>A format string for N minutes with units, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minutes" =&gt; "5 minutes")</comment>
+  </data>
+  <data name="TimeSpanToken1MonthFormatString" xml:space="preserve">
+    <value>{0} month</value>
+    <comment>A format string for one month with units, where {0} is the number of months with a possible fraction part (e.g., "{0} month" =&gt; "1 month")</comment>
+  </data>
+  <data name="TimeSpanTokenNMonthsFormatString" xml:space="preserve">
+    <value>{0} months</value>
+    <comment>A format string for N months with units, where {0} is the number of months with a possible fraction part (e.g., "{0} months" =&gt; "5 months")</comment>
+  </data>
+  <data name="TimeSpanToken1SecondFormatString" xml:space="preserve">
+    <value>{0} second</value>
+    <comment>A format string for one second with units, where {0} is the number of seconds with a possible fraction part (e.g., "{0} second" =&gt; "1 second")</comment>
+  </data>
+  <data name="TimeSpanTokenNSecondsFormatString" xml:space="preserve">
+    <value>{0} seconds</value>
+    <comment>A format string for N seconds with units, where {0} is the number of seconds with a possible fraction part (e.g., "{0} seconds" =&gt; "5 seconds")</comment>
+  </data>
+  <data name="TimeSpanToken1WeekFormatString" xml:space="preserve">
     <value>{0} week</value>
-    <comment>The units for one week, where {0} is the number of weeks with a possible fraction part (e.g., "{0} week" =&gt; "1 week")</comment>
+    <comment>A format string for one week with units, where {0} is the number of weeks with a possible fraction part (e.g., "{0} week" =&gt; "1 week")</comment>
   </data>
-  <data name="TimeSpanTokenNWeeks" xml:space="preserve">
+  <data name="TimeSpanTokenNWeeksFormatString" xml:space="preserve">
     <value>{0} weeks</value>
-    <comment>The units for weeks, where {0} is the number of weeks with a possible fraction part (e.g., "{0} weeks" =&gt; "5 weeks")</comment>
+    <comment>A format string for N weeks with units, where {0} is the number of weeks with a possible fraction part (e.g., "{0} weeks" =&gt; "5 weeks")</comment>
   </data>
-  <data name="TimeSpanToken1Year" xml:space="preserve">
+  <data name="TimeSpanToken1YearFormatString" xml:space="preserve">
     <value>{0} year</value>
-    <comment>The units for one year, where {0} is the number of years with a possible fraction part (e.g., "{0} year" =&gt; "1 year")</comment>
+    <comment>A format string for one year with units, where {0} is the number of years with a possible fraction part (e.g., "{0} year" =&gt; "1 year")</comment>
   </data>
-  <data name="TimeSpanTokenNYears" xml:space="preserve">
+  <data name="TimeSpanTokenNYearsFormatString" xml:space="preserve">
     <value>{0} years</value>
-    <comment>The units for years, where {0} is the number of years with a possible fraction part (e.g., "{0} years" =&gt; "5 years")</comment>
+    <comment>A format string for N years with units, where {0} is the number of years with a possible fraction part (e.g., "{0} years" =&gt; "5 years")</comment>
   </data>
   <data name="Usage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Usage.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
@@ -699,5 +731,337 @@ $</value>
   <data name="TimerStartTokenPreferDateTimeHintPattern" xml:space="preserve">
     <value>^\s*(un)?till?\s*</value>
     <comment>A regular expression that indicates a preference for matching a date and/or time, rather than a time span, when parsing a timer start token</comment>
+  </data>
+  <data name="TimeSpanExtensionsUnitSeparator" xml:space="preserve">
+    <value> </value>
+    <comment>The separator between the units of a time span (e.g., " " =&gt; "5 minutes 30 seconds", " : " =&gt; "5 minutes : 30 seconds")</comment>
+  </data>
+  <data name="ColorManagerBlack" xml:space="preserve">
+    <value>Black</value>
+    <comment>The string for the gray color</comment>
+  </data>
+  <data name="ColorManagerBlue" xml:space="preserve">
+    <value>Blue</value>
+    <comment>The string for the blue color</comment>
+  </data>
+  <data name="ColorManagerDefaultColor" xml:space="preserve">
+    <value>Default color</value>
+    <comment>The string for the default color</comment>
+  </data>
+  <data name="ColorManagerGray" xml:space="preserve">
+    <value>Gray</value>
+    <comment>The string for the gray color</comment>
+  </data>
+  <data name="ColorManagerGreen" xml:space="preserve">
+    <value>Green</value>
+    <comment>The string for the green color</comment>
+  </data>
+  <data name="ColorManagerOrange" xml:space="preserve">
+    <value>Orange</value>
+    <comment>The string for the orange color</comment>
+  </data>
+  <data name="ColorManagerPurple" xml:space="preserve">
+    <value>Purple</value>
+    <comment>The string for the purple color</comment>
+  </data>
+  <data name="ColorManagerRed" xml:space="preserve">
+    <value>Red</value>
+    <comment>The string for the red color</comment>
+  </data>
+  <data name="ColorManagerYellow" xml:space="preserve">
+    <value>Yellow</value>
+    <comment>The string for the yellow color</comment>
+  </data>
+  <data name="SoundManagerLoudBeep" xml:space="preserve">
+    <value>Loud beep</value>
+    <comment>The string for the loud beep sound</comment>
+  </data>
+  <data name="SoundManagerNormalBeep" xml:space="preserve">
+    <value>Normal beep</value>
+    <comment>The string for the normal beep sound</comment>
+  </data>
+  <data name="SoundManagerQuietBeep" xml:space="preserve">
+    <value>Quiet beep</value>
+    <comment>The string for the quiet beep sound</comment>
+  </data>
+  <data name="ErrorManagerErrorHasBeenWritten" xml:space="preserve">
+    <value>The error has been written to "{0}".</value>
+    <comment>The messsage displayed to the user when an error dump is written to a file, where {0} is the path to the file (e.g., "The error has been written to '{0}'." =&gt; "The error has been written to 'C:\error.txt'.")</comment>
+  </data>
+  <data name="ErrorManagerFailedToClean" xml:space="preserve">
+    <value>Failed to clean old error messages.</value>
+    <comment>The message displayed to the user when old error dumps could not be removed</comment>
+  </data>
+  <data name="ErrorManagerUnexpectedError" xml:space="preserve">
+    <value>An unexpected error has occurred</value>
+    <comment>The message displayed to the user when an unexpected error occurs</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionDuplicateSwitchFormatString" xml:space="preserve">
+    <value>Duplicate switch "{0}"</value>
+    <comment>A format string for the error message displayed when a command-line argument switch is specified more than once, where {0} is the switch that is specified more than once (e.g., "Duplicate switch '{0}'." =&gt; "Duplicate switch '--full-screen'.")</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionInvalidTimerInputFormatString" xml:space="preserve">
+    <value>Invalid timer input "{0}"</value>
+    <comment>A format string for the error message displayed when an invalid timer input is specified as a command-line argument, where {0} is the invalid timer input (e.g., "Invalid timer input '{0}'." =&gt; "Invalid timer input 'junk'.")</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString" xml:space="preserve">
+    <value>Invalid value "{1}" for switch "{0}"</value>
+    <comment>A format string for the error message displayed when a command-line argument switch has an invalid value, where {0} is the switch that has the invalid value and {1} is the invalid value (e.g., "Invalid value '{1}' for switch '{0}'." =&gt; "Invalid value 'junk' for switch '--full-screen'.")</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionMissingValueForSwitchFormatString" xml:space="preserve">
+    <value>Missing value for switch "{0}"</value>
+    <comment>A format string for the error message displayed when a command-line argument switch is missing a value, where {0} is the switch that is missing a value (e.g., "Missing value for switch '{0}'." =&gt; "Missing value for switch '--full-screen'.")</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString" xml:space="preserve">
+    <value>Unrecognized switch "{0}"</value>
+    <comment>A format string for the error message displayed when a command-line argument switch is unrecognized, where {0} is the unrecognized switch (e.g., "Unrecognized switch '{0}'." =&gt; "Unrecognized switch '--junk'.")</comment>
+  </data>
+  <data name="ContextMenuAddCustomColorMenuItem" xml:space="preserve">
+    <value>_Add custom color...</value>
+    <comment>The text for the add custom color menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuAlwaysOnTopMenuItem" xml:space="preserve">
+    <value>_Always on top</value>
+    <comment>The text for the always on top menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuClearCustomColorsMenuItem" xml:space="preserve">
+    <value>_Clear custom colors</value>
+    <comment>The text for the clear custom colors menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuClearRecentInputsMenuItem" xml:space="preserve">
+    <value>_Clear recent inputs</value>
+    <comment>The text for the clear recent inputs menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuClearSavedTimersMenuItem" xml:space="preserve">
+    <value>_Clear saved timers</value>
+    <comment>The text for the clear saved timers menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuCloseMenuItem" xml:space="preserve">
+    <value>_Close</value>
+    <comment>The text for the close menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuCloseWhenExpiredMenuItem" xml:space="preserve">
+    <value>Close when _expired</value>
+    <comment>The text for the close when expired menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuColorMenuItem" xml:space="preserve">
+    <value>C_olor</value>
+    <comment>The text for the color menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuCustomColorMenuItem" xml:space="preserve">
+    <value>Custom color</value>
+    <comment>The text for a custom color menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuFullScreenMenuItem" xml:space="preserve">
+    <value>_Full screen</value>
+    <comment>The text for the full screen menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuLoopSoundMenuItem" xml:space="preserve">
+    <value>_Loop sound</value>
+    <comment>The text for the loop sound menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuLoopTimerMenuItem" xml:space="preserve">
+    <value>_Loop timer</value>
+    <comment>The text for the loop timer menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuNewTimerMenuItem" xml:space="preserve">
+    <value>_New timer</value>
+    <comment>The text for the new timer menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuNoRecentInputsMenuItem" xml:space="preserve">
+    <value>No recent inputs</value>
+    <comment>The text for the no recent inputs placeholder menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuNoSavedTimersMenuItem" xml:space="preserve">
+    <value>No saved timers</value>
+    <comment>The text for the no saved timers placeholder menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuNoSoundMenuItem" xml:space="preserve">
+    <value>_No sound</value>
+    <comment>The text for the no sound menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuPopUpWhenExpiredMenuItem" xml:space="preserve">
+    <value>_Pop up when expired</value>
+    <comment>The text for the pop up when expired menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuRecentInputsMenuItem" xml:space="preserve">
+    <value>_Recent inputs</value>
+    <comment>The text for the recent inputs menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuSavedTimersMenuItem" xml:space="preserve">
+    <value>Saved _timers</value>
+    <comment>The text for the saved timers menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuShowInNotificationAreaMenuItem" xml:space="preserve">
+    <value>S_how in notification area</value>
+    <comment>The text for the show in notification area menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuSoundMenuItem" xml:space="preserve">
+    <value>_Sound</value>
+    <comment>The text for the sound menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ErrorDialogCloseButtonContent" xml:space="preserve">
+    <value>_Close</value>
+    <comment>The text for the close button in the error dialog, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ErrorDialogDefaultMessageText" xml:space="preserve">
+    <value>An unexpected error has occurred</value>
+    <comment>The default message displayed in the error dialog</comment>
+  </data>
+  <data name="ErrorDialogShowDetailsButtonContent" xml:space="preserve">
+    <value>_Show details</value>
+    <comment>The text for the show details button in the error dialog, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ErrorDialogTitle" xml:space="preserve">
+    <value>Hourglass</value>
+    <comment>The window title for the error dialog</comment>
+  </data>
+  <data name="NotificationAreaIconExitMenuItem" xml:space="preserve">
+    <value>E&amp;xit</value>
+    <comment>The text for the exit menu item, where the character following the optional ampersand (&amp;) is the access key</comment>
+  </data>
+  <data name="NotificationAreaIconNewTimerMenuItem" xml:space="preserve">
+    <value>&amp;New timer</value>
+    <comment>The text for the new timer menu item, where the character following the optional ampersand (&amp;) is the access key</comment>
+  </data>
+  <data name="TimerWindowBlankTitlePlaceholder" xml:space="preserve">
+    <value>—</value>
+    <comment>The string used to represent no title in the string representation of a timer window</comment>
+  </data>
+  <data name="TimerWindowCancelButtonContent" xml:space="preserve">
+    <value>_Cancel</value>
+    <comment>The text for the cancel button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowCloseButtonContent" xml:space="preserve">
+    <value>_Close</value>
+    <comment>The text for the close button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowNewTimerWithTitleFormatString" xml:space="preserve">
+    <value>New timer: {0} "{1}"</value>
+    <comment>A format string for the string representation of a timer window used when the timer window does not have a running timer and where it does have a title set, where {0} is the current user input into the window and {1} is the timer window title</comment>
+  </data>
+  <data name="TimerWindowPauseButtonContent" xml:space="preserve">
+    <value>_Pause</value>
+    <comment>The text for the pause button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowResetButtonContent" xml:space="preserve">
+    <value>_Reset</value>
+    <comment>The text for the reset button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowResumeButtonContent" xml:space="preserve">
+    <value>_Resume</value>
+    <comment>The text for the resume button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowStartButtonContent" xml:space="preserve">
+    <value>_Start</value>
+    <comment>The text for the start button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowStopButtonContent" xml:space="preserve">
+    <value>_Stop</value>
+    <comment>The text for the stop button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowTimerTextHint" xml:space="preserve">
+    <value>Click to enter time or date</value>
+    <comment>The watermark text that is dispalyed in the main input text box in the timer window</comment>
+  </data>
+  <data name="TimerWindowTitle" xml:space="preserve">
+    <value>Hourglass</value>
+    <comment>The window title for the timer window</comment>
+  </data>
+  <data name="TimerWindowTitleTextHint" xml:space="preserve">
+    <value>Click to enter title</value>
+    <comment>The watermark text that is displayed in the timer title text box in the timer window</comment>
+  </data>
+  <data name="TimerWindowUpdateButtonContent" xml:space="preserve">
+    <value>_Update</value>
+    <comment>The text for the update button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindwoNewTimerFormatString" xml:space="preserve">
+    <value>New timer: {0}</value>
+    <comment>A format string for the string representation of a timer window used when the timer window does not have a running timer, where {0} is the current user input into the window</comment>
+  </data>
+  <data name="UsageDialogCloseButtonContent" xml:space="preserve">
+    <value>_Close</value>
+    <comment>The text for the close button in the command-line usage dialog, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="UsageDialogDefaultMessageText" xml:space="preserve">
+    <value>Command-line usage</value>
+    <comment>The default message displayed in the command-line usage dialog</comment>
+  </data>
+  <data name="UsageDialogTitle" xml:space="preserve">
+    <value>Hourglass</value>
+    <comment>The window title for the command-line usage dialog</comment>
+  </data>
+  <data name="TimerTimerExpired" xml:space="preserve">
+    <value>Timer expired</value>
+    <comment>The string representation of the time left or elapsed for a timer that is expired</comment>
+  </data>
+  <data name="TimerTimerStopped" xml:space="preserve">
+    <value>Timer stopped</value>
+    <comment>The string representation of the time left or elapsed for a timer that is stopped</comment>
+  </data>
+  <data name="TimerExpiredFormatString" xml:space="preserve">
+    <value>{1} (Expired)</value>
+    <comment>A format string for the string representation of a expired timer, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerExpiredLoopedFormatString" xml:space="preserve">
+    <value>{1} (Expired)</value>
+    <comment>A format string for the string representation of a expired timer that is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerExpiredWithTitleFormatString" xml:space="preserve">
+    <value>{1} "{2}" (Expired)</value>
+    <comment>A format string for the string representation of a expired timer that has a title, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerExpiredWithTitleLoopedFormatString" xml:space="preserve">
+    <value>{1} "{2}" (Expired)</value>
+    <comment>A format string for the string representation of a expired timer that has a title and is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerPausedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} (Paused)</value>
+    <comment>A format string for the string representation of a paused timer, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerPausedLoopedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} (Paused)</value>
+    <comment>A format string for the string representation of a paused timer that is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerPausedWithTitleFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} "{2}" (Paused)</value>
+    <comment>A format string for the string representation of a paused timer that has a title, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerPausedWithTitleLoopedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} "{2}" (Paused)</value>
+    <comment>A format string for the string representation of a paused timer that has a title and is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerRunningFormatString" xml:space="preserve">
+    <value>{0} ➔ {1}</value>
+    <comment>A format string for the string representation of a running timer, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerRunningLoopedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} (Looped)</value>
+    <comment>A format string for the string representation of a running timer that is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerRunningWithTitleFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} "{2}"</value>
+    <comment>A format string for the string representation of a running timer that has a title, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerRunningWithTitleLoopedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} "{2}" (Looped)</value>
+    <comment>A format string for the string representation of a running timer that has a title and is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerStoppedFormatString" xml:space="preserve">
+    <value>Stopped</value>
+    <comment>A format string for the string representation of a stopped timer, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerStoppedLoopedFormatString" xml:space="preserve">
+    <value>Stopped</value>
+    <comment>A format string for the string representation of a stopped timer that is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerStoppedWithTitleFormatString" xml:space="preserve">
+    <value>Stopped "{2}"</value>
+    <comment>A format string for the string representation of a stopped timer that has a title, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerStoppedWithTitleLoopedFormatString" xml:space="preserve">
+    <value>Stopped "{2}"</value>
+    <comment>A format string for the string representation of a stopped timer that has a title and is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
   </data>
 </root>

@@ -68,11 +68,17 @@ namespace Hourglass.Timing
         /// <summary>
         /// Initializes a new instance of the <see cref="Sound"/> class for a sound stored in the assembly.
         /// </summary>
+        /// <param name="invariantName">The culture-insensitive name of the color. (Optional.)</param>
         /// <param name="name">The friendly name for the sound.</param>
         /// <param name="streamProvider">A method that returns a stream to the sound data.</param>
         /// <param name="duration">The length of the sound.</param>
-        public Sound(string name, Func<UnmanagedMemoryStream> streamProvider, TimeSpan duration)
+        public Sound(string invariantName, string name, Func<UnmanagedMemoryStream> streamProvider, TimeSpan duration)
         {
+            if (string.IsNullOrEmpty(invariantName))
+            {
+                throw new ArgumentNullException("invariantName");
+            }
+
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException("name");
@@ -89,7 +95,7 @@ namespace Hourglass.Timing
             }
 
             this.name = name;
-            this.identifier = "resource:" + name;
+            this.identifier = "resource:" + invariantName;
             this.isBuiltIn = true;
             this.streamProvider = streamProvider;
             this.duration = duration;

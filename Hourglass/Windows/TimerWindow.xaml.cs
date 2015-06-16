@@ -183,6 +183,7 @@ namespace Hourglass.Windows
         public TimerWindow()
         {
             this.InitializeComponent();
+            this.InitializeResources();
             this.InitializeAnimations();
             this.InitializeSoundPlayer();
             this.InitializeUpdateButton();
@@ -520,9 +521,15 @@ namespace Hourglass.Windows
         {
             if (this.Timer.State == TimerState.Stopped && this.Mode == TimerWindowMode.Input)
             {
-                string input = string.IsNullOrWhiteSpace(this.TimerTextBox.Text) ? "\u2014" : this.TimerTextBox.Text;
+                string input = string.IsNullOrWhiteSpace(this.TimerTextBox.Text)
+                    ? Properties.Resources.TimerWindowBlankTitlePlaceholder
+                    : this.TimerTextBox.Text;
+
                 string title = this.TitleTextBox.Text;
-                string format = string.IsNullOrWhiteSpace(title) ? "New timer: {0}" : "New timer: {0} \"{1}\"";
+
+                string format = string.IsNullOrWhiteSpace(title)
+                    ? Properties.Resources.TimerWindwoNewTimerFormatString
+                    : Properties.Resources.TimerWindowNewTimerWithTitleFormatString;
 
                 return string.Format(format, input, title);
             }
@@ -659,6 +666,30 @@ namespace Hourglass.Windows
                 || this.CloseButton.Unfocus()
                 || this.CancelButton.Unfocus()
                 || this.UpdateButton.Unfocus();
+        }
+
+        #endregion
+
+        #region Private Methods (Localization)
+
+        /// <summary>
+        /// Initializes localized resources.
+        /// </summary>
+        private void InitializeResources()
+        {
+            this.Title = Properties.Resources.TimerWindowTitle;
+            
+            Watermark.SetHint(this.TitleTextBox, Properties.Resources.TimerWindowTitleTextHint);
+            Watermark.SetHint(this.TimerTextBox, Properties.Resources.TimerWindowTimerTextHint);
+
+            this.StartButton.Content = Properties.Resources.TimerWindowStartButtonContent;
+            this.PauseButton.Content = Properties.Resources.TimerWindowPauseButtonContent;
+            this.ResumeButton.Content = Properties.Resources.TimerWindowResumeButtonContent;
+            this.StopButton.Content = Properties.Resources.TimerWindowStopButtonContent;
+            this.ResetButton.Content = Properties.Resources.TimerWindowResetButtonContent;
+            this.CloseButton.Content = Properties.Resources.TimerWindowCloseButtonContent;
+            this.CancelButton.Content = Properties.Resources.TimerWindowCancelButtonContent;
+            this.UpdateButton.Content = Properties.Resources.TimerWindowUpdateButtonContent;
         }
 
         #endregion
@@ -940,7 +971,7 @@ namespace Hourglass.Windows
                 case TimerWindowMode.Input:
                     this.Title = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired && this.WindowState == WindowState.Minimized
                         ? this.Timer.TimeLeftAsString
-                        : "Hourglass";
+                        : Properties.Resources.TimerWindowTitle;
 
                     this.ProgressBar.Foreground = this.Options.Color.Brush;
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
@@ -962,7 +993,7 @@ namespace Hourglass.Windows
                 case TimerWindowMode.Status:
                     this.Title = this.WindowState == WindowState.Minimized
                         ? this.Timer.TimeLeftAsString
-                        : "Hourglass";
+                        : Properties.Resources.TimerWindowTitle;
 
                     this.TimerTextBox.Text = this.Timer.TimeLeftAsString;
                     this.ProgressBar.Foreground = this.Options.Color.Brush;

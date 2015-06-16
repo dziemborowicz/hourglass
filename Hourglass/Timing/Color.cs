@@ -45,12 +45,13 @@ namespace Hourglass.Timing
         /// Initializes a new instance of the <see cref="Color"/> class.
         /// </summary>
         /// <param name="mediaColor">The color.</param>
-        /// <param name="name">The friendly name of the color. (Optional.)</param>
+        /// <param name="invariantName">The culture-insensitive name of the color. (Optional.)</param>
+        /// <param name="name">The localized friendly name of the color. (Optional.)</param>
         /// <param name="isBuiltIn">A value indicating whether this color is defined in the assembly. (Optional.)</param>
-        public Color(System.Windows.Media.Color mediaColor, string name = null, bool isBuiltIn = false)
+        public Color(System.Windows.Media.Color mediaColor, string invariantName = null, string name = null, bool isBuiltIn = false)
         {
             this.name = name;
-            this.identifier = isBuiltIn ? ("resource:" + name) : ("color:" + mediaColor);
+            this.identifier = isBuiltIn ? ("resource:" + invariantName) : ("color:" + mediaColor);
             this.isBuiltIn = isBuiltIn;
             this.mediaColor = mediaColor;
         }
@@ -61,10 +62,11 @@ namespace Hourglass.Timing
         /// <param name="r">The sRGB red channel, R, of the color.</param>
         /// <param name="g">The sRGB green channel, G, of the color.</param>
         /// <param name="b">The sRGB blue channel, B, of the color.</param>
-        /// <param name="name">The friendly name of the color. (Optional.)</param>
+        /// <param name="invariantName">The culture-insensitive name of the color. (Optional.)</param>
+        /// <param name="name">The localized friendly name of the color. (Optional.)</param>
         /// <param name="isBuiltIn">A value indicating whether this color is defined in the assembly. (Optional.)</param>
-        public Color(byte r, byte g, byte b, string name = null, bool isBuiltIn = false)
-            : this(System.Windows.Media.Color.FromRgb(r, g, b), name, isBuiltIn)
+        public Color(byte r, byte g, byte b, string invariantName = null, string name = null, bool isBuiltIn = false)
+            : this(System.Windows.Media.Color.FromRgb(r, g, b), invariantName, name, isBuiltIn)
         {
         }
 
@@ -72,10 +74,11 @@ namespace Hourglass.Timing
         /// Initializes a new instance of the <see cref="Color"/> class.
         /// </summary>
         /// <param name="colorString">A string representation of a color.</param>
-        /// <param name="name">The friendly name of the color. (Optional.)</param>
+        /// <param name="invariantName">The culture-insensitive name of the color. (Optional.)</param>
+        /// <param name="name">The localized friendly name of the color. (Optional.)</param>
         /// <param name="isBuiltIn">A value indicating whether this color is defined in the assembly. (Optional.)</param>
-        public Color(string colorString, string name = null, bool isBuiltIn = false)
-            : this(GetMediaColorFromString(colorString), name, isBuiltIn)
+        public Color(string colorString, string invariantName = null, string name = null, bool isBuiltIn = false)
+            : this(GetMediaColorFromString(colorString), invariantName, name, isBuiltIn)
         {
         }
 

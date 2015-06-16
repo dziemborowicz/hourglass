@@ -7,8 +7,10 @@
 namespace Hourglass.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
-    using System.Text;
+
+    using Hourglass.Properties;
 
     /// <summary>
     /// Provides extensions methods for the <see cref="TimeSpan"/> struct.
@@ -22,44 +24,44 @@ namespace Hourglass.Extensions
         /// <returns>The natural string representation of the <see cref="TimeSpan"/>.</returns>
         public static string ToNaturalString(this TimeSpan timeSpan)
         {
-            // Build string
-            StringBuilder stringBuilder = new StringBuilder();
+            return timeSpan.ToNaturalString(CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Converts the value of a <see cref="TimeSpan"/> object to its equivalent natural string representation.
+        /// </summary>
+        /// <param name="timeSpan">A <see cref="TimeSpan"/>.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+        /// <returns>The natural string representation of the <see cref="TimeSpan"/>.</returns>
+        public static string ToNaturalString(this TimeSpan timeSpan, IFormatProvider provider)
+        {
+            List<string> parts = new List<string>();
 
             // Days
             if (timeSpan.Days != 0)
             {
-                stringBuilder.AppendFormat(
-                    CultureInfo.InvariantCulture,
-                    timeSpan.Days == 1 ? "{0} day " : "{0} days ",
-                    timeSpan.Days);
+                parts.Add(GetStringWithUnits(timeSpan.Days, "Day", provider));
             }
 
             // Hours
-            if (timeSpan.Hours != 0)
+            if (timeSpan.Hours != 0 || parts.Count != 0)
             {
-                stringBuilder.AppendFormat(
-                    CultureInfo.InvariantCulture,
-                    timeSpan.Hours == 1 ? "{0} hour " : "{0} hours ",
-                    timeSpan.Hours);
+                parts.Add(GetStringWithUnits(timeSpan.Hours, "Hour", provider));
             }
 
             // Minutes
-            if (timeSpan.Minutes != 0)
+            if (timeSpan.Minutes != 0 || parts.Count != 0)
             {
-                stringBuilder.AppendFormat(
-                    CultureInfo.InvariantCulture,
-                    timeSpan.Minutes == 1 ? "{0} minute " : "{0} minutes ",
-                    timeSpan.Minutes);
+                parts.Add(GetStringWithUnits(timeSpan.Minutes, "Minute", provider));
             }
 
             // Seconds
-            stringBuilder.AppendFormat(
-                CultureInfo.InvariantCulture,
-                timeSpan.Seconds == 1 ? "{0} second" : "{0} seconds",
-                timeSpan.Seconds);
+            parts.Add(GetStringWithUnits(timeSpan.Seconds, "Second", provider));
 
             // Trim the last character
-            return stringBuilder.ToString();
+            return string.Join(
+                Resources.ResourceManager.GetString("TimeSpanExtensionsUnitSeparator", provider),
+                parts);
         }
 
         /// <summary>
@@ -71,7 +73,41 @@ namespace Hourglass.Extensions
         /// name="timeSpan"/>, or <see cref="string.Empty"/> if <paramref name="timeSpan"/> is <c>null</c>.</returns>
         public static string ToNaturalString(this TimeSpan? timeSpan)
         {
-            return timeSpan.HasValue ? timeSpan.Value.ToNaturalString() : string.Empty;
+            return timeSpan.ToNaturalString(CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Converts the value of a <see cref="Nullable{TimeSpan}"/> object to its equivalent natural string
+        /// representation.
+        /// </summary>
+        /// <param name="timeSpan">A <see cref="Nullable{TimeSpan}"/>.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+        /// <returns>The natural string representation of the <see cref="TimeSpan"/> represented by <paramref
+        /// name="timeSpan"/>, or <see cref="string.Empty"/> if <paramref name="timeSpan"/> is <c>null</c>.</returns>
+        public static string ToNaturalString(this TimeSpan? timeSpan, IFormatProvider provider)
+        {
+            return timeSpan.HasValue ? timeSpan.Value.ToNaturalString(provider) : string.Empty;
+        }
+
+        /// <summary>
+        /// Returns a string for the specified value with the specified unit (e.g., "5 minutes").
+        /// </summary>
+        /// <param name="value">A value.</param>
+        /// <param name="unit">The unit part of the resource name for the unit string.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+        /// <returns>A string for the specified value with the specified unit.</returns>
+        private static string GetStringWithUnits(int value, string unit, IFormatProvider provider)
+        {
+            string resourceName = string.Format(
+                CultureInfo.InvariantCulture,
+                "TimeSpanExtensions{0}{1}FormatString",
+                value == 1 ? "1" : "N",
+                value == 1 ? unit : unit + "s");
+
+            return string.Format(
+                Resources.ResourceManager.GetEffectiveProvider(provider),
+                Resources.ResourceManager.GetString(resourceName, provider),
+                value);
         }
     }
 }

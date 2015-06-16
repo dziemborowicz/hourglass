@@ -365,26 +365,26 @@ namespace Hourglass.Windows
             this.Items.Clear();
 
             this.newTimerMenuItem = new MenuItem();
-            this.newTimerMenuItem.Header = "New timer";
+            this.newTimerMenuItem.Header = Properties.Resources.ContextMenuNewTimerMenuItem;
             this.newTimerMenuItem.Click += this.NewTimerMenuItemClick;
             this.Items.Add(this.newTimerMenuItem);
 
             this.Items.Add(new Separator());
 
             this.alwaysOnTopMenuItem = new MenuItem();
-            this.alwaysOnTopMenuItem.Header = "Always on top";
+            this.alwaysOnTopMenuItem.Header = Properties.Resources.ContextMenuAlwaysOnTopMenuItem;
             this.alwaysOnTopMenuItem.IsCheckable = true;
             this.alwaysOnTopMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.alwaysOnTopMenuItem);
 
             this.fullScreenMenuItem = new MenuItem();
-            this.fullScreenMenuItem.Header = "Full screen";
+            this.fullScreenMenuItem.Header = Properties.Resources.ContextMenuFullScreenMenuItem;
             this.fullScreenMenuItem.IsCheckable = true;
             this.fullScreenMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.fullScreenMenuItem);
 
             this.showInNotificationAreaMenuItem = new MenuItem();
-            this.showInNotificationAreaMenuItem.Header = "Show in notification area";
+            this.showInNotificationAreaMenuItem.Header = Properties.Resources.ContextMenuShowInNotificationAreaMenuItem;
             this.showInNotificationAreaMenuItem.IsCheckable = true;
             this.showInNotificationAreaMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.showInNotificationAreaMenuItem);
@@ -392,19 +392,19 @@ namespace Hourglass.Windows
             this.Items.Add(new Separator());
 
             this.loopTimerMenuItem = new MenuItem();
-            this.loopTimerMenuItem.Header = "Loop timer";
+            this.loopTimerMenuItem.Header = Properties.Resources.ContextMenuLoopTimerMenuItem;
             this.loopTimerMenuItem.IsCheckable = true;
             this.loopTimerMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.loopTimerMenuItem);
 
             this.popUpWhenExpiredMenuItem = new MenuItem();
-            this.popUpWhenExpiredMenuItem.Header = "Pop up when expired";
+            this.popUpWhenExpiredMenuItem.Header = Properties.Resources.ContextMenuPopUpWhenExpiredMenuItem;
             this.popUpWhenExpiredMenuItem.IsCheckable = true;
             this.popUpWhenExpiredMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.popUpWhenExpiredMenuItem);
 
             this.closeWhenExpiredMenuItem = new MenuItem();
-            this.closeWhenExpiredMenuItem.Header = "Close when expired";
+            this.closeWhenExpiredMenuItem.Header = Properties.Resources.ContextMenuCloseWhenExpiredMenuItem;
             this.closeWhenExpiredMenuItem.IsCheckable = true;
             this.closeWhenExpiredMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.closeWhenExpiredMenuItem);
@@ -412,27 +412,27 @@ namespace Hourglass.Windows
             this.Items.Add(new Separator());
 
             this.recentInputsMenuItem = new MenuItem();
-            this.recentInputsMenuItem.Header = "Recent inputs";
+            this.recentInputsMenuItem.Header = Properties.Resources.ContextMenuRecentInputsMenuItem;
             this.Items.Add(this.recentInputsMenuItem);
 
             this.savedTimersMenuItem = new MenuItem();
-            this.savedTimersMenuItem.Header = "Saved timers";
+            this.savedTimersMenuItem.Header = Properties.Resources.ContextMenuSavedTimersMenuItem;
             this.Items.Add(this.savedTimersMenuItem);
 
             this.Items.Add(new Separator());
 
             this.colorMenuItem = new MenuItem();
-            this.colorMenuItem.Header = "Color";
+            this.colorMenuItem.Header = Properties.Resources.ContextMenuColorMenuItem;
             this.Items.Add(this.colorMenuItem);
 
             this.soundMenuItem = new MenuItem();
-            this.soundMenuItem.Header = "Sound";
+            this.soundMenuItem.Header = Properties.Resources.ContextMenuSoundMenuItem;
             this.Items.Add(this.soundMenuItem);
 
             this.Items.Add(new Separator());
 
             this.closeMenuItem = new MenuItem();
-            this.closeMenuItem.Header = "Close";
+            this.closeMenuItem.Header = Properties.Resources.ContextMenuCloseMenuItem;
             this.closeMenuItem.Click += this.CloseMenuItemClick;
             this.Items.Add(this.closeMenuItem);
         }
@@ -467,7 +467,7 @@ namespace Hourglass.Windows
             if (TimerStartManager.Instance.TimerStarts.Count == 0)
             {
                 MenuItem noRecentInputsMenuItem = new MenuItem();
-                noRecentInputsMenuItem.Header = "No recent inputs";
+                noRecentInputsMenuItem.Header = Properties.Resources.ContextMenuNoRecentInputsMenuItem;
                 noRecentInputsMenuItem.Foreground = Brushes.DarkGray;
 
                 this.recentInputsMenuItem.Items.Add(noRecentInputsMenuItem);
@@ -490,7 +490,7 @@ namespace Hourglass.Windows
             if (this.clearRecentInputsMenuItem == null)
             {
                 this.clearRecentInputsMenuItem = new MenuItem();
-                this.clearRecentInputsMenuItem.Header = "Clear recent inputs";
+                this.clearRecentInputsMenuItem.Header = Properties.Resources.ContextMenuClearRecentInputsMenuItem;
                 this.clearRecentInputsMenuItem.Click += this.ClearRecentInputsMenuItemClick;
             }
 
@@ -548,7 +548,7 @@ namespace Hourglass.Windows
             if (savedTimers.Count == 0)
             {
                 MenuItem noRunningTimersMenuItem = new MenuItem();
-                noRunningTimersMenuItem.Header = "No saved timers";
+                noRunningTimersMenuItem.Header = Properties.Resources.ContextMenuNoSavedTimersMenuItem;
                 noRunningTimersMenuItem.Foreground = Brushes.DarkGray;
 
                 this.savedTimersMenuItem.Items.Add(noRunningTimersMenuItem);
@@ -574,7 +574,7 @@ namespace Hourglass.Windows
             if (this.clearSavedTimersMenuItem == null)
             {
                 this.clearSavedTimersMenuItem = new MenuItem();
-                this.clearSavedTimersMenuItem.Header = "Clear saved timers";
+                this.clearSavedTimersMenuItem.Header = Properties.Resources.ContextMenuClearSavedTimersMenuItem;
                 this.clearSavedTimersMenuItem.Click += this.ClearSavedTimersMenuItemClick;
             }
 
@@ -740,7 +740,7 @@ namespace Hourglass.Windows
             if (this.addCustomColorMenuItem == null)
             {
                 this.addCustomColorMenuItem = new MenuItem();
-                this.addCustomColorMenuItem.Header = "Add custom color...";
+                this.addCustomColorMenuItem.Header = Properties.Resources.ContextMenuAddCustomColorMenuItem;
                 this.addCustomColorMenuItem.Click += this.AddCustomColorMenuItemClick;
             }
 
@@ -749,7 +749,7 @@ namespace Hourglass.Windows
             if (this.clearCustomColorsMenuItem == null)
             {
                 this.clearCustomColorsMenuItem = new MenuItem();
-                this.clearCustomColorsMenuItem.Header = "Clear custom colors";
+                this.clearCustomColorsMenuItem.Header = Properties.Resources.ContextMenuClearCustomColorsMenuItem;
                 this.clearCustomColorsMenuItem.Click += this.ClearCustomColorsMenuItemClick;
             }
 
@@ -804,7 +804,7 @@ namespace Hourglass.Windows
             border.Height = 8;
 
             TextBlock textBlock = new TextBlock();
-            textBlock.Text = color.Name ?? "Custom color";
+            textBlock.Text = color.Name ?? Properties.Resources.ContextMenuCustomColorMenuItem;
             textBlock.Margin = new Thickness(5, 0, 0, 0);
 
             StackPanel stackPanel = new StackPanel();
@@ -884,7 +884,7 @@ namespace Hourglass.Windows
             if (this.loopSoundMenuItem == null)
             {
                 this.loopSoundMenuItem = new MenuItem();
-                this.loopSoundMenuItem.Header = "Loop sound";
+                this.loopSoundMenuItem.Header = Properties.Resources.ContextMenuLoopSoundMenuItem;
                 this.loopSoundMenuItem.IsCheckable = true;
                 this.loopSoundMenuItem.Click += this.CheckableMenuItemClick;
             }
@@ -899,7 +899,7 @@ namespace Hourglass.Windows
         private void CreateSoundMenuItem(Sound sound)
         {
             MenuItem menuItem = new MenuItem();
-            menuItem.Header = sound != null ? sound.Name : "No sound";
+            menuItem.Header = sound != null ? sound.Name : Properties.Resources.ContextMenuNoSoundMenuItem;
             menuItem.Tag = sound;
             menuItem.IsCheckable = true;
             menuItem.Click += this.SoundMenuItemClick;

@@ -8,11 +8,14 @@ namespace Hourglass.Managers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
 
+    using Hourglass.Extensions;
+    using Hourglass.Properties;
     using Hourglass.Windows;
 
     /// <summary>
@@ -63,7 +66,10 @@ namespace Hourglass.Managers
                 {
                     errorMessage += Environment.NewLine;
                     errorMessage += Environment.NewLine;
-                    errorMessage += string.Format("The error has been written to \"{0}\".", dumpPath);
+                    errorMessage += string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(),
+                        Resources.ErrorManagerErrorHasBeenWritten,
+                        dumpPath);
                 }
 
                 // Clean up old error dumps
@@ -71,12 +77,12 @@ namespace Hourglass.Managers
                 {
                     errorMessage += Environment.NewLine;
                     errorMessage += Environment.NewLine;
-                    errorMessage += "Failed to clean old error messages.";
+                    errorMessage += Resources.ErrorManagerFailedToClean;
                 }
 
                 // Show an error dialog
                 ErrorDialog errorDialog = new ErrorDialog();
-                errorDialog.ShowDialog("An unexpected error has occurred.", errorMessage);
+                errorDialog.ShowDialog(Resources.ErrorManagerUnexpectedError, errorMessage);
             }
             finally
             {
@@ -119,7 +125,7 @@ namespace Hourglass.Managers
 
                 // Get the dump files with newest files first
                 string appName = Assembly.GetExecutingAssembly().GetName().Name;
-                string dumpPathPattern = string.Format("{0}-Crash.*", appName);
+                string dumpPathPattern = string.Format(CultureInfo.InvariantCulture, "{0}-Crash.*", appName);
                 IList<FileInfo> dumpFiles = (from f in directory.GetFiles(dumpPathPattern)
                                              orderby f.LastWriteTimeUtc
                                              select f).ToList();
@@ -149,7 +155,12 @@ namespace Hourglass.Managers
         {
             string appName = Assembly.GetExecutingAssembly().GetName().Name;
             string directory = Path.GetTempPath();
-            string filename = string.Format("{0}-Crash.{1:yyyyMMdd-HHMMss-fffffff}.txt", appName, dateTime);
+            string filename = string.Format(
+                CultureInfo.InvariantCulture,
+                "{0}-Crash.{1:yyyyMMdd-HHMMss-fffffff}.txt",
+                appName,
+                dateTime);
+
             return Path.Combine(directory, filename);
         }
     }

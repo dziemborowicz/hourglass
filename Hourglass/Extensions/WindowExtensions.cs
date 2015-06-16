@@ -79,7 +79,7 @@ namespace Hourglass.Extensions
         /// </summary>
         /// <typeparam name="T">The type of the window.</typeparam>
         /// <param name="window">A window.</param>
-        /// <param name="options">Options for performing the restore.</param>
+        /// <param name="options">Options for performing the restore. (Optional.)</param>
         public static void RestoreFromSettings<T>(this T window, RestoreOptions options = RestoreOptions.None)
             where T : Window, IRestorableWindow
         {
@@ -96,7 +96,7 @@ namespace Hourglass.Extensions
         /// <typeparam name="T">The type of the window.</typeparam>
         /// <param name="window">A window.</param>
         /// <param name="otherWindow">The window from which to copy the size, position, and state.</param>
-        /// <param name="options">Options for performing the restore.</param>
+        /// <param name="options">Options for performing the restore. (Optional.)</param>
         public static void RestoreFromWindow<T>(this T window, T otherWindow, RestoreOptions options = RestoreOptions.None)
             where T : Window, IRestorableWindow
         {
@@ -114,7 +114,7 @@ namespace Hourglass.Extensions
         /// </remarks>
         /// <typeparam name="T">The type of the window.</typeparam>
         /// <param name="window">A window.</param>
-        /// <param name="options">Options for performing the restore.</param>
+        /// <param name="options">Options for performing the restore. (Optional.)</param>
         public static void RestoreFromSibling<T>(this T window, RestoreOptions options = RestoreOptions.None)
             where T : Window, IRestorableWindow
         {
@@ -136,7 +136,7 @@ namespace Hourglass.Extensions
         /// <typeparam name="T">The type of the window.</typeparam>
         /// <param name="window">A window.</param>
         /// <param name="windowSize">The size, position, and state to restore.</param>
-        /// <param name="options">Options for performing the restore.</param>
+        /// <param name="options">Options for performing the restore. (Optional.)</param>
         public static void Restore<T>(this T window, WindowSize windowSize, RestoreOptions options = RestoreOptions.None)
             where T : Window, IRestorableWindow
         {

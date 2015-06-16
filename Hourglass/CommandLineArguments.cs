@@ -470,7 +470,11 @@ namespace Hourglass
                     default:
                         if (IsSwitch(arg))
                         {
-                            string message = string.Format("Unrecognized switch \"{0}\".", arg);
+                            string message = string.Format(
+                                Resources.ResourceManager.GetEffectiveProvider(),
+                                Resources.CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString,
+                                arg);
+
                             throw new ParseException(message);
                         }
 
@@ -520,7 +524,11 @@ namespace Hourglass
 
             if (value == null)
             {
-                string message = string.Format("Missing value for switch \"{0}\".", arg);
+                string message = string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(),
+                    Resources.CommandLineArgumentsParseExceptionMissingValueForSwitchFormatString,
+                    arg);
+
                 throw new ParseException(message);
             }
 
@@ -553,7 +561,12 @@ namespace Hourglass
                     return last;
 
                 default:
-                    string message = string.Format("Invalid value \"{1}\" for switch \"{0}\".", arg, value);
+                    string message = string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(),
+                        Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                        arg,
+                        value);
+
                     throw new ParseException(message);
             }
         }
@@ -590,7 +603,12 @@ namespace Hourglass
                         }
                         catch
                         {
-                            string message = string.Format("Invalid value \"{1}\" for switch \"{0}\".", arg, value);
+                            string message = string.Format(
+                                Resources.ResourceManager.GetEffectiveProvider(),
+                                Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                                arg,
+                                value);
+
                             throw new ParseException(message);
                         }
                     }
@@ -627,7 +645,12 @@ namespace Hourglass
 
                     if (sound == null)
                     {
-                        string message = string.Format("Invalid value \"{1}\" for switch \"{0}\".", arg, value);
+                        string message = string.Format(
+                            Resources.ResourceManager.GetEffectiveProvider(),
+                            Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                            arg,
+                            value);
+
                         throw new ParseException(message);
                     }
 
@@ -665,7 +688,12 @@ namespace Hourglass
                     return last;
 
                 default:
-                    string message = string.Format("Invalid value \"{1}\" for switch \"{0}\".", arg, value);
+                    string message = string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(),
+                        Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                        arg,
+                        value);
+
                     throw new ParseException(message);
             }
         }
@@ -697,7 +725,12 @@ namespace Hourglass
             }
             catch
             {
-                string message = string.Format("Invalid value \"{1}\" for switch \"{0}\".", arg, value);
+                string message = string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(),
+                    Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                    arg,
+                    value);
+
                 throw new ParseException(message);
             }
         }
@@ -719,7 +752,11 @@ namespace Hourglass
 
             if (timerStart == null)
             {
-                string message = string.Format("Invalid timer input \"{0}\".", value);
+                string message = string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(),
+                    Resources.CommandLineArgumentsParseExceptionInvalidTimerInputFormatString,
+                    value);
+
                 throw new ParseException(message);
             }
 
@@ -760,7 +797,11 @@ namespace Hourglass
         {
             if (!specifiedSwitches.Add(canonicalSwitch))
             {
-                string message = string.Format("Duplicate argument \"{0}\".", canonicalSwitch);
+                string message = string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(),
+                    Resources.CommandLineArgumentsParseExceptionDuplicateSwitchFormatString,
+                    canonicalSwitch);
+
                 throw new ParseException(message);
             }
         }

@@ -16,6 +16,18 @@ namespace Hourglass.Extensions
     public static class ResourceManagerExtensions
     {
         /// <summary>
+        /// Returns an <see cref="IFormatProvider"/> for the culture that is actually loaded when retrieving resources.
+        /// </summary>
+        /// <param name="resourceManager">A <see cref="ResourceManager"/>.</param>
+        /// <returns>An <see cref="IFormatProvider"/> for the culture that is actually loaded when retrieving
+        /// resources.</returns>
+        public static IFormatProvider GetEffectiveProvider(this ResourceManager resourceManager)
+        {
+            string cultureName = resourceManager.GetString("CultureName");
+            return !string.IsNullOrEmpty(cultureName) ? CultureInfo.GetCultureInfo(cultureName) : CultureInfo.InvariantCulture;
+        }
+
+        /// <summary>
         /// Returns an <see cref="IFormatProvider"/> for the culture that is actually loaded when retrieving resources
         /// for the culture specified by <paramref name="provider"/>.
         /// </summary>

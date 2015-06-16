@@ -89,7 +89,7 @@ namespace Hourglass.Managers
         {
             if (this.timers.Contains(timer))
             {
-                throw new InvalidOperationException("The timer was already added.");
+                throw new InvalidOperationException();
             }
 
             this.timers.Insert(0, timer);
@@ -105,7 +105,7 @@ namespace Hourglass.Managers
         {
             if (!this.timers.Contains(timer))
             {
-                throw new InvalidOperationException("The timer was not found.");
+                throw new InvalidOperationException();
             }
 
             this.timers.Remove(timer);

@@ -203,15 +203,59 @@ namespace Hourglass.Managers
         {
             return new List<Color>
             {
-                new Color("#3665B3", "Default color" /* name */, true /* isBuiltIn */),
-                new Color("#C75050", "Red" /* name */, true /* isBuiltIn */),
-                new Color("#FF7F50", "Orange" /* name */, true /* isBuiltIn */),
-                new Color("#FFC800", "Yellow" /* name */, true /* isBuiltIn */),
-                new Color("#57A64A", "Green" /* name */, true /* isBuiltIn */),
-                new Color("#3665B3", "Blue" /* name */, true /* isBuiltIn */),
-                new Color("#843179", "Purple" /* name */, true /* isBuiltIn */),
-                new Color("#666666", "Gray" /* name */, true /* isBuiltIn */),
-                new Color("#000000", "Black" /* name */, true /* isBuiltIn */)
+                new Color(
+                    "#3665B3",
+                    "Default color" /* invariantName */,
+                    Resources.ColorManagerDefaultColor /* name */,
+                    true /* isBuiltIn */),
+
+                new Color(
+                    "#C75050",
+                    "Red" /* invariantName */,
+                    Resources.ColorManagerRed /* name */,
+                    true /* isBuiltIn */),
+
+                new Color(
+                    "#FF7F50",
+                    "Orange" /* invariantName */,
+                    Resources.ColorManagerOrange /* name */,
+                    true /* isBuiltIn */),
+
+                new Color(
+                    "#FFC800",
+                    "Yellow" /* invariantName */,
+                    Resources.ColorManagerYellow /* name */,
+                    true /* isBuiltIn */),
+
+                new Color(
+                    "#57A64A",
+                    "Green" /* invariantName */,
+                    Resources.ColorManagerGreen /* name */,
+                    true /* isBuiltIn */),
+
+                new Color(
+                    "#3665B3",
+                    "Blue" /* invariantName */,
+                    Resources.ColorManagerBlue /* name */,
+                    true /* isBuiltIn */),
+
+                new Color(
+                    "#843179",
+                    "Purple" /* invariantName */,
+                    Resources.ColorManagerPurple /* name */,
+                    true /* isBuiltIn */),
+
+                new Color(
+                    "#666666",
+                    "Gray" /* invariantName */,
+                    Resources.ColorManagerGray /* name */,
+                    true /* isBuiltIn */),
+
+                new Color(
+                    "#000000",
+                    "Black" /* invariantName */,
+                    Resources.ColorManagerBlack /* name */,
+                    true /* isBuiltIn */)
             };
         }
 

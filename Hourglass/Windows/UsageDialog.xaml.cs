@@ -20,6 +20,7 @@ namespace Hourglass.Windows
         public UsageDialog()
         {
             this.InitializeComponent();
+            this.InitializeResources();
             this.InitializeMaxSize();
         }
 
@@ -27,6 +28,16 @@ namespace Hourglass.Windows
         /// Gets or sets an optional error message to be displayed.
         /// </summary>
         public string ErrorMessage { get; set; }
+
+        /// <summary>
+        /// Initializes localized resources.
+        /// </summary>
+        private void InitializeResources()
+        {
+            this.Title = Properties.Resources.UsageDialogTitle;
+            this.MessageTextBlock.Text = Properties.Resources.UsageDialogDefaultMessageText;
+            this.CloseButton.Content = Properties.Resources.UsageDialogCloseButtonContent;
+        }
 
         /// <summary>
         /// Initializes the <see cref="Window.MaxWidth"/> and <see cref="Window.MaxHeight"/> properties.

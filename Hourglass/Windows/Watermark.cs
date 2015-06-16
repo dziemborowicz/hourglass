@@ -25,10 +25,10 @@ namespace Hourglass.Windows
         /// control has no actual value and no keyboard focus, typically a <see cref="string"/>.
         /// </summary>
         public static readonly DependencyProperty HintProperty = DependencyProperty.RegisterAttached(
-                                   "Hint",
-                                   typeof(object),
-                                   typeof(Watermark),
-                                   new FrameworkPropertyMetadata(HintPropertyChanged));
+            "Hint",
+            typeof(object),
+            typeof(Watermark),
+            new FrameworkPropertyMetadata(HintPropertyChanged));
 
         /// <summary>
         /// Returns the value of the <see cref="HintProperty"/>.

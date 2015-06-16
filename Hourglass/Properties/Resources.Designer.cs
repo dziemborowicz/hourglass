@@ -98,6 +98,321 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Black.
+        /// </summary>
+        internal static string ColorManagerBlack {
+            get {
+                return ResourceManager.GetString("ColorManagerBlack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blue.
+        /// </summary>
+        internal static string ColorManagerBlue {
+            get {
+                return ResourceManager.GetString("ColorManagerBlue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default color.
+        /// </summary>
+        internal static string ColorManagerDefaultColor {
+            get {
+                return ResourceManager.GetString("ColorManagerDefaultColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gray.
+        /// </summary>
+        internal static string ColorManagerGray {
+            get {
+                return ResourceManager.GetString("ColorManagerGray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Green.
+        /// </summary>
+        internal static string ColorManagerGreen {
+            get {
+                return ResourceManager.GetString("ColorManagerGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Orange.
+        /// </summary>
+        internal static string ColorManagerOrange {
+            get {
+                return ResourceManager.GetString("ColorManagerOrange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purple.
+        /// </summary>
+        internal static string ColorManagerPurple {
+            get {
+                return ResourceManager.GetString("ColorManagerPurple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Red.
+        /// </summary>
+        internal static string ColorManagerRed {
+            get {
+                return ResourceManager.GetString("ColorManagerRed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yellow.
+        /// </summary>
+        internal static string ColorManagerYellow {
+            get {
+                return ResourceManager.GetString("ColorManagerYellow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate switch &quot;{0}&quot;.
+        /// </summary>
+        internal static string CommandLineArgumentsParseExceptionDuplicateSwitchFormatString {
+            get {
+                return ResourceManager.GetString("CommandLineArgumentsParseExceptionDuplicateSwitchFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid timer input &quot;{0}&quot;.
+        /// </summary>
+        internal static string CommandLineArgumentsParseExceptionInvalidTimerInputFormatString {
+            get {
+                return ResourceManager.GetString("CommandLineArgumentsParseExceptionInvalidTimerInputFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid value &quot;{1}&quot; for switch &quot;{0}&quot;.
+        /// </summary>
+        internal static string CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString {
+            get {
+                return ResourceManager.GetString("CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing value for switch &quot;{0}&quot;.
+        /// </summary>
+        internal static string CommandLineArgumentsParseExceptionMissingValueForSwitchFormatString {
+            get {
+                return ResourceManager.GetString("CommandLineArgumentsParseExceptionMissingValueForSwitchFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unrecognized switch &quot;{0}&quot;.
+        /// </summary>
+        internal static string CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString {
+            get {
+                return ResourceManager.GetString("CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Add custom color....
+        /// </summary>
+        internal static string ContextMenuAddCustomColorMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuAddCustomColorMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Always on top.
+        /// </summary>
+        internal static string ContextMenuAlwaysOnTopMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuAlwaysOnTopMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Clear custom colors.
+        /// </summary>
+        internal static string ContextMenuClearCustomColorsMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuClearCustomColorsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Clear recent inputs.
+        /// </summary>
+        internal static string ContextMenuClearRecentInputsMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuClearRecentInputsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Clear saved timers.
+        /// </summary>
+        internal static string ContextMenuClearSavedTimersMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuClearSavedTimersMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Close.
+        /// </summary>
+        internal static string ContextMenuCloseMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuCloseMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close when _expired.
+        /// </summary>
+        internal static string ContextMenuCloseWhenExpiredMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuCloseWhenExpiredMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to C_olor.
+        /// </summary>
+        internal static string ContextMenuColorMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuColorMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom color.
+        /// </summary>
+        internal static string ContextMenuCustomColorMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuCustomColorMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Full screen.
+        /// </summary>
+        internal static string ContextMenuFullScreenMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuFullScreenMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Loop sound.
+        /// </summary>
+        internal static string ContextMenuLoopSoundMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuLoopSoundMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Loop timer.
+        /// </summary>
+        internal static string ContextMenuLoopTimerMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuLoopTimerMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _New timer.
+        /// </summary>
+        internal static string ContextMenuNewTimerMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuNewTimerMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No recent inputs.
+        /// </summary>
+        internal static string ContextMenuNoRecentInputsMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuNoRecentInputsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No saved timers.
+        /// </summary>
+        internal static string ContextMenuNoSavedTimersMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuNoSavedTimersMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _No sound.
+        /// </summary>
+        internal static string ContextMenuNoSoundMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuNoSoundMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Pop up when expired.
+        /// </summary>
+        internal static string ContextMenuPopUpWhenExpiredMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuPopUpWhenExpiredMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Recent inputs.
+        /// </summary>
+        internal static string ContextMenuRecentInputsMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuRecentInputsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved _timers.
+        /// </summary>
+        internal static string ContextMenuSavedTimersMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuSavedTimersMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to S_how in notification area.
+        /// </summary>
+        internal static string ContextMenuShowInNotificationAreaMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuShowInNotificationAreaMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Sound.
+        /// </summary>
+        internal static string ContextMenuSoundMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuSoundMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to en-US.
         /// </summary>
         internal static string CultureName {
@@ -435,6 +750,69 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Close.
+        /// </summary>
+        internal static string ErrorDialogCloseButtonContent {
+            get {
+                return ResourceManager.GetString("ErrorDialogCloseButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error has occurred.
+        /// </summary>
+        internal static string ErrorDialogDefaultMessageText {
+            get {
+                return ResourceManager.GetString("ErrorDialogDefaultMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Show details.
+        /// </summary>
+        internal static string ErrorDialogShowDetailsButtonContent {
+            get {
+                return ResourceManager.GetString("ErrorDialogShowDetailsButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hourglass.
+        /// </summary>
+        internal static string ErrorDialogTitle {
+            get {
+                return ResourceManager.GetString("ErrorDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The error has been written to &quot;{0}&quot;..
+        /// </summary>
+        internal static string ErrorManagerErrorHasBeenWritten {
+            get {
+                return ResourceManager.GetString("ErrorManagerErrorHasBeenWritten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to clean old error messages..
+        /// </summary>
+        internal static string ErrorManagerFailedToClean {
+            get {
+                return ResourceManager.GetString("ErrorManagerFailedToClean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error has occurred.
+        /// </summary>
+        internal static string ErrorManagerUnexpectedError {
+            get {
+                return ResourceManager.GetString("ErrorManagerUnexpectedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} {1}.
         /// </summary>
         internal static string NormalDateTokenDayAndMonthFormatString {
@@ -744,6 +1122,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to E&amp;xit.
+        /// </summary>
+        internal static string NotificationAreaIconExitMenuItem {
+            get {
+                return ResourceManager.GetString("NotificationAreaIconExitMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;New timer.
+        /// </summary>
+        internal static string NotificationAreaIconNewTimerMenuItem {
+            get {
+                return ResourceManager.GetString("NotificationAreaIconNewTimerMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to today.
         /// </summary>
         internal static string RelativeDateTokenTodayName {
@@ -776,6 +1172,33 @@ namespace Hourglass.Properties {
         internal static string RelativeDateTokenTomorrowPattern {
             get {
                 return ResourceManager.GetString("RelativeDateTokenTomorrowPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loud beep.
+        /// </summary>
+        internal static string SoundManagerLoudBeep {
+            get {
+                return ResourceManager.GetString("SoundManagerLoudBeep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal beep.
+        /// </summary>
+        internal static string SoundManagerNormalBeep {
+            get {
+                return ResourceManager.GetString("SoundManagerNormalBeep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quiet beep.
+        /// </summary>
+        internal static string SoundManagerQuietBeep {
+            get {
+                return ResourceManager.GetString("SoundManagerQuietBeep", resourceCulture);
             }
         }
         
@@ -870,6 +1293,114 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {1} (Expired).
+        /// </summary>
+        internal static string TimerExpiredFormatString {
+            get {
+                return ResourceManager.GetString("TimerExpiredFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1} (Expired).
+        /// </summary>
+        internal static string TimerExpiredLoopedFormatString {
+            get {
+                return ResourceManager.GetString("TimerExpiredLoopedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1} &quot;{2}&quot; (Expired).
+        /// </summary>
+        internal static string TimerExpiredWithTitleFormatString {
+            get {
+                return ResourceManager.GetString("TimerExpiredWithTitleFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1} &quot;{2}&quot; (Expired).
+        /// </summary>
+        internal static string TimerExpiredWithTitleLoopedFormatString {
+            get {
+                return ResourceManager.GetString("TimerExpiredWithTitleLoopedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ➔ {1} (Paused).
+        /// </summary>
+        internal static string TimerPausedFormatString {
+            get {
+                return ResourceManager.GetString("TimerPausedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ➔ {1} (Paused).
+        /// </summary>
+        internal static string TimerPausedLoopedFormatString {
+            get {
+                return ResourceManager.GetString("TimerPausedLoopedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ➔ {1} &quot;{2}&quot; (Paused).
+        /// </summary>
+        internal static string TimerPausedWithTitleFormatString {
+            get {
+                return ResourceManager.GetString("TimerPausedWithTitleFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ➔ {1} &quot;{2}&quot; (Paused).
+        /// </summary>
+        internal static string TimerPausedWithTitleLoopedFormatString {
+            get {
+                return ResourceManager.GetString("TimerPausedWithTitleLoopedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ➔ {1}.
+        /// </summary>
+        internal static string TimerRunningFormatString {
+            get {
+                return ResourceManager.GetString("TimerRunningFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ➔ {1} (Looped).
+        /// </summary>
+        internal static string TimerRunningLoopedFormatString {
+            get {
+                return ResourceManager.GetString("TimerRunningLoopedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ➔ {1} &quot;{2}&quot;.
+        /// </summary>
+        internal static string TimerRunningWithTitleFormatString {
+            get {
+                return ResourceManager.GetString("TimerRunningWithTitleFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ➔ {1} &quot;{2}&quot; (Looped).
+        /// </summary>
+        internal static string TimerRunningWithTitleLoopedFormatString {
+            get {
+                return ResourceManager.GetString("TimerRunningWithTitleLoopedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ^\s*(un)?till?\s*.
         /// </summary>
         internal static string TimerStartTokenPreferDateTimeHintPattern {
@@ -879,65 +1410,326 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stopped.
+        /// </summary>
+        internal static string TimerStoppedFormatString {
+            get {
+                return ResourceManager.GetString("TimerStoppedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped.
+        /// </summary>
+        internal static string TimerStoppedLoopedFormatString {
+            get {
+                return ResourceManager.GetString("TimerStoppedLoopedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped &quot;{2}&quot;.
+        /// </summary>
+        internal static string TimerStoppedWithTitleFormatString {
+            get {
+                return ResourceManager.GetString("TimerStoppedWithTitleFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped &quot;{2}&quot;.
+        /// </summary>
+        internal static string TimerStoppedWithTitleLoopedFormatString {
+            get {
+                return ResourceManager.GetString("TimerStoppedWithTitleLoopedFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timer expired.
+        /// </summary>
+        internal static string TimerTimerExpired {
+            get {
+                return ResourceManager.GetString("TimerTimerExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timer stopped.
+        /// </summary>
+        internal static string TimerTimerStopped {
+            get {
+                return ResourceManager.GetString("TimerTimerStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to —.
+        /// </summary>
+        internal static string TimerWindowBlankTitlePlaceholder {
+            get {
+                return ResourceManager.GetString("TimerWindowBlankTitlePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Cancel.
+        /// </summary>
+        internal static string TimerWindowCancelButtonContent {
+            get {
+                return ResourceManager.GetString("TimerWindowCancelButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Close.
+        /// </summary>
+        internal static string TimerWindowCloseButtonContent {
+            get {
+                return ResourceManager.GetString("TimerWindowCloseButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New timer: {0} &quot;{1}&quot;.
+        /// </summary>
+        internal static string TimerWindowNewTimerWithTitleFormatString {
+            get {
+                return ResourceManager.GetString("TimerWindowNewTimerWithTitleFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Pause.
+        /// </summary>
+        internal static string TimerWindowPauseButtonContent {
+            get {
+                return ResourceManager.GetString("TimerWindowPauseButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Reset.
+        /// </summary>
+        internal static string TimerWindowResetButtonContent {
+            get {
+                return ResourceManager.GetString("TimerWindowResetButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Resume.
+        /// </summary>
+        internal static string TimerWindowResumeButtonContent {
+            get {
+                return ResourceManager.GetString("TimerWindowResumeButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Start.
+        /// </summary>
+        internal static string TimerWindowStartButtonContent {
+            get {
+                return ResourceManager.GetString("TimerWindowStartButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Stop.
+        /// </summary>
+        internal static string TimerWindowStopButtonContent {
+            get {
+                return ResourceManager.GetString("TimerWindowStopButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to enter time or date.
+        /// </summary>
+        internal static string TimerWindowTimerTextHint {
+            get {
+                return ResourceManager.GetString("TimerWindowTimerTextHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hourglass.
+        /// </summary>
+        internal static string TimerWindowTitle {
+            get {
+                return ResourceManager.GetString("TimerWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to enter title.
+        /// </summary>
+        internal static string TimerWindowTitleTextHint {
+            get {
+                return ResourceManager.GetString("TimerWindowTitleTextHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Update.
+        /// </summary>
+        internal static string TimerWindowUpdateButtonContent {
+            get {
+                return ResourceManager.GetString("TimerWindowUpdateButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New timer: {0}.
+        /// </summary>
+        internal static string TimerWindwoNewTimerFormatString {
+            get {
+                return ResourceManager.GetString("TimerWindwoNewTimerFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} day.
         /// </summary>
-        internal static string TimeSpanToken1Day {
+        internal static string TimeSpanExtensions1DayFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanToken1Day", resourceCulture);
+                return ResourceManager.GetString("TimeSpanExtensions1DayFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} hour.
         /// </summary>
-        internal static string TimeSpanToken1Hour {
+        internal static string TimeSpanExtensions1HourFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanToken1Hour", resourceCulture);
+                return ResourceManager.GetString("TimeSpanExtensions1HourFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} minute.
         /// </summary>
-        internal static string TimeSpanToken1Minute {
+        internal static string TimeSpanExtensions1MinuteFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanToken1Minute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} month.
-        /// </summary>
-        internal static string TimeSpanToken1Month {
-            get {
-                return ResourceManager.GetString("TimeSpanToken1Month", resourceCulture);
+                return ResourceManager.GetString("TimeSpanExtensions1MinuteFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} second.
         /// </summary>
-        internal static string TimeSpanToken1Second {
+        internal static string TimeSpanExtensions1SecondFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanToken1Second", resourceCulture);
+                return ResourceManager.GetString("TimeSpanExtensions1SecondFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} days.
+        /// </summary>
+        internal static string TimeSpanExtensionsNDaysFormatString {
+            get {
+                return ResourceManager.GetString("TimeSpanExtensionsNDaysFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hours.
+        /// </summary>
+        internal static string TimeSpanExtensionsNHoursFormatString {
+            get {
+                return ResourceManager.GetString("TimeSpanExtensionsNHoursFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} minutes.
+        /// </summary>
+        internal static string TimeSpanExtensionsNMinutesFormatString {
+            get {
+                return ResourceManager.GetString("TimeSpanExtensionsNMinutesFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} seconds.
+        /// </summary>
+        internal static string TimeSpanExtensionsNSecondsFormatString {
+            get {
+                return ResourceManager.GetString("TimeSpanExtensionsNSecondsFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  .
+        /// </summary>
+        internal static string TimeSpanExtensionsUnitSeparator {
+            get {
+                return ResourceManager.GetString("TimeSpanExtensionsUnitSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} day.
+        /// </summary>
+        internal static string TimeSpanToken1DayFormatString {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1DayFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hour.
+        /// </summary>
+        internal static string TimeSpanToken1HourFormatString {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1HourFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} minute.
+        /// </summary>
+        internal static string TimeSpanToken1MinuteFormatString {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1MinuteFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} month.
+        /// </summary>
+        internal static string TimeSpanToken1MonthFormatString {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1MonthFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} second.
+        /// </summary>
+        internal static string TimeSpanToken1SecondFormatString {
+            get {
+                return ResourceManager.GetString("TimeSpanToken1SecondFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} week.
         /// </summary>
-        internal static string TimeSpanToken1Week {
+        internal static string TimeSpanToken1WeekFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanToken1Week", resourceCulture);
+                return ResourceManager.GetString("TimeSpanToken1WeekFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} year.
         /// </summary>
-        internal static string TimeSpanToken1Year {
+        internal static string TimeSpanToken1YearFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanToken1Year", resourceCulture);
+                return ResourceManager.GetString("TimeSpanToken1YearFormatString", resourceCulture);
             }
         }
         
@@ -992,63 +1784,63 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} days.
         /// </summary>
-        internal static string TimeSpanTokenNDays {
+        internal static string TimeSpanTokenNDaysFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanTokenNDays", resourceCulture);
+                return ResourceManager.GetString("TimeSpanTokenNDaysFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} hours.
         /// </summary>
-        internal static string TimeSpanTokenNHours {
+        internal static string TimeSpanTokenNHoursFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanTokenNHours", resourceCulture);
+                return ResourceManager.GetString("TimeSpanTokenNHoursFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} minutes.
         /// </summary>
-        internal static string TimeSpanTokenNMinutes {
+        internal static string TimeSpanTokenNMinutesFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanTokenNMinutes", resourceCulture);
+                return ResourceManager.GetString("TimeSpanTokenNMinutesFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} months.
         /// </summary>
-        internal static string TimeSpanTokenNMonths {
+        internal static string TimeSpanTokenNMonthsFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanTokenNMonths", resourceCulture);
+                return ResourceManager.GetString("TimeSpanTokenNMonthsFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} seconds.
         /// </summary>
-        internal static string TimeSpanTokenNSeconds {
+        internal static string TimeSpanTokenNSecondsFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanTokenNSeconds", resourceCulture);
+                return ResourceManager.GetString("TimeSpanTokenNSecondsFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} weeks.
         /// </summary>
-        internal static string TimeSpanTokenNWeeks {
+        internal static string TimeSpanTokenNWeeksFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanTokenNWeeks", resourceCulture);
+                return ResourceManager.GetString("TimeSpanTokenNWeeksFormatString", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} years.
         /// </summary>
-        internal static string TimeSpanTokenNYears {
+        internal static string TimeSpanTokenNYearsFormatString {
             get {
-                return ResourceManager.GetString("TimeSpanTokenNYears", resourceCulture);
+                return ResourceManager.GetString("TimeSpanTokenNYearsFormatString", resourceCulture);
             }
         }
         
@@ -1110,6 +1902,33 @@ namespace Hourglass.Properties {
         internal static string Usage {
             get {
                 return ResourceManager.GetString("Usage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Close.
+        /// </summary>
+        internal static string UsageDialogCloseButtonContent {
+            get {
+                return ResourceManager.GetString("UsageDialogCloseButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command-line usage.
+        /// </summary>
+        internal static string UsageDialogDefaultMessageText {
+            get {
+                return ResourceManager.GetString("UsageDialogDefaultMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hourglass.
+        /// </summary>
+        internal static string UsageDialogTitle {
+            get {
+                return ResourceManager.GetString("UsageDialogTitle", resourceCulture);
             }
         }
     }

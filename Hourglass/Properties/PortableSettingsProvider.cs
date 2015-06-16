@@ -205,7 +205,7 @@ namespace Hourglass.Properties
                 return null;
             }
 
-            string query = string.Format("//setting[@name='{0}']/value", propertyName);
+            string query = string.Format(CultureInfo.InvariantCulture, "//setting[@name='{0}']/value", propertyName);
             XmlNode node = document.SelectSingleNode(query);
             return node != null ? node.InnerXml : null;
         }

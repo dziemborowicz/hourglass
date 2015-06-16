@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Hourglass.Windows"
-        Title="Hourglass" Width="350" Height="150" MinWidth="250" MinHeight="150"
+        Width="350" Height="150" MinWidth="250" MinHeight="150"
         Loaded="WindowLoaded" StateChanged="WindowStateChanged" Closing="WindowClosing"
         MouseDown="WindowMouseDown" MouseDoubleClick="WindowMouseDoubleClick">
     <Window.CommandBindings>
@@ -169,8 +169,7 @@
                                         PreviewGotKeyboardFocus="TitleTextBoxPreviewGotKeyboardFocus"
                                         Style="{StaticResource TitleTextBoxStyle}"
                                         Text="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.Options.Title, UpdateSourceTrigger=PropertyChanged}"
-                                        TextAlignment="Center"
-                                        local:Watermark.Hint="Click to enter title"/>
+                                        TextAlignment="Center"/>
                 <local:SizeToFitTextBox x:Name="TimerTextBox"
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
@@ -180,17 +179,16 @@
                                         MinFontSize="8"
                                         PreviewMouseDown="TimerTextBoxPreviewMouseDown"
                                         PreviewGotKeyboardFocus="TimerTextBoxPreviewGotKeyboardFocus"
-                                        TextAlignment="Center"
-                                        local:Watermark.Hint="Click to enter time or date"/>
+                                        TextAlignment="Center"/>
                 <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">
-                    <Button x:Name="StartButton" Content="_Start" Command="local:TimerWindow.StartCommand" IsDefault="True"/>
-                    <Button x:Name="PauseButton" Content="_Pause" Command="local:TimerWindow.PauseCommand"/>
-                    <Button x:Name="ResumeButton" Content="_Resume" Command="local:TimerWindow.ResumeCommand"/>
-                    <Button x:Name="StopButton" Content="_Stop" Command="local:TimerWindow.StopCommand"/>
-                    <Button x:Name="ResetButton" Content="_Reset" Command="local:TimerWindow.ResetCommand"/>
-                    <Button x:Name="CloseButton" Content="_Close" Command="local:TimerWindow.CloseCommand"/>
-                    <Button x:Name="CancelButton" Content="_Cancel" Command="local:TimerWindow.CancelCommand"/>
-                    <Button x:Name="UpdateButton" Content="_Update" Command="local:TimerWindow.UpdateCommand"/>
+                    <Button x:Name="StartButton" Command="local:TimerWindow.StartCommand" IsDefault="True"/>
+                    <Button x:Name="PauseButton" Command="local:TimerWindow.PauseCommand"/>
+                    <Button x:Name="ResumeButton" Command="local:TimerWindow.ResumeCommand"/>
+                    <Button x:Name="StopButton" Command="local:TimerWindow.StopCommand"/>
+                    <Button x:Name="ResetButton" Command="local:TimerWindow.ResetCommand"/>
+                    <Button x:Name="CloseButton" Command="local:TimerWindow.CloseCommand"/>
+                    <Button x:Name="CancelButton" Command="local:TimerWindow.CancelCommand"/>
+                    <Button x:Name="UpdateButton" Command="local:TimerWindow.UpdateCommand"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

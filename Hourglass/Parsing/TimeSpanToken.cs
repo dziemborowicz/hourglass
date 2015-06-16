@@ -175,7 +175,7 @@ namespace Hourglass.Parsing
         {
             string resourceName = string.Format(
                 CultureInfo.InvariantCulture,
-                "TimeSpanToken{0}{1}",
+                "TimeSpanToken{0}{1}FormatString",
                 double.Equals(value, 1.0) ? "1" : "N",
                 double.Equals(value, 1.0) ? unit : unit + "s");
 

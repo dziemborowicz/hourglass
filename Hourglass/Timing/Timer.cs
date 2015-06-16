@@ -7,8 +7,10 @@
 namespace Hourglass.Timing
 {
     using System;
+    using System.Globalization;
 
     using Hourglass.Extensions;
+    using Hourglass.Properties;
     using Hourglass.Serialization;
 
     /// <summary>
@@ -250,41 +252,19 @@ namespace Hourglass.Timing
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            string format = string.Empty;
-            switch (this.State)
-            {
-                case TimerState.Stopped:
-                    format = string.IsNullOrEmpty(this.Options.Title)
-                        ? "Stopped"
-                        : "Stopped \"{2}\"";
-                    break;
+            string resourceName = string.Format(
+                CultureInfo.InvariantCulture,
+                "Timer{0}{1}{2}FormatString",
+                this.State,
+                string.IsNullOrEmpty(this.Options.Title) ? string.Empty : "WithTitle",
+                this.Options.LoopTimer && this.SupportsLooping ? "Looped" : string.Empty);
 
-                case TimerState.Running:
-                    format = string.IsNullOrEmpty(this.Options.Title)
-                        ? "{0} \u2794 {1}"
-                        : "{0} \u2794 {1} \"{2}\"";
-
-                    if (this.Options.LoopTimer && this.SupportsLooping)
-                    {
-                        format += " (Looped)";
-                    }
-
-                    break;
-
-                case TimerState.Paused:
-                    format = string.IsNullOrEmpty(this.Options.Title)
-                        ? "{0} \u2794 {1} (Paused)"
-                        : "{0} \u2794 {1} \"{2}\" (Paused)";
-                    break;
-
-                case TimerState.Expired:
-                    format = string.IsNullOrEmpty(this.Options.Title)
-                        ? "{1} (Expired)"
-                        : "{1} \"{2}\" (Expired)";
-                    break;
-            }
-
-            return string.Format(format, this.TimeLeft.ToNaturalString(), this.TimerStart, this.Options.Title);
+            return string.Format(
+                Resources.ResourceManager.GetEffectiveProvider(),
+                Resources.ResourceManager.GetString(resourceName) ?? this.GetType().ToString(),
+                this.TimeLeft.ToNaturalString(),
+                this.TimerStart,
+                this.Options.Title);
         }
 
         /// <summary>
@@ -471,12 +451,12 @@ namespace Hourglass.Timing
         {
             if (this.State == TimerState.Stopped)
             {
-                return "Timer stopped";
+                return Resources.TimerTimerStopped;
             }
 
             if (this.State == TimerState.Expired)
             {
-                return "Timer expired";
+                return Resources.TimerTimerExpired;
             }
 
             return this.TimeLeft.ToNaturalString();
@@ -495,12 +475,12 @@ namespace Hourglass.Timing
 
             if (this.State == TimerState.Stopped)
             {
-                return "Timer stopped";
+                return Resources.TimerTimerStopped;
             }
 
             if (this.State == TimerState.Expired)
             {
-                return "Timer expired";
+                return Resources.TimerTimerExpired;
             }
 
             return this.TimeElapsed.ToNaturalString();
