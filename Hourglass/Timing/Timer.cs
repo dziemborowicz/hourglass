@@ -188,7 +188,7 @@ namespace Hourglass.Timing
         /// </summary>
         public bool SupportsProgress
         {
-            get { return this.TimerStart == null || this.TimerStart.Type == TimerStartType.TimeSpan; }
+            get { return true; }
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Hourglass.Timing
         /// </summary>
         public bool SupportsTimeElapsed
         {
-            get { return this.TimerStart == null || this.TimerStart.Type == TimerStartType.TimeSpan; }
+            get { return true; }
         }
 
         #endregion
