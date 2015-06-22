@@ -1092,6 +1092,7 @@ namespace Hourglass.Windows
             this.Timer.PropertyChanged -= this.TimerPropertyChanged;
             this.Options.PropertyChanged -= this.TimerOptionsPropertyChanged;
 
+            this.Timer.Interval = TimerBase.DefaultInterval;
             this.Options.WindowSize = WindowSize.FromWindow(this /* window */);
 
             if (this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired)
