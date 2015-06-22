@@ -54,11 +54,11 @@ namespace Hourglass.Parsing
                 return null;
             }
 
-            string preferDateTimePattern = Resources.ResourceManager.GetString("TimerStartTokenPreferDateTimeHintPattern", provider);
+            string preferDateTimePattern = Resources.ResourceManager.GetString("TimerStartTokenUseDateTimeParserPattern", provider);
             if (Regex.IsMatch(str, preferDateTimePattern, Parser.RegexOptions))
             {
                 str = Regex.Replace(str, preferDateTimePattern, string.Empty, Parser.RegexOptions);
-                return FromDateTimeOrTimeSpanString(str);
+                return FromDateTime(str);
             }
 
             return FromTimeSpanOrDateTimeString(str);
@@ -120,23 +120,17 @@ namespace Hourglass.Parsing
         }
 
         /// <summary>
-        /// Returns a <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
-        /// supported representation of a <see cref="TimerStartToken"/> favoring a <see cref="DateTimeToken"/> over a
-        /// <see cref="TimeSpanToken"/> in the case ambiguity.
+        /// Returns a <see cref="TimerStartToken"/> that is a <see cref="DateTimeToken"/> for the specified string, or
+        /// <c>null</c> if the string is not a supported representation of a <see cref="DateTimeToken"/>.
         /// </summary>
         /// <param name="str">A string.</param>
         /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
-        /// supported representation of a <see cref="TimerStartToken"/>.</returns>
-        private static TimerStartToken FromDateTimeOrTimeSpanString(string str)
+        /// supported representation of a <see cref="DateTimeToken"/>.</returns>
+        private static TimerStartToken FromDateTime(string str)
         {
             TimerStartToken timerStartToken;
 
             if (DateTimeToken.Parser.Instance.TryParse(str, out timerStartToken))
-            {
-                return timerStartToken;
-            }
-
-            if (TimeSpanToken.Parser.Instance.TryParse(str, out timerStartToken))
             {
                 return timerStartToken;
             }

@@ -660,10 +660,6 @@ $</value>
     <value>:{0:00}</value>
     <comment>A format string for the minute part of a time appended after the hour part, where {0} is the minute (e.g., "{0:00}" =&gt; "12:30")</comment>
   </data>
-  <data name="NormalTimeTokenOclockSuffix" xml:space="preserve">
-    <value> o'clock</value>
-    <comment>The suffix appended to the hour when am/pm is not specified (e.g., " o'clock" =&gt; "8 o'clock")</comment>
-  </data>
   <data name="NormalTimeTokenPmSuffix" xml:space="preserve">
     <value> pm</value>
     <comment>The suffix appended to the hour to designate post meridiem hours (e.g., " pm" =&gt; "8 pm")</comment>
@@ -728,7 +724,7 @@ $</value>
     <value>^({0})$</value>
     <comment>A format string for a regular expression that matches a time only, where {0} is the time pattern</comment>
   </data>
-  <data name="TimerStartTokenPreferDateTimeHintPattern" xml:space="preserve">
+  <data name="TimerStartTokenUseDateTimeParserPattern" xml:space="preserve">
     <value>^\s*(un)?till?\s*</value>
     <comment>A regular expression that indicates a preference for matching a date and/or time, rather than a time span, when parsing a timer start token</comment>
   </data>
@@ -1063,5 +1059,11 @@ $</value>
   <data name="TimerStoppedWithTitleLoopedFormatString" xml:space="preserve">
     <value>Stopped "{2}"</value>
     <comment>A format string for the string representation of a stopped timer that has a title and is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="NormalTimeTokenMilitaryTimePattern" xml:space="preserve">
+    <value>(?&lt;hour&gt;\d\d)
+(?&lt;minute&gt;\d\d)
+(?&lt;military&gt;|h|hrs|hours)</value>
+    <comment>A regular expression that matches military times (e.g., "0500", "1700", "1700h", "1700hrs", "1700 hours")</comment>
   </data>
 </root>

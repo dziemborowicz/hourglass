@@ -114,7 +114,6 @@
     <Compile Include="Parsing\TimeSpanToken.cs" />
     <Compile Include="Parsing\TimeToken.cs" />
     <Compile Include="Parsing\TimerStartToken.cs" />
-    <Compile Include="Properties\PortableSettingsProvider.cs" />
     <Compile Include="Serialization\TimerInfo.cs" />
     <Compile Include="Serialization\TimerInfoList.cs" />
     <Compile Include="Serialization\TimerOptionsInfo.cs" />
@@ -168,6 +167,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\PortableSettingsProvider.cs" />
     <Compile Include="Properties\Settings.cs">
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
@@ -178,6 +178,7 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">

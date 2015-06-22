@@ -27,12 +27,7 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Post meridiem.
         /// </summary>
-        Pm,
-
-        /// <summary>
-        /// 24-hour time.
-        /// </summary>
-        Military
+        Pm
     }
 
     /// <summary>
@@ -43,46 +38,42 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Gets or sets the period of an hour (AM or PM).
         /// </summary>
-        public HourPeriod? HourPeriod { get; set; }
+        public HourPeriod HourPeriod { get; set; }
 
         /// <summary>
         /// Gets or sets the hour.
         /// </summary>
-        public int? Hour { get; set; }
+        public int Hour { get; set; }
 
         /// <summary>
         /// Gets or sets the minute.
         /// </summary>
-        public int? Minute { get; set; }
+        public int Minute { get; set; }
 
         /// <summary>
         /// Gets or sets the second.
         /// </summary>
-        public int? Second { get; set; }
+        public int Second { get; set; }
 
         /// <summary>
         /// Gets the <see cref="Hour"/> expressed as a value between 0 and 23 inclusive.
         /// </summary>
-        public int? NormalizedHour
+        public int NormalizedHour
         {
             get
             {
+                this.ThrowIfNotValid();
+
                 // Convert 12 am to 0000h
-                if (this.HourPeriod == Parsing.HourPeriod.Am && this.Hour == 12)
+                if (this.HourPeriod == HourPeriod.Am && this.Hour == 12)
                 {
                     return 0;
                 }
 
                 // Convert 1-11 pm to 1300-2300h
-                if (this.HourPeriod == Parsing.HourPeriod.Pm && this.Hour.HasValue && this.Hour < 12)
+                if (this.HourPeriod == HourPeriod.Pm && this.Hour > 0 && this.Hour < 12)
                 {
                     return this.Hour + 12;
-                }
-
-                // Convert 12 to 0000h
-                if (!this.HourPeriod.HasValue && this.Hour == 12)
-                {
-                    return 0;
                 }
 
                 // Other values are already normalized
@@ -95,12 +86,7 @@ namespace Hourglass.Parsing
         /// </summary>
         public bool IsMidnight
         {
-            get
-            {
-                return (this.Hour == 0 || (this.Hour == 12 && this.HourPeriod == Parsing.HourPeriod.Am))
-                    && (this.Minute ?? 0) == 0
-                    && (this.Second ?? 0) == 0;
-            }
+            get { return this.NormalizedHour == 0 && this.Minute == 0 && this.Second == 0; }
         }
 
         /// <summary>
@@ -108,12 +94,7 @@ namespace Hourglass.Parsing
         /// </summary>
         public bool IsMidday
         {
-            get
-            {
-                return (this.Hour == 12 && (this.HourPeriod == Parsing.HourPeriod.Pm || this.HourPeriod == Parsing.HourPeriod.Military))
-                    && (this.Minute ?? 0) == 0
-                    && (this.Second ?? 0) == 0;
-            }
+            get { return this.NormalizedHour == 12 && this.Minute == 0 && this.Second == 0; }
         }
 
         /// <summary>
@@ -123,9 +104,9 @@ namespace Hourglass.Parsing
         {
             get
             {
-                return (this.Hour.HasValue && this.Hour >= 0 && this.Hour < 24)
-                    && (!this.Minute.HasValue || (this.Minute >= 0 && this.Minute < 60))
-                    && (!this.Second.HasValue || (this.Second >= 0 && this.Second < 60));
+                return this.Hour >= 1 && this.Hour <= 12
+                    && this.Minute >= 0 && this.Minute <= 59
+                    && this.Second >= 0 && this.Minute <= 59;
             }
         }
 
@@ -149,29 +130,9 @@ namespace Hourglass.Parsing
                 datePart.Year,
                 datePart.Month,
                 datePart.Day,
-                this.NormalizedHour ?? 0,
-                this.Minute ?? 0,
-                this.Second ?? 0);
-
-            // If hour period is not specified, prefer the one that is after the reference date and time
-            if (!this.HourPeriod.HasValue &&
-                this.NormalizedHour.HasValue &&
-                this.NormalizedHour < 12 &&
-                dateTime <= minDate &&
-                dateTime.AddHours(12) > minDate)
-            {
-                dateTime = dateTime.AddHours(12);
-            }
-
-            // If hour period is not specified, prefer daytime hours (except on the same day as the minimum date)
-            if (!this.HourPeriod.HasValue &&
-                this.NormalizedHour.HasValue &&
-                this.NormalizedHour > 0 &&
-                this.NormalizedHour < 8 &&
-                dateTime.Date != minDate.Date)
-            {
-                dateTime = dateTime.AddHours(12);
-            }
+                this.NormalizedHour,
+                this.Minute,
+                this.Second);
 
             return dateTime;
         }
@@ -193,49 +154,42 @@ namespace Hourglass.Parsing
                 stringBuilder.AppendFormat(
                     Resources.ResourceManager.GetEffectiveProvider(provider),
                     Resources.ResourceManager.GetString("NormalTimeTokenHourPartFormatString", provider),
-                    this.Hour == 0 ? 12 : this.Hour);
+                    this.Hour);
 
                 // Minute
-                if ((this.Minute ?? 0) != 0 || (this.Second ?? 0) != 0)
+                if (this.Minute != 0 || this.Second != 0)
                 {
                     stringBuilder.AppendFormat(
                         Resources.ResourceManager.GetEffectiveProvider(provider),
                         Resources.ResourceManager.GetString("NormalTimeTokenMinutePartFormatString", provider),
-                        this.Minute ?? 0);
+                        this.Minute);
 
                     // Second
-                    if ((this.Second ?? 0) != 0)
+                    if (this.Second != 0)
                     {
                         stringBuilder.AppendFormat(
                             Resources.ResourceManager.GetEffectiveProvider(provider),
                             Resources.ResourceManager.GetString("NormalTimeTokenSecondPartFormatString", provider),
-                            this.Second ?? 0);
+                            this.Second);
                     }
                 }
 
                 // Hour period
-                if (this.HourPeriod.HasValue)
+                if (this.IsMidday)
                 {
-                    if (this.IsMidday)
-                    {
-                        stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenMiddaySuffix", provider));
-                    }
-                    else if (this.IsMidnight)
-                    {
-                        stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenMidnightSuffix", provider));
-                    }
-                    else if (this.HourPeriod == Parsing.HourPeriod.Am)
-                    {
-                        stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenAmSuffix", provider));
-                    }
-                    else
-                    {
-                        stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenPmSuffix", provider));
-                    }
+                    stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenMiddaySuffix", provider));
                 }
-                else if ((this.Minute ?? 0) == 0 && (this.Second ?? 0) == 0)
+                else if (this.IsMidnight)
                 {
-                    stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenOclockSuffix", provider));
+                    stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenMidnightSuffix", provider));
+                }
+                else if (this.HourPeriod == HourPeriod.Am)
+                {
+                    stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenAmSuffix", provider));
+                }
+                else
+                {
+                    stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenPmSuffix", provider));
                 }
 
                 return stringBuilder.ToString();
@@ -272,6 +226,7 @@ namespace Hourglass.Parsing
             {
                 return new[]
                 {
+                    Resources.ResourceManager.GetString("NormalTimeTokenMilitaryTimePattern", provider),
                     Resources.ResourceManager.GetString("NormalTimeTokenTimeWithSeparatorsPattern", provider),
                     Resources.ResourceManager.GetString("NormalTimeTokenTimeWithoutSeparatorsPattern", provider)
                 };
@@ -293,20 +248,6 @@ namespace Hourglass.Parsing
 
                 provider = Resources.ResourceManager.GetEffectiveProvider(provider);
 
-                // Parse hour period
-                if (match.Groups["am"].Success)
-                {
-                    timeToken.HourPeriod = Parsing.HourPeriod.Am;
-                }
-                else if (match.Groups["pm"].Success)
-                {
-                    timeToken.HourPeriod = Parsing.HourPeriod.Pm;
-                }
-                else if (match.Groups["military"].Success)
-                {
-                    timeToken.HourPeriod = Parsing.HourPeriod.Military;
-                }
-
                 // Parse hour
                 if (match.Groups["hour"].Success)
                 {
@@ -323,6 +264,57 @@ namespace Hourglass.Parsing
                 if (match.Groups["second"].Success)
                 {
                     timeToken.Second = int.Parse(match.Groups["second"].Value, provider);
+                }
+
+                // Parse hour period
+                if (match.Groups["am"].Success)
+                {
+                    timeToken.HourPeriod = HourPeriod.Am;
+                }
+                else if (match.Groups["pm"].Success)
+                {
+                    timeToken.HourPeriod = HourPeriod.Pm;
+                }
+                else if (match.Groups["military"].Success)
+                {
+                    if (timeToken.Hour == 0)
+                    {
+                        timeToken.Hour = 12;
+                        timeToken.HourPeriod = HourPeriod.Am;
+                    }
+                    else if (timeToken.Hour < 12)
+                    {
+                        timeToken.HourPeriod = HourPeriod.Am;
+                    }
+                    else if (timeToken.Hour == 12)
+                    {
+                        timeToken.HourPeriod = HourPeriod.Pm;
+                    }
+                    else
+                    {
+                        timeToken.Hour -= 12;
+                        timeToken.HourPeriod = HourPeriod.Pm;
+                    }
+                }
+                else
+                {
+                    if (timeToken.Hour < 8)
+                    {
+                        timeToken.HourPeriod = HourPeriod.Pm;
+                    }
+                    else if (timeToken.Hour < 12)
+                    {
+                        timeToken.HourPeriod = HourPeriod.Am;
+                    }
+                    else if (timeToken.Hour == 12)
+                    {
+                        timeToken.HourPeriod = HourPeriod.Pm;
+                    }
+                    else
+                    {
+                        timeToken.Hour -= 12;
+                        timeToken.HourPeriod = HourPeriod.Pm;
+                    }
                 }
 
                 return timeToken;

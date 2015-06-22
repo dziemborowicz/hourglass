@@ -2534,11 +2534,30 @@ namespace Hourglass.Test
         #region Hour
 
         /// <summary>
-        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:00:00 with
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 1:00:00 p.m. with
+        /// <c>"1"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1InputReturns1Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "1";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 1);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:00:00 p.m. with
         /// <c>"2"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2InputReturns2Colon00Colon00()
+        public void ParseWith2InputReturns2Colon00Colon00Pm()
         {
             // Arrange
             string str = "2";
@@ -2549,7 +2568,843 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHour: 2);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 3:00:00 p.m. with
+        /// <c>"3"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith3InputReturns3Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "3";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 3);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 4:00:00 p.m. with
+        /// <c>"4"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith4InputReturns4Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "4";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 4);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 5:00:00 p.m. with
+        /// <c>"5"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith5InputReturns5Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "5";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 5);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 6:00:00 p.m. with
+        /// <c>"6"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith6InputReturns6Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "6";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 6);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 7:00:00 p.m. with
+        /// <c>"7"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith7InputReturns7Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "7";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 7);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 8:00:00 a.m. with
+        /// <c>"8"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith8InputReturns8Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "8";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 8);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 9:00:00 a.m. with
+        /// <c>"9"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith9InputReturns9Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "9";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 9);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 10:00:00 a.m. with
+        /// <c>"10"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith10InputReturns10Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "10";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 10);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 11:00:00 a.m. with
+        /// <c>"11"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith11InputReturns11Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "11";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 11);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 12:00:00 p.m. with
+        /// <c>"12"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith12InputReturns12Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "12";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 12);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 1:00:00 p.m. with
+        /// <c>"13"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith13InputReturns1Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "13";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 1);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:00:00 p.m. with
+        /// <c>"14"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith14InputReturns2Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "14";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 3:00:00 p.m. with
+        /// <c>"15"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith15InputReturns3Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "15";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 3);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 4:00:00 p.m. with
+        /// <c>"16"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith16InputReturns4Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "16";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 4);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 5:00:00 p.m. with
+        /// <c>"17"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith17InputReturns5Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "17";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 5);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 6:00:00 p.m. with
+        /// <c>"18"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith18InputReturns6Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "18";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 6);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 7:00:00 p.m. with
+        /// <c>"19"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith19InputReturns7Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "19";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 7);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 8:00:00 p.m. with
+        /// <c>"20"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith20InputReturns8Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "20";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 8);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 9:00:00 p.m. with
+        /// <c>"21"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith21InputReturns9Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "21";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 9);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 10:00:00 p.m. with
+        /// <c>"22"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith22InputReturns10Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "22";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 10);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 11:00:00 p.m. with
+        /// <c>"23"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith23InputReturns11Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "23";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 11);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 1:00:00 a.m. with
+        /// <c>"0100"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith0100InputReturns1Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "0100";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 1);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:00:00 a.m. with
+        /// <c>"0200"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith0200InputReturns2Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "0200";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 2);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 3:00:00 a.m. with
+        /// <c>"0300"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith0300InputReturns3Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "0300";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 3);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 4:00:00 a.m. with
+        /// <c>"0400"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith0400InputReturns4Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "0400";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 4);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 5:00:00 a.m. with
+        /// <c>"0500"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith0500InputReturns5Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "0500";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 5);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 6:00:00 a.m. with
+        /// <c>"0600"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith0600InputReturns6Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "0600";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 6);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 7:00:00 a.m. with
+        /// <c>"0700"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith0700InputReturns7Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "0700";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 7);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 8:00:00 a.m. with
+        /// <c>"0800"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith0800InputReturns8Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "0800";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 8);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 9:00:00 a.m. with
+        /// <c>"0900"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith0900InputReturns9Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "0900";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 9);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 10:00:00 a.m. with
+        /// <c>"1000"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1000InputReturns10Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "1000";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 10);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 11:00:00 a.m. with
+        /// <c>"1100"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1100InputReturns11Colon00Colon00Am()
+        {
+            // Arrange
+            string str = "1100";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 11);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 12:00:00 p.m. with
+        /// <c>"1200"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1200InputReturns12Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "1200";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 12);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 1:00:00 p.m. with
+        /// <c>"1300"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1300InputReturns1Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "1300";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 1);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:00:00 p.m. with
+        /// <c>"1400"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1400InputReturns2Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "1400";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 3:00:00 p.m. with
+        /// <c>"1500"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1500InputReturns3Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "1500";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 3);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 4:00:00 p.m. with
+        /// <c>"1600"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1600InputReturns4Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "1600";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 4);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 5:00:00 p.m. with
+        /// <c>"1700"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1700InputReturns5Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "1700";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 5);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 6:00:00 p.m. with
+        /// <c>"1800"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1800InputReturns6Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "1800";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 6);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 7:00:00 p.m. with
+        /// <c>"1900"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith1900InputReturns7Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "1900";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 7);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 8:00:00 p.m. with
+        /// <c>"2000"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith2000InputReturns8Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "2000";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 8);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 9:00:00 p.m. with
+        /// <c>"2100"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith2100InputReturns9Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "2100";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 9);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 10:00:00 p.m. with
+        /// <c>"2200"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith2200InputReturns10Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "2200";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 10);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 11:00:00 p.m. with
+        /// <c>"2300"</c> input.
+        /// </summary>
+        [TestMethod]
+        public void ParseWith2300InputReturns11Colon00Colon00Pm()
+        {
+            // Arrange
+            string str = "2300";
+            IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+            // Act
+            TimerStartToken actual = DateTimeToken.Parser.Instance.Parse(str, provider);
+
+            // Assert
+            AssertIsEmpty(GetDateToken(actual));
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 11);
         }
 
         /// <summary>
@@ -2557,7 +3412,7 @@ namespace Hourglass.Test
         /// <c>"2a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2AInputReturns2Colon00Colon00()
+        public void ParseWith2AInputReturns2Colon00Colon00Am()
         {
             // Arrange
             string str = "2a";
@@ -2576,7 +3431,7 @@ namespace Hourglass.Test
         /// <c>"2p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2PInputReturns2Colon00Colon00()
+        public void ParseWith2PInputReturns2Colon00Colon00Pm()
         {
             // Arrange
             string str = "2p";
@@ -2595,7 +3450,7 @@ namespace Hourglass.Test
         /// <c>"2 a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2SpaceAInputReturns2Colon00Colon00()
+        public void ParseWith2SpaceAInputReturns2Colon00Colon00Am()
         {
             // Arrange
             string str = "2 a";
@@ -2614,7 +3469,7 @@ namespace Hourglass.Test
         /// <c>"2 p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2SpacePInputReturns2Colon00Colon00()
+        public void ParseWith2SpacePInputReturns2Colon00Colon00Pm()
         {
             // Arrange
             string str = "2 p";
@@ -2633,7 +3488,7 @@ namespace Hourglass.Test
         /// <c>"2am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2AmInputReturns2Colon00Colon00()
+        public void ParseWith2AmInputReturns2Colon00Colon00Am()
         {
             // Arrange
             string str = "2am";
@@ -2652,7 +3507,7 @@ namespace Hourglass.Test
         /// <c>"2pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2PmInputReturns2Colon00Colon00()
+        public void ParseWith2PmInputReturns2Colon00Colon00Pm()
         {
             // Arrange
             string str = "2pm";
@@ -2671,7 +3526,7 @@ namespace Hourglass.Test
         /// <c>"2 am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2SpaceAmInputReturns2Colon00Colon00()
+        public void ParseWith2SpaceAmInputReturns2Colon00Colon00Am()
         {
             // Arrange
             string str = "2 am";
@@ -2690,7 +3545,7 @@ namespace Hourglass.Test
         /// <c>"2 pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2SpacePmInputReturns2Colon00Colon00()
+        public void ParseWith2SpacePmInputReturns2Colon00Colon00Pm()
         {
             // Arrange
             string str = "2 pm";
@@ -2709,7 +3564,7 @@ namespace Hourglass.Test
         /// <c>"2a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2ADotMDotInputReturns2Colon00Colon00()
+        public void ParseWith2ADotMDotInputReturns2Colon00Colon00Am()
         {
             // Arrange
             string str = "2a.m.";
@@ -2728,7 +3583,7 @@ namespace Hourglass.Test
         /// <c>"2p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2PDotMDotInputReturns2Colon00Colon00()
+        public void ParseWith2PDotMDotInputReturns2Colon00Colon00Pm()
         {
             // Arrange
             string str = "2p.m.";
@@ -2747,7 +3602,7 @@ namespace Hourglass.Test
         /// <c>"2 a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2SpaceADotMDotInputReturns2Colon00Colon00()
+        public void ParseWith2SpaceADotMDotInputReturns2Colon00Colon00Am()
         {
             // Arrange
             string str = "2 a.m.";
@@ -2766,7 +3621,7 @@ namespace Hourglass.Test
         /// <c>"2 p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2SpacePDotMDotInputReturns2Colon00Colon00()
+        public void ParseWith2SpacePDotMDotInputReturns2Colon00Colon00Pm()
         {
             // Arrange
             string str = "2 p.m.";
@@ -2785,11 +3640,11 @@ namespace Hourglass.Test
         #region Hour and Minute
 
         /// <summary>
-        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:00 with
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:00 p.m. with
         /// <c>"230"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230InputReturns2Colon30Colon00()
+        public void ParseWith230InputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "230";
@@ -2800,7 +3655,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHour: 2, expectedMinute: 30);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30);
         }
 
         /// <summary>
@@ -2808,7 +3663,7 @@ namespace Hourglass.Test
         /// <c>"230a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230AInputReturns2Colon30Colon00()
+        public void ParseWith230AInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "230a";
@@ -2827,7 +3682,7 @@ namespace Hourglass.Test
         /// <c>"230p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230PInputReturns2Colon30Colon00()
+        public void ParseWith230PInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "230p";
@@ -2846,7 +3701,7 @@ namespace Hourglass.Test
         /// <c>"230 a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230SpaceAInputReturns2Colon30Colon00()
+        public void ParseWith230SpaceAInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "230 a";
@@ -2865,7 +3720,7 @@ namespace Hourglass.Test
         /// <c>"230 p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230SpacePInputReturns2Colon30Colon00()
+        public void ParseWith230SpacePInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "230 p";
@@ -2884,7 +3739,7 @@ namespace Hourglass.Test
         /// <c>"230am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230AmInputReturns2Colon30Colon00()
+        public void ParseWith230AmInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "230am";
@@ -2903,7 +3758,7 @@ namespace Hourglass.Test
         /// <c>"230pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230PmInputReturns2Colon30Colon00()
+        public void ParseWith230PmInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "230pm";
@@ -2922,7 +3777,7 @@ namespace Hourglass.Test
         /// <c>"230 am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230SpaceAmInputReturns2Colon30Colon00()
+        public void ParseWith230SpaceAmInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "230 am";
@@ -2941,7 +3796,7 @@ namespace Hourglass.Test
         /// <c>"230 pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230SpacePmInputReturns2Colon30Colon00()
+        public void ParseWith230SpacePmInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "230 pm";
@@ -2960,7 +3815,7 @@ namespace Hourglass.Test
         /// <c>"230a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230ADotMDotInputReturns2Colon30Colon00()
+        public void ParseWith230ADotMDotInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "230a.m.";
@@ -2979,7 +3834,7 @@ namespace Hourglass.Test
         /// <c>"230p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230PDotMDotInputReturns2Colon30Colon00()
+        public void ParseWith230PDotMDotInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "230p.m.";
@@ -2998,7 +3853,7 @@ namespace Hourglass.Test
         /// <c>"230 a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230SpaceADotMDotInputReturns2Colon30Colon00()
+        public void ParseWith230SpaceADotMDotInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "230 a.m.";
@@ -3017,7 +3872,7 @@ namespace Hourglass.Test
         /// <c>"230 p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith230SpacePDotMDotInputReturns2Colon30Colon00()
+        public void ParseWith230SpacePDotMDotInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "230 p.m.";
@@ -3032,11 +3887,11 @@ namespace Hourglass.Test
         }
 
         /// <summary>
-        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:00 with
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:00 p.m. with
         /// <c>"2.30"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30InputReturns2Colon30Colon00()
+        public void ParseWith2Dot30InputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2.30";
@@ -3047,7 +3902,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHour: 2, expectedMinute: 30);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30);
         }
 
         /// <summary>
@@ -3055,7 +3910,7 @@ namespace Hourglass.Test
         /// <c>"2.30a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30AInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30AInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2.30a";
@@ -3074,7 +3929,7 @@ namespace Hourglass.Test
         /// <c>"2.30p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30PInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30PInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2.30p";
@@ -3093,7 +3948,7 @@ namespace Hourglass.Test
         /// <c>"2.30 a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30SpaceAInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30SpaceAInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2.30 a";
@@ -3112,7 +3967,7 @@ namespace Hourglass.Test
         /// <c>"2.30 p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30SpacePInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30SpacePInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2.30 p";
@@ -3131,7 +3986,7 @@ namespace Hourglass.Test
         /// <c>"2.30am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30AmInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30AmInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2.30am";
@@ -3150,7 +4005,7 @@ namespace Hourglass.Test
         /// <c>"2.30pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30PmInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30PmInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2.30pm";
@@ -3169,7 +4024,7 @@ namespace Hourglass.Test
         /// <c>"2.30 am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30SpaceAmInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30SpaceAmInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2.30 am";
@@ -3188,7 +4043,7 @@ namespace Hourglass.Test
         /// <c>"2.30 pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30SpacePmInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30SpacePmInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2.30 pm";
@@ -3207,7 +4062,7 @@ namespace Hourglass.Test
         /// <c>"2.30a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30ADotMDotInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30ADotMDotInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2.30a.m.";
@@ -3226,7 +4081,7 @@ namespace Hourglass.Test
         /// <c>"2.30p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30PDotMDotInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30PDotMDotInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2.30p.m.";
@@ -3245,7 +4100,7 @@ namespace Hourglass.Test
         /// <c>"2.30 a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30SpaceADotMDotInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30SpaceADotMDotInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2.30 a.m.";
@@ -3264,7 +4119,7 @@ namespace Hourglass.Test
         /// <c>"2.30 p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30SpacePDotMDotInputReturns2Colon30Colon00()
+        public void ParseWith2Dot30SpacePDotMDotInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2.30 p.m.";
@@ -3279,11 +4134,11 @@ namespace Hourglass.Test
         }
 
         /// <summary>
-        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:00 with
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:00 p.m. with
         /// <c>"2:30"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30InputReturns2Colon30Colon00()
+        public void ParseWith2Colon30InputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2:30";
@@ -3294,7 +4149,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHour: 2, expectedMinute: 30);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30);
         }
 
         /// <summary>
@@ -3302,7 +4157,7 @@ namespace Hourglass.Test
         /// <c>"2:30a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30AInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30AInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2:30a";
@@ -3321,7 +4176,7 @@ namespace Hourglass.Test
         /// <c>"2:30p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30PInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30PInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2:30p";
@@ -3340,7 +4195,7 @@ namespace Hourglass.Test
         /// <c>"2:30 a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30SpaceAInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30SpaceAInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2:30 a";
@@ -3359,7 +4214,7 @@ namespace Hourglass.Test
         /// <c>"2:30 p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30SpacePInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30SpacePInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2:30 p";
@@ -3378,7 +4233,7 @@ namespace Hourglass.Test
         /// <c>"2:30am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30AmInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30AmInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2:30am";
@@ -3397,7 +4252,7 @@ namespace Hourglass.Test
         /// <c>"2:30pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30PmInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30PmInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2:30pm";
@@ -3416,7 +4271,7 @@ namespace Hourglass.Test
         /// <c>"2:30 am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30SpaceAmInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30SpaceAmInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2:30 am";
@@ -3435,7 +4290,7 @@ namespace Hourglass.Test
         /// <c>"2:30 pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30SpacePmInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30SpacePmInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2:30 pm";
@@ -3454,7 +4309,7 @@ namespace Hourglass.Test
         /// <c>"2:30a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30ADotMDotInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30ADotMDotInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2:30a.m.";
@@ -3473,7 +4328,7 @@ namespace Hourglass.Test
         /// <c>"2:30p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30PDotMDotInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30PDotMDotInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2:30p.m.";
@@ -3492,7 +4347,7 @@ namespace Hourglass.Test
         /// <c>"2:30 a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30SpaceADotMDotInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30SpaceADotMDotInputReturns2Colon30Colon00Am()
         {
             // Arrange
             string str = "2:30 a.m.";
@@ -3511,7 +4366,7 @@ namespace Hourglass.Test
         /// <c>"2:30 p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30SpacePDotMDotInputReturns2Colon30Colon00()
+        public void ParseWith2Colon30SpacePDotMDotInputReturns2Colon30Colon00Pm()
         {
             // Arrange
             string str = "2:30 p.m.";
@@ -3530,11 +4385,11 @@ namespace Hourglass.Test
         #region Hour, Minute, and Second
 
         /// <summary>
-        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:15 with
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:15 p.m. with
         /// <c>"23015"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015InputReturns2Colon30Colon15()
+        public void ParseWith23015InputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "23015";
@@ -3545,7 +4400,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
         }
 
         /// <summary>
@@ -3553,7 +4408,7 @@ namespace Hourglass.Test
         /// <c>"23015a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015AInputReturns2Colon30Colon15()
+        public void ParseWith23015AInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "23015a";
@@ -3572,7 +4427,7 @@ namespace Hourglass.Test
         /// <c>"23015p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015PInputReturns2Colon30Colon15()
+        public void ParseWith23015PInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "23015p";
@@ -3591,7 +4446,7 @@ namespace Hourglass.Test
         /// <c>"23015 a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015SpaceAInputReturns2Colon30Colon15()
+        public void ParseWith23015SpaceAInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "23015 a";
@@ -3610,7 +4465,7 @@ namespace Hourglass.Test
         /// <c>"23015 p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015SpacePInputReturns2Colon30Colon15()
+        public void ParseWith23015SpacePInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "23015 p";
@@ -3629,7 +4484,7 @@ namespace Hourglass.Test
         /// <c>"23015am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015AmInputReturns2Colon30Colon15()
+        public void ParseWith23015AmInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "23015am";
@@ -3648,7 +4503,7 @@ namespace Hourglass.Test
         /// <c>"23015pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015PmInputReturns2Colon30Colon15()
+        public void ParseWith23015PmInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "23015pm";
@@ -3667,7 +4522,7 @@ namespace Hourglass.Test
         /// <c>"23015 am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015SpaceAmInputReturns2Colon30Colon15()
+        public void ParseWith23015SpaceAmInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "23015 am";
@@ -3686,7 +4541,7 @@ namespace Hourglass.Test
         /// <c>"23015 pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015SpacePmInputReturns2Colon30Colon15()
+        public void ParseWith23015SpacePmInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "23015 pm";
@@ -3705,7 +4560,7 @@ namespace Hourglass.Test
         /// <c>"23015a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015ADotMDotInputReturns2Colon30Colon15()
+        public void ParseWith23015ADotMDotInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "23015a.m.";
@@ -3724,7 +4579,7 @@ namespace Hourglass.Test
         /// <c>"23015p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015PDotMDotInputReturns2Colon30Colon15()
+        public void ParseWith23015PDotMDotInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "23015p.m.";
@@ -3743,7 +4598,7 @@ namespace Hourglass.Test
         /// <c>"23015 a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015SpaceADotMDotInputReturns2Colon30Colon15()
+        public void ParseWith23015SpaceADotMDotInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "23015 a.m.";
@@ -3762,7 +4617,7 @@ namespace Hourglass.Test
         /// <c>"23015 p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith23015SpacePDotMDotInputReturns2Colon30Colon15()
+        public void ParseWith23015SpacePDotMDotInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "23015 p.m.";
@@ -3777,11 +4632,11 @@ namespace Hourglass.Test
         }
 
         /// <summary>
-        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:15 with
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:15 p.m. with
         /// <c>"2.30.15"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15InputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15InputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2.30.15";
@@ -3792,7 +4647,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
         }
 
         /// <summary>
@@ -3800,7 +4655,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15AInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15AInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2.30.15a";
@@ -3819,7 +4674,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15PInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15PInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2.30.15p";
@@ -3838,7 +4693,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15 a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15SpaceAInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15SpaceAInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2.30.15 a";
@@ -3857,7 +4712,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15 p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15SpacePInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15SpacePInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2.30.15 p";
@@ -3876,7 +4731,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15AmInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15AmInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2.30.15am";
@@ -3895,7 +4750,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15PmInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15PmInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2.30.15pm";
@@ -3914,7 +4769,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15 am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15SpaceAmInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15SpaceAmInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2.30.15 am";
@@ -3933,7 +4788,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15 pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15SpacePmInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15SpacePmInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2.30.15 pm";
@@ -3952,7 +4807,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15ADotMDotInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15ADotMDotInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2.30.15a.m.";
@@ -3971,7 +4826,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15PDotMDotInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15PDotMDotInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2.30.15p.m.";
@@ -3990,7 +4845,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15 a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15SpaceADotMDotInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15SpaceADotMDotInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2.30.15 a.m.";
@@ -4009,7 +4864,7 @@ namespace Hourglass.Test
         /// <c>"2.30.15 p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Dot30Dot15SpacePDotMDotInputReturns2Colon30Colon15()
+        public void ParseWith2Dot30Dot15SpacePDotMDotInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2.30.15 p.m.";
@@ -4024,11 +4879,11 @@ namespace Hourglass.Test
         }
 
         /// <summary>
-        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:15 with
+        /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:15 p.m. with
         /// <c>"2:30:15"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15InputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15InputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2:30:15";
@@ -4039,7 +4894,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
         }
 
         /// <summary>
@@ -4047,7 +4902,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15AInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15AInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2:30:15a";
@@ -4066,7 +4921,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15PInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15PInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2:30:15p";
@@ -4085,7 +4940,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15 a"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15SpaceAInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15SpaceAInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2:30:15 a";
@@ -4104,7 +4959,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15 p"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15SpacePInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15SpacePInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2:30:15 p";
@@ -4123,7 +4978,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15AmInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15AmInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2:30:15am";
@@ -4142,7 +4997,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15PmInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15PmInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2:30:15pm";
@@ -4161,7 +5016,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15 am"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15SpaceAmInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15SpaceAmInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2:30:15 am";
@@ -4180,7 +5035,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15 pm"</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15SpacePmInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15SpacePmInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2:30:15 pm";
@@ -4199,7 +5054,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15ADotMDotInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15ADotMDotInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2:30:15a.m.";
@@ -4218,7 +5073,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15PDotMDotInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15PDotMDotInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2:30:15p.m.";
@@ -4237,7 +5092,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15 a.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15SpaceADotMDotInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15SpaceADotMDotInputReturns2Colon30Colon15Am()
         {
             // Arrange
             string str = "2:30:15 a.m.";
@@ -4256,7 +5111,7 @@ namespace Hourglass.Test
         /// <c>"2:30:15 p.m."</c> input.
         /// </summary>
         [TestMethod]
-        public void ParseWith2Colon30Colon15SpacePDotMDotInputReturns2Colon30Colon15()
+        public void ParseWith2Colon30Colon15SpacePDotMDotInputReturns2Colon30Colon15Pm()
         {
             // Arrange
             string str = "2:30:15 p.m.";
@@ -7771,7 +8626,7 @@ namespace Hourglass.Test
         /// <param name="expectedHour">The expected hour.</param>
         /// <param name="expectedMinute">The expected minute.</param>
         /// <param name="expectedSecond">The expected second.</param>
-        private static void AssertAreEqual(TimeToken actual, HourPeriod? expectedHourPeriod = null, int? expectedHour = null, int? expectedMinute = null, int? expectedSecond = null)
+        private static void AssertAreEqual(TimeToken actual, HourPeriod expectedHourPeriod, int expectedHour, int expectedMinute = 0, int expectedSecond = 0)
         {
             Assert.AreEqual(typeof(NormalTimeToken), actual.GetType());
             Assert.AreEqual(expectedHourPeriod, ((NormalTimeToken)actual).HourPeriod);

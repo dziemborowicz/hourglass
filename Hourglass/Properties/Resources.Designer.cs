@@ -1036,20 +1036,22 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (?&lt;hour&gt;\d\d)
+        ///(?&lt;minute&gt;\d\d)
+        ///(?&lt;military&gt;|h|hrs|hours).
+        /// </summary>
+        internal static string NormalTimeTokenMilitaryTimePattern {
+            get {
+                return ResourceManager.GetString("NormalTimeTokenMilitaryTimePattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to :{0:00}.
         /// </summary>
         internal static string NormalTimeTokenMinutePartFormatString {
             get {
                 return ResourceManager.GetString("NormalTimeTokenMinutePartFormatString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  o&apos;clock.
-        /// </summary>
-        internal static string NormalTimeTokenOclockSuffix {
-            get {
-                return ResourceManager.GetString("NormalTimeTokenOclockSuffix", resourceCulture);
             }
         }
         
@@ -1403,9 +1405,9 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ^\s*(un)?till?\s*.
         /// </summary>
-        internal static string TimerStartTokenPreferDateTimeHintPattern {
+        internal static string TimerStartTokenUseDateTimeParserPattern {
             get {
-                return ResourceManager.GetString("TimerStartTokenPreferDateTimeHintPattern", resourceCulture);
+                return ResourceManager.GetString("TimerStartTokenUseDateTimeParserPattern", resourceCulture);
             }
         }
         
