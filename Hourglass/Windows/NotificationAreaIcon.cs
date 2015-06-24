@@ -8,6 +8,7 @@ namespace Hourglass.Windows
 {
     using System;
     using System.ComponentModel;
+    using System.Drawing;
     using System.Linq;
     using System.Windows;
     using System.Windows.Forms;
@@ -44,7 +45,7 @@ namespace Hourglass.Windows
         public NotificationAreaIcon()
         {
             this.notifyIcon = new NotifyIcon();
-            this.notifyIcon.Icon = Resources.AppIcon;
+            this.notifyIcon.Icon = new Icon(Resources.AppIcon, SystemInformation.SmallIconSize);
             this.notifyIcon.MouseDown += this.NotifyIconMouseDown;
 
             this.notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu();
