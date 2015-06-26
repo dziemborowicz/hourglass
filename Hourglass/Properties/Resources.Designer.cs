@@ -1142,6 +1142,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Timer expired.
+        /// </summary>
+        internal static string NotificationAreaIconTimerExpired {
+            get {
+                return ResourceManager.GetString("NotificationAreaIconTimerExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your timer has expired..
+        /// </summary>
+        internal static string NotificationAreaIconYourTimerHasExpired {
+            get {
+                return ResourceManager.GetString("NotificationAreaIconYourTimerHasExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to today.
         /// </summary>
         internal static string RelativeDateTokenTodayName {

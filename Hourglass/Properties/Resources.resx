@@ -1066,4 +1066,12 @@ $</value>
 (?&lt;military&gt;|h|hrs|hours)</value>
     <comment>A regular expression that matches military times (e.g., "0500", "1700", "1700h", "1700hrs", "1700 hours")</comment>
   </data>
+  <data name="NotificationAreaIconTimerExpired" xml:space="preserve">
+    <value>Timer expired</value>
+    <comment>The timer expired balloon notification title.</comment>
+  </data>
+  <data name="NotificationAreaIconYourTimerHasExpired" xml:space="preserve">
+    <value>Your timer has expired.</value>
+    <comment>The timer expired balloon notification description.</comment>
+  </data>
 </root>

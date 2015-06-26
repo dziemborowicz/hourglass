@@ -16,6 +16,7 @@ namespace Hourglass.Windows
 
     using Hourglass.Extensions;
     using Hourglass.Properties;
+    using Hourglass.Timing;
 
     using Application = System.Windows.Application;
 
@@ -24,6 +25,11 @@ namespace Hourglass.Windows
     /// </summary>
     public class NotificationAreaIcon : IDisposable
     {
+        /// <summary>
+        /// The timeout in milliseconds for the balloon tip that is showed when a timer has expired.
+        /// </summary>
+        private const int TimerExpiredBalloonTipTimeout = 10000;
+
         /// <summary>
         /// A <see cref="NotifyIcon"/>.
         /// </summary>
@@ -48,6 +54,8 @@ namespace Hourglass.Windows
             this.notifyIcon.Icon = new Icon(Resources.AppIcon, SystemInformation.SmallIconSize);
             this.notifyIcon.MouseDown += this.NotifyIconMouseDown;
 
+            this.notifyIcon.BalloonTipClicked += this.BalloonTipClicked;
+
             this.notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu();
             this.notifyIcon.ContextMenu.Popup += this.ContextMenuPopup;
             this.notifyIcon.ContextMenu.Collapse += this.ContextMenuCollapse;
@@ -67,6 +75,18 @@ namespace Hourglass.Windows
         {
             get { return this.notifyIcon.Visible; }
             set { this.notifyIcon.Visible = value; }
+        }
+
+        /// <summary>
+        /// Displays a balloon tip notifying that a timer has expired.
+        /// </summary>
+        public void ShowBalloonTipForExpiredTimer()
+        {
+            this.notifyIcon.ShowBalloonTip(
+                TimerExpiredBalloonTipTimeout,
+                Resources.NotificationAreaIconTimerExpired,
+                Resources.NotificationAreaIconYourTimerHasExpired,
+                ToolTipIcon.Info);
         }
 
         /// <summary>
@@ -127,6 +147,20 @@ namespace Hourglass.Windows
         }
 
         /// <summary>
+        /// Restores all <see cref="TimerWindow"/>s that show expired timers.
+        /// </summary>
+        private void RestoreAllExpiredTimerWindows()
+        {
+            if (Application.Current != null)
+            {
+                foreach (TimerWindow window in Application.Current.Windows.OfType<TimerWindow>().Where(w => w.Timer.State == TimerState.Expired))
+                {
+                    window.BringToFrontAndActivate();
+                }
+            }
+        }
+
+        /// <summary>
         /// Invoked after the value of an application settings property is changed.
         /// </summary>
         /// <param name="sender">The settings object.</param>
@@ -159,6 +193,16 @@ namespace Hourglass.Windows
             {
                 this.RestoreAllTimerWindows();
             }
+        }
+
+        /// <summary>
+        /// Invoked when the balloon tip is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="NotifyIcon"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void BalloonTipClicked(object sender, EventArgs e)
+        {
+            this.RestoreAllExpiredTimerWindows();
         }
 
         /// <summary>

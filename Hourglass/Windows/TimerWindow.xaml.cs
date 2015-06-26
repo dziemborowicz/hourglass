@@ -782,6 +782,10 @@ namespace Hourglass.Windows
             {
                 this.BringToFront();
             }
+            else if (Settings.Default.ShowInNotificationArea && !this.IsVisible)
+            {
+                NotificationAreaIconManager.Instance.NotifyIcon.ShowBalloonTipForExpiredTimer();
+            }
         }
 
         /// <summary>
