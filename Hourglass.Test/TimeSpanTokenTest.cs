@@ -19,7 +19,7 @@ namespace Hourglass.Test
     [TestClass]
     public class TimeSpanTokenTest
     {
-        #region Invalid Input
+        #region Parse Invalid Input
 
         /// <summary>
         /// Tests that <see cref="TimeSpanToken.Parser.Parse(string,IFormatProvider)"/> throws a <see
@@ -79,7 +79,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Minutes Only
+        #region Parse Minutes Only
 
         /// <summary>
         /// Tests that <see cref="TimeSpanToken.Parser.Parse(string,IFormatProvider)"/> returns 0 seconds for
@@ -137,7 +137,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Short Form
+        #region Parse Short Form
 
         /// <summary>
         /// Tests that <see cref="TimeSpanToken.Parser.Parse(string,IFormatProvider)"/> returns 15 minutes 30 seconds
@@ -411,7 +411,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Long Form (One Unit)
+        #region Parse Long Form (One Unit)
 
         /// <summary>
         /// Tests that <see cref="TimeSpanToken.Parser.Parse(string,IFormatProvider)"/> returns 30 seconds with
@@ -793,7 +793,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Long Form (Multiple Units)
+        #region Parse Long Form (Multiple Units)
 
         /// <summary>
         /// Tests that <see cref="TimeSpanToken.Parser.Parse(string,IFormatProvider)"/> returns 15 minutes 30 seconds
@@ -959,7 +959,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Long Form (Inferred Units)
+        #region Parse Long Form (Inferred Units)
 
         /// <summary>
         /// Tests that <see cref="TimeSpanToken.Parser.Parse(string,IFormatProvider)"/> returns 15 minutes 30 seconds
@@ -1125,7 +1125,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Long Form (Fractional Units)
+        #region Parse Long Form (Fractional Units)
 
         /// <summary>
         /// Tests that <see cref="TimeSpanToken.Parser.Parse(string,IFormatProvider)"/> returns 30.5 seconds with
@@ -1507,7 +1507,267 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Helpers
+        #region Get End Time (Integer Units)
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 1, 2015 at 12:00:05 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 5 seconds and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith5SecondsAnd20150101At000000Returns20150101At000005()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Seconds = 5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 1, 0, 0, 5), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 1, 2015 at 12:05:00 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 5 minutes and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith5MinutesAnd20150101At000000Returns20150101At000500()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Minutes = 5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 1, 0, 5, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 1, 2015 at 05:00:00 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 5 hours and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith5HoursAnd20150101At000000Returns20150101At050000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Hours = 5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 1, 5, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 6, 2015 at 12:00:00 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 5 days and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith5DaysAnd20150101At000000Returns20150106At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Days = 5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 6, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns February 5, 2015 at 12:00:00 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 5 weeks and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith5WeeksAnd20150101At000000Returns20150205At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Weeks = 5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 2, 5, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns June 1, 2015 at 12:00:00 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 5 months and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith5MonthsAnd20150101At000000Returns20150601At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Months = 5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 6, 1, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 1, 2020 at 12:00:00 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 5 years and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith5YearsAnd20150101At000000Returns20200101At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Years = 5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2020, 1, 1, 0, 0, 0), endTime);
+        }
+
+        #endregion
+
+        #region Get End Time (Fractional Units)
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 1, 2015 at 12:00:01.500 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 1.5 seconds and start time of January 1, 2015 at 12:00:00.00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith1Point5SecondsAnd20150101At000000000Returns20150101At000001500()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Seconds = 1.5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 1, 0, 0, 1, 500), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 1, 2015 at 12:01:30 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 1.5 minutes and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith1Point5MinutesAnd20150101At000000Returns20150101At000130()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Minutes = 1.5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 1, 0, 1, 30), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 1, 2015 at 01:30:00 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 1.5 hours and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith1Point5HoursAnd20150101At000000Returns20150101At013000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Hours = 1.5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 1, 1, 30, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 2, 2015 at 12:00:00 p.m. for a <see
+        /// cref="TimeSpanToken"/> for 1.5 days and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith1Point5DaysAnd20150101At000000Returns20150102At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Days = 1.5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 2, 12, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns January 11, 2015 at 12:00:00 p.m. for a <see
+        /// cref="TimeSpanToken"/> for 1.5 weeks and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith1Point5WeeksAnd20150101At000000Returns20150111At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Weeks = 1.5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 11, 12, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns February 15, 2015 at 12:00:00 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 1.5 months and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith1Point5MonthsAnd20150101At000000Returns20150215At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Months = 1.5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 2, 15, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="TimeSpanToken.GetEndTime"/> returns July 1, 2016 at 12:00:00 a.m. for a <see
+        /// cref="TimeSpanToken"/> for 1.5 years and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith1Point5YearsAnd20150101At000000Returns20160701At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            TimeSpanToken timeSpanToken = new TimeSpanToken { Years = 1.5 };
+
+            // Act
+            DateTime endTime = timeSpanToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2016, 7, 1, 0, 0, 0), endTime);
+        }
+
+        #endregion
+
+        #region Helper Methods
 
         /// <summary>
         /// Asserts that a <see cref="TimerStartToken"/> is an instance of the <see cref="TimeSpanToken"/> class and

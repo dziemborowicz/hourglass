@@ -19,7 +19,7 @@ namespace Hourglass.Test
     [TestClass]
     public class DateTimeTokenTest
     {
-        #region Invalid Input
+        #region Parse Invalid Input
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> throws a <see
@@ -79,7 +79,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Day of Week (Next)
+        #region Parse Day of Week (Next)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns next Monday with
@@ -881,7 +881,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Day of Week (After Next)
+        #region Parse Day of Week (After Next)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns Monday after next with
@@ -1417,7 +1417,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Day of Week (After Next)
+        #region Parse Day of Week (After Next)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns Monday next week with
@@ -1953,7 +1953,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Noon
+        #region Parse Noon
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns noon with
@@ -2337,7 +2337,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Midnight
+        #region Parse Midnight
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns midnight with
@@ -2531,7 +2531,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Hour
+        #region Parse Hour
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 1:00:00 p.m. with
@@ -3637,7 +3637,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Hour and Minute
+        #region Parse Hour and Minute
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:00 p.m. with
@@ -4382,7 +4382,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Hour, Minute, and Second
+        #region Parse Hour, Minute, and Second
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns 2:30:15 p.m. with
@@ -5127,7 +5127,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Day
+        #region Parse Day
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns day 1 with
@@ -5283,7 +5283,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Month
+        #region Parse Month
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns January with
@@ -5743,7 +5743,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Day and Month (Long Form)
+        #region Parse Day and Month (Long Form)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns February 14 with
@@ -6089,7 +6089,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Month and Year (Long Form)
+        #region Parse Month and Year (Long Form)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns February 2015 with
@@ -6169,7 +6169,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Day, Month, and Year (Long Form)
+        #region Parse Day, Month, and Year (Long Form)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns February 14, 2015 with
@@ -6705,7 +6705,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Day and Month (Short Form)
+        #region Parse Day and Month (Short Form)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns November 10 with
@@ -6823,7 +6823,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Month and Year (Short Form)
+        #region Parse Month and Year (Short Form)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns November 2012 with
@@ -7169,7 +7169,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Day, Month, and Year (Short Form)
+        #region Parse Day, Month, and Year (Short Form)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns October 11, 2012 with
@@ -7686,7 +7686,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Relative Date
+        #region Parse Relative Date
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns today with
@@ -7728,7 +7728,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Special Date (New Year)
+        #region Parse Special Date (New Year)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns New Year with
@@ -7770,7 +7770,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Special Date (Christmas Day)
+        #region Parse Special Date (Christmas Day)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns Christmas Day with
@@ -7888,7 +7888,7 @@ namespace Hourglass.Test
 
         #endregion
         
-        #region Special Date (New Year's Eve)
+        #region Parse Special Date (New Year's Eve)
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns New Year's Eve with
@@ -7949,7 +7949,7 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Date and Time
+        #region Parse Date and Time
 
         /// <summary>
         /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> returns next Friday at
@@ -8561,7 +8561,493 @@ namespace Hourglass.Test
 
         #endregion
 
-        #region Helpers
+        #region Get End Time (Day of Week)
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 5, 2015 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for next Monday and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithNextMondayAnd20150101At000000Returns20150105At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Monday, DayOfWeekRelation = DayOfWeekRelation.Next },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 5, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 2, 2015 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for next Friday and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithNextFridayAnd20150101At000000Returns20150102At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Friday, DayOfWeekRelation = DayOfWeekRelation.Next },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 2, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 12, 2015 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for Monday after next and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithMondayAfterNextAnd20150101At000000Returns20150112At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Monday, DayOfWeekRelation = DayOfWeekRelation.AfterNext },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 12, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 9, 2015 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for Friday after next and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithFridayAfterNextAnd20150101At000000Returns20150109At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Friday, DayOfWeekRelation = DayOfWeekRelation.AfterNext },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 9, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 5, 2015 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for Monday next week and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithMondayNextWeekAnd20150101At000000Returns20150105At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Monday, DayOfWeekRelation = DayOfWeekRelation.NextWeek },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 5, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 9, 2015 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for Friday next week and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithFridayNextWeekAnd20150101At000000Returns20150109At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Friday, DayOfWeekRelation = DayOfWeekRelation.NextWeek },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 9, 0, 0, 0), endTime);
+        }
+
+        #endregion
+
+        #region Get End Time (Normal Date)
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 14, 2015 at 12:00:00 p.m. for a <see
+        /// cref="DateTimeToken"/> for 14 and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith14And20150101At000000Returns20150114At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new NormalDateToken { Day = 14 },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 14, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns February 1, 2015 at 12:00:00 p.m. for a <see
+        /// cref="DateTimeToken"/> for February and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithFebruaryAnd20150101At000000Returns20150201At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new NormalDateToken { Month = 2 },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 2, 1, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns February 14, 2015 at 12:00:00 p.m. for a <see
+        /// cref="DateTimeToken"/> for February 14 and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithFebruary14And20150101At000000Returns20150214At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new NormalDateToken { Month = 2, Day = 14 },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 2, 14, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 1, 2016 at 12:00:00 p.m. for a <see
+        /// cref="DateTimeToken"/> for 2016 and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith2016And20150101At000000Returns20160101At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new NormalDateToken { Year = 2016 },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2016, 1, 1, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns February 1, 2016 at 12:00:00 p.m. for a <see
+        /// cref="DateTimeToken"/> for February, 2016 and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithFebruary2016And20150101At000000Returns20160201At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new NormalDateToken { Year = 2016, Month = 2 },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2016, 2, 1, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns February 14, 2016 at 12:00:00 p.m. for a <see
+        /// cref="DateTimeToken"/> for February 14, 2016 and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithFebruary142016And20150101At000000Returns20160214At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new NormalDateToken { Year = 2016, Month = 2, Day = 14 },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2016, 2, 14, 0, 0, 0), endTime);
+        }
+
+        #endregion
+
+        #region Get End Time (Relative Date)
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 1, 2015 at 12:00:00 p.m. for a <see
+        /// cref="DateTimeToken"/> for today at 12 p.m. and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithTodayAnd20150101At000000Returns20150101At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new RelativeDateToken { RelativeDate = RelativeDate.Today },
+                TimeToken = new NormalTimeToken { HourPeriod = HourPeriod.Pm, Hour = 12, Minute = 0, Second = 0 }
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 1, 12, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 2, 2015 at 12:00:00 p.m. for a <see
+        /// cref="DateTimeToken"/> for tomorrow at 12 p.m. and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithTomorrowAnd20150101At000000Returns20150102At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new RelativeDateToken { RelativeDate = RelativeDate.Tomorrow },
+                TimeToken = new NormalTimeToken { HourPeriod = HourPeriod.Pm, Hour = 12, Minute = 0, Second = 0 }
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 2, 12, 0, 0), endTime);
+        }
+
+        #endregion
+
+        #region Get End Time (Special Date)
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 1, 2016 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for the New Year and start time of December 31, 2015 at 10:00:00 p.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithNewYearAnd20151231At220000Returns20160101At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 12, 31, 22, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new SpecialDateToken { SpecialDate = SpecialDate.NewYear },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2016, 1, 1, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns December 25, 2015 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for Christmas Day and start time of December 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithChristmasDayAnd20151201At000000Returns20151225At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 12, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new SpecialDateToken { SpecialDate = SpecialDate.ChristmasDay },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 12, 25, 0, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns December 31, 2015 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for New Year's Eve and start time of December 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithNewYearsEveAnd20151201At000000Returns20151231At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 12, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new SpecialDateToken { SpecialDate = SpecialDate.NewYearsEve },
+                TimeToken = new EmptyTimeToken()
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 12, 31, 0, 0, 0), endTime);
+        }
+
+        #endregion
+
+        #region Get End Time (Normal Time)
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 1, 2015 at 3:45:15 p.m. for a <see
+        /// cref="DateTimeToken"/> for 3:45:15 p.m. and start time of January 1, 2015 at 12:00:00 p.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith154515And20150101At120000Returns20150101At154515()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 12, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new EmptyDateToken(),
+                TimeToken = new NormalTimeToken { HourPeriod = HourPeriod.Pm, Hour = 3, Minute = 45, Second = 15 }
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 1, 15, 45, 15), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 2, 2015 at 3:45:15 a.m. for a <see
+        /// cref="DateTimeToken"/> for 3:45:15 a.m. and start time of January 1, 2015 at 12:00:00 p.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWith034515And20150101At120000Returns20150102At034515()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 12, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new EmptyDateToken(),
+                TimeToken = new NormalTimeToken { HourPeriod = HourPeriod.Am, Hour = 3, Minute = 45, Second = 15 }
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 2, 3, 45, 15), endTime);
+        }
+
+        #endregion
+
+        #region Get End Time (Special Time)
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 1, 2015 at 12:00:00 p.m. for a <see
+        /// cref="DateTimeToken"/> for midday and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithMiddayAnd20150101At000000Returns20150101At120000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new EmptyDateToken(),
+                TimeToken = new SpecialTimeToken { SpecialTime = SpecialTime.Midday }
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 1, 12, 0, 0), endTime);
+        }
+
+        /// <summary>
+        /// Tests that <see cref="DateTimeToken.GetEndTime"/> returns January 2, 2015 at 12:00:00 a.m. for a <see
+        /// cref="DateTimeToken"/> for midnight and start time of January 1, 2015 at 12:00:00 a.m.
+        /// </summary>
+        [TestMethod]
+        public void GetEndTimeWithMidnightAnd20150101At000000Returns20150102At000000()
+        {
+            // Arrange
+            DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTimeToken dateTimeToken = new DateTimeToken
+            {
+                DateToken = new EmptyDateToken(),
+                TimeToken = new SpecialTimeToken { SpecialTime = SpecialTime.Midnight }
+            };
+
+            // Act
+            DateTime endTime = dateTimeToken.GetEndTime(startTime);
+
+            // Assert
+            Assert.AreEqual(new DateTime(2015, 1, 2, 0, 0, 0), endTime);
+        }
+
+        #endregion
+
+        #region Helper Methods
 
         /// <summary>
         /// Asserts that a <see cref="DateToken"/> is an instance of the <see cref="DayOfWeekDateToken"/> class and
