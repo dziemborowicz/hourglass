@@ -58,7 +58,7 @@ namespace Hourglass.Extensions
             // Seconds
             parts.Add(GetStringWithUnits(timeSpan.Seconds, "Second", provider));
 
-            // Trim the last character
+            // Join parts
             return string.Join(
                 Resources.ResourceManager.GetString("TimeSpanExtensionsUnitSeparator", provider),
                 parts);

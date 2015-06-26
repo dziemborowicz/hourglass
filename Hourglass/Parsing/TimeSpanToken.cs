@@ -153,7 +153,7 @@ namespace Hourglass.Parsing
                     parts.Add(GetStringWithUnits(this.Seconds, "Second", provider));
                 }
 
-                // Trim the last character
+                // Join parts
                 return string.Join(
                     Resources.ResourceManager.GetString("TimeSpanTokenUnitSeparator", provider),
                     parts);
