@@ -51,7 +51,7 @@ namespace Hourglass.Windows
         public NotificationAreaIcon()
         {
             this.notifyIcon = new NotifyIcon();
-            this.notifyIcon.Icon = new Icon(Resources.AppIcon, SystemInformation.SmallIconSize);
+            this.notifyIcon.Icon = new Icon(Resources.TrayIcon, SystemInformation.SmallIconSize);
             this.notifyIcon.MouseDown += this.NotifyIconMouseDown;
 
             this.notifyIcon.BalloonTipClicked += this.BalloonTipClicked;

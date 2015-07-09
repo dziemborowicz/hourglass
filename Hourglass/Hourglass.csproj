@@ -191,8 +191,8 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AppIcon.ai" />
     <None Include="Resources\AppIcon.ico" />
+    <None Include="Resources\TrayIcon.ico" />
     <Content Include="Resources\BeepLoud.wav" />
     <Content Include="Resources\BeepNormal.wav" />
     <Content Include="Resources\BeepQuiet.wav" />
