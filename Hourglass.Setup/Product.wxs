@@ -10,7 +10,6 @@
         <Property Id="ARPPRODUCTICON" Value="AppIcon.exe"/>
         <Property Id="ApplicationFolderName" Value="Hourglass"/>
         <Property Id="WixAppFolder" Value="WixPerMachineFolder"/>
-        <UIRef Id="WixUI_Advanced"/>
 
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder">
