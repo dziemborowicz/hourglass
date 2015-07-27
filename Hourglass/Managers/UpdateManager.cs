@@ -115,8 +115,7 @@ namespace Hourglass.Managers
         /// </summary>
         public override void Initialize()
         {
-            this.GetUpdateInfoAsync()
-                .ContinueWith(task => this.SetUpdateInfo(task.Result));
+            Task.Factory.StartNew(() => this.SetUpdateInfo(this.FetchUpdateInfo()));
         }
 
         /// <summary>
@@ -139,12 +138,12 @@ namespace Hourglass.Managers
         /// <summary>
         /// Fetches the latest <see cref="UpdateInfo"/> from the <see cref="UpdateCheckUrl"/>.
         /// </summary>
-        /// <returns>The task object representing the asynchronous operation.</returns>
-        private async Task<UpdateInfo> GetUpdateInfoAsync()
+        /// <returns>An <see cref="UpdateInfo"/>.</returns>
+        private UpdateInfo FetchUpdateInfo()
         {
             try
             {
-                HttpWebRequest request = WebRequest.CreateHttp(UpdateCheckUrl);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(UpdateCheckUrl);
                 request.UserAgent = string.Format(
                     "Mozilla/5.0 ({0}) {1}/{2} (UUID: {3})",
                     Environment.OSVersion.VersionString,
@@ -152,7 +151,7 @@ namespace Hourglass.Managers
                     this.CurrentVersion,
                     this.UniqueId);
 
-                using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
                     Stream responseStream = response.GetResponseStream();
                     if (responseStream != null)
@@ -183,14 +182,14 @@ namespace Hourglass.Managers
             {
                 this.latestVersion = new Version(updateInfo.LatestVersion);
                 this.updateUri = new Uri(updateInfo.UpdateUrl);
-
-                this.OnPropertyChanged("LatestVersion", "UpdateUri");
-                return true;
             }
             catch
             {
                 return false;
             }
+
+            this.OnPropertyChanged("LatestVersion", "UpdateUri");
+            return true;
         }
     }
 }
