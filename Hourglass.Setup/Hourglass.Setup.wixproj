@@ -11,6 +11,12 @@
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <Win81SDK>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1@InstallationFolder)</Win81SDK>
+    <SignToolPath Condition=" ('$(SignToolPath)'=='') and Exists('$(Win81SDK)\bin\x86\signtool.exe') ">$(Win81SDK)\bin\x86\signtool.exe</SignToolPath>
+    <Win8SDK>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.0@InstallationFolder)</Win8SDK>
+    <SignToolPath Condition=" ('$(SignToolPath)'=='') and Exists('$(Win8SDK)\bin\x86\signtool.exe') ">$(Win8SDK)\bin\x86\signtool.exe</SignToolPath>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
@@ -19,6 +25,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <SignCabs>true</SignCabs>
+    <SignOutput>true</SignOutput>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />
@@ -40,4 +48,16 @@
     </WixExtension>
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
+  <Target Name="SignCabs">
+    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 CE0BA5E4B388D469012D010B514D493DBA91B022 /t http://timestamp.comodoca.com/authenticode &quot;%(SignCabs.FullPath)&quot;" />
+  </Target>
+  <Target Name="SignMsi">
+    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 CE0BA5E4B388D469012D010B514D493DBA91B022 /t http://timestamp.comodoca.com/authenticode &quot;%(SignMsi.FullPath)&quot;" />
+  </Target>
+  <Target Name="SignBundleEngine">
+    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 CE0BA5E4B388D469012D010B514D493DBA91B022 /t http://timestamp.comodoca.com/authenticode &quot;@(SignBundleEngine)&quot;" />
+  </Target>
+  <Target Name="SignBundle">
+    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 CE0BA5E4B388D469012D010B514D493DBA91B022 /t http://timestamp.comodoca.com/authenticode &quot;@(SignBundle)&quot;" />
+  </Target>
 </Project>

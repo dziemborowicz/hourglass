@@ -204,4 +204,7 @@
     <None Include="Resources\Usage.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild" Condition=" ('$(Configuration)' == 'Release') Or ('$(Configuration)' == 'Release Portable') ">
+    <SignFile CertificateThumbprint="CE0BA5E4B388D469012D010B514D493DBA91B022" SigningTarget="$(TargetPath)" TimestampUrl="http://timestamp.comodoca.com/authenticode" TargetFrameworkVersion="$(TargetFrameworkVersion)" />
+  </Target>
 </Project>
