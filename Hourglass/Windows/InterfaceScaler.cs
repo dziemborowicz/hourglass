@@ -26,9 +26,15 @@ namespace Hourglass.Windows
 
         /// <summary>
         /// The default margin for the <see cref="Grid"/> control containing the controls of the <see
-        /// cref="timerWindow"/>.
+        /// cref="timerWindow"/> when the current environment and platform is Windows 8.1 or older.
         /// </summary>
-        private const double BaseControlsGridMargin = 10;
+        private const double BaseControlsGridMarginForWindows81AndOlder = 10;
+
+        /// <summary>
+        /// The default margin for the <see cref="Grid"/> control containing the controls of the <see
+        /// cref="timerWindow"/> when the current environment and platform is Windows 10 or newer.
+        /// </summary>
+        private const double BaseControlsGridMarginForWindows10AndNewer = 13;
 
         /// <summary>
         /// The default margin for the <see cref="StackPanel"/> control containing the controls of the <see
@@ -203,7 +209,10 @@ namespace Hourglass.Windows
         /// <seealso cref="GetReducedScaleFactor"/>
         private void ScaleControls(double baseScaleFactor, double reducedScaleFactor)
         {
-            this.innerGrid.Margin = new Thickness(reducedScaleFactor * BaseControlsGridMargin);
+            double baseControlsGridMargin = EnvironmentExtensions.IsWindows10OrNewer
+                ? BaseControlsGridMarginForWindows10AndNewer
+                : BaseControlsGridMarginForWindows81AndOlder;
+            this.innerGrid.Margin = new Thickness(reducedScaleFactor * baseControlsGridMargin);
 
             this.controlsPanel.Margin = new Thickness(
                 left: reducedScaleFactor * BaseControlsPanelMargin,
