@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4E327D2C-9171-4596-82C5-A9C3CF5028E4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hourglass</RootNamespace>
+    <AssemblyName>Hourglass</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug Portable|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug Portable\</OutputPath>
+    <DefineConstants>DEBUG;PORTABLE;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Portable|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release Portable\</OutputPath>
+    <DefineConstants>PORTABLE;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\App.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.cs" />
+    <Compile Include="AppEntry.cs" />
+    <Compile Include="CommandLineArguments.cs" />
+    <Compile Include="Extensions\CultureInfoExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DayOfWeekExtensions.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\EnvironmentExtensions.cs" />
+    <Compile Include="Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="Extensions\IRestorableWindow.cs" />
+    <Compile Include="Extensions\MathExtensions.cs" />
+    <Compile Include="Extensions\ResourceManagerExtensions.cs" />
+    <Compile Include="Extensions\TimeSpanExtensions.cs" />
+    <Compile Include="Extensions\WindowExtensions.cs" />
+    <Compile Include="Managers\AppManager.cs" />
+    <Compile Include="Managers\ColorManager.cs" />
+    <Compile Include="Managers\ErrorManager.cs" />
+    <Compile Include="Managers\KeepAwakeManager.cs" />
+    <Compile Include="Managers\Manager.cs" />
+    <Compile Include="Managers\NotificationAreaIconManager.cs" />
+    <Compile Include="Managers\SettingsManager.cs" />
+    <Compile Include="Managers\SoundManager.cs" />
+    <Compile Include="Managers\TimerManager.cs" />
+    <Compile Include="Managers\TimerOptionsManager.cs" />
+    <Compile Include="Managers\TimerStartManager.cs" />
+    <Compile Include="Managers\UpdateManager.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="Parsing\DateTimeToken.cs" />
+    <Compile Include="Parsing\DateToken.cs" />
+    <Compile Include="Parsing\DayOfWeekDateToken.cs" />
+    <Compile Include="Parsing\EmptyDateToken.cs" />
+    <Compile Include="Parsing\EmptyTimeToken.cs" />
+    <Compile Include="Parsing\NormalDateToken.cs" />
+    <Compile Include="Parsing\NormalTimeToken.cs" />
+    <Compile Include="Parsing\RelativeDateToken.cs" />
+    <Compile Include="Parsing\SpecialDateToken.cs" />
+    <Compile Include="Parsing\SpecialTimeToken.cs" />
+    <Compile Include="Parsing\TimeSpanToken.cs" />
+    <Compile Include="Parsing\TimeToken.cs" />
+    <Compile Include="Parsing\TimerStartToken.cs" />
+    <Compile Include="Serialization\TimerInfo.cs" />
+    <Compile Include="Serialization\TimerInfoList.cs" />
+    <Compile Include="Serialization\TimerOptionsInfo.cs" />
+    <Compile Include="Serialization\TimerStartInfo.cs" />
+    <Compile Include="Serialization\TimerStartInfoList.cs" />
+    <Compile Include="Serialization\UpdateInfo.cs" />
+    <Compile Include="Serialization\WindowSizeInfo.cs" />
+    <Compile Include="Timing\Color.cs" />
+    <Compile Include="Timing\Sound.cs" />
+    <Compile Include="Timing\Timer.cs" />
+    <Compile Include="Timing\TimerBase.cs" />
+    <Compile Include="Timing\TimerOptions.cs" />
+    <Compile Include="Timing\TimerStart.cs" />
+    <Compile Include="Windows\ContextMenu.cs" />
+    <Compile Include="Windows\ErrorDialog.xaml.cs">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\InterfaceScaler.cs" />
+    <Compile Include="Windows\MultiplierConverter.cs" />
+    <Compile Include="Windows\NotificationAreaIcon.cs" />
+    <Compile Include="Windows\SizeToFitTextBox.cs" />
+    <Compile Include="Windows\SoundPlayer.cs" />
+    <Compile Include="Windows\TimerWindow.xaml.cs">
+      <DependentUpon>TimerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\UsageDialog.xaml.cs">
+      <DependentUpon>UsageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Watermark.cs" />
+    <Compile Include="Windows\WatermarkAdorner.cs" />
+    <Compile Include="Windows\WindowSize.cs" />
+    <Page Include="Windows\ErrorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TimerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\UsageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\PortableSettingsProvider.cs" />
+    <Compile Include="Properties\Settings.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Properties\App.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AppIcon.ico" />
+    <None Include="Resources\TrayIcon.ico" />
+    <Content Include="Resources\BeepLoud.wav" />
+    <Content Include="Resources\BeepNormal.wav" />
+    <Content Include="Resources\BeepQuiet.wav" />
+    <None Include="Resources\Usage.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild" Condition=" ('$(Configuration)' == 'Release') Or ('$(Configuration)' == 'Release Portable') ">
+    <SignFile CertificateThumbprint="CE0BA5E4B388D469012D010B514D493DBA91B022" SigningTarget="$(TargetPath)" TimestampUrl="http://timestamp.comodoca.com/authenticode" TargetFrameworkVersion="$(TargetFrameworkVersion)" />
+  </Target>
+</Project>

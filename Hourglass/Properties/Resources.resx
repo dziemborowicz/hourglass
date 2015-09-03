@@ -1,0 +1,1080 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AppIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BeepLoud" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BeepLoud.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="BeepNormal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BeepNormal.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="BeepQuiet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BeepQuiet.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="CultureName" xml:space="preserve">
+    <value>en-US</value>
+    <comment>The name of the culture for the resources</comment>
+  </data>
+  <data name="DateTimeTokenDateOnlyFormatString" xml:space="preserve">
+    <value>{0}</value>
+    <comment>A format string that contains the date only, where {0} is the date (e.g., "{0}" =&gt; "February 14, 2015")</comment>
+  </data>
+  <data name="DateTimeTokenDateTimeFormatString" xml:space="preserve">
+    <value>{0} at {1}</value>
+    <comment>A format string that is the concatenation of the date and time, where {0} is the date and {1} is the time (e.g., "{0} at {1}" =&gt; "February 14, 2015 at 2 pm")</comment>
+  </data>
+  <data name="DateTimeTokenTimeOnlyFormatString" xml:space="preserve">
+    <value>until {0}</value>
+    <comment>A format string that contains the time only, where {0} is the time (e.g., "until {0}" =&gt; "until 2 pm")</comment>
+  </data>
+  <data name="RelativeDateTokenTodayName" xml:space="preserve">
+    <value>today</value>
+    <comment>The friendly name for today</comment>
+  </data>
+  <data name="RelativeDateTokenTodayPattern" xml:space="preserve">
+    <value>todd?ay</value>
+    <comment>The regular expression that matches today</comment>
+  </data>
+  <data name="RelativeDateTokenTomorrowName" xml:space="preserve">
+    <value>tomorrow</value>
+    <comment>The friendly name for tomorrow</comment>
+  </data>
+  <data name="RelativeDateTokenTomorrowPattern" xml:space="preserve">
+    <value>tomm?orr?ow</value>
+    <comment>The regular expression that matches tomorrow</comment>
+  </data>
+  <data name="SpecialDateTokenChristmasDayName" xml:space="preserve">
+    <value>Christmas Day</value>
+    <comment>The friendly name for Christmas Day</comment>
+  </data>
+  <data name="SpecialDateTokenChristmasDayPattern" xml:space="preserve">
+    <value>(ch?rist?|x)-?mass?(\s*day)?</value>
+    <comment>The regular expression that matches Christmas Day</comment>
+  </data>
+  <data name="SpecialDateTokenNewYearName" xml:space="preserve">
+    <value>New Year</value>
+    <comment>The friendly name for the New Year</comment>
+  </data>
+  <data name="SpecialDateTokenNewYearPattern" xml:space="preserve">
+    <value>ny|new\s*year</value>
+    <comment>The regular expression that matches the New Year</comment>
+  </data>
+  <data name="SpecialDateTokenNewYearsEveName" xml:space="preserve">
+    <value>New Year's Eve</value>
+    <comment>The friendly name for New Year's Eve</comment>
+  </data>
+  <data name="SpecialDateTokenNewYearsEvePattern" xml:space="preserve">
+    <value>nye|new\s*year('?s)?\s*eve</value>
+    <comment>The regular expression that matches New Year's Eve</comment>
+  </data>
+  <data name="SpecialTimeTokenMiddayName" xml:space="preserve">
+    <value>12 noon</value>
+    <comment>The friendly name for 12 noon</comment>
+  </data>
+  <data name="SpecialTimeTokenMiddayPattern" xml:space="preserve">
+    <value>(12([.:]00([.:]00)?)?\s*)?(noon|mid(-?d)?ay)</value>
+    <comment>The regular expression that matches 12 noon</comment>
+  </data>
+  <data name="SpecialTimeTokenMidnightName" xml:space="preserve">
+    <value>12 midnight</value>
+    <comment>The friendly name for 12 midnight</comment>
+  </data>
+  <data name="SpecialTimeTokenMidnightPattern" xml:space="preserve">
+    <value>(12([.:]00([.:]00)?)?\s*)?mid-?night</value>
+    <comment>The regular expression that matches 12 midnight</comment>
+  </data>
+  <data name="TimeSpanExtensions1DayFormatString" xml:space="preserve">
+    <value>{0} day</value>
+    <comment>A format string for one day with units, where {0} is the number of days with a possible fraction part (e.g., "{0} day" =&gt; "1 day")</comment>
+  </data>
+  <data name="TimeSpanExtensionsNDaysFormatString" xml:space="preserve">
+    <value>{0} days</value>
+    <comment>A format string for N days with units, where {0} is the number of days with a possible fraction part (e.g., "{0} days" =&gt; "5 days")</comment>
+  </data>
+  <data name="TimeSpanExtensions1HourFormatString" xml:space="preserve">
+    <value>{0} hour</value>
+    <comment>A format string for one hour with units, where {0} is the number of hours with a possible fraction part (e.g., "{0} hour" =&gt; "1 hour")</comment>
+  </data>
+  <data name="TimeSpanExtensionsNHoursFormatString" xml:space="preserve">
+    <value>{0} hours</value>
+    <comment>A format string for N hours with units, where {0} is the number of hours with a possible fraction part (e.g., "{0} hours" =&gt; "5 hours")</comment>
+  </data>
+  <data name="TimeSpanExtensions1MinuteFormatString" xml:space="preserve">
+    <value>{0} minute</value>
+    <comment>A format string for one minute with units, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minute" =&gt; "1 minute")</comment>
+  </data>
+  <data name="TimeSpanExtensionsNMinutesFormatString" xml:space="preserve">
+    <value>{0} minutes</value>
+    <comment>A format string for N minutes with units, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minutes" =&gt; "5 minutes")</comment>
+  </data>
+  <data name="TimeSpanExtensions1SecondFormatString" xml:space="preserve">
+    <value>{0} second</value>
+    <comment>A format string for one second with units, where {0} is the number of seconds with a possible fraction part (e.g., "{0} second" =&gt; "1 second")</comment>
+  </data>
+  <data name="TimeSpanExtensionsNSecondsFormatString" xml:space="preserve">
+    <value>{0} seconds</value>
+    <comment>A format string for N seconds with units, where {0} is the number of seconds with a possible fraction part (e.g., "{0} seconds" =&gt; "5 seconds")</comment>
+  </data>
+  <data name="TimeSpanToken1DayFormatString" xml:space="preserve">
+    <value>{0} day</value>
+    <comment>A format string for one day with units, where {0} is the number of days with a possible fraction part (e.g., "{0} day" =&gt; "1 day")</comment>
+  </data>
+  <data name="TimeSpanTokenNDaysFormatString" xml:space="preserve">
+    <value>{0} days</value>
+    <comment>A format string for N days with units, where {0} is the number of days with a possible fraction part (e.g., "{0} days" =&gt; "5 days")</comment>
+  </data>
+  <data name="TimeSpanToken1HourFormatString" xml:space="preserve">
+    <value>{0} hour</value>
+    <comment>A format string for one hour with units, where {0} is the number of hours with a possible fraction part (e.g., "{0} hour" =&gt; "1 hour")</comment>
+  </data>
+  <data name="TimeSpanTokenNHoursFormatString" xml:space="preserve">
+    <value>{0} hours</value>
+    <comment>A format string for N hours with units, where {0} is the number of hours with a possible fraction part (e.g., "{0} hours" =&gt; "5 hours")</comment>
+  </data>
+  <data name="TimeSpanToken1MinuteFormatString" xml:space="preserve">
+    <value>{0} minute</value>
+    <comment>A format string for one minute with units, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minute" =&gt; "1 minute")</comment>
+  </data>
+  <data name="TimeSpanTokenNMinutesFormatString" xml:space="preserve">
+    <value>{0} minutes</value>
+    <comment>A format string for N minutes with units, where {0} is the number of minutes with a possible fraction part (e.g., "{0} minutes" =&gt; "5 minutes")</comment>
+  </data>
+  <data name="TimeSpanToken1MonthFormatString" xml:space="preserve">
+    <value>{0} month</value>
+    <comment>A format string for one month with units, where {0} is the number of months with a possible fraction part (e.g., "{0} month" =&gt; "1 month")</comment>
+  </data>
+  <data name="TimeSpanTokenNMonthsFormatString" xml:space="preserve">
+    <value>{0} months</value>
+    <comment>A format string for N months with units, where {0} is the number of months with a possible fraction part (e.g., "{0} months" =&gt; "5 months")</comment>
+  </data>
+  <data name="TimeSpanToken1SecondFormatString" xml:space="preserve">
+    <value>{0} second</value>
+    <comment>A format string for one second with units, where {0} is the number of seconds with a possible fraction part (e.g., "{0} second" =&gt; "1 second")</comment>
+  </data>
+  <data name="TimeSpanTokenNSecondsFormatString" xml:space="preserve">
+    <value>{0} seconds</value>
+    <comment>A format string for N seconds with units, where {0} is the number of seconds with a possible fraction part (e.g., "{0} seconds" =&gt; "5 seconds")</comment>
+  </data>
+  <data name="TimeSpanToken1WeekFormatString" xml:space="preserve">
+    <value>{0} week</value>
+    <comment>A format string for one week with units, where {0} is the number of weeks with a possible fraction part (e.g., "{0} week" =&gt; "1 week")</comment>
+  </data>
+  <data name="TimeSpanTokenNWeeksFormatString" xml:space="preserve">
+    <value>{0} weeks</value>
+    <comment>A format string for N weeks with units, where {0} is the number of weeks with a possible fraction part (e.g., "{0} weeks" =&gt; "5 weeks")</comment>
+  </data>
+  <data name="TimeSpanToken1YearFormatString" xml:space="preserve">
+    <value>{0} year</value>
+    <comment>A format string for one year with units, where {0} is the number of years with a possible fraction part (e.g., "{0} year" =&gt; "1 year")</comment>
+  </data>
+  <data name="TimeSpanTokenNYearsFormatString" xml:space="preserve">
+    <value>{0} years</value>
+    <comment>A format string for N years with units, where {0} is the number of years with a possible fraction part (e.g., "{0} years" =&gt; "5 years")</comment>
+  </data>
+  <data name="Usage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Usage.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="TimeSpanTokenUnitSeparator" xml:space="preserve">
+    <value> </value>
+    <comment>The separator between the units of a time span (e.g., " " =&gt; "5 minutes 30 seconds", " : " =&gt; "5 minutes : 30 seconds")</comment>
+  </data>
+  <data name="TimeSpanTokenLongFormPattern" xml:space="preserve">
+    <value>^
+(
+    \s*
+    (
+        (
+            (?&lt;years&gt;\d+|\d*[.,/]\d+)
+            \s*
+            (y|yrs?|years?)
+            (
+                \s*
+                (?&lt;months&gt;\d+|\d*[.,/]\d+)
+                (\s+|$)
+            )?
+        )
+        |
+        (
+            (?&lt;months&gt;\d+|\d*[.,/]\d+)
+            \s*
+            (mo|mon?s?|months?)
+            (
+                \s*
+                (?&lt;days&gt;\d+|\d*[.,/]\d+)
+                (\s+|$)
+            )?
+        )
+        |
+        (
+            (?&lt;weeks&gt;\d+|\d*[.,/]\d+)
+            \s*
+            (w|wks?|weeks?)
+            (
+                \s*
+                (?&lt;days&gt;\d+|\d*[.,/]\d+)
+                (\s+|$)
+            )?
+        )
+        |
+        (
+            (?&lt;days&gt;\d+|\d*[.,/]\d+)
+            \s*
+            (d|dys?|days?)
+            (
+                \s*
+                (?&lt;hours&gt;\d+|\d*[.,/]\d+)
+                (\s+|$)
+            )?
+        )
+        |
+        (
+            (?&lt;hours&gt;\d+|\d*[.,/]\d+)
+            \s*
+            (h|hrs?|hours?)
+            (
+                \s*
+                (?&lt;minutes&gt;\d+|\d*[.,/]\d+)
+                (\s+|$)
+            )?
+        )
+        |
+        (
+            (?&lt;minutes&gt;\d+|\d*[.,/]\d+)
+            \s*
+            (m|mins?|minutes?)
+            (
+                \s*
+                (?&lt;seconds&gt;\d+|\d*[.,/]\d+)
+                (\s+|$)
+            )?
+        )
+        |
+        (
+            (?&lt;seconds&gt;\d+|\d*[.,/]\d+)
+            \s*
+            (s|secs?|seconds?)
+        )
+    )
+    \s*
+)+
+$</value>
+    <comment>A regular expression that matches time spans in a long format (e.g., "5 minutes 30 seconds", "1 day 15 hours 30 minutes", "7 minutes 30", "1.5 hours")</comment>
+  </data>
+  <data name="TimeSpanTokenMinutesOnlyPattern" xml:space="preserve">
+    <value>^
+\s*
+(?&lt;minutes&gt;\d+)
+\s*
+$</value>
+    <comment>A regular expression that matches integer minutes by themselves (e.g., "5", "15")</comment>
+  </data>
+  <data name="TimeSpanTokenShortFormPattern" xml:space="preserve">
+    <value>^
+\s*
+(
+    (
+        (
+            (
+                (?&lt;years&gt;\d+)
+                \s*[.,:\s]\s*
+            )?
+            (?&lt;months&gt;\d+)
+            \s*[.,:\s]\s*
+        )?
+        (?&lt;days&gt;\d+)
+        \s*[.,:\s]\s*
+    )?
+    (?&lt;hours&gt;\d+)
+    \s*[.,:\s]\s*
+)?
+(?&lt;minutes&gt;\d+)
+\s*[.,:\s]\s*
+(?&lt;seconds&gt;\d+)
+\s*
+$</value>
+    <comment>A regular expression that matches time spans in a short format (e.g., "5:30", "1:15:30:00", "7:30")</comment>
+  </data>
+  <data name="DateTimeExtensionsApril" xml:space="preserve">
+    <value>April</value>
+    <comment>The string for April</comment>
+  </data>
+  <data name="DateTimeExtensionsAugust" xml:space="preserve">
+    <value>August</value>
+    <comment>The string for August</comment>
+  </data>
+  <data name="DateTimeExtensionsDecember" xml:space="preserve">
+    <value>December</value>
+    <comment>The string for December</comment>
+  </data>
+  <data name="DateTimeExtensionsFebruary" xml:space="preserve">
+    <value>February</value>
+    <comment>The string for February</comment>
+  </data>
+  <data name="DateTimeExtensionsJanuary" xml:space="preserve">
+    <value>January</value>
+    <comment>The string for January</comment>
+  </data>
+  <data name="DateTimeExtensionsJuly" xml:space="preserve">
+    <value>July</value>
+    <comment>The string for July</comment>
+  </data>
+  <data name="DateTimeExtensionsJune" xml:space="preserve">
+    <value>June</value>
+    <comment>The string for June</comment>
+  </data>
+  <data name="DateTimeExtensionsMarch" xml:space="preserve">
+    <value>March</value>
+    <comment>The string for March</comment>
+  </data>
+  <data name="DateTimeExtensionsMay" xml:space="preserve">
+    <value>May</value>
+    <comment>The string for May</comment>
+  </data>
+  <data name="DateTimeExtensionsNndFormatString" xml:space="preserve">
+    <value>{0}nd</value>
+    <comment>A format string for an n-nd ordinal number (e.g., "{0}nd" =&gt; "2nd")</comment>
+  </data>
+  <data name="DateTimeExtensionsNovember" xml:space="preserve">
+    <value>November</value>
+    <comment>The string for November</comment>
+  </data>
+  <data name="DateTimeExtensionsNrdFormatString" xml:space="preserve">
+    <value>{0}rd</value>
+    <comment>A format string for an n-rd ordinal number (e.g., "{0}rd" =&gt; "3rd")</comment>
+  </data>
+  <data name="DateTimeExtensionsNstFormatString" xml:space="preserve">
+    <value>{0}st</value>
+    <comment>A format string for an n-st ordinal number (e.g., "{0}st" =&gt; "1st")</comment>
+  </data>
+  <data name="DateTimeExtensionsNthFormatString" xml:space="preserve">
+    <value>{0}th</value>
+    <comment>A format string for an n-th ordinal number (e.g., "{0}th" =&gt; "4th")</comment>
+  </data>
+  <data name="DateTimeExtensionsOctober" xml:space="preserve">
+    <value>October</value>
+    <comment>The string for October</comment>
+  </data>
+  <data name="DateTimeExtensionsSeptember" xml:space="preserve">
+    <value>September</value>
+    <comment>The string for September</comment>
+  </data>
+  <data name="DayOfWeekDateTokenAfterNextFormatString" xml:space="preserve">
+    <value>{0} after next</value>
+    <comment>A format string for the date that is one week after the next date that is the specified day of the week, where {0} is the day of the week (e.g., "{0} after next" =&gt; "Wednesday after next")</comment>
+  </data>
+  <data name="DayOfWeekDateTokenDaysOfWeekAfterNextPattern" xml:space="preserve">
+    <value>(?&lt;weekday&gt;(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*)
+(\s*after)?
+\s*(?&lt;afternext&gt;next)</value>
+    <comment>A regular expression that matches days of the week after next (e.g., "Sunday next", "Sunday after next")</comment>
+  </data>
+  <data name="DayOfWeekDateTokenDaysOfWeekNextPattern" xml:space="preserve">
+    <value>((this|next)\s*)?
+(?&lt;weekday&gt;(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*)</value>
+    <comment>A regular expression that matches days of the week (e.g., "Sunday", "this Sunday", "next Sunday")</comment>
+  </data>
+  <data name="DayOfWeekDateTokenDaysOfWeekNextWeekPattern" xml:space="preserve">
+    <value>(?&lt;weekday&gt;(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*)
+\s*(?&lt;nextweek&gt;next\s*w(ee)?k)</value>
+    <comment>A regular expression that matches days of the week next week (e.g., "Sunday next week")</comment>
+  </data>
+  <data name="DayOfWeekDateTokenNextFormatString" xml:space="preserve">
+    <value>{0}</value>
+    <comment>A format string for the next date that is the specified day of the week, where {0} is the day of the week (e.g., "{0}" =&gt; "Wednesday")</comment>
+  </data>
+  <data name="DayOfWeekDateTokenNextWeekFormatString" xml:space="preserve">
+    <value>{0} next week</value>
+    <comment>A format string for the date next week that is the specified day of the week, where {0} is the day of the week (e.g., "{0} next week" =&gt; "Wednesday next week")</comment>
+  </data>
+  <data name="DayOfWeekExtensionsFriday" xml:space="preserve">
+    <value>Friday</value>
+    <comment>The string for Friday</comment>
+  </data>
+  <data name="DayOfWeekExtensionsMonday" xml:space="preserve">
+    <value>Monday</value>
+    <comment>The string for Monday</comment>
+  </data>
+  <data name="DayOfWeekExtensionsSaturday" xml:space="preserve">
+    <value>Saturday</value>
+    <comment>The string for Saturday</comment>
+  </data>
+  <data name="DayOfWeekExtensionsSunday" xml:space="preserve">
+    <value>Sunday</value>
+    <comment>The string for Sunday</comment>
+  </data>
+  <data name="DayOfWeekExtensionsThursday" xml:space="preserve">
+    <value>Thursday</value>
+    <comment>The string for Thursday</comment>
+  </data>
+  <data name="DayOfWeekExtensionsTuesday" xml:space="preserve">
+    <value>Tuesday</value>
+    <comment>The string for Tuesday</comment>
+  </data>
+  <data name="DayOfWeekExtensionsWednesday" xml:space="preserve">
+    <value>Wednesday</value>
+    <comment>The string for Wednesday</comment>
+  </data>
+  <data name="NormalDateTokenDayAndMonthFormatString" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>A format string for a date specified by a day and month in that order, where {0} is the day and {1} is the month (e.g., "{0} {1}" =&gt; "14 February")</comment>
+  </data>
+  <data name="NormalDateTokenDayMonthAndYearFormatString" xml:space="preserve">
+    <value>{0} {1} {2}</value>
+    <comment>A format string for a date specified by a day, month, and year in that order, where {0} is the day, {1} is the month, and {2} is the four-digit year (e.g., "{0} {1} {2}" =&gt; "14 February 2015")</comment>
+  </data>
+  <data name="NormalDateTokenDayOnlyPattern" xml:space="preserve">
+    <value>(the\s*)?
+(?&lt;day&gt;\d\d?)
+(\s*(st|nd|rd|th))</value>
+    <comment>A regular expression that matches days by themselves</comment>
+  </data>
+  <data name="NormalDateTokenDayOnlyFormatString" xml:space="preserve">
+    <value>{0}</value>
+    <comment>A format string for a date specified only by a day, where {0} is the ordinal day (e.g., "{0}" =&gt; "14th")</comment>
+  </data>
+  <data name="NormalDateTokenMonthAndDayFormatString" xml:space="preserve">
+    <value>{1} {0}</value>
+    <comment>A format string for a date specified by a month and day in that order, where {0} is the day and {1} is the month (e.g., "{1} {0}" =&gt; "February 14")</comment>
+  </data>
+  <data name="NormalDateTokenMonthAndYearFormatString" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>A format string for a date specified by a month and year, where {0} is the month and {1} is the four-digit year (e.g., "{0} {1}" =&gt; "February 2015")</comment>
+  </data>
+  <data name="NormalDateTokenMonthDayAndYearFormatString" xml:space="preserve">
+    <value>{1} {0}, {2}</value>
+    <comment>A format string for a date specified by a month, day, and year in that order, where {0} is the day, {1} is the month, and {2} is the four-digit year (e.g., "{1} {0}, {2}" =&gt; "February 14, 2015")</comment>
+  </data>
+  <data name="NormalDateTokenMonthOnlyFormatString" xml:space="preserve">
+    <value>{0}</value>
+    <comment>A format string for a date specified only by a month, where {0} is the month (e.g., "{0}" =&gt; "February")</comment>
+  </data>
+  <data name="NormalDateTokenNumericalDateWithDayFirstPattern" xml:space="preserve">
+    <value>(?&lt;day&gt;\d\d?)
+[.\-/]
+(?&lt;month&gt;\d\d?)
+(
+    [.\-/]
+    (?&lt;year&gt;(\d\d)?\d\d)
+)?</value>
+    <comment>A regular expression that matches numerical dates with day first (e.g., "14/02", "14/02/2003")</comment>
+  </data>
+  <data name="NormalDateTokenNumericalDateWithMonthFirstPattern" xml:space="preserve">
+    <value>(?&lt;month&gt;\d\d?)
+[.\-/]
+(?&lt;day&gt;\d\d?)
+(
+    [.\-/]
+    (?&lt;year&gt;(\d\d)?\d\d)
+)?</value>
+    <comment>A regular expression that matches numerical dates with month first (e.g., "02/14", "02/14/2003")</comment>
+  </data>
+  <data name="NormalDateTokenNumericalDateWithYearFirstPattern" xml:space="preserve">
+    <value>(
+    (?&lt;year&gt;(\d\d)?\d\d)
+    [.\-/]
+)?
+(?&lt;month&gt;\d\d?)
+[.\-/]
+(?&lt;day&gt;\d\d?)</value>
+    <comment>A regular expression that matches numerical dates with year first (e.g., "03.02.14", "2003.02.14")</comment>
+  </data>
+  <data name="NormalDateTokenNumericalMonthAndYearPattern" xml:space="preserve">
+    <value>(?&lt;month&gt;\d\d?)
+[.\-/]
+(?&lt;year&gt;\d\d\d\d)
+|
+(?&lt;year&gt;\d\d\d\d)
+[.\-/]
+(?&lt;month&gt;\d\d?)</value>
+    <comment>A regular expression that matches months with years (e.g., "2/2015", "02/2015")</comment>
+  </data>
+  <data name="NormalDateTokenSpelledDateWithDayFirstPattern" xml:space="preserve">
+    <value>(?&lt;day&gt;\d\d?)
+(\s*(st|nd|rd|th))?
+(\s*of)?
+\s*(?&lt;month&gt;(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)
+(
+    \s*,?\s*
+    (?&lt;year&gt;(\d\d)?\d\d)
+)?</value>
+    <comment>A regular expression that matches spelled dates with day first and optional year (e.g., "14 February", "14 February 2003")</comment>
+  </data>
+  <data name="NormalDateTokenSpelledDateWithMonthFirstPattern" xml:space="preserve">
+    <value>(?&lt;month&gt;(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)
+\s*(?&lt;day&gt;\d\d?)
+(\s*(st|nd|rd|th))?
+(
+    \s*[\s,]\s*
+    (?&lt;year&gt;(\d\d)?\d\d)
+)?</value>
+    <comment>A regular expression that matches spelled dates with month first and optional year (e.g., "February 14", "February 14, 2003")</comment>
+  </data>
+  <data name="NormalDateTokenSpelledMonthAndOptionalYearPattern" xml:space="preserve">
+    <value>(?&lt;month&gt;(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)
+(
+    \s*,?\s*
+    (?&lt;year&gt;\d\d\d\d)
+)?</value>
+    <comment>A regular expression that matches spelled months with optional years (e.g., "Jan", "Feb 2015")</comment>
+  </data>
+  <data name="NormalDateTokenYearOnlyFormatString" xml:space="preserve">
+    <value>{0}</value>
+    <comment>A format string for a date specified only by a year, where {0} is the four-digit year (e.g., "{0}" =&gt; "2015")</comment>
+  </data>
+  <data name="NormalTimeTokenAmSuffix" xml:space="preserve">
+    <value> am</value>
+    <comment>The suffix appended to the hour to designate ante meridiem hours (e.g., " am" =&gt; "8 am")</comment>
+  </data>
+  <data name="NormalTimeTokenHourPartFormatString" xml:space="preserve">
+    <value>{0}</value>
+    <comment>A format string for the hour part of a time, where {0} is the hour (e.g., "{0}" =&gt; "12")</comment>
+  </data>
+  <data name="NormalTimeTokenMiddaySuffix" xml:space="preserve">
+    <value> noon</value>
+    <comment>The suffix appended to 12 to designate midday (e.g., " noon" =&gt; "12 noon")</comment>
+  </data>
+  <data name="NormalTimeTokenMidnightSuffix" xml:space="preserve">
+    <value> midnight</value>
+    <comment>The suffix appended to 12 to designate midnight (e.g., " midnight" =&gt; "12 midnight")</comment>
+  </data>
+  <data name="NormalTimeTokenMinutePartFormatString" xml:space="preserve">
+    <value>:{0:00}</value>
+    <comment>A format string for the minute part of a time appended after the hour part, where {0} is the minute (e.g., "{0:00}" =&gt; "12:30")</comment>
+  </data>
+  <data name="NormalTimeTokenPmSuffix" xml:space="preserve">
+    <value> pm</value>
+    <comment>The suffix appended to the hour to designate post meridiem hours (e.g., " pm" =&gt; "8 pm")</comment>
+  </data>
+  <data name="NormalTimeTokenSecondPartFormatString" xml:space="preserve">
+    <value>:{0:00}</value>
+    <comment>A format string for the second part of a time appended after the minute part, where {0} is the second (e.g., "{0:00}" =&gt; "12:30:15")</comment>
+  </data>
+  <data name="NormalTimeTokenTimeWithoutSeparatorsPattern" xml:space="preserve">
+    <value>(?&lt;hour&gt;\d\d?)
+(
+    (?&lt;minute&gt;\d\d)
+    (?&lt;second&gt;\d\d)?
+)?
+\s*
+(
+    (?&lt;am&gt;a\.?(\s*m\.?)?)
+    |
+    (?&lt;pm&gt;p\.?(\s*m\.?)?)
+    |
+    (?&lt;military&gt;h|hrs|hours)
+    |
+    o'?clock
+)?</value>
+    <comment>A regular expression that matches times without separators (e.g., "5", "5p", "5 pm", "530", "530 p.m.", "53045 p.m.", "1730h")</comment>
+  </data>
+  <data name="NormalTimeTokenTimeWithSeparatorsPattern" xml:space="preserve">
+    <value>(?&lt;hour&gt;\d\d?)
+(
+    [.:]
+    (?&lt;minute&gt;\d\d?)
+    (
+        [.:]
+        (?&lt;second&gt;\d\d?)
+    )?
+)?
+\s*
+(
+    (?&lt;am&gt;a\.?(\s*m\.?)?)
+    |
+    (?&lt;pm&gt;p\.?(\s*m\.?)?)
+    |
+    (?&lt;military&gt;h|hrs|hours)
+    |
+    o'?clock
+)?</value>
+    <comment>A regular expression that matches times with separators (e.g., "5", "5p", "5 pm", "5:30", "5:30 p.m.", "5:30:45 p.m.", "17:30h")</comment>
+  </data>
+  <data name="DateTimeTokenDateOnlyPatternFormatString" xml:space="preserve">
+    <value>^({0})$</value>
+    <comment>A format string for a regular expression that matches a date only, where {0} is the date pattern</comment>
+  </data>
+  <data name="DateTimeTokenDateTimePatternFormatString" xml:space="preserve">
+    <value>^({0})\s+(at\s+)?({1})$</value>
+    <comment>A format string for a regular expression that matches a date and time in that order, where {0} is the date pattern and {1} is the time pattern</comment>
+  </data>
+  <data name="DateTimeTokenTimeDatePatternFormatString" xml:space="preserve">
+    <value>^({0})\s+(on\s+)?({1})$</value>
+    <comment>A format string for a regular expression that matches a time and date in that order, where {0} is the time pattern and {1} is the date pattern</comment>
+  </data>
+  <data name="DateTimeTokenTimeOnlyPatternFormatString" xml:space="preserve">
+    <value>^({0})$</value>
+    <comment>A format string for a regular expression that matches a time only, where {0} is the time pattern</comment>
+  </data>
+  <data name="TimerStartTokenUseDateTimeParserPattern" xml:space="preserve">
+    <value>^\s*(un)?till?\s*</value>
+    <comment>A regular expression that indicates a preference for matching a date and/or time, rather than a time span, when parsing a timer start token</comment>
+  </data>
+  <data name="TimeSpanExtensionsUnitSeparator" xml:space="preserve">
+    <value> </value>
+    <comment>The separator between the units of a time span (e.g., " " =&gt; "5 minutes 30 seconds", " : " =&gt; "5 minutes : 30 seconds")</comment>
+  </data>
+  <data name="ColorManagerBlack" xml:space="preserve">
+    <value>Black</value>
+    <comment>The string for the gray color</comment>
+  </data>
+  <data name="ColorManagerBlue" xml:space="preserve">
+    <value>Blue</value>
+    <comment>The string for the blue color</comment>
+  </data>
+  <data name="ColorManagerDefaultColor" xml:space="preserve">
+    <value>Default color</value>
+    <comment>The string for the default color</comment>
+  </data>
+  <data name="ColorManagerGray" xml:space="preserve">
+    <value>Gray</value>
+    <comment>The string for the gray color</comment>
+  </data>
+  <data name="ColorManagerGreen" xml:space="preserve">
+    <value>Green</value>
+    <comment>The string for the green color</comment>
+  </data>
+  <data name="ColorManagerOrange" xml:space="preserve">
+    <value>Orange</value>
+    <comment>The string for the orange color</comment>
+  </data>
+  <data name="ColorManagerPurple" xml:space="preserve">
+    <value>Purple</value>
+    <comment>The string for the purple color</comment>
+  </data>
+  <data name="ColorManagerRed" xml:space="preserve">
+    <value>Red</value>
+    <comment>The string for the red color</comment>
+  </data>
+  <data name="ColorManagerYellow" xml:space="preserve">
+    <value>Yellow</value>
+    <comment>The string for the yellow color</comment>
+  </data>
+  <data name="SoundManagerLoudBeep" xml:space="preserve">
+    <value>Loud beep</value>
+    <comment>The string for the loud beep sound</comment>
+  </data>
+  <data name="SoundManagerNormalBeep" xml:space="preserve">
+    <value>Normal beep</value>
+    <comment>The string for the normal beep sound</comment>
+  </data>
+  <data name="SoundManagerQuietBeep" xml:space="preserve">
+    <value>Quiet beep</value>
+    <comment>The string for the quiet beep sound</comment>
+  </data>
+  <data name="ErrorManagerErrorHasBeenWritten" xml:space="preserve">
+    <value>The error has been written to "{0}".</value>
+    <comment>The messsage displayed to the user when an error dump is written to a file, where {0} is the path to the file (e.g., "The error has been written to '{0}'." =&gt; "The error has been written to 'C:\error.txt'.")</comment>
+  </data>
+  <data name="ErrorManagerFailedToClean" xml:space="preserve">
+    <value>Failed to clean old error messages.</value>
+    <comment>The message displayed to the user when old error dumps could not be removed</comment>
+  </data>
+  <data name="ErrorManagerUnexpectedError" xml:space="preserve">
+    <value>An unexpected error has occurred</value>
+    <comment>The message displayed to the user when an unexpected error occurs</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionDuplicateSwitchFormatString" xml:space="preserve">
+    <value>Duplicate switch "{0}"</value>
+    <comment>A format string for the error message displayed when a command-line argument switch is specified more than once, where {0} is the switch that is specified more than once (e.g., "Duplicate switch '{0}'." =&gt; "Duplicate switch '--full-screen'.")</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionInvalidTimerInputFormatString" xml:space="preserve">
+    <value>Invalid timer input "{0}"</value>
+    <comment>A format string for the error message displayed when an invalid timer input is specified as a command-line argument, where {0} is the invalid timer input (e.g., "Invalid timer input '{0}'." =&gt; "Invalid timer input 'junk'.")</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString" xml:space="preserve">
+    <value>Invalid value "{1}" for switch "{0}"</value>
+    <comment>A format string for the error message displayed when a command-line argument switch has an invalid value, where {0} is the switch that has the invalid value and {1} is the invalid value (e.g., "Invalid value '{1}' for switch '{0}'." =&gt; "Invalid value 'junk' for switch '--full-screen'.")</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionMissingValueForSwitchFormatString" xml:space="preserve">
+    <value>Missing value for switch "{0}"</value>
+    <comment>A format string for the error message displayed when a command-line argument switch is missing a value, where {0} is the switch that is missing a value (e.g., "Missing value for switch '{0}'." =&gt; "Missing value for switch '--full-screen'.")</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString" xml:space="preserve">
+    <value>Unrecognized switch "{0}"</value>
+    <comment>A format string for the error message displayed when a command-line argument switch is unrecognized, where {0} is the unrecognized switch (e.g., "Unrecognized switch '{0}'." =&gt; "Unrecognized switch '--junk'.")</comment>
+  </data>
+  <data name="ContextMenuAddCustomColorMenuItem" xml:space="preserve">
+    <value>_Add custom color...</value>
+    <comment>The text for the add custom color menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuAlwaysOnTopMenuItem" xml:space="preserve">
+    <value>_Always on top</value>
+    <comment>The text for the always on top menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuClearCustomColorsMenuItem" xml:space="preserve">
+    <value>_Clear custom colors</value>
+    <comment>The text for the clear custom colors menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuClearRecentInputsMenuItem" xml:space="preserve">
+    <value>_Clear recent inputs</value>
+    <comment>The text for the clear recent inputs menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuClearSavedTimersMenuItem" xml:space="preserve">
+    <value>_Clear saved timers</value>
+    <comment>The text for the clear saved timers menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuCloseMenuItem" xml:space="preserve">
+    <value>_Close</value>
+    <comment>The text for the close menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuCloseWhenExpiredMenuItem" xml:space="preserve">
+    <value>Close when _expired</value>
+    <comment>The text for the close when expired menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuColorMenuItem" xml:space="preserve">
+    <value>C_olor</value>
+    <comment>The text for the color menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuCustomColorMenuItem" xml:space="preserve">
+    <value>Custom color</value>
+    <comment>The text for a custom color menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuFullScreenMenuItem" xml:space="preserve">
+    <value>_Full screen</value>
+    <comment>The text for the full screen menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuLoopSoundMenuItem" xml:space="preserve">
+    <value>_Loop sound</value>
+    <comment>The text for the loop sound menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuLoopTimerMenuItem" xml:space="preserve">
+    <value>_Loop timer</value>
+    <comment>The text for the loop timer menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuNewTimerMenuItem" xml:space="preserve">
+    <value>_New timer</value>
+    <comment>The text for the new timer menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuNoRecentInputsMenuItem" xml:space="preserve">
+    <value>No recent inputs</value>
+    <comment>The text for the no recent inputs placeholder menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuNoSavedTimersMenuItem" xml:space="preserve">
+    <value>No saved timers</value>
+    <comment>The text for the no saved timers placeholder menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuNoSoundMenuItem" xml:space="preserve">
+    <value>_No sound</value>
+    <comment>The text for the no sound menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuPopUpWhenExpiredMenuItem" xml:space="preserve">
+    <value>_Pop up when expired</value>
+    <comment>The text for the pop up when expired menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuRecentInputsMenuItem" xml:space="preserve">
+    <value>_Recent inputs</value>
+    <comment>The text for the recent inputs menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuSavedTimersMenuItem" xml:space="preserve">
+    <value>Saved _timers</value>
+    <comment>The text for the saved timers menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuShowInNotificationAreaMenuItem" xml:space="preserve">
+    <value>S_how in notification area</value>
+    <comment>The text for the show in notification area menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuSoundMenuItem" xml:space="preserve">
+    <value>_Sound</value>
+    <comment>The text for the sound menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ErrorDialogCloseButtonContent" xml:space="preserve">
+    <value>_Close</value>
+    <comment>The text for the close button in the error dialog, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ErrorDialogDefaultMessageText" xml:space="preserve">
+    <value>An unexpected error has occurred</value>
+    <comment>The default message displayed in the error dialog</comment>
+  </data>
+  <data name="ErrorDialogShowDetailsButtonContent" xml:space="preserve">
+    <value>_Show details</value>
+    <comment>The text for the show details button in the error dialog, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ErrorDialogTitle" xml:space="preserve">
+    <value>Hourglass</value>
+    <comment>The window title for the error dialog</comment>
+  </data>
+  <data name="NotificationAreaIconExitMenuItem" xml:space="preserve">
+    <value>E&amp;xit</value>
+    <comment>The text for the exit menu item, where the character following the optional ampersand (&amp;) is the access key</comment>
+  </data>
+  <data name="NotificationAreaIconNewTimerMenuItem" xml:space="preserve">
+    <value>&amp;New timer</value>
+    <comment>The text for the new timer menu item, where the character following the optional ampersand (&amp;) is the access key</comment>
+  </data>
+  <data name="TimerWindowBlankTitlePlaceholder" xml:space="preserve">
+    <value>—</value>
+    <comment>The string used to represent no title in the string representation of a timer window</comment>
+  </data>
+  <data name="TimerWindowCancelButtonContent" xml:space="preserve">
+    <value>_Cancel</value>
+    <comment>The text for the cancel button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowCloseButtonContent" xml:space="preserve">
+    <value>_Close</value>
+    <comment>The text for the close button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowNewTimerWithTitleFormatString" xml:space="preserve">
+    <value>New timer: {0} "{1}"</value>
+    <comment>A format string for the string representation of a timer window used when the timer window does not have a running timer and where it does have a title set, where {0} is the current user input into the window and {1} is the timer window title</comment>
+  </data>
+  <data name="TimerWindowPauseButtonContent" xml:space="preserve">
+    <value>_Pause</value>
+    <comment>The text for the pause button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowResetButtonContent" xml:space="preserve">
+    <value>_Reset</value>
+    <comment>The text for the reset button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowResumeButtonContent" xml:space="preserve">
+    <value>_Resume</value>
+    <comment>The text for the resume button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowStartButtonContent" xml:space="preserve">
+    <value>_Start</value>
+    <comment>The text for the start button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowStopButtonContent" xml:space="preserve">
+    <value>_Stop</value>
+    <comment>The text for the stop button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowTimerTextHint" xml:space="preserve">
+    <value>Click to enter time or date</value>
+    <comment>The watermark text that is dispalyed in the main input text box in the timer window</comment>
+  </data>
+  <data name="TimerWindowTitle" xml:space="preserve">
+    <value>Hourglass</value>
+    <comment>The window title for the timer window</comment>
+  </data>
+  <data name="TimerWindowTitleTextHint" xml:space="preserve">
+    <value>Click to enter title</value>
+    <comment>The watermark text that is displayed in the timer title text box in the timer window</comment>
+  </data>
+  <data name="TimerWindowUpdateButtonContent" xml:space="preserve">
+    <value>_Update</value>
+    <comment>The text for the update button in the timer window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindwoNewTimerFormatString" xml:space="preserve">
+    <value>New timer: {0}</value>
+    <comment>A format string for the string representation of a timer window used when the timer window does not have a running timer, where {0} is the current user input into the window</comment>
+  </data>
+  <data name="UsageDialogCloseButtonContent" xml:space="preserve">
+    <value>_Close</value>
+    <comment>The text for the close button in the command-line usage dialog, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="UsageDialogDefaultMessageText" xml:space="preserve">
+    <value>Command-line usage</value>
+    <comment>The default message displayed in the command-line usage dialog</comment>
+  </data>
+  <data name="UsageDialogTitle" xml:space="preserve">
+    <value>Hourglass</value>
+    <comment>The window title for the command-line usage dialog</comment>
+  </data>
+  <data name="TimerTimerExpired" xml:space="preserve">
+    <value>Timer expired</value>
+    <comment>The string representation of the time left or elapsed for a timer that is expired</comment>
+  </data>
+  <data name="TimerTimerStopped" xml:space="preserve">
+    <value>Timer stopped</value>
+    <comment>The string representation of the time left or elapsed for a timer that is stopped</comment>
+  </data>
+  <data name="TimerExpiredFormatString" xml:space="preserve">
+    <value>{1} (Expired)</value>
+    <comment>A format string for the string representation of a expired timer, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerExpiredLoopedFormatString" xml:space="preserve">
+    <value>{1} (Expired)</value>
+    <comment>A format string for the string representation of a expired timer that is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerExpiredWithTitleFormatString" xml:space="preserve">
+    <value>{1} "{2}" (Expired)</value>
+    <comment>A format string for the string representation of a expired timer that has a title, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerExpiredWithTitleLoopedFormatString" xml:space="preserve">
+    <value>{1} "{2}" (Expired)</value>
+    <comment>A format string for the string representation of a expired timer that has a title and is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerPausedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} (Paused)</value>
+    <comment>A format string for the string representation of a paused timer, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerPausedLoopedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} (Paused)</value>
+    <comment>A format string for the string representation of a paused timer that is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerPausedWithTitleFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} "{2}" (Paused)</value>
+    <comment>A format string for the string representation of a paused timer that has a title, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerPausedWithTitleLoopedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} "{2}" (Paused)</value>
+    <comment>A format string for the string representation of a paused timer that has a title and is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerRunningFormatString" xml:space="preserve">
+    <value>{0} ➔ {1}</value>
+    <comment>A format string for the string representation of a running timer, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerRunningLoopedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} (Looped)</value>
+    <comment>A format string for the string representation of a running timer that is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerRunningWithTitleFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} "{2}"</value>
+    <comment>A format string for the string representation of a running timer that has a title, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerRunningWithTitleLoopedFormatString" xml:space="preserve">
+    <value>{0} ➔ {1} "{2}" (Looped)</value>
+    <comment>A format string for the string representation of a running timer that has a title and is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerStoppedFormatString" xml:space="preserve">
+    <value>Stopped</value>
+    <comment>A format string for the string representation of a stopped timer, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerStoppedLoopedFormatString" xml:space="preserve">
+    <value>Stopped</value>
+    <comment>A format string for the string representation of a stopped timer that is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerStoppedWithTitleFormatString" xml:space="preserve">
+    <value>Stopped "{2}"</value>
+    <comment>A format string for the string representation of a stopped timer that has a title, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="TimerStoppedWithTitleLoopedFormatString" xml:space="preserve">
+    <value>Stopped "{2}"</value>
+    <comment>A format string for the string representation of a stopped timer that has a title and is looped, where {0} is the time left, {1} is the timer target, and {2} is the timer title</comment>
+  </data>
+  <data name="NormalTimeTokenMilitaryTimePattern" xml:space="preserve">
+    <value>(?&lt;hour&gt;\d\d)
+(?&lt;minute&gt;\d\d)
+(?&lt;military&gt;|h|hrs|hours)</value>
+    <comment>A regular expression that matches military times (e.g., "0500", "1700", "1700h", "1700hrs", "1700 hours")</comment>
+  </data>
+  <data name="NotificationAreaIconTimerExpired" xml:space="preserve">
+    <value>Timer expired</value>
+    <comment>The timer expired balloon notification title.</comment>
+  </data>
+  <data name="NotificationAreaIconYourTimerHasExpired" xml:space="preserve">
+    <value>Your timer has expired.</value>
+    <comment>The timer expired balloon notification description.</comment>
+  </data>
+  <data name="TrayIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TrayIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

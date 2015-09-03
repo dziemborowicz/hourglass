@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Hourglass.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MostRecentOptionsInfo" Type="Hourglass.Serialization.TimerOptionsInfo" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ShowInNotificationArea" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="TimerInfos" Type="Hourglass.Serialization.TimerInfoList" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TimerStartInfos" Type="Hourglass.Serialization.TimerStartInfoList" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UniqueId" Type="System.Guid" Scope="User">
+      <Value Profile="(Default)">00000000-0000-0000-0000-000000000000</Value>
+    </Setting>
+    <Setting Name="UserProvidedColorIdentifiers" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WindowSizeInfo" Type="Hourglass.Serialization.WindowSizeInfo" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>
