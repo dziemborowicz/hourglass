@@ -8,6 +8,7 @@ namespace Hourglass.Timing
 {
     using System;
     using System.Globalization;
+    using System.Resources;
 
     using Hourglass.Extensions;
     using Hourglass.Properties;
@@ -60,6 +61,11 @@ namespace Hourglass.Timing
         /// This field is <c>null</c> if <see cref="SupportsTimeElapsed"/> is <c>false</c>.
         /// </remarks>
         private string timeElapsedAsString;
+
+        /// <summary>
+        /// The string representation of the time since the timer expired.
+        /// </summary>
+        private string timeExpiredAsString;
 
         #endregion
 
@@ -165,6 +171,14 @@ namespace Hourglass.Timing
         public string TimeElapsedAsString
         {
             get { return this.timeElapsedAsString; }
+        }
+
+        /// <summary>
+        /// Gets the string representation of the time since the timer expired.
+        /// </summary>
+        public string TimeExpiredAsString
+        {
+            get { return this.timeExpiredAsString; }
         }
 
         /// <summary>
@@ -385,8 +399,9 @@ namespace Hourglass.Timing
             this.timeElapsedAsPercentage = this.GetTimeElapsedAsPercentage();
             this.timeLeftAsString = this.GetTimeLeftAsString();
             this.timeElapsedAsString = this.GetTimeElapsedAsString();
+            this.timeExpiredAsString = this.GetTimeExpiredAsString();
 
-            this.OnPropertyChanged("TimerStart", "TimeLeftAsPercentage", "TimeElapsedAsPercentage", "TimeLeftAsString", "TimeElapsedAsString");
+            this.OnPropertyChanged("TimerStart", "TimeLeftAsPercentage", "TimeElapsedAsPercentage", "TimeLeftAsString", "TimeElapsedAsString", "TimeExpiredAsString");
         }
 
         /// <summary>
@@ -484,6 +499,23 @@ namespace Hourglass.Timing
             }
 
             return this.TimeElapsed.ToNaturalString();
+        }
+
+        /// <summary>
+        /// Returns the string representation of the time since the timer expired.
+        /// </summary>
+        /// <returns>The string representation of the time since the timer expired.</returns>
+        private string GetTimeExpiredAsString()
+        {
+            if (this.State != TimerState.Expired)
+            {
+                return Resources.TimerTimerNotExpired;
+            }
+
+            return string.Format(
+                Resources.ResourceManager.GetEffectiveProvider(),
+                Resources.TimerTimeExpiredFormatString,
+                this.TimeExpired.ToNaturalString());
         }
 
         #endregion

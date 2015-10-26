@@ -1077,4 +1077,12 @@ $</value>
   <data name="TrayIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TrayIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TimerTimerNotExpired" xml:space="preserve">
+    <value>Timer not expired</value>
+    <comment>The string representation of the time since the timer expired for a timer that is not expired</comment>
+  </data>
+  <data name="TimerTimeExpiredFormatString" xml:space="preserve">
+    <value>{0} ago</value>
+    <comment>A format string for the string representation of the time since the timer expired</comment>
+  </data>
 </root>

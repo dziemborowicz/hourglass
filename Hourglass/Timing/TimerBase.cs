@@ -87,6 +87,13 @@ namespace Hourglass.Timing
         private TimeSpan? timeLeft;
 
         /// <summary>
+        /// A <see cref="TimeSpan"/> representing the time since this timer has expired if the <see cref="State"/> is
+        /// <see cref="TimerState.Expired"/>, <see cref="TimeSpan.Zero"/> if the <see cref="State"/> is <see
+        /// cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, or <c>null</c> otherwise.
+        /// </summary>
+        private TimeSpan? timeExpired;
+
+        /// <summary>
         /// A <see cref="TimeSpan"/> representing the total time that this timer will run for or has run for if the
         /// <see cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c>
         /// otherwise.
@@ -129,6 +136,7 @@ namespace Hourglass.Timing
             this.endTime = timerInfo.EndTime;
             this.timeElapsed = timerInfo.TimeElapsed;
             this.timeLeft = timerInfo.TimeLeft;
+            this.timeExpired = timerInfo.TimeExpired;
             this.totalTime = timerInfo.TotalTime;
 
             if (this.state == TimerState.Running)
@@ -228,6 +236,16 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Gets a <see cref="TimeSpan"/> representing the time since this timer has expired if the <see cref="State"/>
+        /// is <see cref="TimerState.Expired"/>, <see cref="TimeSpan.Zero"/> if the <see cref="State"/> is <see
+        /// cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, or <c>null</c> otherwise.
+        /// </summary>
+        public TimeSpan? TimeExpired
+        {
+            get { return this.timeExpired; }
+        }
+
+        /// <summary>
         /// Gets a <see cref="TimeSpan"/> representing the total time that this timer will run for or has run for if
         /// the <see cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or
         /// <c>null</c> otherwise.
@@ -287,9 +305,10 @@ namespace Hourglass.Timing
             this.endTime = end;
             this.timeElapsed = TimeSpan.Zero;
             this.timeLeft = this.endTime - this.startTime;
+            this.timeExpired = TimeSpan.Zero;
             this.totalTime = this.timeLeft;
 
-            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeElapsed", "TimeLeft", "TotalTime");
+            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeElapsed", "TimeLeft", "TimeExpired", "TotalTime");
             this.OnStarted();
 
             this.Update();
@@ -316,12 +335,13 @@ namespace Hourglass.Timing
             this.state = TimerState.Paused;
             this.timeElapsed = MathExtensions.Min(now - (this.startTime ?? now), this.totalTime ?? TimeSpan.Zero);
             this.timeLeft = MathExtensions.Max((this.endTime ?? now) - now, TimeSpan.Zero);
+            this.timeExpired = TimeSpan.Zero;
             this.startTime = null;
             this.endTime = null;
 
             this.dispatcherTimer.Stop();
 
-            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeElapsed", "TimeLeft");
+            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeElapsed", "TimeExpired", "TimeLeft");
             this.OnPaused();
         }
 
@@ -373,11 +393,12 @@ namespace Hourglass.Timing
             this.endTime = null;
             this.timeElapsed = null;
             this.timeLeft = null;
+            this.timeExpired = null;
             this.totalTime = null;
 
             this.dispatcherTimer.Stop();
 
-            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TotalTime");
+            this.OnPropertyChanged("State", "StartTime", "EndTime", "TimeLeft", "TimeExpired", "TotalTime");
             this.OnStopped();
         }
 
@@ -391,7 +412,7 @@ namespace Hourglass.Timing
         {
             this.ThrowIfDisposed();
 
-            if (this.state != TimerState.Running)
+            if (this.state != TimerState.Running && this.state != TimerState.Expired)
             {
                 return;
             }
@@ -400,20 +421,20 @@ namespace Hourglass.Timing
             DateTime now = DateTime.Now;
             this.timeElapsed = MathExtensions.Min(now - (this.startTime ?? now), this.totalTime ?? TimeSpan.Zero);
             this.timeLeft = MathExtensions.Max((this.endTime ?? now) - now, TimeSpan.Zero);
+            this.timeExpired = MathExtensions.Max(now - (this.endTime ?? now), TimeSpan.Zero);
 
-            this.OnPropertyChanged("TimeElapsed", "TimeLeft");
-            this.OnTick();
-
-            // Check if the timer has expired
-            if (this.timeLeft <= TimeSpan.Zero)
+            // Raise an event when the timer expires
+            if (this.timeLeft <= TimeSpan.Zero && this.state == TimerState.Running)
             {
                 this.state = TimerState.Expired;
-
-                this.dispatcherTimer.Stop();
 
                 this.OnPropertyChanged("State");
                 this.OnExpired();
             }
+
+            // Raise other events
+            this.OnPropertyChanged("TimeElapsed", "TimeLeft", "TimeExpired");
+            this.OnTick();
         }
 
         /// <summary>
@@ -429,6 +450,7 @@ namespace Hourglass.Timing
                 EndTime = this.endTime,
                 TimeElapsed = this.timeElapsed,
                 TimeLeft = this.timeLeft,
+                TimeExpired = this.timeExpired,
                 TotalTime = this.totalTime
             };
         }

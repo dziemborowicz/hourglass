@@ -66,7 +66,7 @@ namespace Hourglass.Windows
         /// <summary>
         /// The default bottom margin of the larger text control on the <see cref="timerWindow"/>.
         /// </summary>
-        private const double BasePrimaryTextControlBottomMargin = 4;
+        private const double BasePrimaryTextControlBottomMargin = 2;
 
         /// <summary>
         /// The default border thickness for the <see cref="Border"/> control that visualize validation errors and
@@ -130,7 +130,12 @@ namespace Hourglass.Windows
         /// An array of the <see cref="Button"/> elements on the <see cref="timerWindow"/>.
         /// </summary>
         private Button[] buttons;
-        
+
+        /// <summary>
+        /// The <see cref="Label"/> that contains the time elapsed since the timer expired when the timer has expired.
+        /// </summary>
+        private Label timeExpiredLabel;
+
         /// <summary>
         /// Binds the <see cref="InterfaceScaler"/> to a <see cref="TimerWindow"/>.
         /// </summary>
@@ -167,6 +172,7 @@ namespace Hourglass.Windows
                 this.timerWindow.CloseButton,
                 this.timerWindow.CancelButton
             };
+            this.timeExpiredLabel = this.timerWindow.TimeExpiredLabel;
 
             // Hook up events
             this.timerWindow.Loaded += (s, e) => this.Scale();
@@ -241,6 +247,8 @@ namespace Hourglass.Windows
                     right: baseScaleFactor * BaseButtonMargin,
                     bottom: 0.0);
             }
+
+            this.timeExpiredLabel.FontSize = reducedScaleFactor * BaseFontSize;
         }
 
         /// <summary>
