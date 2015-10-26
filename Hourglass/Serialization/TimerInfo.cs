@@ -78,6 +78,27 @@ namespace Hourglass.Serialization
         }
 
         /// <summary>
+        /// Gets or sets a <see cref="TimeSpan"/> representing the time since this timer has expired if the <see
+        /// cref="State"/> is <see cref="TimerState.Expired"/>, <see cref="TimeSpan.Zero"/> if the <see cref="State"/>
+        /// is <see cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, or <c>null</c> otherwise.
+        /// </summary>
+        [XmlIgnore]
+        public TimeSpan? TimeExpired { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="TimeSpan.Ticks"/> property of <see cref="TimeExpired"/>.
+        /// </summary>
+        /// <remarks>
+        /// This property is exposed because <see cref="TimeSpan"/> does not serialize to XML.
+        /// </remarks>
+        [XmlElement("TimeExpired")]
+        public long? TimeExpiredTicks
+        {
+            get { return this.TimeExpired.HasValue ? this.TimeExpired.Value.Ticks : (long?)null; }
+            set { this.TimeExpired = value.HasValue ? new TimeSpan(value.Value) : (TimeSpan?)null; }
+        }
+
+        /// <summary>
         /// Gets or sets a <see cref="TimeSpan"/> representing the total time that this timer will run for or has run
         /// for if the <see cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or
         /// <c>null</c> otherwise.

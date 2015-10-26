@@ -143,6 +143,7 @@
     <Compile Include="Windows\InterfaceScaler.cs" />
     <Compile Include="Windows\MultiplierConverter.cs" />
     <Compile Include="Windows\NotificationAreaIcon.cs" />
+    <Compile Include="Windows\RegexMatchConverter.cs" />
     <Compile Include="Windows\SizeToFitTextBox.cs" />
     <Compile Include="Windows\SoundPlayer.cs" />
     <Compile Include="Windows\TimerWindow.xaml.cs">

@@ -26,6 +26,7 @@
         <KeyBinding Command="local:TimerWindow.FullScreenCommand" Gesture="Alt+Enter"/>
     </Window.InputBindings>
     <Window.Resources>
+        <local:RegexMatchConverter x:Key="RegexMatchConverter"/>
         <Style TargetType="{x:Type ProgressBar}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -98,7 +99,7 @@
                         <Condition Binding="{Binding ElementName=UpdateButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=InnerGrid, Path=IsMouseOver}" Value="False"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=ContextMenu.IsOpen}" Value="False"/>
-                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.State}" Value="Running"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.State, Converter={StaticResource RegexMatchConverter}, ConverterParameter=^(Running|Expired)$}" Value="True"/>
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.EnterActions>
                         <BeginStoryboard>
@@ -148,6 +149,61 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="TimeExpiredLabelStyle" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="#808080"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Margin" Value="7 0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <TextBlock>
+                            <ContentPresenter/>
+                        </TextBlock>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=TitleTextBox, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=TimerTextBox, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=StartButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=PauseButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=ResumeButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=StopButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=ResetButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=CloseButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=CancelButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=UpdateButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=InnerGrid, Path=IsMouseOver}" Value="False"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=ContextMenu.IsOpen}" Value="False"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.State}" Value="Expired"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiDataTrigger.EnterActions>
+                    <MultiDataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiDataTrigger.ExitActions>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo/>
@@ -161,7 +217,7 @@
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
                                         FontFamily="Segoe UI"
-                                        Foreground="DarkGray"
+                                        Foreground="#808080"
                                         KeyDown="TitleTextBoxKeyDown"
                                         MaxFontSize="12"
                                         MinFontSize="8"
@@ -180,16 +236,23 @@
                                         PreviewMouseDown="TimerTextBoxPreviewMouseDown"
                                         PreviewGotKeyboardFocus="TimerTextBoxPreviewGotKeyboardFocus"
                                         TextAlignment="Center"/>
-                <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">
-                    <Button x:Name="StartButton" Command="local:TimerWindow.StartCommand" IsDefault="True"/>
-                    <Button x:Name="PauseButton" Command="local:TimerWindow.PauseCommand"/>
-                    <Button x:Name="ResumeButton" Command="local:TimerWindow.ResumeCommand"/>
-                    <Button x:Name="StopButton" Command="local:TimerWindow.StopCommand"/>
-                    <Button x:Name="ResetButton" Command="local:TimerWindow.ResetCommand"/>
-                    <Button x:Name="CloseButton" Command="local:TimerWindow.CloseCommand"/>
-                    <Button x:Name="CancelButton" Command="local:TimerWindow.CancelCommand"/>
-                    <Button x:Name="UpdateButton" Command="local:TimerWindow.UpdateCommand"/>
-                </StackPanel>
+                <Grid>
+                    <Label x:Name="TimeExpiredLabel"
+                           Content="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.TimeExpiredAsString}"
+                           HorizontalAlignment="Center"
+                           Opacity="0.0"
+                           Style="{StaticResource TimeExpiredLabelStyle}"/>
+                    <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">
+                        <Button x:Name="StartButton" Command="local:TimerWindow.StartCommand" IsDefault="True"/>
+                        <Button x:Name="PauseButton" Command="local:TimerWindow.PauseCommand"/>
+                        <Button x:Name="ResumeButton" Command="local:TimerWindow.ResumeCommand"/>
+                        <Button x:Name="StopButton" Command="local:TimerWindow.StopCommand"/>
+                        <Button x:Name="ResetButton" Command="local:TimerWindow.ResetCommand"/>
+                        <Button x:Name="CloseButton" Command="local:TimerWindow.CloseCommand"/>
+                        <Button x:Name="CancelButton" Command="local:TimerWindow.CancelCommand"/>
+                        <Button x:Name="UpdateButton" Command="local:TimerWindow.UpdateCommand"/>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </Grid>
         <Border x:Name="InnerNotificationBorder" BorderBrush="#C75050" BorderThickness="1" IsHitTestVisible="False" Margin="15" Opacity="0"/>
