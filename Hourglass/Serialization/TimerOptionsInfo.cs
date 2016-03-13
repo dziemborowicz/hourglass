@@ -24,6 +24,12 @@ namespace Hourglass.Serialization
         public bool AlwaysOnTop { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to prompt the user before closing the timer window if the timer is
+        /// running.
+        /// </summary>
+        public bool PromptOnExit { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to loop the timer continuously.
         /// </summary>
         public bool LoopTimer { get; set; }

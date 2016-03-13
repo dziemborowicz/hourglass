@@ -48,12 +48,12 @@ namespace Hourglass.Managers
         }
 
         /// <summary>
-        /// Gets the most recent <see cref="TimerStart"/>, or <c>null</c> if there are no <see cref="TimerStart"/>
-        /// objects in <see cref="TimerStarts"/>.
+        /// Gets the most recent <see cref="TimerStart"/>, or the default <see cref="TimerStart"/> if there are no <see
+        /// cref="TimerStart"/> objects in <see cref="TimerStarts"/>.
         /// </summary>
         public TimerStart LastTimerStart
         {
-            get { return this.timerStarts.FirstOrDefault(e => e.IsCurrent); }
+            get { return this.timerStarts.FirstOrDefault(e => e.IsCurrent) ?? TimerStart.Default; }
         }
 
         /// <summary>

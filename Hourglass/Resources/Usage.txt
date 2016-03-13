@@ -47,6 +47,13 @@ Options:
         Default value   last
         Alias           -f
 
+  --prompt-on-exit on|off|last
+        Displays a prompt before closing the timer window.
+
+        Required        no
+        Default value   last
+        Alias           -o
+
   --show-in-notification-area on|off|last
         Shows an icon for the app in the notification area (system tray).
 

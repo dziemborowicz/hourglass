@@ -725,7 +725,7 @@ $</value>
     <comment>A format string for a regular expression that matches a time only, where {0} is the time pattern</comment>
   </data>
   <data name="TimerStartTokenUseDateTimeParserPattern" xml:space="preserve">
-    <value>^\s*(un)?till?\s*</value>
+    <value>^\s*((un)?till?|@)\s*</value>
     <comment>A regular expression that indicates a preference for matching a date and/or time, rather than a time span, when parsing a timer start token</comment>
   </data>
   <data name="TimeSpanExtensionsUnitSeparator" xml:space="preserve">
@@ -1084,5 +1084,21 @@ $</value>
   <data name="TimerTimeExpiredFormatString" xml:space="preserve">
     <value>{0} ago</value>
     <comment>A format string for the string representation of the time since the timer expired</comment>
+  </data>
+  <data name="TimerStartDefault" xml:space="preserve">
+    <value>5 minutes</value>
+    <comment>The default value for a timer displayed if the user has never started a timer before</comment>
+  </data>
+  <data name="ContextMenuPromptOnExitMenuItem" xml:space="preserve">
+    <value>Pro_mpt on exit</value>
+    <comment>The text for the prompt on exit menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="MessageBoxTitle" xml:space="preserve">
+    <value>Hourglass</value>
+    <comment>The caption used for any message boxes</comment>
+  </data>
+  <data name="TimerWindowCloseMessageBoxText" xml:space="preserve">
+    <value>Are you sure you want to close this timer window?</value>
+    <comment>The message displayed when the user closes a timer window while a timer is running</comment>
   </data>
 </root>

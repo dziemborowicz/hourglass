@@ -1522,6 +1522,23 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void WindowClosing(object sender, CancelEventArgs e)
         {
+            // Prompt for confirmation if required
+            if (this.Options.PromptOnExit && this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    Properties.Resources.TimerWindowCloseMessageBoxText,
+                    Properties.Resources.MessageBoxTitle,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result != MessageBoxResult.Yes)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            // Clean up
             this.UnbindTimer();
             this.soundPlayer.Dispose();
 
