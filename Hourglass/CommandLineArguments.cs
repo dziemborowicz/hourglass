@@ -77,6 +77,11 @@ namespace Hourglass
         public bool IsFullScreen { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether to prompt the user before closing the timer window if the timer is running.
+        /// </summary>
+        public bool PromptOnExit { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether an icon for the app should be visible in the notification area of the
         /// taskbar.
         /// </summary>
@@ -183,6 +188,7 @@ namespace Hourglass
             {
                 Title = this.Title,
                 AlwaysOnTop = this.AlwaysOnTop,
+                PromptOnExit = this.PromptOnExit,
                 LoopTimer = this.LoopTimer,
                 PopUpWhenExpired = this.PopUpWhenExpired,
                 CloseWhenExpired = this.CloseWhenExpired,
@@ -224,6 +230,7 @@ namespace Hourglass
                 Title = null,
                 AlwaysOnTop = options.AlwaysOnTop,
                 IsFullScreen = windowSize.IsFullScreen,
+                PromptOnExit = options.PromptOnExit,
                 ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
                 LoopTimer = options.LoopTimer,
                 PopUpWhenExpired = options.PopUpWhenExpired,
@@ -254,6 +261,7 @@ namespace Hourglass
                 Title = defaultOptions.Title,
                 AlwaysOnTop = defaultOptions.AlwaysOnTop,
                 IsFullScreen = defaultOptions.WindowSize.IsFullScreen,
+                PromptOnExit = defaultOptions.PromptOnExit,
                 ShowInNotificationArea = false,
                 LoopTimer = defaultOptions.LoopTimer,
                 PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
@@ -332,6 +340,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.IsFullScreen = isFullScreen;
                         argumentsBasedOnFactoryDefaults.IsFullScreen = isFullScreen;
+                        break;
+
+                    case "--prompt-on-exit":
+                    case "-o":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--prompt-on-exit");
+
+                        bool promptOnExit = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.PromptOnExit);
+
+                        argumentsBasedOnMostRecentOptions.PromptOnExit = promptOnExit;
+                        argumentsBasedOnFactoryDefaults.PromptOnExit = promptOnExit;
                         break;
 
                     case "--show-in-notification-area":

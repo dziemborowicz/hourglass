@@ -56,6 +56,11 @@ namespace Hourglass.Windows
         private MenuItem fullScreenMenuItem;
 
         /// <summary>
+        /// The "Prompt on exit" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem promptOnExitMenuItem;
+
+        /// <summary>
         /// The "Show in notification area" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem showInNotificationAreaMenuItem;
@@ -255,6 +260,9 @@ namespace Hourglass.Windows
             // Full screen
             this.fullScreenMenuItem.IsChecked = this.timerWindow.IsFullScreen;
 
+            // Prompt on exit
+            this.promptOnExitMenuItem.IsChecked = this.timerWindow.Options.PromptOnExit;
+
             // Show in notification area
             this.showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
 
@@ -311,6 +319,9 @@ namespace Hourglass.Windows
 
             // Full screen
             this.timerWindow.IsFullScreen = this.fullScreenMenuItem.IsChecked;
+            
+            // Prompt on exit
+            this.timerWindow.Options.PromptOnExit = this.promptOnExitMenuItem.IsChecked;
 
             // Show in notification area
             Settings.Default.ShowInNotificationArea = this.showInNotificationAreaMenuItem.IsChecked;
@@ -382,6 +393,12 @@ namespace Hourglass.Windows
             this.fullScreenMenuItem.IsCheckable = true;
             this.fullScreenMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.fullScreenMenuItem);
+
+            this.promptOnExitMenuItem = new MenuItem();
+            this.promptOnExitMenuItem.Header = Properties.Resources.ContextMenuPromptOnExitMenuItem;
+            this.promptOnExitMenuItem.IsCheckable = true;
+            this.promptOnExitMenuItem.Click += this.CheckableMenuItemClick;
+            this.Items.Add(this.promptOnExitMenuItem);
 
             this.showInNotificationAreaMenuItem = new MenuItem();
             this.showInNotificationAreaMenuItem.Header = Properties.Resources.ContextMenuShowInNotificationAreaMenuItem;

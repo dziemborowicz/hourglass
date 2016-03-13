@@ -1089,4 +1089,16 @@ $</value>
     <value>5 minutes</value>
     <comment>The default value for a timer displayed if the user has never started a timer before</comment>
   </data>
+  <data name="ContextMenuPromptOnExitMenuItem" xml:space="preserve">
+    <value>Pro_mpt on exit</value>
+    <comment>The text for the prompt on exit menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="MessageBoxTitle" xml:space="preserve">
+    <value>Hourglass</value>
+    <comment>The caption used for any message boxes</comment>
+  </data>
+  <data name="TimerWindowCloseMessageBoxText" xml:space="preserve">
+    <value>Are you sure you want to close this timer window?</value>
+    <comment>The message displayed when the user closes a timer window while a timer is running</comment>
+  </data>
 </root>

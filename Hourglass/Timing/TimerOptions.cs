@@ -31,6 +31,11 @@ namespace Hourglass.Timing
         private bool alwaysOnTop;
 
         /// <summary>
+        /// A value indicating whether to prompt the user before closing the timer window if the timer is running.
+        /// </summary>
+        private bool promptOnExit;
+
+        /// <summary>
         /// A value indicating whether to loop the timer continuously.
         /// </summary>
         private bool loopTimer;
@@ -78,6 +83,7 @@ namespace Hourglass.Timing
         {
             this.title = string.Empty;
             this.alwaysOnTop = false;
+            this.promptOnExit = true;
             this.loopTimer = false;
             this.popUpWhenExpired = true;
             this.closeWhenExpired = false;
@@ -164,6 +170,29 @@ namespace Hourglass.Timing
 
                 this.alwaysOnTop = value;
                 this.OnPropertyChanged("AlwaysOnTop");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to prompt the user before closing the timer window if the timer is
+        /// running.
+        /// </summary>
+        public bool PromptOnExit
+        {
+            get
+            {
+                return this.promptOnExit;
+            }
+
+            set
+            {
+                if (this.promptOnExit == value)
+                {
+                    return;
+                }
+
+                this.promptOnExit = value;
+                this.OnPropertyChanged("PromptOnExit");
             }
         }
 
@@ -364,6 +393,7 @@ namespace Hourglass.Timing
 
             this.title = options.title;
             this.alwaysOnTop = options.alwaysOnTop;
+            this.promptOnExit = options.promptOnExit;
             this.loopTimer = options.loopTimer;
             this.popUpWhenExpired = options.popUpWhenExpired;
             this.closeWhenExpired = options.closeWhenExpired;
@@ -386,6 +416,7 @@ namespace Hourglass.Timing
 
             this.title = info.Title;
             this.alwaysOnTop = info.AlwaysOnTop;
+            this.promptOnExit = info.PromptOnExit;
             this.loopTimer = info.LoopTimer;
             this.popUpWhenExpired = info.PopUpWhenExpired;
             this.closeWhenExpired = info.CloseWhenExpired;
@@ -405,6 +436,7 @@ namespace Hourglass.Timing
             {
                 Title = this.title,
                 AlwaysOnTop = this.alwaysOnTop,
+                PromptOnExit = this.promptOnExit,
                 LoopTimer = this.loopTimer,
                 PopUpWhenExpired = this.popUpWhenExpired,
                 CloseWhenExpired = this.closeWhenExpired,

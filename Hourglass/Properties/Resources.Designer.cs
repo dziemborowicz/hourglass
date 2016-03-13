@@ -377,6 +377,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pro_mpt on exit.
+        /// </summary>
+        internal static string ContextMenuPromptOnExitMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuPromptOnExitMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Recent inputs.
         /// </summary>
         internal static string ContextMenuRecentInputsMenuItem {
@@ -809,6 +818,15 @@ namespace Hourglass.Properties {
         internal static string ErrorManagerUnexpectedError {
             get {
                 return ResourceManager.GetString("ErrorManagerUnexpectedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hourglass.
+        /// </summary>
+        internal static string MessageBoxTitle {
+            get {
+                return ResourceManager.GetString("MessageBoxTitle", resourceCulture);
             }
         }
         
@@ -1534,6 +1552,15 @@ namespace Hourglass.Properties {
         internal static string TimerWindowCloseButtonContent {
             get {
                 return ResourceManager.GetString("TimerWindowCloseButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to close this timer window?.
+        /// </summary>
+        internal static string TimerWindowCloseMessageBoxText {
+            get {
+                return ResourceManager.GetString("TimerWindowCloseMessageBoxText", resourceCulture);
             }
         }
         
