@@ -10,6 +10,7 @@ namespace Hourglass.Windows
     using System.ComponentModel;
     using System.Drawing;
     using System.Linq;
+    using System.Text;
     using System.Windows;
     using System.Windows.Forms;
     using System.Windows.Threading;
@@ -53,6 +54,7 @@ namespace Hourglass.Windows
             this.notifyIcon = new NotifyIcon();
             this.notifyIcon.Icon = new Icon(Resources.TrayIcon, SystemInformation.SmallIconSize);
             this.notifyIcon.MouseDown += this.NotifyIconMouseDown;
+            this.notifyIcon.MouseMove += this.NotifyIconMouseMove;
 
             this.notifyIcon.BalloonTipClicked += this.BalloonTipClicked;
 
@@ -192,6 +194,34 @@ namespace Hourglass.Windows
             if (e.Button == MouseButtons.Left)
             {
                 this.RestoreAllTimerWindows();
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the user moves the mouse while the pointer is over the icon in the notification area of the
+        /// taskbar.
+        /// </summary>
+        /// <param name="sender">The <see cref="NotifyIcon"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void NotifyIconMouseMove(object sender, MouseEventArgs e)
+        {
+            if (Application.Current != null)
+            {
+                StringBuilder builder = new StringBuilder();
+
+                foreach (TimerWindow window in Application.Current.Windows.OfType<TimerWindow>().Where(window => window.Timer.State != TimerState.Stopped))
+                {
+                    string windowString = builder.Length == 0
+                        ? window.ToString()
+                        : Environment.NewLine + window.ToString();
+
+                    if (builder.Length + windowString.Length < 64)
+                    {
+                        builder.Append(windowString);
+                    }
+                }
+
+                this.notifyIcon.Text = builder.ToString();
             }
         }
 
