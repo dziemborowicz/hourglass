@@ -1085,4 +1085,8 @@ $</value>
     <value>{0} ago</value>
     <comment>A format string for the string representation of the time since the timer expired</comment>
   </data>
+  <data name="TimerStartDefault" xml:space="preserve">
+    <value>5 minutes</value>
+    <comment>The default value for a timer displayed if the user has never started a timer before</comment>
+  </data>
 </root>

@@ -9,6 +9,7 @@ namespace Hourglass.Timing
     using System;
 
     using Hourglass.Parsing;
+    using Hourglass.Properties;
     using Hourglass.Serialization;
 
     /// <summary>
@@ -63,6 +64,14 @@ namespace Hourglass.Timing
             }
 
             this.timerStartToken = timerStartInfo.TimerStartToken;
+        }
+
+        /// <summary>
+        /// Gets the default <see cref="TimerStart"/> object.
+        /// </summary>
+        public static TimerStart Default
+        {
+            get { return TimerStart.FromString(Resources.TimerStartDefault); }
         }
 
         /// <summary>

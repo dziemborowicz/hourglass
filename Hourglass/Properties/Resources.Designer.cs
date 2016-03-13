@@ -1421,6 +1421,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 5 minutes.
+        /// </summary>
+        internal static string TimerStartDefault {
+            get {
+                return ResourceManager.GetString("TimerStartDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ^\s*((un)?till?|@)\s*.
         /// </summary>
         internal static string TimerStartTokenUseDateTimeParserPattern {
