@@ -725,7 +725,7 @@ $</value>
     <comment>A format string for a regular expression that matches a time only, where {0} is the time pattern</comment>
   </data>
   <data name="TimerStartTokenUseDateTimeParserPattern" xml:space="preserve">
-    <value>^\s*(un)?till?\s*</value>
+    <value>^\s*((un)?till?|@)\s*</value>
     <comment>A regular expression that indicates a preference for matching a date and/or time, rather than a time span, when parsing a timer start token</comment>
   </data>
   <data name="TimeSpanExtensionsUnitSeparator" xml:space="preserve">

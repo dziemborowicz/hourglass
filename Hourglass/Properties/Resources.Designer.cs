@@ -1421,7 +1421,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ^\s*(un)?till?\s*.
+        ///   Looks up a localized string similar to ^\s*((un)?till?|@)\s*.
         /// </summary>
         internal static string TimerStartTokenUseDateTimeParserPattern {
             get {
