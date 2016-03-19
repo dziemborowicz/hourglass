@@ -470,18 +470,30 @@ namespace Hourglass.Windows
         /// <summary>
         /// Brings the window to the front.
         /// </summary>
-        public void BringToFront()
+        /// <returns><c>true</c> if the window is brought to the foreground, or <c>false</c> if the window cannot be
+        /// brought to the foreground for any reason.</returns>
+        public bool BringToFront()
         {
-            this.Show();
-
-            if (this.WindowState == WindowState.Minimized)
+            try
             {
-                this.WindowState = this.RestoreWindowState;
-            }
+                this.Show();
 
-            this.Topmost = false;
-            this.Topmost = true;
-            this.Topmost = this.Options.AlwaysOnTop;
+                if (this.WindowState == WindowState.Minimized)
+                {
+                    this.WindowState = this.RestoreWindowState;
+                }
+
+                this.Topmost = false;
+                this.Topmost = true;
+                this.Topmost = this.Options.AlwaysOnTop;
+
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                // This happens if the window is closing (waiting for the user to confirm) when this method is called
+                return false;
+            }
         }
 
         /// <summary>
