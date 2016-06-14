@@ -56,7 +56,7 @@ namespace Hourglass.Extensions
             }
 
             // Seconds
-            parts.Add(GetStringWithUnits(timeSpan.Seconds, "Second", provider));
+            parts.Add(GetStringWithUnits(timeSpan.Seconds + (timeSpan.Milliseconds > 0 ? 1 : 0), "Second", provider));
 
             // Join parts
             return string.Join(
