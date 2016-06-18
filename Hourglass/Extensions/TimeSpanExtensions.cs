@@ -18,6 +18,30 @@ namespace Hourglass.Extensions
     public static class TimeSpanExtensions
     {
         /// <summary>
+        /// Rounds a <see cref="TimeSpan"/> down to the nearest second.
+        /// </summary>
+        /// <param name="timeSpan">A <see cref="TimeSpan"/>.</param>
+        /// <returns><paramref name="timeSpan"/> rounded down to the nearest second.</returns>
+        public static TimeSpan RoundDown(this TimeSpan timeSpan)
+        {
+            return new TimeSpan(timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+        }
+
+        /// <summary>
+        /// Rounds a <see cref="TimeSpan"/> up to the nearest second.
+        /// </summary>
+        /// <param name="timeSpan">A <see cref="TimeSpan"/>.</param>
+        /// <returns><paramref name="timeSpan"/> rounded up to the nearest second.</returns>
+        public static TimeSpan RoundUp(this TimeSpan timeSpan)
+        {
+            return new TimeSpan(
+                timeSpan.Days,
+                timeSpan.Hours,
+                timeSpan.Minutes,
+                timeSpan.Seconds + ((timeSpan.Ticks % TimeSpan.TicksPerSecond) > 0 ? 1 : 0));
+        }
+
+        /// <summary>
         /// Converts the value of a <see cref="TimeSpan"/> object to its equivalent natural string representation.
         /// </summary>
         /// <param name="timeSpan">A <see cref="TimeSpan"/>.</param>
@@ -35,6 +59,8 @@ namespace Hourglass.Extensions
         /// <returns>The natural string representation of the <see cref="TimeSpan"/>.</returns>
         public static string ToNaturalString(this TimeSpan timeSpan, IFormatProvider provider)
         {
+            timeSpan = timeSpan.RoundUp();
+
             List<string> parts = new List<string>();
 
             // Days
@@ -56,7 +82,7 @@ namespace Hourglass.Extensions
             }
 
             // Seconds
-            parts.Add(GetStringWithUnits(timeSpan.Seconds + (timeSpan.Milliseconds > 0 ? 1 : 0), "Second", provider));
+            parts.Add(GetStringWithUnits(timeSpan.Seconds, "Second", provider));
 
             // Join parts
             return string.Join(
