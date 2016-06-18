@@ -1101,4 +1101,12 @@ $</value>
     <value>Are you sure you want to close this timer window?</value>
     <comment>The message displayed when the user closes a timer window while a timer is running</comment>
   </data>
+  <data name="ContextMenuAdvancedOptionsMenuItem" xml:space="preserve">
+    <value>Advanced options</value>
+    <comment>The text for the advanced options menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuShutDownWhenExpiredMenuItem" xml:space="preserve">
+    <value>Shut down when _expired</value>
+    <comment>The text for the shut down when expired menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
 </root>

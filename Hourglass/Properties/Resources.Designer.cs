@@ -233,6 +233,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced options.
+        /// </summary>
+        internal static string ContextMenuAdvancedOptionsMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuAdvancedOptionsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Always on top.
         /// </summary>
         internal static string ContextMenuAlwaysOnTopMenuItem {
@@ -409,6 +418,15 @@ namespace Hourglass.Properties {
         internal static string ContextMenuShowInNotificationAreaMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuShowInNotificationAreaMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shut down when _expired.
+        /// </summary>
+        internal static string ContextMenuShutDownWhenExpiredMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuShutDownWhenExpiredMenuItem", resourceCulture);
             }
         }
         

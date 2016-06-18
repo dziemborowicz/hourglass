@@ -82,6 +82,13 @@ Options:
         Default value   last
         Alias           -e
 
+  --shut-down-when-expired on|off
+        Shuts down windows when the timer expires.
+
+        Required        no
+        Default value   off
+        Alias           -x
+
   --color last|<color>
         Sets the color of the timer window.
 

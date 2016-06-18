@@ -868,9 +868,21 @@ namespace Hourglass.Windows
                             this.flashExpirationStoryboard.Begin();
                         }
                     }
+                    else if (this.Options.Sound == null && this.Options.ShutDownWhenExpired)
+                    {
+                        // Flash three times and then shut down -- see SoundPlayerPlaybackCompleted for case with sound
+                        if (this.flashExpirationCount < 3)
+                        {
+                            this.flashExpirationStoryboard.Begin();
+                        }
+                        else
+                        {
+                            WindowsExtensions.ShutDown();
+                        }
+                    }
                     else if (this.Options.Sound == null && this.Options.CloseWhenExpired)
                     {
-                        // Flash three times and then close
+                        // Flash three times and then close -- see SoundPlayerPlaybackCompleted for case with sound
                         if (this.flashExpirationCount < 3)
                         {
                             this.flashExpirationStoryboard.Begin();
@@ -924,9 +936,16 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void SoundPlayerPlaybackCompleted(object sender, EventArgs e)
         {
-            if (this.Options.CloseWhenExpired && !this.Options.LoopTimer && this.Mode == TimerWindowMode.Status)
+            if (!this.Options.LoopTimer && this.Mode == TimerWindowMode.Status)
             {
-                this.Close();
+                if (this.Options.ShutDownWhenExpired)
+                {
+                    WindowsExtensions.ShutDown();
+                }
+                else if (this.Options.CloseWhenExpired)
+                {
+                    this.Close();
+                }
             }
         }
 

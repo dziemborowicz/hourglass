@@ -46,6 +46,11 @@ namespace Hourglass.Serialization
         public bool CloseWhenExpired { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether Windows should be shut down when the timer expires.
+        /// </summary>
+        public bool ShutDownWhenExpired { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the color of the timer progress bar.
         /// </summary>
         public string ColorIdentifier { get; set; }

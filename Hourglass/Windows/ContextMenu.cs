@@ -11,6 +11,7 @@ namespace Hourglass.Windows
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
 
@@ -136,9 +137,25 @@ namespace Hourglass.Windows
         private MenuItem loopSoundMenuItem;
 
         /// <summary>
+        /// The "Advanced options" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem advancedOptionsMenuItem;
+
+        /// <summary>
+        /// The "Shut down when expired" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem shutDownWhenExpiredMenuItem;
+
+        /// <summary>
         /// The "Close" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem closeMenuItem;
+
+        /// <summary>
+        /// The advanced <see cref="Control"/>s that should be shown only when the Shift key is held when opening the
+        /// context menu.
+        /// </summary>
+        private IList<Control> advancedControls = new List<Control>();
 
         /// <summary>
         /// The date and time the menu was last visible.
@@ -208,12 +225,24 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void WindowContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
+            // Update dynamic items
             this.UpdateRecentInputsMenuItem();
             this.UpdateSavedTimersMenuItem();
             this.UpdateColorMenuItem();
             this.UpdateSoundMenuItem();
 
+            // Update binding
             this.UpdateMenuFromOptions();
+
+            // Show advanced options only when Shift is pressed
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                this.ShowAdvancedOptions();
+            }
+            else
+            {
+                this.HideAdvancedOptions();
+            }
 
             this.lastShowed = DateTime.Now;
             this.dispatcherTimer.Start();
@@ -243,6 +272,28 @@ namespace Hourglass.Windows
             this.dispatcherTimer.Stop();
 
             AppManager.Instance.Persist();
+        }
+
+        /// <summary>
+        /// Shows the advanced <see cref="Control"/>s.
+        /// </summary>
+        private void ShowAdvancedOptions()
+        {
+            foreach (Control control in this.advancedControls)
+            {
+                control.Visibility = Visibility.Visible;
+            }
+        }
+
+        /// <summary>
+        /// Hides the advanced <see cref="Control"/>s.
+        /// </summary>
+        private void HideAdvancedOptions()
+        {
+            foreach (Control control in this.advancedControls)
+            {
+                control.Visibility = Visibility.Collapsed;
+            }
         }
 
         #endregion
@@ -307,6 +358,18 @@ namespace Hourglass.Windows
 
             // Loop sound
             this.loopSoundMenuItem.IsChecked = this.timerWindow.Options.LoopSound;
+
+            // Shut down when expired
+            if ((!this.timerWindow.Options.LoopTimer || !this.timerWindow.Timer.SupportsLooping) && !this.timerWindow.Options.LoopSound)
+            {
+                this.shutDownWhenExpiredMenuItem.IsChecked = this.timerWindow.Options.ShutDownWhenExpired;
+                this.shutDownWhenExpiredMenuItem.IsEnabled = true;
+            }
+            else
+            {
+                this.shutDownWhenExpiredMenuItem.IsChecked = false;
+                this.shutDownWhenExpiredMenuItem.IsEnabled = false;
+            }
         }
 
         /// <summary>
@@ -351,6 +414,12 @@ namespace Hourglass.Windows
 
             // Loop sound
             this.timerWindow.Options.LoopSound = this.loopSoundMenuItem.IsChecked;
+
+            // Shut down when expired
+            if (this.shutDownWhenExpiredMenuItem.IsEnabled)
+            {
+                this.timerWindow.Options.ShutDownWhenExpired = this.shutDownWhenExpiredMenuItem.IsChecked;
+            }
         }
 
         /// <summary>
@@ -374,6 +443,7 @@ namespace Hourglass.Windows
         private void BuildMenu()
         {
             this.Items.Clear();
+            this.advancedControls.Clear();
 
             this.newTimerMenuItem = new MenuItem();
             this.newTimerMenuItem.Header = Properties.Resources.ContextMenuNewTimerMenuItem;
@@ -445,6 +515,21 @@ namespace Hourglass.Windows
             this.soundMenuItem = new MenuItem();
             this.soundMenuItem.Header = Properties.Resources.ContextMenuSoundMenuItem;
             this.Items.Add(this.soundMenuItem);
+
+            Separator separator = new Separator();
+            this.Items.Add(separator);
+            this.advancedControls.Add(separator);
+
+            this.advancedOptionsMenuItem = new MenuItem();
+            this.advancedOptionsMenuItem.Header = Properties.Resources.ContextMenuAdvancedOptionsMenuItem;
+            this.Items.Add(this.advancedOptionsMenuItem);
+            this.advancedControls.Add(this.advancedOptionsMenuItem);
+
+            this.shutDownWhenExpiredMenuItem = new MenuItem();
+            this.shutDownWhenExpiredMenuItem.Header = Properties.Resources.ContextMenuShutDownWhenExpiredMenuItem;
+            this.shutDownWhenExpiredMenuItem.IsCheckable = true;
+            this.shutDownWhenExpiredMenuItem.Click += this.CheckableMenuItemClick;
+            this.advancedOptionsMenuItem.Items.Add(this.shutDownWhenExpiredMenuItem);
 
             this.Items.Add(new Separator());
 

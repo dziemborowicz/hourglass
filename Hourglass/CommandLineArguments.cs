@@ -104,6 +104,11 @@ namespace Hourglass
         public bool CloseWhenExpired { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether Windows should be shut down when the timer expires.
+        /// </summary>
+        public bool ShutDownWhenExpired { get; private set; }
+
+        /// <summary>
         /// Gets the color of the timer progress bar.
         /// </summary>
         public Color Color { get; private set; }
@@ -192,6 +197,7 @@ namespace Hourglass
                 LoopTimer = this.LoopTimer,
                 PopUpWhenExpired = this.PopUpWhenExpired,
                 CloseWhenExpired = this.CloseWhenExpired,
+                ShutDownWhenExpired = this.ShutDownWhenExpired,
                 Color = this.Color,
                 Sound = this.Sound,
                 LoopSound = this.LoopSound,
@@ -235,6 +241,7 @@ namespace Hourglass
                 LoopTimer = options.LoopTimer,
                 PopUpWhenExpired = options.PopUpWhenExpired,
                 CloseWhenExpired = options.CloseWhenExpired,
+                ShutDownWhenExpired = options.ShutDownWhenExpired,
                 Color = options.Color,
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
@@ -266,6 +273,7 @@ namespace Hourglass
                 LoopTimer = defaultOptions.LoopTimer,
                 PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
                 CloseWhenExpired = defaultOptions.CloseWhenExpired,
+                ShutDownWhenExpired = defaultOptions.ShutDownWhenExpired,
                 Color = defaultOptions.Color,
                 Sound = defaultOptions.Sound,
                 LoopSound = defaultOptions.LoopSound,
@@ -405,6 +413,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.CloseWhenExpired = closeWhenExpired;
                         argumentsBasedOnFactoryDefaults.CloseWhenExpired = closeWhenExpired;
+                        break;
+
+                    case "--shut-down-when-expired":
+                    case "-x":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--shut-down-when-expired");
+
+                        bool shutDownWhenExpired = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.CloseWhenExpired);
+
+                        argumentsBasedOnMostRecentOptions.ShutDownWhenExpired = shutDownWhenExpired;
+                        argumentsBasedOnFactoryDefaults.ShutDownWhenExpired = shutDownWhenExpired;
                         break;
 
                     case "--color":
