@@ -172,12 +172,6 @@ namespace Hourglass.Windows
         private MenuItem closeMenuItem;
 
         /// <summary>
-        /// The advanced <see cref="Control"/>s that should be shown only when the Shift key is held when opening the
-        /// context menu.
-        /// </summary>
-        private IList<Control> advancedControls = new List<Control>();
-
-        /// <summary>
         /// The date and time the menu was last visible.
         /// </summary>
         private DateTime lastShowed = DateTime.MinValue;
@@ -254,16 +248,6 @@ namespace Hourglass.Windows
             // Update binding
             this.UpdateMenuFromOptions();
 
-            // Show advanced options only when Shift is pressed
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                this.ShowAdvancedOptions();
-            }
-            else
-            {
-                this.HideAdvancedOptions();
-            }
-
             this.lastShowed = DateTime.Now;
             this.dispatcherTimer.Start();
         }
@@ -292,28 +276,6 @@ namespace Hourglass.Windows
             this.dispatcherTimer.Stop();
 
             AppManager.Instance.Persist();
-        }
-
-        /// <summary>
-        /// Shows the advanced <see cref="Control"/>s.
-        /// </summary>
-        private void ShowAdvancedOptions()
-        {
-            foreach (Control control in this.advancedControls)
-            {
-                control.Visibility = Visibility.Visible;
-            }
-        }
-
-        /// <summary>
-        /// Hides the advanced <see cref="Control"/>s.
-        /// </summary>
-        private void HideAdvancedOptions()
-        {
-            foreach (Control control in this.advancedControls)
-            {
-                control.Visibility = Visibility.Collapsed;
-            }
         }
 
         #endregion
@@ -481,7 +443,6 @@ namespace Hourglass.Windows
         private void BuildMenu()
         {
             this.Items.Clear();
-            this.advancedControls.Clear();
 
             this.newTimerMenuItem = new MenuItem();
             this.newTimerMenuItem.Header = Properties.Resources.ContextMenuNewTimerMenuItem;
@@ -556,12 +517,10 @@ namespace Hourglass.Windows
 
             Separator separator = new Separator();
             this.Items.Add(separator);
-            this.advancedControls.Add(separator);
 
             this.advancedOptionsMenuItem = new MenuItem();
             this.advancedOptionsMenuItem.Header = Properties.Resources.ContextMenuAdvancedOptionsMenuItem;
             this.Items.Add(this.advancedOptionsMenuItem);
-            this.advancedControls.Add(this.advancedOptionsMenuItem);
 
             this.doNotKeepComputerAwakeMenuItem = new MenuItem();
             this.doNotKeepComputerAwakeMenuItem.Header = Properties.Resources.ContextMenuDoNotKeepComputerAwakeMenuItem;
