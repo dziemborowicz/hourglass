@@ -143,15 +143,17 @@ Options:
             --title                         (none)
             --always-on-top                 off
             --full-screen                   off
+            --prompt-on-exit                on
             --show-in-notification-area     off
             --loop-timer                    off
             --pop-up-when-expired           on
             --close-when-expired            off
+            --shut-down-when-expired        off
             --color                         blue
             --sound                         normal beep
             --loop-sound                    off
-            --window-bounds                 auto,auto,350,150
             --window-state                  normal
+            --window-bounds                 auto,auto,350,150
 
         Required        no
         Alias           -d
