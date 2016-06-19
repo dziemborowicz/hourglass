@@ -1105,7 +1105,7 @@ namespace Hourglass.Windows
         /// </summary>
         private void UpdateKeepAwake()
         {
-            if (this.Timer.State == TimerState.Running)
+            if (this.Timer.State == TimerState.Running && !this.Options.DoNotKeepComputerAwake)
             {
                 KeepAwakeManager.Instance.StartKeepAwakeFor(this);
             }

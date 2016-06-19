@@ -82,15 +82,20 @@ namespace Hourglass
         public bool PromptOnExit { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether to show the time elapsed rather than the time remaining.
+        /// Gets a value indicating whether to keep the computer awake while the timer is running.
         /// </summary>
-        public bool ShowTimeElapsed { get; private set; }
+        public bool DoNotKeepComputerAwake { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether an icon for the app should be visible in the notification area of the
         /// taskbar.
         /// </summary>
         public bool ShowInNotificationArea { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to show the time elapsed rather than the time remaining.
+        /// </summary>
+        public bool ShowTimeElapsed { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether to loop the timer continuously.
@@ -204,6 +209,7 @@ namespace Hourglass
                 Title = this.Title,
                 AlwaysOnTop = this.AlwaysOnTop,
                 PromptOnExit = this.PromptOnExit,
+                DoNotKeepComputerAwake = this.DoNotKeepComputerAwake,
                 ShowTimeElapsed = this.ShowTimeElapsed,
                 LoopTimer = this.LoopTimer,
                 PopUpWhenExpired = this.PopUpWhenExpired,
@@ -248,6 +254,7 @@ namespace Hourglass
                 AlwaysOnTop = options.AlwaysOnTop,
                 IsFullScreen = windowSize.IsFullScreen,
                 PromptOnExit = options.PromptOnExit,
+                DoNotKeepComputerAwake = options.DoNotKeepComputerAwake,
                 ShowTimeElapsed = options.ShowTimeElapsed,
                 ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
                 LoopTimer = options.LoopTimer,
@@ -282,6 +289,7 @@ namespace Hourglass
                 AlwaysOnTop = defaultOptions.AlwaysOnTop,
                 IsFullScreen = defaultOptions.WindowSize.IsFullScreen,
                 PromptOnExit = defaultOptions.PromptOnExit,
+                DoNotKeepComputerAwake = defaultOptions.DoNotKeepComputerAwake,
                 ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
                 ShowInNotificationArea = false,
                 LoopTimer = defaultOptions.LoopTimer,
@@ -376,6 +384,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.PromptOnExit = promptOnExit;
                         argumentsBasedOnFactoryDefaults.PromptOnExit = promptOnExit;
+                        break;
+
+                    case "--do-not-keep-awake":
+                    case "-k":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--do-not-keep-awake");
+
+                        bool doNotKeepComputerAwake = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.DoNotKeepComputerAwake);
+
+                        argumentsBasedOnMostRecentOptions.DoNotKeepComputerAwake = doNotKeepComputerAwake;
+                        argumentsBasedOnFactoryDefaults.DoNotKeepComputerAwake = doNotKeepComputerAwake;
                         break;
 
                     case "--show-time-elapsed":

@@ -147,6 +147,16 @@ namespace Hourglass.Windows
         private MenuItem advancedOptionsMenuItem;
 
         /// <summary>
+        /// The "Do not keep computer awake" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem doNotKeepComputerAwakeMenuItem;
+
+        /// <summary>
+        /// The "Open saved timers on startup" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem openSavedTimersOnStartupMenuItem;
+
+        /// <summary>
         /// The "Show time elapsed" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem showTimeElapsedMenuItem;
@@ -155,11 +165,6 @@ namespace Hourglass.Windows
         /// The "Shut down when expired" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem shutDownWhenExpiredMenuItem;
-
-        /// <summary>
-        /// The "Open saved timers on startup" <see cref="MenuItem"/>.
-        /// </summary>
-        private MenuItem openSavedTimersOnStartupMenuItem;
 
         /// <summary>
         /// The "Close" <see cref="MenuItem"/>.
@@ -374,6 +379,12 @@ namespace Hourglass.Windows
             // Loop sound
             this.loopSoundMenuItem.IsChecked = this.timerWindow.Options.LoopSound;
 
+            // Do not keep computer awake
+            this.doNotKeepComputerAwakeMenuItem.IsChecked = this.timerWindow.Options.DoNotKeepComputerAwake;
+
+            // Open saved timers on startup
+            this.openSavedTimersOnStartupMenuItem.IsChecked = Settings.Default.OpenSavedTimersOnStartup;
+
             // Show time elapsed
             this.showTimeElapsedMenuItem.IsChecked = this.timerWindow.Options.ShowTimeElapsed;
 
@@ -388,9 +399,6 @@ namespace Hourglass.Windows
                 this.shutDownWhenExpiredMenuItem.IsChecked = false;
                 this.shutDownWhenExpiredMenuItem.IsEnabled = false;
             }
-
-            // Open saved timers on startup
-            this.openSavedTimersOnStartupMenuItem.IsChecked = Settings.Default.OpenSavedTimersOnStartup;
         }
 
         /// <summary>
@@ -436,6 +444,12 @@ namespace Hourglass.Windows
             // Loop sound
             this.timerWindow.Options.LoopSound = this.loopSoundMenuItem.IsChecked;
 
+            // Do not keep computer awake
+            this.timerWindow.Options.DoNotKeepComputerAwake = this.doNotKeepComputerAwakeMenuItem.IsChecked;
+
+            // Open saved timers on startup
+            Settings.Default.OpenSavedTimersOnStartup = this.openSavedTimersOnStartupMenuItem.IsChecked;
+
             // Show time elapsed
             this.timerWindow.Options.ShowTimeElapsed = this.showTimeElapsedMenuItem.IsChecked;
 
@@ -444,9 +458,6 @@ namespace Hourglass.Windows
             {
                 this.timerWindow.Options.ShutDownWhenExpired = this.shutDownWhenExpiredMenuItem.IsChecked;
             }
-
-            // Open saved timers on startup
-            Settings.Default.OpenSavedTimersOnStartup = this.openSavedTimersOnStartupMenuItem.IsChecked;
         }
 
         /// <summary>
@@ -552,6 +563,18 @@ namespace Hourglass.Windows
             this.Items.Add(this.advancedOptionsMenuItem);
             this.advancedControls.Add(this.advancedOptionsMenuItem);
 
+            this.doNotKeepComputerAwakeMenuItem = new MenuItem();
+            this.doNotKeepComputerAwakeMenuItem.Header = Properties.Resources.ContextMenuDoNotKeepComputerAwakeMenuItem;
+            this.doNotKeepComputerAwakeMenuItem.IsCheckable = true;
+            this.doNotKeepComputerAwakeMenuItem.Click += this.CheckableMenuItemClick;
+            this.advancedOptionsMenuItem.Items.Add(this.doNotKeepComputerAwakeMenuItem);
+
+            this.openSavedTimersOnStartupMenuItem = new MenuItem();
+            this.openSavedTimersOnStartupMenuItem.Header = Properties.Resources.ContextMenuOpenSavedTimersOnStartupMenuItem;
+            this.openSavedTimersOnStartupMenuItem.IsCheckable = true;
+            this.openSavedTimersOnStartupMenuItem.Click += this.CheckableMenuItemClick;
+            this.advancedOptionsMenuItem.Items.Add(this.openSavedTimersOnStartupMenuItem);
+
             this.showTimeElapsedMenuItem = new MenuItem();
             this.showTimeElapsedMenuItem.Header = Properties.Resources.ContextMenuShowTimeElapsedMenuItem;
             this.showTimeElapsedMenuItem.IsCheckable = true;
@@ -563,12 +586,6 @@ namespace Hourglass.Windows
             this.shutDownWhenExpiredMenuItem.IsCheckable = true;
             this.shutDownWhenExpiredMenuItem.Click += this.CheckableMenuItemClick;
             this.advancedOptionsMenuItem.Items.Add(this.shutDownWhenExpiredMenuItem);
-
-            this.openSavedTimersOnStartupMenuItem = new MenuItem();
-            this.openSavedTimersOnStartupMenuItem.Header = Properties.Resources.ContextMenuOpenSavedTimersOnStartupMenuItem;
-            this.openSavedTimersOnStartupMenuItem.IsCheckable = true;
-            this.openSavedTimersOnStartupMenuItem.Click += this.CheckableMenuItemClick;
-            this.advancedOptionsMenuItem.Items.Add(this.openSavedTimersOnStartupMenuItem);
 
             this.Items.Add(new Separator());
 

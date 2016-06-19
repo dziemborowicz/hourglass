@@ -36,6 +36,11 @@ namespace Hourglass.Timing
         private bool promptOnExit;
 
         /// <summary>
+        /// A value indicating whether to keep the computer awake while the timer is running.
+        /// </summary>
+        private bool doNotKeepComputerAwake;
+
+        /// <summary>
         /// A value indicating whether to show the time elapsed rather than the time remaining.
         /// </summary>
         private bool showTimeElapsed;
@@ -94,6 +99,7 @@ namespace Hourglass.Timing
             this.title = string.Empty;
             this.alwaysOnTop = false;
             this.promptOnExit = true;
+            this.doNotKeepComputerAwake = false;
             this.showTimeElapsed = false;
             this.loopTimer = false;
             this.popUpWhenExpired = true;
@@ -205,6 +211,28 @@ namespace Hourglass.Timing
 
                 this.promptOnExit = value;
                 this.OnPropertyChanged("PromptOnExit");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to keep the computer awake while the timer is running.
+        /// </summary>
+        public bool DoNotKeepComputerAwake
+        {
+            get
+            {
+                return this.doNotKeepComputerAwake;
+            }
+
+            set
+            {
+                if (this.doNotKeepComputerAwake == value)
+                {
+                    return;
+                }
+
+                this.doNotKeepComputerAwake = value;
+                this.OnPropertyChanged("DoNotKeepComputerAwake");
             }
         }
 
@@ -450,6 +478,7 @@ namespace Hourglass.Timing
             this.title = options.title;
             this.alwaysOnTop = options.alwaysOnTop;
             this.promptOnExit = options.promptOnExit;
+            this.doNotKeepComputerAwake = options.doNotKeepComputerAwake;
             this.showTimeElapsed = options.showTimeElapsed;
             this.loopTimer = options.loopTimer;
             this.popUpWhenExpired = options.popUpWhenExpired;
@@ -475,6 +504,7 @@ namespace Hourglass.Timing
             this.title = info.Title;
             this.alwaysOnTop = info.AlwaysOnTop;
             this.promptOnExit = info.PromptOnExit;
+            this.doNotKeepComputerAwake = info.DoNotKeepComputerAwake;
             this.showTimeElapsed = info.ShowTimeElapsed;
             this.loopTimer = info.LoopTimer;
             this.popUpWhenExpired = info.PopUpWhenExpired;
@@ -497,6 +527,7 @@ namespace Hourglass.Timing
                 Title = this.title,
                 AlwaysOnTop = this.alwaysOnTop,
                 PromptOnExit = this.promptOnExit,
+                DoNotKeepComputerAwake = this.doNotKeepComputerAwake,
                 ShowTimeElapsed = this.showTimeElapsed,
                 LoopTimer = this.loopTimer,
                 PopUpWhenExpired = this.popUpWhenExpired,

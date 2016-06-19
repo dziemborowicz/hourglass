@@ -30,6 +30,11 @@ namespace Hourglass.Serialization
         public bool PromptOnExit { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to keep the computer awake while the timer is running.
+        /// </summary>
+        public bool DoNotKeepComputerAwake { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to show the time elapsed rather than the time remaining.
         /// </summary>
         public bool ShowTimeElapsed { get; set; }

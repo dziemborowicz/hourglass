@@ -1106,7 +1106,7 @@ $</value>
     <comment>The text for the advanced options menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuShutDownWhenExpiredMenuItem" xml:space="preserve">
-    <value>Shut down when _expired</value>
+    <value>Shut _down when expired</value>
     <comment>The text for the shut down when expired menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuOpenAllSavedTimersMenuItem" xml:space="preserve">
@@ -1118,7 +1118,11 @@ $</value>
     <comment>The text for the open saved timers on startup menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuShowTimeElapsedMenuItem" xml:space="preserve">
-    <value>Show time _elapsed</value>
+    <value>_Show time elapsed</value>
     <comment>The text for the show time elapsed menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuDoNotKeepComputerAwakeMenuItem" xml:space="preserve">
+    <value>Do not _keep computer awake</value>
+    <comment>The text for the do not keep computer awake menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
 </root>

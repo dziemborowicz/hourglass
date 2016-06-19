@@ -54,6 +54,13 @@ Options:
         Default value   last
         Alias           -o
 
+  --do-not-keep-awake on|off|last
+        Do not keep the computer awake while the timer is running.
+
+        Required        no
+        Default value   last
+        Alias           -k
+
   --show-in-notification-area on|off|last
         Shows an icon for the app in the notification area (system tray).
 
@@ -158,6 +165,7 @@ Options:
             --always-on-top                 off
             --full-screen                   off
             --prompt-on-exit                on
+            --do-not-keep-awake             off
             --show-in-notification-area     off
             --show-time-elapsed             off
             --loop-timer                    off

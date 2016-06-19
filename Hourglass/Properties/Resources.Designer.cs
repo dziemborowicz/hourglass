@@ -314,6 +314,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do not _keep computer awake.
+        /// </summary>
+        internal static string ContextMenuDoNotKeepComputerAwakeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuDoNotKeepComputerAwakeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Full screen.
         /// </summary>
         internal static string ContextMenuFullScreenMenuItem {
@@ -440,7 +449,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show time _elapsed.
+        ///   Looks up a localized string similar to _Show time elapsed.
         /// </summary>
         internal static string ContextMenuShowTimeElapsedMenuItem {
             get {
@@ -449,7 +458,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shut down when _expired.
+        ///   Looks up a localized string similar to Shut _down when expired.
         /// </summary>
         internal static string ContextMenuShutDownWhenExpiredMenuItem {
             get {
