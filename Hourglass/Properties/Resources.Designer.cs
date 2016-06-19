@@ -377,6 +377,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Open all saved timers.
+        /// </summary>
+        internal static string ContextMenuOpenAllSavedTimersMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuOpenAllSavedTimersMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Pop up when expired.
         /// </summary>
         internal static string ContextMenuPopUpWhenExpiredMenuItem {

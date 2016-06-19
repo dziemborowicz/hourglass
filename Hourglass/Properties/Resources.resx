@@ -1109,4 +1109,8 @@ $</value>
     <value>Shut down when _expired</value>
     <comment>The text for the shut down when expired menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuOpenAllSavedTimersMenuItem" xml:space="preserve">
+    <value>_Open all saved timers</value>
+    <comment>The text for the open all saved timers menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
 </root>

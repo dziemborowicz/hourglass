@@ -97,6 +97,11 @@ namespace Hourglass.Windows
         private MenuItem savedTimersMenuItem;
 
         /// <summary>
+        /// The "Open all saved timers" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem openAllSavedTimersMenuItem;
+
+        /// <summary>
         /// The "Clear saved timers" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem clearSavedTimersMenuItem;
@@ -673,6 +678,15 @@ namespace Hourglass.Windows
 
             this.savedTimersMenuItem.Items.Add(new Separator());
 
+            if (this.openAllSavedTimersMenuItem == null)
+            {
+                this.openAllSavedTimersMenuItem = new MenuItem();
+                this.openAllSavedTimersMenuItem.Header = Properties.Resources.ContextMenuOpenAllSavedTimersMenuItem;
+                this.openAllSavedTimersMenuItem.Click += this.OpenAllSavedTimersMenuItemClick;
+            }
+
+            this.savedTimersMenuItem.Items.Add(this.openAllSavedTimersMenuItem);
+
             if (this.clearSavedTimersMenuItem == null)
             {
                 this.clearSavedTimersMenuItem = new MenuItem();
@@ -757,7 +771,28 @@ namespace Hourglass.Windows
         {
             MenuItem menuItem = (MenuItem)sender;
             Timer savedTimer = (Timer)menuItem.Tag;
+            this.ShowSavedTimer(savedTimer);
+        }
 
+        /// <summary>
+        /// Invoked when the "Open all saved timers" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void OpenAllSavedTimersMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            foreach (Timer savedTimer in TimerManager.Instance.ResumableTimers)
+            {
+                this.ShowSavedTimer(savedTimer);
+            }
+        }
+
+        /// <summary>
+        /// Shows an existing <see cref="Timer"/>.
+        /// </summary>
+        /// <param name="savedTimer">An existing <see cref="Timer"/>.</param>
+        private void ShowSavedTimer(Timer savedTimer)
+        {
             if (this.timerWindow.Timer.State == TimerState.Stopped || this.timerWindow.Timer.State == TimerState.Expired)
             {
                 this.ShowSavedTimerInCurrentWindow(savedTimer);
