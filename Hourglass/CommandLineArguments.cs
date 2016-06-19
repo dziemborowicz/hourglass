@@ -125,6 +125,11 @@ namespace Hourglass
         public bool LoopSound { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether all saved timers should be opened when the application starts.
+        /// </summary>
+        public bool OpenSavedTimers { get; private set; }
+
+        /// <summary>
         /// Gets a value that indicates whether the timer window is restored, minimized, or maximized.
         /// </summary>
         public WindowState WindowState { get; private set; }
@@ -245,6 +250,7 @@ namespace Hourglass
                 Color = options.Color,
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
+                OpenSavedTimers = Settings.Default.OpenSavedTimersOnStartup,
                 WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
                 RestoreWindowState = windowSize.RestoreWindowState,
                 WindowBounds = windowSize.RestoreBounds
@@ -277,6 +283,7 @@ namespace Hourglass
                 Color = defaultOptions.Color,
                 Sound = defaultOptions.Sound,
                 LoopSound = defaultOptions.LoopSound,
+                OpenSavedTimers = false,
                 WindowState = defaultOptions.WindowSize.WindowState,
                 RestoreWindowState = defaultOptions.WindowSize.RestoreWindowState,
                 WindowBounds = defaultWindowBoundsWithLocation
@@ -465,6 +472,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.LoopSound = loopSound;
                         argumentsBasedOnFactoryDefaults.LoopSound = loopSound;
+                        break;
+
+                    case "--open-saved-timers":
+                    case "-v":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--open-saved-timers");
+
+                        bool openSavedTimers = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.OpenSavedTimers);
+
+                        argumentsBasedOnMostRecentOptions.OpenSavedTimers = openSavedTimers;
+                        argumentsBasedOnFactoryDefaults.OpenSavedTimers = openSavedTimers;
                         break;
 
                     case "--window-bounds":

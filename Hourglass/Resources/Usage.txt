@@ -110,6 +110,13 @@ Options:
         Default value   last
         Alias           -r
 
+  --open-saved-timers on|off|last
+        Opens all saved timers on start up.
+
+        Required        no
+        Default value   last
+        Alias           -v
+
   --window-state normal|maximized|minimized|last
         Sets the state of the timer window.
 
@@ -152,6 +159,7 @@ Options:
             --color                         blue
             --sound                         normal beep
             --loop-sound                    off
+            --open-saved-timers             off
             --window-state                  normal
             --window-bounds                 auto,auto,350,150
 

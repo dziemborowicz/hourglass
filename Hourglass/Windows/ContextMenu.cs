@@ -152,6 +152,11 @@ namespace Hourglass.Windows
         private MenuItem shutDownWhenExpiredMenuItem;
 
         /// <summary>
+        /// The "Open saved timers on startup" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem openSavedTimersOnStartupMenuItem;
+
+        /// <summary>
         /// The "Close" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem closeMenuItem;
@@ -375,6 +380,9 @@ namespace Hourglass.Windows
                 this.shutDownWhenExpiredMenuItem.IsChecked = false;
                 this.shutDownWhenExpiredMenuItem.IsEnabled = false;
             }
+
+            // Open saved timers on startup
+            this.openSavedTimersOnStartupMenuItem.IsChecked = Settings.Default.OpenSavedTimersOnStartup;
         }
 
         /// <summary>
@@ -425,6 +433,9 @@ namespace Hourglass.Windows
             {
                 this.timerWindow.Options.ShutDownWhenExpired = this.shutDownWhenExpiredMenuItem.IsChecked;
             }
+
+            // Open saved timers on startup
+            Settings.Default.OpenSavedTimersOnStartup = this.openSavedTimersOnStartupMenuItem.IsChecked;
         }
 
         /// <summary>
@@ -535,6 +546,12 @@ namespace Hourglass.Windows
             this.shutDownWhenExpiredMenuItem.IsCheckable = true;
             this.shutDownWhenExpiredMenuItem.Click += this.CheckableMenuItemClick;
             this.advancedOptionsMenuItem.Items.Add(this.shutDownWhenExpiredMenuItem);
+
+            this.openSavedTimersOnStartupMenuItem = new MenuItem();
+            this.openSavedTimersOnStartupMenuItem.Header = Properties.Resources.ContextMenuOpenSavedTimersOnStartupMenuItem;
+            this.openSavedTimersOnStartupMenuItem.IsCheckable = true;
+            this.openSavedTimersOnStartupMenuItem.Click += this.CheckableMenuItemClick;
+            this.advancedOptionsMenuItem.Items.Add(this.openSavedTimersOnStartupMenuItem);
 
             this.Items.Add(new Separator());
 

@@ -138,7 +138,8 @@ namespace Hourglass.Managers
         /// <returns>A value indicating whether the timer is bound to any <see cref="TimerWindow"/>. </returns>
         private static bool IsBoundToWindow(Timer timer)
         {
-            return Application.Current.Windows.OfType<TimerWindow>().Any(w => w.Timer == timer);
+            return Application.Current != null
+                && Application.Current.Windows.OfType<TimerWindow>().Any(w => w.Timer == timer);
         }
     }
 }

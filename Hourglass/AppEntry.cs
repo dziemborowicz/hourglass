@@ -7,11 +7,13 @@
 namespace Hourglass
 {
     using System;
+    using System.Linq;
     using System.Windows;
 
     using Hourglass.Extensions;
     using Hourglass.Managers;
     using Hourglass.Properties;
+    using Hourglass.Timing;
     using Hourglass.Windows;
 
     using Microsoft.VisualBasic.ApplicationServices;
@@ -69,11 +71,13 @@ namespace Hourglass
 
             SetGlobalSettingsFromArguments(arguments);
 
-            TimerWindow window = GetTimerWindowFromArguments(arguments);
-
             this.app = new App();
+            this.app.Startup += (sender, args) =>
+            {
+                ShowTimerWindowsForArguments(arguments);
+            };
             this.app.Exit += AppExit;
-            this.app.Run(window);
+            this.app.Run();
 
             return false;
         }
@@ -94,7 +98,41 @@ namespace Hourglass
 
             SetGlobalSettingsFromArguments(arguments);
 
-            TimerWindow window = GetTimerWindowFromArguments(arguments);
+            ShowTimerWindowsForArguments(arguments);
+        }
+
+        /// <summary>
+        /// Shows a new timer window or windows for all saved timers, depending on whether the <see
+        /// cref="CommandLineArguments"/> specify to open saved timers.
+        /// </summary>
+        /// <param name="arguments">Parsed command-line arguments.</param>
+        private static void ShowTimerWindowsForArguments(CommandLineArguments arguments)
+        {
+            if (arguments.OpenSavedTimers && TimerManager.Instance.ResumableTimers.Any())
+            {
+                ShowSavedTimerWindows(arguments);
+
+                if (arguments.TimerStart != null)
+                {
+                    ShowNewTimerWindow(arguments);
+                }
+            }
+            else
+            {
+                ShowNewTimerWindow(arguments);
+            }
+        }
+
+        /// <summary>
+        /// Shows a new timer window. The window will run the <see cref="TimerStart"/> specified in the <see
+        /// cref="CommandLineArguments"/>, or it will display in input mode if there is no <see cref="TimerStart"/>.
+        /// </summary>
+        /// <param name="arguments">Parsed command-line arguments.</param>
+        private static void ShowNewTimerWindow(CommandLineArguments arguments)
+        {
+            TimerWindow window = new TimerWindow(arguments.TimerStart);
+            window.Options.Set(arguments.GetTimerOptions());
+            window.Restore(arguments.GetWindowSize(), RestoreOptions.AllowMinimized);
             window.Show();
 
             if (window.WindowState != WindowState.Minimized)
@@ -104,16 +142,26 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns a new instance of the <see cref="TimerWindow"/> class for the parsed command-line arguments.
+        /// Shows windows for all resumable timers.
         /// </summary>
         /// <param name="arguments">Parsed command-line arguments.</param>
-        /// <returns>A <see cref="TimerWindow"/>.</returns>
-        private static TimerWindow GetTimerWindowFromArguments(CommandLineArguments arguments)
+        private static void ShowSavedTimerWindows(CommandLineArguments arguments)
         {
-            TimerWindow window = new TimerWindow(arguments.TimerStart);
-            window.Options.Set(arguments.GetTimerOptions());
-            window.Restore(arguments.GetWindowSize(), RestoreOptions.AllowMinimized);
-            return window;
+            foreach (Timer savedTimer in TimerManager.Instance.ResumableTimers)
+            {
+                TimerWindow window = new TimerWindow();
+
+                if (savedTimer.Options.WindowSize != null)
+                {
+                    window.Restore(savedTimer.Options.WindowSize, RestoreOptions.AllowMinimized);
+                }
+                else
+                {
+                    window.Restore(arguments.GetWindowSize(), RestoreOptions.AllowMinimized);
+                }
+
+                window.Show(savedTimer);
+            }
         }
 
         /// <summary>
@@ -123,6 +171,7 @@ namespace Hourglass
         private static void SetGlobalSettingsFromArguments(CommandLineArguments arguments)
         {
             Settings.Default.ShowInNotificationArea = arguments.ShowInNotificationArea;
+            Settings.Default.OpenSavedTimersOnStartup = arguments.OpenSavedTimers;
         }
 
         /// <summary>
