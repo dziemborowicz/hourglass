@@ -41,7 +41,7 @@ namespace Hourglass.Timing
         private bool doNotKeepComputerAwake;
 
         /// <summary>
-        /// A value indicating whether to show the time elapsed rather than the time remaining.
+        /// A value indicating whether to show the time elapsed rather than the time left.
         /// </summary>
         private bool showTimeElapsed;
 
@@ -237,7 +237,7 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show the time elapsed rather than the time remaining.
+        /// Gets or sets a value indicating whether to show the time elapsed rather than the time left.
         /// </summary>
         public bool ShowTimeElapsed
         {

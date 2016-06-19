@@ -449,7 +449,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Show time elapsed.
+        ///   Looks up a localized string similar to _Show time elapsed instead of time left.
         /// </summary>
         internal static string ContextMenuShowTimeElapsedMenuItem {
             get {

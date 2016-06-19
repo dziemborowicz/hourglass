@@ -93,7 +93,7 @@ namespace Hourglass
         public bool ShowInNotificationArea { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether to show the time elapsed rather than the time remaining.
+        /// Gets a value indicating whether to show the time elapsed rather than the time left.
         /// </summary>
         public bool ShowTimeElapsed { get; private set; }
 

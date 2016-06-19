@@ -69,7 +69,7 @@ Options:
         Alias           -n
 
   --show-time-elapsed on|off|last
-        Shows the time elapsed since the timer was started, rather than the time remaining until the timer expires.
+        Shows the time elapsed since the timer was started, rather than the time left until the timer expires.
 
         Required        no
         Default value   last
