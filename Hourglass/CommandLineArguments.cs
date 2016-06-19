@@ -428,8 +428,7 @@ namespace Hourglass
 
                         bool shutDownWhenExpired = GetBoolValue(
                             arg,
-                            remainingArgs,
-                            argumentsBasedOnMostRecentOptions.CloseWhenExpired);
+                            remainingArgs);
 
                         argumentsBasedOnMostRecentOptions.ShutDownWhenExpired = shutDownWhenExpired;
                         argumentsBasedOnFactoryDefaults.ShutDownWhenExpired = shutDownWhenExpired;
@@ -595,6 +594,38 @@ namespace Hourglass
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Returns the next <see cref="bool"/> value in <paramref name="remainingArgs"/>, or throws an exception if
+        /// <paramref name="remainingArgs"/> is empty or the next argument is not "on" or "off".
+        /// </summary>
+        /// <param name="arg">The name of the argument for which the value is to be returned.</param>
+        /// <param name="remainingArgs">The unparsed arguments.</param>
+        /// <returns>The next <see cref="bool"/> value in <paramref name="remainingArgs"/>.</returns>
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
+        /// "on" or "off".</exception>
+        private static bool GetBoolValue(string arg, Queue<string> remainingArgs)
+        {
+            string value = GetRequiredValue(arg, remainingArgs);
+
+            switch (value)
+            {
+                case "on":
+                    return true;
+
+                case "off":
+                    return false;
+
+                default:
+                    string message = string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(),
+                        Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                        arg,
+                        value);
+
+                    throw new ParseException(message);
+            }
         }
 
         /// <summary>
