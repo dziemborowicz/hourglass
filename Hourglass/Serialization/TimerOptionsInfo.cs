@@ -30,6 +30,11 @@ namespace Hourglass.Serialization
         public bool PromptOnExit { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to show the time elapsed rather than the time remaining.
+        /// </summary>
+        public bool ShowTimeElapsed { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to loop the timer continuously.
         /// </summary>
         public bool LoopTimer { get; set; }

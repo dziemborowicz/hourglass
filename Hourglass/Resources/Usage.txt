@@ -61,6 +61,13 @@ Options:
         Default value   last
         Alias           -n
 
+  --show-time-elapsed on|off|last
+        Shows the time elapsed since the timer was started, rather than the time remaining until the timer expires.
+
+        Required        no
+        Default value   last
+        Alias           -u
+
   --loop-timer on|off|last
         Loops the timer when it expires.
 
@@ -152,6 +159,7 @@ Options:
             --full-screen                   off
             --prompt-on-exit                on
             --show-in-notification-area     off
+            --show-time-elapsed             off
             --loop-timer                    off
             --pop-up-when-expired           on
             --close-when-expired            off

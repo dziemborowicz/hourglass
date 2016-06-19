@@ -82,6 +82,11 @@ namespace Hourglass
         public bool PromptOnExit { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether to show the time elapsed rather than the time remaining.
+        /// </summary>
+        public bool ShowTimeElapsed { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether an icon for the app should be visible in the notification area of the
         /// taskbar.
         /// </summary>
@@ -199,6 +204,7 @@ namespace Hourglass
                 Title = this.Title,
                 AlwaysOnTop = this.AlwaysOnTop,
                 PromptOnExit = this.PromptOnExit,
+                ShowTimeElapsed = this.ShowTimeElapsed,
                 LoopTimer = this.LoopTimer,
                 PopUpWhenExpired = this.PopUpWhenExpired,
                 CloseWhenExpired = this.CloseWhenExpired,
@@ -242,6 +248,7 @@ namespace Hourglass
                 AlwaysOnTop = options.AlwaysOnTop,
                 IsFullScreen = windowSize.IsFullScreen,
                 PromptOnExit = options.PromptOnExit,
+                ShowTimeElapsed = options.ShowTimeElapsed,
                 ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
                 LoopTimer = options.LoopTimer,
                 PopUpWhenExpired = options.PopUpWhenExpired,
@@ -275,6 +282,7 @@ namespace Hourglass
                 AlwaysOnTop = defaultOptions.AlwaysOnTop,
                 IsFullScreen = defaultOptions.WindowSize.IsFullScreen,
                 PromptOnExit = defaultOptions.PromptOnExit,
+                ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
                 ShowInNotificationArea = false,
                 LoopTimer = defaultOptions.LoopTimer,
                 PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
@@ -368,6 +376,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.PromptOnExit = promptOnExit;
                         argumentsBasedOnFactoryDefaults.PromptOnExit = promptOnExit;
+                        break;
+
+                    case "--show-time-elapsed":
+                    case "-u":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--show-time-elapsed");
+
+                        bool showTimeElapsed = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.ShowTimeElapsed);
+
+                        argumentsBasedOnMostRecentOptions.ShowTimeElapsed = showTimeElapsed;
+                        argumentsBasedOnFactoryDefaults.ShowTimeElapsed = showTimeElapsed;
                         break;
 
                     case "--show-in-notification-area":

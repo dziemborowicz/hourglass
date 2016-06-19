@@ -440,6 +440,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show time _elapsed.
+        /// </summary>
+        internal static string ContextMenuShowTimeElapsedMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuShowTimeElapsedMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shut down when _expired.
         /// </summary>
         internal static string ContextMenuShutDownWhenExpiredMenuItem {

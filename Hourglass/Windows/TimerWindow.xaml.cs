@@ -1030,7 +1030,9 @@ namespace Hourglass.Windows
                         ? this.Timer.TimeLeftAsString
                         : Properties.Resources.TimerWindowTitle;
 
-                    this.TimerTextBox.Text = this.Timer.TimeLeftAsString;
+                    this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
+                        ? this.Timer.TimeElapsedAsString
+                        : this.Timer.TimeLeftAsString;
                     this.ProgressBar.Foreground = this.Options.Color.Brush;
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
                     this.UpdateTaskbarProgress();

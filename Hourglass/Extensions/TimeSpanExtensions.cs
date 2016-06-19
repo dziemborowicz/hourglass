@@ -42,6 +42,28 @@ namespace Hourglass.Extensions
         }
 
         /// <summary>
+        /// Rounds a <see cref="Nullable{TimeSpan}"/> down to the nearest second.
+        /// </summary>
+        /// <param name="timeSpan">A <see cref="Nullable{TimeSpan}"/>.</param>
+        /// <returns><paramref name="timeSpan"/> rounded down to the nearest second, or <c>null</c> if <paramref
+        /// name="timeSpan"/> is <c>null</c>.</returns>
+        public static TimeSpan? RoundDown(this TimeSpan? timeSpan)
+        {
+            return timeSpan?.RoundDown();
+        }
+
+        /// <summary>
+        /// Rounds a <see cref="Nullable{TimeSpan}"/> up to the nearest second.
+        /// </summary>
+        /// <param name="timeSpan">A <see cref="Nullable{TimeSpan}"/>.</param>
+        /// <returns><paramref name="timeSpan"/> rounded up to the nearest second, or <c>null</c> if <paramref
+        /// name="timeSpan"/> is <c>null</c>.</returns>
+        public static TimeSpan? RoundUp(this TimeSpan? timeSpan)
+        {
+            return timeSpan?.RoundUp();
+        }
+
+        /// <summary>
         /// Converts the value of a <see cref="TimeSpan"/> object to its equivalent natural string representation.
         /// </summary>
         /// <param name="timeSpan">A <see cref="TimeSpan"/>.</param>
@@ -59,8 +81,6 @@ namespace Hourglass.Extensions
         /// <returns>The natural string representation of the <see cref="TimeSpan"/>.</returns>
         public static string ToNaturalString(this TimeSpan timeSpan, IFormatProvider provider)
         {
-            timeSpan = timeSpan.RoundUp();
-
             List<string> parts = new List<string>();
 
             // Days

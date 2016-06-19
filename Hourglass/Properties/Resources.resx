@@ -1117,4 +1117,8 @@ $</value>
     <value>_Open saved timers on startup</value>
     <comment>The text for the open saved timers on startup menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuShowTimeElapsedMenuItem" xml:space="preserve">
+    <value>Show time _elapsed</value>
+    <comment>The text for the show time elapsed menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
 </root>

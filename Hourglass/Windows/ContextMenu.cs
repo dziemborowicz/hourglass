@@ -147,6 +147,11 @@ namespace Hourglass.Windows
         private MenuItem advancedOptionsMenuItem;
 
         /// <summary>
+        /// The "Show time elapsed" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem showTimeElapsedMenuItem;
+
+        /// <summary>
         /// The "Shut down when expired" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem shutDownWhenExpiredMenuItem;
@@ -369,6 +374,9 @@ namespace Hourglass.Windows
             // Loop sound
             this.loopSoundMenuItem.IsChecked = this.timerWindow.Options.LoopSound;
 
+            // Show time elapsed
+            this.showTimeElapsedMenuItem.IsChecked = this.timerWindow.Options.ShowTimeElapsed;
+
             // Shut down when expired
             if ((!this.timerWindow.Options.LoopTimer || !this.timerWindow.Timer.SupportsLooping) && !this.timerWindow.Options.LoopSound)
             {
@@ -427,6 +435,9 @@ namespace Hourglass.Windows
 
             // Loop sound
             this.timerWindow.Options.LoopSound = this.loopSoundMenuItem.IsChecked;
+
+            // Show time elapsed
+            this.timerWindow.Options.ShowTimeElapsed = this.showTimeElapsedMenuItem.IsChecked;
 
             // Shut down when expired
             if (this.shutDownWhenExpiredMenuItem.IsEnabled)
@@ -540,6 +551,12 @@ namespace Hourglass.Windows
             this.advancedOptionsMenuItem.Header = Properties.Resources.ContextMenuAdvancedOptionsMenuItem;
             this.Items.Add(this.advancedOptionsMenuItem);
             this.advancedControls.Add(this.advancedOptionsMenuItem);
+
+            this.showTimeElapsedMenuItem = new MenuItem();
+            this.showTimeElapsedMenuItem.Header = Properties.Resources.ContextMenuShowTimeElapsedMenuItem;
+            this.showTimeElapsedMenuItem.IsCheckable = true;
+            this.showTimeElapsedMenuItem.Click += this.CheckableMenuItemClick;
+            this.advancedOptionsMenuItem.Items.Add(this.showTimeElapsedMenuItem);
 
             this.shutDownWhenExpiredMenuItem = new MenuItem();
             this.shutDownWhenExpiredMenuItem.Header = Properties.Resources.ContextMenuShutDownWhenExpiredMenuItem;
