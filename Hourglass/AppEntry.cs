@@ -142,7 +142,7 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Shows windows for all resumable timers.
+        /// Shows windows for all saved timers.
         /// </summary>
         /// <param name="arguments">Parsed command-line arguments.</param>
         private static void ShowSavedTimerWindows(CommandLineArguments arguments)
