@@ -276,7 +276,7 @@ namespace Hourglass.Timing
             return string.Format(
                 Resources.ResourceManager.GetEffectiveProvider(),
                 Resources.ResourceManager.GetString(resourceName) ?? this.GetType().ToString(),
-                this.TimeLeft.ToNaturalString(),
+                this.Options.ShowTimeElapsed ? this.TimeElapsed.ToNaturalString() : this.TimeLeft.RoundUp().ToNaturalString(),
                 this.TimerStart,
                 this.Options.Title);
         }
@@ -474,7 +474,7 @@ namespace Hourglass.Timing
                 return Resources.TimerTimerExpired;
             }
 
-            return this.TimeLeft.ToNaturalString();
+            return this.TimeLeft.RoundUp().ToNaturalString();
         }
 
         /// <summary>

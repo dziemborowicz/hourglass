@@ -54,12 +54,26 @@ Options:
         Default value   last
         Alias           -o
 
+  --do-not-keep-awake on|off|last
+        Do not keep the computer awake while the timer is running.
+
+        Required        no
+        Default value   last
+        Alias           -k
+
   --show-in-notification-area on|off|last
         Shows an icon for the app in the notification area (system tray).
 
         Required        no
         Default value   last
         Alias           -n
+
+  --show-time-elapsed on|off|last
+        Shows the time elapsed since the timer was started, rather than the time left until the timer expires.
+
+        Required        no
+        Default value   last
+        Alias           -u
 
   --loop-timer on|off|last
         Loops the timer when it expires.
@@ -82,6 +96,13 @@ Options:
         Default value   last
         Alias           -e
 
+  --shut-down-when-expired on|off
+        Shuts down windows when the timer expires.
+
+        Required        no
+        Default value   off
+        Alias           -x
+
   --color last|<color>
         Sets the color of the timer window.
 
@@ -102,6 +123,13 @@ Options:
         Required        no
         Default value   last
         Alias           -r
+
+  --open-saved-timers on|off|last
+        Opens all saved timers on start up.
+
+        Required        no
+        Default value   last
+        Alias           -v
 
   --window-state normal|maximized|minimized|last
         Sets the state of the timer window.
@@ -136,15 +164,20 @@ Options:
             --title                         (none)
             --always-on-top                 off
             --full-screen                   off
+            --prompt-on-exit                on
+            --do-not-keep-awake             off
             --show-in-notification-area     off
+            --show-time-elapsed             off
             --loop-timer                    off
             --pop-up-when-expired           on
             --close-when-expired            off
+            --shut-down-when-expired        off
             --color                         blue
             --sound                         normal beep
             --loop-sound                    off
-            --window-bounds                 auto,auto,350,150
+            --open-saved-timers             off
             --window-state                  normal
+            --window-bounds                 auto,auto,350,150
 
         Required        no
         Alias           -d

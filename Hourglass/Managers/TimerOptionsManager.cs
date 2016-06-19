@@ -84,6 +84,9 @@ namespace Hourglass.Managers
 
             // Never save a title
             this.mostRecentOptions.Title = string.Empty;
+
+            // Never save shutting down when expired
+            this.mostRecentOptions.ShutDownWhenExpired = false;
         }
     }
 }

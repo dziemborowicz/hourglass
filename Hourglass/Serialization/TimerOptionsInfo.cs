@@ -30,6 +30,16 @@ namespace Hourglass.Serialization
         public bool PromptOnExit { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to keep the computer awake while the timer is running.
+        /// </summary>
+        public bool DoNotKeepComputerAwake { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show the time elapsed rather than the time left.
+        /// </summary>
+        public bool ShowTimeElapsed { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to loop the timer continuously.
         /// </summary>
         public bool LoopTimer { get; set; }
@@ -44,6 +54,11 @@ namespace Hourglass.Serialization
         /// Gets or sets a value indicating whether the timer window should be closed when the timer expires.
         /// </summary>
         public bool CloseWhenExpired { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Windows should be shut down when the timer expires.
+        /// </summary>
+        public bool ShutDownWhenExpired { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the color of the timer progress bar.

@@ -74,6 +74,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -97,6 +98,7 @@
     <Compile Include="Extensions\ResourceManagerExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
+    <Compile Include="Extensions\WindowsExtensions.cs" />
     <Compile Include="Managers\AppManager.cs" />
     <Compile Include="Managers\ColorManager.cs" />
     <Compile Include="Managers\ErrorManager.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Managers\TimerOptionsManager.cs" />
     <Compile Include="Managers\TimerStartManager.cs" />
     <Compile Include="Managers\UpdateManager.cs" />
+    <Compile Include="Managers\WakeUpManager.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Parsing\DateTimeToken.cs" />
     <Compile Include="Parsing\DateToken.cs" />

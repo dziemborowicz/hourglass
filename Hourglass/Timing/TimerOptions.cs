@@ -36,6 +36,16 @@ namespace Hourglass.Timing
         private bool promptOnExit;
 
         /// <summary>
+        /// A value indicating whether to keep the computer awake while the timer is running.
+        /// </summary>
+        private bool doNotKeepComputerAwake;
+
+        /// <summary>
+        /// A value indicating whether to show the time elapsed rather than the time left.
+        /// </summary>
+        private bool showTimeElapsed;
+
+        /// <summary>
         /// A value indicating whether to loop the timer continuously.
         /// </summary>
         private bool loopTimer;
@@ -50,6 +60,11 @@ namespace Hourglass.Timing
         /// A value indicating whether the timer window should be closed when the timer expires.
         /// </summary>
         private bool closeWhenExpired;
+
+        /// <summary>
+        /// A value indicating whether Windows should be shut down when the timer expires.
+        /// </summary>
+        private bool shutDownWhenExpired;
 
         /// <summary>
         /// The sound to play when the timer expires, or <c>null</c> if no sound is to be played.
@@ -84,9 +99,12 @@ namespace Hourglass.Timing
             this.title = string.Empty;
             this.alwaysOnTop = false;
             this.promptOnExit = true;
+            this.doNotKeepComputerAwake = false;
+            this.showTimeElapsed = false;
             this.loopTimer = false;
             this.popUpWhenExpired = true;
             this.closeWhenExpired = false;
+            this.shutDownWhenExpired = false;
             this.color = Color.DefaultColor;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
@@ -197,6 +215,50 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to keep the computer awake while the timer is running.
+        /// </summary>
+        public bool DoNotKeepComputerAwake
+        {
+            get
+            {
+                return this.doNotKeepComputerAwake;
+            }
+
+            set
+            {
+                if (this.doNotKeepComputerAwake == value)
+                {
+                    return;
+                }
+
+                this.doNotKeepComputerAwake = value;
+                this.OnPropertyChanged("DoNotKeepComputerAwake");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show the time elapsed rather than the time left.
+        /// </summary>
+        public bool ShowTimeElapsed
+        {
+            get
+            {
+                return this.showTimeElapsed;
+            }
+
+            set
+            {
+                if (this.showTimeElapsed == value)
+                {
+                    return;
+                }
+
+                this.showTimeElapsed = value;
+                this.OnPropertyChanged("ShowTimeElapsed");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to loop the timer continuously.
         /// </summary>
         public bool LoopTimer
@@ -260,6 +322,28 @@ namespace Hourglass.Timing
 
                 this.closeWhenExpired = value;
                 this.OnPropertyChanged("CloseWhenExpired");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Windows should be shut down when the timer expires.
+        /// </summary>
+        public bool ShutDownWhenExpired
+        {
+            get
+            {
+                return this.shutDownWhenExpired;
+            }
+
+            set
+            {
+                if (this.shutDownWhenExpired == value)
+                {
+                    return;
+                }
+
+                this.shutDownWhenExpired = value;
+                this.OnPropertyChanged("ShutDownWhenExpired");
             }
         }
 
@@ -394,9 +478,12 @@ namespace Hourglass.Timing
             this.title = options.title;
             this.alwaysOnTop = options.alwaysOnTop;
             this.promptOnExit = options.promptOnExit;
+            this.doNotKeepComputerAwake = options.doNotKeepComputerAwake;
+            this.showTimeElapsed = options.showTimeElapsed;
             this.loopTimer = options.loopTimer;
             this.popUpWhenExpired = options.popUpWhenExpired;
             this.closeWhenExpired = options.closeWhenExpired;
+            this.shutDownWhenExpired = options.shutDownWhenExpired;
             this.color = options.color;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
@@ -417,9 +504,12 @@ namespace Hourglass.Timing
             this.title = info.Title;
             this.alwaysOnTop = info.AlwaysOnTop;
             this.promptOnExit = info.PromptOnExit;
+            this.doNotKeepComputerAwake = info.DoNotKeepComputerAwake;
+            this.showTimeElapsed = info.ShowTimeElapsed;
             this.loopTimer = info.LoopTimer;
             this.popUpWhenExpired = info.PopUpWhenExpired;
             this.closeWhenExpired = info.CloseWhenExpired;
+            this.shutDownWhenExpired = info.ShutDownWhenExpired;
             this.color = Color.FromIdentifier(info.ColorIdentifier);
             this.sound = Sound.FromIdentifier(info.SoundIdentifier);
             this.loopSound = info.LoopSound;
@@ -437,11 +527,14 @@ namespace Hourglass.Timing
                 Title = this.title,
                 AlwaysOnTop = this.alwaysOnTop,
                 PromptOnExit = this.promptOnExit,
+                DoNotKeepComputerAwake = this.doNotKeepComputerAwake,
+                ShowTimeElapsed = this.showTimeElapsed,
                 LoopTimer = this.loopTimer,
                 PopUpWhenExpired = this.popUpWhenExpired,
                 CloseWhenExpired = this.closeWhenExpired,
-                ColorIdentifier = this.color != null ? this.color.Identifier : null,
-                SoundIdentifier = this.sound != null ? this.sound.Identifier : null,
+                ShutDownWhenExpired = this.shutDownWhenExpired,
+                ColorIdentifier = this.color?.Identifier,
+                SoundIdentifier = this.sound?.Identifier,
                 LoopSound = this.loopSound,
                 WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize)
             };

@@ -233,6 +233,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced options.
+        /// </summary>
+        internal static string ContextMenuAdvancedOptionsMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuAdvancedOptionsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Always on top.
         /// </summary>
         internal static string ContextMenuAlwaysOnTopMenuItem {
@@ -305,6 +314,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do not _keep computer awake.
+        /// </summary>
+        internal static string ContextMenuDoNotKeepComputerAwakeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuDoNotKeepComputerAwakeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Full screen.
         /// </summary>
         internal static string ContextMenuFullScreenMenuItem {
@@ -368,6 +386,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Open all saved timers.
+        /// </summary>
+        internal static string ContextMenuOpenAllSavedTimersMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuOpenAllSavedTimersMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Open saved timers on startup.
+        /// </summary>
+        internal static string ContextMenuOpenSavedTimersOnStartupMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuOpenSavedTimersOnStartupMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Pop up when expired.
         /// </summary>
         internal static string ContextMenuPopUpWhenExpiredMenuItem {
@@ -409,6 +445,24 @@ namespace Hourglass.Properties {
         internal static string ContextMenuShowInNotificationAreaMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuShowInNotificationAreaMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Show time elapsed instead of time left.
+        /// </summary>
+        internal static string ContextMenuShowTimeElapsedMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuShowTimeElapsedMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shut _down when expired.
+        /// </summary>
+        internal static string ContextMenuShutDownWhenExpiredMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuShutDownWhenExpiredMenuItem", resourceCulture);
             }
         }
         

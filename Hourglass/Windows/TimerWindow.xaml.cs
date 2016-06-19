@@ -868,9 +868,21 @@ namespace Hourglass.Windows
                             this.flashExpirationStoryboard.Begin();
                         }
                     }
+                    else if (this.Options.Sound == null && this.Options.ShutDownWhenExpired)
+                    {
+                        // Flash three times and then shut down -- see SoundPlayerPlaybackCompleted for case with sound
+                        if (this.flashExpirationCount < 3)
+                        {
+                            this.flashExpirationStoryboard.Begin();
+                        }
+                        else
+                        {
+                            WindowsExtensions.ShutDown();
+                        }
+                    }
                     else if (this.Options.Sound == null && this.Options.CloseWhenExpired)
                     {
-                        // Flash three times and then close
+                        // Flash three times and then close -- see SoundPlayerPlaybackCompleted for case with sound
                         if (this.flashExpirationCount < 3)
                         {
                             this.flashExpirationStoryboard.Begin();
@@ -924,9 +936,16 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void SoundPlayerPlaybackCompleted(object sender, EventArgs e)
         {
-            if (this.Options.CloseWhenExpired && !this.Options.LoopTimer && this.Mode == TimerWindowMode.Status)
+            if (!this.Options.LoopTimer && this.Mode == TimerWindowMode.Status)
             {
-                this.Close();
+                if (this.Options.ShutDownWhenExpired)
+                {
+                    WindowsExtensions.ShutDown();
+                }
+                else if (this.Options.CloseWhenExpired)
+                {
+                    this.Close();
+                }
             }
         }
 
@@ -1011,7 +1030,9 @@ namespace Hourglass.Windows
                         ? this.Timer.TimeLeftAsString
                         : Properties.Resources.TimerWindowTitle;
 
-                    this.TimerTextBox.Text = this.Timer.TimeLeftAsString;
+                    this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
+                        ? this.Timer.TimeElapsedAsString
+                        : this.Timer.TimeLeftAsString;
                     this.ProgressBar.Foreground = this.Options.Color.Brush;
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
                     this.UpdateTaskbarProgress();
@@ -1084,7 +1105,7 @@ namespace Hourglass.Windows
         /// </summary>
         private void UpdateKeepAwake()
         {
-            if (this.Timer.State == TimerState.Running)
+            if (this.Timer.State == TimerState.Running && !this.Options.DoNotKeepComputerAwake)
             {
                 KeepAwakeManager.Instance.StartKeepAwakeFor(this);
             }

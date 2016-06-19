@@ -82,10 +82,20 @@ namespace Hourglass
         public bool PromptOnExit { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether to keep the computer awake while the timer is running.
+        /// </summary>
+        public bool DoNotKeepComputerAwake { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether an icon for the app should be visible in the notification area of the
         /// taskbar.
         /// </summary>
         public bool ShowInNotificationArea { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to show the time elapsed rather than the time left.
+        /// </summary>
+        public bool ShowTimeElapsed { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether to loop the timer continuously.
@@ -104,6 +114,11 @@ namespace Hourglass
         public bool CloseWhenExpired { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether Windows should be shut down when the timer expires.
+        /// </summary>
+        public bool ShutDownWhenExpired { get; private set; }
+
+        /// <summary>
         /// Gets the color of the timer progress bar.
         /// </summary>
         public Color Color { get; private set; }
@@ -118,6 +133,11 @@ namespace Hourglass
         /// by the user.
         /// </summary>
         public bool LoopSound { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether all saved timers should be opened when the application starts.
+        /// </summary>
+        public bool OpenSavedTimers { get; private set; }
 
         /// <summary>
         /// Gets a value that indicates whether the timer window is restored, minimized, or maximized.
@@ -189,9 +209,12 @@ namespace Hourglass
                 Title = this.Title,
                 AlwaysOnTop = this.AlwaysOnTop,
                 PromptOnExit = this.PromptOnExit,
+                DoNotKeepComputerAwake = this.DoNotKeepComputerAwake,
+                ShowTimeElapsed = this.ShowTimeElapsed,
                 LoopTimer = this.LoopTimer,
                 PopUpWhenExpired = this.PopUpWhenExpired,
                 CloseWhenExpired = this.CloseWhenExpired,
+                ShutDownWhenExpired = this.ShutDownWhenExpired,
                 Color = this.Color,
                 Sound = this.Sound,
                 LoopSound = this.LoopSound,
@@ -231,13 +254,17 @@ namespace Hourglass
                 AlwaysOnTop = options.AlwaysOnTop,
                 IsFullScreen = windowSize.IsFullScreen,
                 PromptOnExit = options.PromptOnExit,
+                DoNotKeepComputerAwake = options.DoNotKeepComputerAwake,
+                ShowTimeElapsed = options.ShowTimeElapsed,
                 ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
                 LoopTimer = options.LoopTimer,
                 PopUpWhenExpired = options.PopUpWhenExpired,
                 CloseWhenExpired = options.CloseWhenExpired,
+                ShutDownWhenExpired = options.ShutDownWhenExpired,
                 Color = options.Color,
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
+                OpenSavedTimers = Settings.Default.OpenSavedTimersOnStartup,
                 WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
                 RestoreWindowState = windowSize.RestoreWindowState,
                 WindowBounds = windowSize.RestoreBounds
@@ -262,13 +289,17 @@ namespace Hourglass
                 AlwaysOnTop = defaultOptions.AlwaysOnTop,
                 IsFullScreen = defaultOptions.WindowSize.IsFullScreen,
                 PromptOnExit = defaultOptions.PromptOnExit,
+                DoNotKeepComputerAwake = defaultOptions.DoNotKeepComputerAwake,
+                ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
                 ShowInNotificationArea = false,
                 LoopTimer = defaultOptions.LoopTimer,
                 PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
                 CloseWhenExpired = defaultOptions.CloseWhenExpired,
+                ShutDownWhenExpired = defaultOptions.ShutDownWhenExpired,
                 Color = defaultOptions.Color,
                 Sound = defaultOptions.Sound,
                 LoopSound = defaultOptions.LoopSound,
+                OpenSavedTimers = false,
                 WindowState = defaultOptions.WindowSize.WindowState,
                 RestoreWindowState = defaultOptions.WindowSize.RestoreWindowState,
                 WindowBounds = defaultWindowBoundsWithLocation
@@ -355,6 +386,32 @@ namespace Hourglass
                         argumentsBasedOnFactoryDefaults.PromptOnExit = promptOnExit;
                         break;
 
+                    case "--do-not-keep-awake":
+                    case "-k":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--do-not-keep-awake");
+
+                        bool doNotKeepComputerAwake = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.DoNotKeepComputerAwake);
+
+                        argumentsBasedOnMostRecentOptions.DoNotKeepComputerAwake = doNotKeepComputerAwake;
+                        argumentsBasedOnFactoryDefaults.DoNotKeepComputerAwake = doNotKeepComputerAwake;
+                        break;
+
+                    case "--show-time-elapsed":
+                    case "-u":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--show-time-elapsed");
+
+                        bool showTimeElapsed = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.ShowTimeElapsed);
+
+                        argumentsBasedOnMostRecentOptions.ShowTimeElapsed = showTimeElapsed;
+                        argumentsBasedOnFactoryDefaults.ShowTimeElapsed = showTimeElapsed;
+                        break;
+
                     case "--show-in-notification-area":
                     case "-n":
                         ThrowIfDuplicateSwitch(specifiedSwitches, "--show-in-notification-area");
@@ -407,6 +464,18 @@ namespace Hourglass
                         argumentsBasedOnFactoryDefaults.CloseWhenExpired = closeWhenExpired;
                         break;
 
+                    case "--shut-down-when-expired":
+                    case "-x":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--shut-down-when-expired");
+
+                        bool shutDownWhenExpired = GetBoolValue(
+                            arg,
+                            remainingArgs);
+
+                        argumentsBasedOnMostRecentOptions.ShutDownWhenExpired = shutDownWhenExpired;
+                        argumentsBasedOnFactoryDefaults.ShutDownWhenExpired = shutDownWhenExpired;
+                        break;
+
                     case "--color":
                     case "-c":
                         ThrowIfDuplicateSwitch(specifiedSwitches, "--color");
@@ -444,6 +513,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.LoopSound = loopSound;
                         argumentsBasedOnFactoryDefaults.LoopSound = loopSound;
+                        break;
+
+                    case "--open-saved-timers":
+                    case "-v":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--open-saved-timers");
+
+                        bool openSavedTimers = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.OpenSavedTimers);
+
+                        argumentsBasedOnMostRecentOptions.OpenSavedTimers = openSavedTimers;
+                        argumentsBasedOnFactoryDefaults.OpenSavedTimers = openSavedTimers;
                         break;
 
                     case "--window-bounds":
@@ -554,6 +636,38 @@ namespace Hourglass
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Returns the next <see cref="bool"/> value in <paramref name="remainingArgs"/>, or throws an exception if
+        /// <paramref name="remainingArgs"/> is empty or the next argument is not "on" or "off".
+        /// </summary>
+        /// <param name="arg">The name of the argument for which the value is to be returned.</param>
+        /// <param name="remainingArgs">The unparsed arguments.</param>
+        /// <returns>The next <see cref="bool"/> value in <paramref name="remainingArgs"/>.</returns>
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
+        /// "on" or "off".</exception>
+        private static bool GetBoolValue(string arg, Queue<string> remainingArgs)
+        {
+            string value = GetRequiredValue(arg, remainingArgs);
+
+            switch (value)
+            {
+                case "on":
+                    return true;
+
+                case "off":
+                    return false;
+
+                default:
+                    string message = string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(),
+                        Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                        arg,
+                        value);
+
+                    throw new ParseException(message);
+            }
         }
 
         /// <summary>

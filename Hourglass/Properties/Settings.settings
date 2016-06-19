@@ -5,6 +5,9 @@
     <Setting Name="MostRecentOptionsInfo" Type="Hourglass.Serialization.TimerOptionsInfo" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="OpenSavedTimersOnStartup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="ShowInNotificationArea" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

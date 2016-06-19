@@ -1101,4 +1101,28 @@ $</value>
     <value>Are you sure you want to close this timer window?</value>
     <comment>The message displayed when the user closes a timer window while a timer is running</comment>
   </data>
+  <data name="ContextMenuAdvancedOptionsMenuItem" xml:space="preserve">
+    <value>Advanced options</value>
+    <comment>The text for the advanced options menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuShutDownWhenExpiredMenuItem" xml:space="preserve">
+    <value>Shut _down when expired</value>
+    <comment>The text for the shut down when expired menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuOpenAllSavedTimersMenuItem" xml:space="preserve">
+    <value>_Open all saved timers</value>
+    <comment>The text for the open all saved timers menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuOpenSavedTimersOnStartupMenuItem" xml:space="preserve">
+    <value>_Open saved timers on startup</value>
+    <comment>The text for the open saved timers on startup menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuShowTimeElapsedMenuItem" xml:space="preserve">
+    <value>_Show time elapsed instead of time left</value>
+    <comment>The text for the show time elapsed menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuDoNotKeepComputerAwakeMenuItem" xml:space="preserve">
+    <value>Do not _keep computer awake</value>
+    <comment>The text for the do not keep computer awake menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
 </root>
