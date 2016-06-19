@@ -7,7 +7,9 @@
 namespace Hourglass
 {
     using System;
+    using System.Runtime.ConstrainedExecution;
     using System.Runtime.InteropServices;
+    using System.Security;
 
     /// <summary>
     /// The thread's execution requirements.
@@ -71,6 +73,37 @@ namespace Hourglass
     internal static class NativeMethods
     {
         /// <summary>
+        /// Sets the specified timer to the inactive state.
+        /// </summary>
+        /// <param name="hTimer">A handle to the timer object.</param>
+        /// <returns><c>true</c> if the call succeeds, or <c>false</c> otherwise.</returns>
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool CancelWaitableTimer(IntPtr hTimer);
+
+        /// <summary>
+        /// Closes an open object handle.
+        /// </summary>
+        /// <param name="hObject">A valid handle to an open object.</param>
+        /// <returns><c>true</c> if the call succeeds, or <c>false</c> otherwise.</returns>
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+        [SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool CloseHandle(IntPtr hObject);
+
+        /// <summary>
+        /// Creates or opens a timer object.
+        /// </summary>
+        /// <param name="lpTimerAttributes">A pointer to a structure that specifies a security descriptor for the new
+        /// timer object and determines whether child processes can inherit the returned handle.</param>
+        /// <param name="bManualReset">If this parameter is <c>true</c>, the timer is a manual-reset notification timer.
+        /// Otherwise, the timer is a synchronization timer.</param>
+        /// <param name="lpTimerName">The name of the timer object.</param>
+        /// <returns>A handle to the timer object if the call succeeds, or <see cref="IntPtr.Zero"/> otherwise.</returns>
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr CreateWaitableTimer(IntPtr lpTimerAttributes, bool bManualReset, string lpTimerName);
+
+        /// <summary>
         /// Enables an application to inform the system that it is in use, thereby preventing the system from entering
         /// sleep or turning off the display while the application is running.
         /// </summary>
@@ -79,5 +112,22 @@ namespace Hourglass
         /// fails, the return value is <see cref="ExecutionState.EsNull"/>.</returns>
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern ExecutionState SetThreadExecutionState(ExecutionState esFlags);
+
+        /// <summary>
+        /// Activates the specified timer. When the due time arrives, the timer is signaled and the thread that set the
+        /// timer calls the optional completion routine.
+        /// </summary>
+        /// <param name="hTimer">A handle to the timer object.</param>
+        /// <param name="pDueTime">The time after which the state of the timer is to be set to signaled.</param>
+        /// <param name="lPeriod">The period of the timer, in milliseconds. If <paramref name="lPeriod"/> is zero, the
+        /// timer is signaled once. If <paramref name="lPeriod"/> is greater than zero, the timer is periodic.</param>
+        /// <param name="pfnCompletionRoutine">A pointer to an optional completion routine.</param>
+        /// <param name="lpArgToCompletionRoutine">A pointer to a structure that is passed to the completion routine.
+        /// </param>
+        /// <param name="fResume">If this parameter is <c>true</c>, restores a system in suspended power conservation
+        /// mode when the timer state is set to signaled. Otherwise, the system is not restored.</param>
+        /// <returns><c>true</c> if the call succeeds, or <c>false</c> otherwise.</returns>
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool SetWaitableTimer(IntPtr hTimer, [In] ref long pDueTime, int lPeriod, IntPtr pfnCompletionRoutine, IntPtr lpArgToCompletionRoutine, bool fResume);
     }
 }

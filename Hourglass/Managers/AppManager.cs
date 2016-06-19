@@ -24,6 +24,7 @@ namespace Hourglass.Managers
             ErrorManager.Instance,
             UpdateManager.Instance,
             KeepAwakeManager.Instance,
+            WakeUpManager.Instance,
             NotificationAreaIconManager.Instance,
             ColorManager.Instance,
             SoundManager.Instance,

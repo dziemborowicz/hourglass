@@ -111,6 +111,7 @@
     <Compile Include="Managers\TimerOptionsManager.cs" />
     <Compile Include="Managers\TimerStartManager.cs" />
     <Compile Include="Managers\UpdateManager.cs" />
+    <Compile Include="Managers\WakeUpManager.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Parsing\DateTimeToken.cs" />
     <Compile Include="Parsing\DateToken.cs" />
