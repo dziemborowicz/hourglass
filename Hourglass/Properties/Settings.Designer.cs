@@ -37,6 +37,18 @@ namespace Hourglass.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OpenSavedTimersOnStartup {
+            get {
+                return ((bool)(this["OpenSavedTimersOnStartup"]));
+            }
+            set {
+                this["OpenSavedTimersOnStartup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ShowInNotificationArea {
             get {
                 return ((bool)(this["ShowInNotificationArea"]));
@@ -104,13 +116,12 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool OpenSavedTimersOnStartup {
+        public global::Hourglass.Serialization.ThemeInfoList UserProvidedThemeInfos {
             get {
-                return ((bool)(this["OpenSavedTimersOnStartup"]));
+                return ((global::Hourglass.Serialization.ThemeInfoList)(this["UserProvidedThemeInfos"]));
             }
             set {
-                this["OpenSavedTimersOnStartup"] = value;
+                this["UserProvidedThemeInfos"] = value;
             }
         }
     }

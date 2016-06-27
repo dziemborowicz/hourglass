@@ -117,6 +117,16 @@ namespace Hourglass.Windows
         private IList<MenuItem> selectableColorMenuItems;
 
         /// <summary>
+        /// The "Theme" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem themeMenuItem;
+
+        /// <summary>
+        /// The "Theme" <see cref="MenuItem"/>s associated with <see cref="Theme"/>s.
+        /// </summary>
+        private IList<MenuItem> selectableThemeMenuItems;
+
+        /// <summary>
         /// The "Add custom color..." <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem addCustomColorMenuItem;
@@ -222,6 +232,7 @@ namespace Hourglass.Windows
             this.dispatcherTimer.Tick += this.DispatcherTimerTick;
 
             this.selectableColorMenuItems = new List<MenuItem>();
+            this.selectableThemeMenuItems = new List<MenuItem>();
             this.selectableSoundMenuItems = new List<MenuItem>();
 
             // Build the menu
@@ -243,6 +254,7 @@ namespace Hourglass.Windows
             this.UpdateRecentInputsMenuItem();
             this.UpdateSavedTimersMenuItem();
             this.UpdateColorMenuItem();
+            this.UpdateThemeMenuItem();
             this.UpdateSoundMenuItem();
 
             // Update binding
@@ -332,6 +344,12 @@ namespace Hourglass.Windows
                 menuItem.IsChecked = object.Equals(menuItem.Tag, this.timerWindow.Options.Color);
             }
 
+            // Theme
+            foreach (MenuItem menuItem in this.selectableThemeMenuItems)
+            {
+                menuItem.IsChecked = object.Equals(menuItem.Tag, this.timerWindow.Options.Theme);
+            }
+
             // Sound
             foreach (MenuItem menuItem in this.selectableSoundMenuItems)
             {
@@ -398,6 +416,10 @@ namespace Hourglass.Windows
             // Color
             MenuItem selectedColorMenuItem = this.selectableColorMenuItems.FirstOrDefault(mi => mi.IsChecked);
             this.timerWindow.Options.Color = selectedColorMenuItem != null ? selectedColorMenuItem.Tag as Color : Color.DefaultColor;
+
+            // Theme
+            MenuItem selectedThemeMenuItem = this.selectableThemeMenuItems.FirstOrDefault(mi => mi.IsChecked);
+            this.timerWindow.Options.Theme = selectedThemeMenuItem != null ? selectedThemeMenuItem.Tag as Theme : Theme.DefaultTheme;
 
             // Sound
             MenuItem selectedSoundMenuItem = this.selectableSoundMenuItems.FirstOrDefault(mi => mi.IsChecked);
@@ -510,6 +532,10 @@ namespace Hourglass.Windows
             this.colorMenuItem = new MenuItem();
             this.colorMenuItem.Header = Properties.Resources.ContextMenuColorMenuItem;
             this.Items.Add(this.colorMenuItem);
+
+            this.themeMenuItem = new MenuItem();
+            this.themeMenuItem.Header = Properties.Resources.ContextMenuThemeMenuItem;
+            this.Items.Add(this.themeMenuItem);
 
             this.soundMenuItem = new MenuItem();
             this.soundMenuItem.Header = Properties.Resources.ContextMenuSoundMenuItem;
@@ -1006,6 +1032,76 @@ namespace Hourglass.Windows
         private void ClearCustomColorsMenuItemClick(object sender, RoutedEventArgs e)
         {
             ColorManager.Instance.ClearUserProvidedColors();
+        }
+
+        #endregion
+
+        #region Private Methods (Theme)
+
+        /// <summary>
+        /// Updates the <see cref="themeMenuItem"/>.
+        /// </summary>
+        private void UpdateThemeMenuItem()
+        {
+            this.themeMenuItem.Items.Clear();
+            this.selectableThemeMenuItems.Clear();
+
+            // Ensure the current theme is registered
+            if (!this.timerWindow.Options.Theme.IsBuiltIn)
+            {
+                ThemeManager.Instance.Add(this.timerWindow.Options.Theme);
+            }
+
+            // Themes
+            this.CreateThemeMenuItemsFromList(ThemeManager.Instance.BuiltInThemes);
+
+            if (ThemeManager.Instance.UserProvidedThemes.Count > 0)
+            {
+                this.themeMenuItem.Items.Add(new Separator());
+                this.CreateThemeMenuItemsFromList(ThemeManager.Instance.UserProvidedThemes);
+            }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="MenuItem"/> for a <see cref="Theme"/>.
+        /// </summary>
+        /// <param name="theme">A <see cref="Theme"/>.</param>
+        private void CreateThemeMenuItem(Theme theme)
+        {
+            MenuItem menuItem = new MenuItem();
+            menuItem.Header = theme.Name;
+            menuItem.Tag = theme;
+            menuItem.IsCheckable = true;
+            menuItem.Click += this.ThemeMenuItemClick;
+            menuItem.Click += this.CheckableMenuItemClick;
+
+            this.themeMenuItem.Items.Add(menuItem);
+            this.selectableThemeMenuItems.Add(menuItem);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="MenuItem"/> for each <see cref="Theme"/> in the collection.
+        /// </summary>
+        /// <param name="themes">A collection of <see cref="Theme"/>s.</param>
+        private void CreateThemeMenuItemsFromList(IList<Theme> themes)
+        {
+            foreach (Theme theme in themes)
+            {
+                this.CreateThemeMenuItem(theme);
+            }
+        }
+
+        /// <summary>
+        /// Invoked when a theme <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void ThemeMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            foreach (MenuItem menuItem in this.selectableThemeMenuItems)
+            {
+                menuItem.IsChecked = object.ReferenceEquals(menuItem, sender);
+            }
         }
 
         #endregion

@@ -66,6 +66,11 @@ namespace Hourglass.Serialization
         public string ColorIdentifier { get; set; }
 
         /// <summary>
+        /// Gets or sets the identifier of the theme of the timer window.
+        /// </summary>
+        public string ThemeIdentifier { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the sound to play when the timer expires, or <c>null</c> if no sound is to
         /// be played.
         /// </summary>

@@ -29,12 +29,14 @@ namespace Hourglass.Windows
         /// </summary>
         /// <param name="adornedElement">The <see cref="UIElement"/> to apply the watermark to.</param>
         /// <param name="hint">The content of the watermark, typically a <see cref="string"/>.</param>
-        public WatermarkAdorner(UIElement adornedElement, object hint)
+        /// <param name="brush">The foreground of the watermark.</param>
+        public WatermarkAdorner(UIElement adornedElement, object hint, Brush brush)
             : base(adornedElement)
         {
             this.contentPresenter = new ContentPresenter();
             this.contentPresenter.Content = hint;
             this.contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
+            TextBlock.SetForeground(this.contentPresenter, brush);
 
             this.IsHitTestVisible = false;
 
@@ -44,7 +46,6 @@ namespace Hourglass.Windows
             Binding opacityBinding = new Binding();
             opacityBinding.Source = this.AdornedElement;
             opacityBinding.Path = new PropertyPath("Opacity");
-            opacityBinding.Converter = new MultiplierConverter(0.5);
             BindingOperations.SetBinding(this, UIElement.OpacityProperty, opacityBinding);
         }
 
@@ -55,6 +56,15 @@ namespace Hourglass.Windows
         {
             get { return this.contentPresenter.Content; }
             set { this.contentPresenter.Content = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the foreground of the watermark.
+        /// </summary>
+        public Brush Brush
+        {
+            get { return TextBlock.GetForeground(this.contentPresenter); }
+            set { TextBlock.SetForeground(this.contentPresenter, value); }
         }
 
         /// <summary>

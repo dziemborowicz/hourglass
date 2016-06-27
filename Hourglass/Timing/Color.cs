@@ -9,6 +9,7 @@ namespace Hourglass.Timing
     using System;
     using System.Windows.Media;
 
+    using Hourglass.Extensions;
     using Hourglass.Managers;
 
     /// <summary>
@@ -30,7 +31,7 @@ namespace Hourglass.Timing
         /// A value indicating whether this color is defined in the assembly.
         /// </summary>
         private readonly bool isBuiltIn;
-        
+
         /// <summary>
         /// The <see cref="System.Windows.Media.Color"/> representation of this color.
         /// </summary>
@@ -78,7 +79,7 @@ namespace Hourglass.Timing
         /// <param name="name">The localized friendly name of the color. (Optional.)</param>
         /// <param name="isBuiltIn">A value indicating whether this color is defined in the assembly. (Optional.)</param>
         public Color(string colorString, string invariantName = null, string name = null, bool isBuiltIn = false)
-            : this(GetMediaColorFromString(colorString), invariantName, name, isBuiltIn)
+            : this(ColorExtensions.ConvertFromString(colorString), invariantName, name, isBuiltIn)
         {
         }
 
@@ -142,7 +143,7 @@ namespace Hourglass.Timing
         /// Returns a <see cref="Color"/> for the specified identifier, or <c>null</c> if the identifier is <c>null</c>
         /// or empty.
         /// </summary>
-        /// <param name="identifier">The identifier for the sound.</param>
+        /// <param name="identifier">The identifier for the color.</param>
         /// <returns>A <see cref="Color"/> for the specified identifier, or <c>null</c> if the identifier is
         /// <c>null</c> or empty.</returns>
         public static Color FromIdentifier(string identifier)
@@ -173,24 +174,7 @@ namespace Hourglass.Timing
         /// <returns>An <see cref="int"/> for this color.</returns>
         public int ToInt()
         {
-            return (this.mediaColor.R << 0) | (this.mediaColor.G << 8) | (this.mediaColor.B << 16);
-        }
-
-        /// <summary>
-        /// Converts a <see cref="string"/> representation of a <see cref="Color"/> into a <see cref="Color"/>.
-        /// </summary>
-        /// <param name="colorString">A <see cref="string"/> representation of a <see cref="Color"/>.</param>
-        /// <returns>A <see cref="Color"/>.</returns>
-        private static System.Windows.Media.Color GetMediaColorFromString(string colorString)
-        {
-            object color = ColorConverter.ConvertFromString(colorString);
-
-            if (color == null)
-            {
-                throw new ArgumentException("colorString");
-            }
-
-            return (System.Windows.Media.Color)color;
+            return ColorExtensions.ConverToInt(this.mediaColor);
         }
     }
 }

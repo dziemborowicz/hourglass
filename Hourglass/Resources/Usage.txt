@@ -110,6 +110,13 @@ Options:
         Default value   last
         Alias           -c
 
+  --theme last|<theme>
+        Sets the theme of the timer window.
+
+        Required        no
+        Default value   last
+        Alias           -m
+
   --sound none|last|<sound>
         Plays a sound when the timer expires.
 
@@ -173,6 +180,7 @@ Options:
             --close-when-expired            off
             --shut-down-when-expired        off
             --color                         blue
+            --theme                         light theme
             --sound                         normal beep
             --loop-sound                    off
             --open-saved-timers             off

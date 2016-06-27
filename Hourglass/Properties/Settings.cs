@@ -97,6 +97,24 @@ namespace Hourglass.Properties
         }
 
         /// <summary>
+        /// Gets or sets the collection of the themes defined by the user.
+        /// </summary>
+        public IList<Theme> UserProvidedThemes
+        {
+            get
+            {
+                IEnumerable<ThemeInfo> userProvidedThemeInfos = this.UserProvidedThemeInfos ?? new ThemeInfoList();
+                return userProvidedThemeInfos.Select(Theme.FromThemeInfo).ToList();
+            }
+
+            set
+            {
+                IEnumerable<ThemeInfo> userProvidedThemeInfos = value.Select(ThemeInfo.FromTheme);
+                this.UserProvidedThemeInfos = new ThemeInfoList(userProvidedThemeInfos);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="WindowSize"/>.
         /// </summary>
         public WindowSize WindowSize

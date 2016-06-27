@@ -32,7 +32,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ProgressBar}">
                         <Grid>
-                            <Border Name="PART_Track" Background="#EEEEEE"/>
+                            <Border Name="PART_Track" Background="{TemplateBinding Background}"/>
                             <Border Name="PART_Indicator" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left"/>
                         </Grid>
                     </ControlTemplate>
@@ -127,7 +127,6 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type Button}">
-            <Setter Property="Foreground" Value="#0066CC"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Margin" Value="7 0"/>
             <Setter Property="Template">
@@ -142,7 +141,6 @@
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Cursor" Value="Hand"/>
-                                <Setter Property="Foreground" Value="#FF0000"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -150,7 +148,6 @@
             </Setter>
         </Style>
         <Style x:Key="TimeExpiredLabelStyle" TargetType="{x:Type Label}">
-            <Setter Property="Foreground" Value="#808080"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Margin" Value="7 0"/>
             <Setter Property="Template">
@@ -210,14 +207,13 @@
     </Window.TaskbarItemInfo>
     <Grid x:Name="OuterGrid">
         <ProgressBar x:Name="ProgressBar"/>
-        <Border x:Name="OuterNotificationBorder" Background="#C75050" IsHitTestVisible="False" Opacity="0"/>
-        <Grid x:Name="InnerGrid" Background="White" Margin="10">
+        <Border x:Name="OuterNotificationBorder" IsHitTestVisible="False" Opacity="0"/>
+        <Grid x:Name="InnerGrid" Margin="10">
             <StackPanel x:Name="ControlsPanel" Margin="20 0" VerticalAlignment="Center">
                 <local:SizeToFitTextBox x:Name="TitleTextBox"
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
                                         FontFamily="Segoe UI"
-                                        Foreground="#808080"
                                         KeyDown="TitleTextBoxKeyDown"
                                         MaxFontSize="12"
                                         MinFontSize="8"
@@ -243,18 +239,18 @@
                            Opacity="0.0"
                            Style="{StaticResource TimeExpiredLabelStyle}"/>
                     <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">
-                        <Button x:Name="StartButton" Command="local:TimerWindow.StartCommand" IsDefault="True"/>
-                        <Button x:Name="PauseButton" Command="local:TimerWindow.PauseCommand"/>
-                        <Button x:Name="ResumeButton" Command="local:TimerWindow.ResumeCommand"/>
-                        <Button x:Name="StopButton" Command="local:TimerWindow.StopCommand"/>
-                        <Button x:Name="ResetButton" Command="local:TimerWindow.ResetCommand"/>
-                        <Button x:Name="CloseButton" Command="local:TimerWindow.CloseCommand"/>
-                        <Button x:Name="CancelButton" Command="local:TimerWindow.CancelCommand"/>
-                        <Button x:Name="UpdateButton" Command="local:TimerWindow.UpdateCommand"/>
+                        <Button x:Name="StartButton" Command="local:TimerWindow.StartCommand" IsDefault="True" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="PauseButton" Command="local:TimerWindow.PauseCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="ResumeButton" Command="local:TimerWindow.ResumeCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="StopButton" Command="local:TimerWindow.StopCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="ResetButton" Command="local:TimerWindow.ResetCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="CloseButton" Command="local:TimerWindow.CloseCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="CancelButton" Command="local:TimerWindow.CancelCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="UpdateButton" Command="local:TimerWindow.UpdateCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </Grid>
-        <Border x:Name="InnerNotificationBorder" BorderBrush="#C75050" BorderThickness="1" IsHitTestVisible="False" Margin="15" Opacity="0"/>
+        <Border x:Name="InnerNotificationBorder" BorderThickness="1" IsHitTestVisible="False" Margin="15" Opacity="0"/>
     </Grid>
 </Window>

@@ -885,7 +885,7 @@ $</value>
     <comment>The text for the recent inputs menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuSavedTimersMenuItem" xml:space="preserve">
-    <value>Saved _timers</value>
+    <value>Sa_ved timers</value>
     <comment>The text for the saved timers menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuShowInNotificationAreaMenuItem" xml:space="preserve">
@@ -1124,5 +1124,17 @@ $</value>
   <data name="ContextMenuDoNotKeepComputerAwakeMenuItem" xml:space="preserve">
     <value>Do not _keep computer awake</value>
     <comment>The text for the do not keep computer awake menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ThemeManagerDarkTheme" xml:space="preserve">
+    <value>Dark theme</value>
+    <comment>The name of the dark theme</comment>
+  </data>
+  <data name="ThemeManagerLightTheme" xml:space="preserve">
+    <value>Light theme</value>
+    <comment>The name of the light theme</comment>
+  </data>
+  <data name="ContextMenuThemeMenuItem" xml:space="preserve">
+    <value>_Theme</value>
+    <comment>The text for the theme menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
 </root>

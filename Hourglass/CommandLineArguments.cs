@@ -124,6 +124,11 @@ namespace Hourglass
         public Color Color { get; private set; }
 
         /// <summary>
+        /// Gets the theme of the timer window.
+        /// </summary>
+        public Theme Theme { get; private set; }
+
+        /// <summary>
         /// Gets the sound to play when the timer expires, or <c>null</c> if no sound is to be played.
         /// </summary>
         public Sound Sound { get; private set; }
@@ -216,6 +221,7 @@ namespace Hourglass
                 CloseWhenExpired = this.CloseWhenExpired,
                 ShutDownWhenExpired = this.ShutDownWhenExpired,
                 Color = this.Color,
+                Theme = this.Theme,
                 Sound = this.Sound,
                 LoopSound = this.LoopSound,
                 WindowSize = this.GetWindowSize()
@@ -262,6 +268,7 @@ namespace Hourglass
                 CloseWhenExpired = options.CloseWhenExpired,
                 ShutDownWhenExpired = options.ShutDownWhenExpired,
                 Color = options.Color,
+                Theme = options.Theme,
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
                 OpenSavedTimers = Settings.Default.OpenSavedTimersOnStartup,
@@ -297,6 +304,7 @@ namespace Hourglass
                 CloseWhenExpired = defaultOptions.CloseWhenExpired,
                 ShutDownWhenExpired = defaultOptions.ShutDownWhenExpired,
                 Color = defaultOptions.Color,
+                Theme = defaultOptions.Theme,
                 Sound = defaultOptions.Sound,
                 LoopSound = defaultOptions.LoopSound,
                 OpenSavedTimers = false,
@@ -487,6 +495,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.Color = color;
                         argumentsBasedOnFactoryDefaults.Color = color;
+                        break;
+
+                    case "--theme":
+                    case "-m":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--theme");
+
+                        Theme theme = GetThemeValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.Theme);
+
+                        argumentsBasedOnMostRecentOptions.Theme = theme;
+                        argumentsBasedOnFactoryDefaults.Theme = theme;
                         break;
 
                     case "--sound":
@@ -749,6 +770,44 @@ namespace Hourglass
                     }
 
                     return color;
+            }
+        }
+
+        /// <summary>
+        /// Returns the next <see cref="Theme"/> value in <paramref name="remainingArgs"/>, or throws an exception if
+        /// <paramref name="remainingArgs"/> is empty or the next argument is not "last" or a valid representation of a
+        /// <see cref="Theme"/>.
+        /// </summary>
+        /// <param name="arg">The name of the argument for which the value is to be returned.</param>
+        /// <param name="remainingArgs">The unparsed arguments.</param>
+        /// <param name="last">The value of the argument returned when the user specifies "last".</param>
+        /// <returns>The next <see cref="Theme"/> value in <paramref name="remainingArgs"/></returns>
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
+        /// "last" or a valid representation of a <see cref="Theme"/>.</exception>
+        private static Theme GetThemeValue(string arg, Queue<string> remainingArgs, Theme last)
+        {
+            string value = GetRequiredValue(arg, remainingArgs);
+
+            switch (value)
+            {
+                case "last":
+                    return last;
+
+                default:
+                    Theme theme = ThemeManager.Instance.GetThemeByName(value, StringComparison.CurrentCultureIgnoreCase);
+
+                    if (theme == null)
+                    {
+                        string message = string.Format(
+                            Resources.ResourceManager.GetEffectiveProvider(),
+                            Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                            arg,
+                            value);
+
+                        throw new ParseException(message);
+                    }
+
+                    return theme;
             }
         }
 

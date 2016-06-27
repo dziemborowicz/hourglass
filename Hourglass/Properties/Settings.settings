@@ -23,6 +23,9 @@
     <Setting Name="UserProvidedColorIdentifiers" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="UserProvidedThemeInfos" Type="Hourglass.Serialization.ThemeInfoList" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="WindowSizeInfo" Type="Hourglass.Serialization.WindowSizeInfo" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

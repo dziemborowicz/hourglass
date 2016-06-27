@@ -431,7 +431,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saved _timers.
+        ///   Looks up a localized string similar to Sa_ved timers.
         /// </summary>
         internal static string ContextMenuSavedTimersMenuItem {
             get {
@@ -472,6 +472,15 @@ namespace Hourglass.Properties {
         internal static string ContextMenuSoundMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuSoundMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Theme.
+        /// </summary>
+        internal static string ContextMenuThemeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuThemeMenuItem", resourceCulture);
             }
         }
         
@@ -1381,6 +1390,24 @@ namespace Hourglass.Properties {
         internal static string SpecialTimeTokenMidnightPattern {
             get {
                 return ResourceManager.GetString("SpecialTimeTokenMidnightPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark theme.
+        /// </summary>
+        internal static string ThemeManagerDarkTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerDarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light theme.
+        /// </summary>
+        internal static string ThemeManagerLightTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerLightTheme", resourceCulture);
             }
         }
         

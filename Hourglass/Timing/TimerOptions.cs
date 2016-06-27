@@ -83,6 +83,11 @@ namespace Hourglass.Timing
         private Color color;
 
         /// <summary>
+        /// The theme of the timer window.
+        /// </summary>
+        private Theme theme;
+
+        /// <summary>
         /// The size, position, and state of the timer window.
         /// </summary>
         private WindowSize windowSize;
@@ -106,6 +111,7 @@ namespace Hourglass.Timing
             this.closeWhenExpired = false;
             this.shutDownWhenExpired = false;
             this.color = Color.DefaultColor;
+            this.theme = Theme.DefaultTheme;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
             this.windowSize = new WindowSize(
@@ -370,6 +376,28 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Gets or sets the theme of the timer window.
+        /// </summary>
+        public Theme Theme
+        {
+            get
+            {
+                return this.theme;
+            }
+
+            set
+            {
+                if (object.ReferenceEquals(this.theme, value))
+                {
+                    return;
+                }
+
+                this.theme = value;
+                this.OnPropertyChanged("Theme");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the sound to play when the timer expires, or <c>null</c> if no sound is to be played.
         /// </summary>
         public Sound Sound
@@ -485,9 +513,26 @@ namespace Hourglass.Timing
             this.closeWhenExpired = options.closeWhenExpired;
             this.shutDownWhenExpired = options.shutDownWhenExpired;
             this.color = options.color;
+            this.theme = options.theme;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
             this.windowSize = WindowSize.FromWindowSize(options.WindowSize);
+
+            this.OnPropertyChanged(
+                "Title",
+                "AlwaysOnTop",
+                "PromptOnExit",
+                "DoNotKeepComputerAwake",
+                "ShowTimeElapsed",
+                "LoopTimer",
+                "PopUpWhenExpired",
+                "CloseWhenExpired",
+                "ShutDownWhenExpired",
+                "Color",
+                "Theme",
+                "Sound",
+                "LoopSound",
+                "WindowSize");
         }
 
         /// <summary>
@@ -511,9 +556,26 @@ namespace Hourglass.Timing
             this.closeWhenExpired = info.CloseWhenExpired;
             this.shutDownWhenExpired = info.ShutDownWhenExpired;
             this.color = Color.FromIdentifier(info.ColorIdentifier);
+            this.theme = Theme.FromIdentifier(info.ThemeIdentifier);
             this.sound = Sound.FromIdentifier(info.SoundIdentifier);
             this.loopSound = info.LoopSound;
             this.windowSize = WindowSize.FromWindowSizeInfo(info.WindowSize);
+
+            this.OnPropertyChanged(
+                "Title",
+                "AlwaysOnTop",
+                "PromptOnExit",
+                "DoNotKeepComputerAwake",
+                "ShowTimeElapsed",
+                "LoopTimer",
+                "PopUpWhenExpired",
+                "CloseWhenExpired",
+                "ShutDownWhenExpired",
+                "Color",
+                "Theme",
+                "Sound",
+                "LoopSound",
+                "WindowSize");
         }
 
         /// <summary>
@@ -534,6 +596,7 @@ namespace Hourglass.Timing
                 CloseWhenExpired = this.closeWhenExpired,
                 ShutDownWhenExpired = this.shutDownWhenExpired,
                 ColorIdentifier = this.color?.Identifier,
+                ThemeIdentifier = this.theme?.Identifier,
                 SoundIdentifier = this.sound?.Identifier,
                 LoopSound = this.loopSound,
                 WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize)
