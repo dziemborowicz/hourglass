@@ -6,7 +6,6 @@
 
 namespace Hourglass.Timing
 {
-    using System;
     using System.ComponentModel;
     using System.Windows.Media;
 
