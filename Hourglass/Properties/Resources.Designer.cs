@@ -98,87 +98,6 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Black.
-        /// </summary>
-        internal static string ColorManagerBlack {
-            get {
-                return ResourceManager.GetString("ColorManagerBlack", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Blue.
-        /// </summary>
-        internal static string ColorManagerBlue {
-            get {
-                return ResourceManager.GetString("ColorManagerBlue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Default color.
-        /// </summary>
-        internal static string ColorManagerDefaultColor {
-            get {
-                return ResourceManager.GetString("ColorManagerDefaultColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gray.
-        /// </summary>
-        internal static string ColorManagerGray {
-            get {
-                return ResourceManager.GetString("ColorManagerGray", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Green.
-        /// </summary>
-        internal static string ColorManagerGreen {
-            get {
-                return ResourceManager.GetString("ColorManagerGreen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Orange.
-        /// </summary>
-        internal static string ColorManagerOrange {
-            get {
-                return ResourceManager.GetString("ColorManagerOrange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Purple.
-        /// </summary>
-        internal static string ColorManagerPurple {
-            get {
-                return ResourceManager.GetString("ColorManagerPurple", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Red.
-        /// </summary>
-        internal static string ColorManagerRed {
-            get {
-                return ResourceManager.GetString("ColorManagerRed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yellow.
-        /// </summary>
-        internal static string ColorManagerYellow {
-            get {
-                return ResourceManager.GetString("ColorManagerYellow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Duplicate switch &quot;{0}&quot;.
         /// </summary>
         internal static string CommandLineArgumentsParseExceptionDuplicateSwitchFormatString {
@@ -224,15 +143,6 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Add custom color....
-        /// </summary>
-        internal static string ContextMenuAddCustomColorMenuItem {
-            get {
-                return ResourceManager.GetString("ContextMenuAddCustomColorMenuItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Advanced options.
         /// </summary>
         internal static string ContextMenuAdvancedOptionsMenuItem {
@@ -247,15 +157,6 @@ namespace Hourglass.Properties {
         internal static string ContextMenuAlwaysOnTopMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuAlwaysOnTopMenuItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Clear custom colors.
-        /// </summary>
-        internal static string ContextMenuClearCustomColorsMenuItem {
-            get {
-                return ResourceManager.GetString("ContextMenuClearCustomColorsMenuItem", resourceCulture);
             }
         }
         
@@ -296,20 +197,11 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to C_olor.
+        ///   Looks up a localized string similar to _Dark theme.
         /// </summary>
-        internal static string ContextMenuColorMenuItem {
+        internal static string ContextMenuDarkThemeMenuItem {
             get {
-                return ResourceManager.GetString("ContextMenuColorMenuItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Custom color.
-        /// </summary>
-        internal static string ContextMenuCustomColorMenuItem {
-            get {
-                return ResourceManager.GetString("ContextMenuCustomColorMenuItem", resourceCulture);
+                return ResourceManager.GetString("ContextMenuDarkThemeMenuItem", resourceCulture);
             }
         }
         
@@ -332,6 +224,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Light theme.
+        /// </summary>
+        internal static string ContextMenuLightThemeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuLightThemeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Loop sound.
         /// </summary>
         internal static string ContextMenuLoopSoundMenuItem {
@@ -346,6 +247,15 @@ namespace Hourglass.Properties {
         internal static string ContextMenuLoopTimerMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuLoopTimerMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Manage themes....
+        /// </summary>
+        internal static string ContextMenuManageThemesMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuManageThemesMenuItem", resourceCulture);
             }
         }
         
@@ -481,6 +391,15 @@ namespace Hourglass.Properties {
         internal static string ContextMenuThemeMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuThemeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unnamed theme.
+        /// </summary>
+        internal static string ContextMenuUnnamedTheme {
+            get {
+                return ResourceManager.GetString("ContextMenuUnnamedTheme", resourceCulture);
             }
         }
         
@@ -1394,20 +1313,146 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dark theme.
+        ///   Looks up a localized string similar to Black.
         /// </summary>
-        internal static string ThemeManagerDarkTheme {
+        internal static string ThemeManagerBlackDarkTheme {
             get {
-                return ResourceManager.GetString("ThemeManagerDarkTheme", resourceCulture);
+                return ResourceManager.GetString("ThemeManagerBlackDarkTheme", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Light theme.
+        ///   Looks up a localized string similar to Black.
         /// </summary>
-        internal static string ThemeManagerLightTheme {
+        internal static string ThemeManagerBlackLightTheme {
             get {
-                return ResourceManager.GetString("ThemeManagerLightTheme", resourceCulture);
+                return ResourceManager.GetString("ThemeManagerBlackLightTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blue.
+        /// </summary>
+        internal static string ThemeManagerBlueDarkTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerBlueDarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blue.
+        /// </summary>
+        internal static string ThemeManagerBlueLightTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerBlueLightTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gray.
+        /// </summary>
+        internal static string ThemeManagerGrayDarkTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerGrayDarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gray.
+        /// </summary>
+        internal static string ThemeManagerGrayLightTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerGrayLightTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Green.
+        /// </summary>
+        internal static string ThemeManagerGreenDarkTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerGreenDarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Green.
+        /// </summary>
+        internal static string ThemeManagerGreenLightTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerGreenLightTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Orange.
+        /// </summary>
+        internal static string ThemeManagerOrangeDarkTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerOrangeDarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Orange.
+        /// </summary>
+        internal static string ThemeManagerOrangeLightTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerOrangeLightTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purple.
+        /// </summary>
+        internal static string ThemeManagerPurpleDarkTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerPurpleDarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purple.
+        /// </summary>
+        internal static string ThemeManagerPurpleLightTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerPurpleLightTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Red.
+        /// </summary>
+        internal static string ThemeManagerRedDarkTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerRedDarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Red.
+        /// </summary>
+        internal static string ThemeManagerRedLightTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerRedLightTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yellow.
+        /// </summary>
+        internal static string ThemeManagerYellowDarkTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerYellowDarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yellow.
+        /// </summary>
+        internal static string ThemeManagerYellowLightTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerYellowLightTheme", resourceCulture);
             }
         }
         

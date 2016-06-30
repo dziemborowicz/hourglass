@@ -7,7 +7,6 @@
 namespace Hourglass.Properties
 {
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Linq;
 
     using Hourglass.Serialization;
@@ -64,35 +63,6 @@ namespace Hourglass.Properties
             {
                 IEnumerable<TimerStartInfo> timerStartInfos = value.Select(TimerStartInfo.FromTimerStart);
                 this.TimerStartInfos = new TimerStartInfoList(timerStartInfos);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the collection of the colors defined by the user.
-        /// </summary>
-        public IList<Color> UserProvidedColors
-        {
-            get
-            {
-                List<Color> userProvidedColors = new List<Color>();
-
-                StringCollection userProvidedColorIdentifiers = this.UserProvidedColorIdentifiers;
-                if (userProvidedColorIdentifiers != null)
-                {
-                    foreach (string identifier in userProvidedColorIdentifiers)
-                    {
-                        userProvidedColors.Add(Color.FromIdentifier(identifier));
-                    }
-                }
-
-                return userProvidedColors;
-            }
-
-            set
-            {
-                StringCollection userProvidedColorIdentifiers = new StringCollection();
-                userProvidedColorIdentifiers.AddRange(value.Select(c => c.Identifier).ToArray());
-                this.UserProvidedColorIdentifiers = userProvidedColorIdentifiers;
             }
         }
 

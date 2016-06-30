@@ -119,11 +119,6 @@ namespace Hourglass
         public bool ShutDownWhenExpired { get; private set; }
 
         /// <summary>
-        /// Gets the color of the timer progress bar.
-        /// </summary>
-        public Color Color { get; private set; }
-
-        /// <summary>
         /// Gets the theme of the timer window.
         /// </summary>
         public Theme Theme { get; private set; }
@@ -220,7 +215,6 @@ namespace Hourglass
                 PopUpWhenExpired = this.PopUpWhenExpired,
                 CloseWhenExpired = this.CloseWhenExpired,
                 ShutDownWhenExpired = this.ShutDownWhenExpired,
-                Color = this.Color,
                 Theme = this.Theme,
                 Sound = this.Sound,
                 LoopSound = this.LoopSound,
@@ -267,7 +261,6 @@ namespace Hourglass
                 PopUpWhenExpired = options.PopUpWhenExpired,
                 CloseWhenExpired = options.CloseWhenExpired,
                 ShutDownWhenExpired = options.ShutDownWhenExpired,
-                Color = options.Color,
                 Theme = options.Theme,
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
@@ -303,7 +296,6 @@ namespace Hourglass
                 PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
                 CloseWhenExpired = defaultOptions.CloseWhenExpired,
                 ShutDownWhenExpired = defaultOptions.ShutDownWhenExpired,
-                Color = defaultOptions.Color,
                 Theme = defaultOptions.Theme,
                 Sound = defaultOptions.Sound,
                 LoopSound = defaultOptions.LoopSound,
@@ -482,19 +474,6 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.ShutDownWhenExpired = shutDownWhenExpired;
                         argumentsBasedOnFactoryDefaults.ShutDownWhenExpired = shutDownWhenExpired;
-                        break;
-
-                    case "--color":
-                    case "-c":
-                        ThrowIfDuplicateSwitch(specifiedSwitches, "--color");
-
-                        Color color = GetColorValue(
-                            arg,
-                            remainingArgs,
-                            argumentsBasedOnMostRecentOptions.Color);
-
-                        argumentsBasedOnMostRecentOptions.Color = color;
-                        argumentsBasedOnFactoryDefaults.Color = color;
                         break;
 
                     case "--theme":
@@ -728,52 +707,6 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns the next <see cref="Color"/> value in <paramref name="remainingArgs"/>, or throws an exception if
-        /// <paramref name="remainingArgs"/> is empty or the next argument is not "last" or a valid representation of a
-        /// <see cref="Color"/>.
-        /// </summary>
-        /// <param name="arg">The name of the argument for which the value is to be returned.</param>
-        /// <param name="remainingArgs">The unparsed arguments.</param>
-        /// <param name="last">The value of the argument returned when the user specifies "last".</param>
-        /// <returns>The next <see cref="Color"/> value in <paramref name="remainingArgs"/></returns>
-        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
-        /// "last" or a valid representation of a <see cref="Color"/>.</exception>
-        private static Color GetColorValue(string arg, Queue<string> remainingArgs, Color last)
-        {
-            string value = GetRequiredValue(arg, remainingArgs);
-
-            switch (value)
-            {
-                case "last":
-                    return last;
-
-                default:
-                    Color color = ColorManager.Instance.GetColorByName(value, StringComparison.CurrentCultureIgnoreCase);
-
-                    if (color == null)
-                    {
-                        try
-                        {
-                            color = new Color(value);
-                            ColorManager.Instance.Add(color);
-                        }
-                        catch
-                        {
-                            string message = string.Format(
-                                Resources.ResourceManager.GetEffectiveProvider(),
-                                Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
-                                arg,
-                                value);
-
-                            throw new ParseException(message);
-                        }
-                    }
-
-                    return color;
-            }
-        }
-
-        /// <summary>
         /// Returns the next <see cref="Theme"/> value in <paramref name="remainingArgs"/>, or throws an exception if
         /// <paramref name="remainingArgs"/> is empty or the next argument is not "last" or a valid representation of a
         /// <see cref="Theme"/>.
@@ -794,7 +727,8 @@ namespace Hourglass
                     return last;
 
                 default:
-                    Theme theme = ThemeManager.Instance.GetThemeByName(value, StringComparison.CurrentCultureIgnoreCase);
+                    Theme theme = ThemeManager.Instance.GetThemeByIdentifier(value.ToLowerInvariant()) ??
+                        ThemeManager.Instance.GetThemeByName(value, StringComparison.CurrentCultureIgnoreCase);
 
                     if (theme == null)
                     {

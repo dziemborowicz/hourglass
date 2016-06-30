@@ -78,11 +78,6 @@ namespace Hourglass.Timing
         private bool loopSound;
 
         /// <summary>
-        /// The color of the timer progress bar.
-        /// </summary>
-        private Color color;
-
-        /// <summary>
         /// The theme of the timer window.
         /// </summary>
         private Theme theme;
@@ -110,7 +105,6 @@ namespace Hourglass.Timing
             this.popUpWhenExpired = true;
             this.closeWhenExpired = false;
             this.shutDownWhenExpired = false;
-            this.color = Color.DefaultColor;
             this.theme = Theme.DefaultTheme;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
@@ -354,28 +348,6 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
-        /// Gets or sets the color of the timer progress bar.
-        /// </summary>
-        public Color Color
-        {
-            get
-            {
-                return this.color;
-            }
-
-            set
-            {
-                if (object.ReferenceEquals(this.color, value))
-                {
-                    return;
-                }
-
-                this.color = value;
-                this.OnPropertyChanged("Color");
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the theme of the timer window.
         /// </summary>
         public Theme Theme
@@ -512,7 +484,6 @@ namespace Hourglass.Timing
             this.popUpWhenExpired = options.popUpWhenExpired;
             this.closeWhenExpired = options.closeWhenExpired;
             this.shutDownWhenExpired = options.shutDownWhenExpired;
-            this.color = options.color;
             this.theme = options.theme;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
@@ -528,7 +499,6 @@ namespace Hourglass.Timing
                 "PopUpWhenExpired",
                 "CloseWhenExpired",
                 "ShutDownWhenExpired",
-                "Color",
                 "Theme",
                 "Sound",
                 "LoopSound",
@@ -555,7 +525,6 @@ namespace Hourglass.Timing
             this.popUpWhenExpired = info.PopUpWhenExpired;
             this.closeWhenExpired = info.CloseWhenExpired;
             this.shutDownWhenExpired = info.ShutDownWhenExpired;
-            this.color = Color.FromIdentifier(info.ColorIdentifier);
             this.theme = Theme.FromIdentifier(info.ThemeIdentifier);
             this.sound = Sound.FromIdentifier(info.SoundIdentifier);
             this.loopSound = info.LoopSound;
@@ -571,7 +540,6 @@ namespace Hourglass.Timing
                 "PopUpWhenExpired",
                 "CloseWhenExpired",
                 "ShutDownWhenExpired",
-                "Color",
                 "Theme",
                 "Sound",
                 "LoopSound",
@@ -595,7 +563,6 @@ namespace Hourglass.Timing
                 PopUpWhenExpired = this.popUpWhenExpired,
                 CloseWhenExpired = this.closeWhenExpired,
                 ShutDownWhenExpired = this.shutDownWhenExpired,
-                ColorIdentifier = this.color?.Identifier,
                 ThemeIdentifier = this.theme?.Identifier,
                 SoundIdentifier = this.sound?.Identifier,
                 LoopSound = this.loopSound,

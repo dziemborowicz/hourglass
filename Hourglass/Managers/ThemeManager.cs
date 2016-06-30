@@ -40,7 +40,15 @@ namespace Hourglass.Managers
         /// </summary>
         public Theme DefaultTheme
         {
-            get { return this.GetThemeByIdentifier("resource:Light theme"); }
+            get { return this.GetThemeByIdentifier("blue"); }
+        }
+
+        /// <summary>
+        /// Gets the default dark theme.
+        /// </summary>
+        public Theme DefaultDarkTheme
+        {
+            get { return this.GetThemeByIdentifier("blue-dark"); }
         }
 
         /// <summary>
@@ -56,15 +64,31 @@ namespace Hourglass.Managers
         /// </summary>
         public IList<Theme> BuiltInThemes
         {
-            get { return this.themes.Where(c => c.IsBuiltIn).ToList(); }
+            get { return this.themes.Where(t => t.Type != ThemeType.UserProvided).ToList(); }
         }
 
         /// <summary>
-        /// Gets a collection of the themes defined by the user.
+        /// Gets a collection of the light themes stored in the assembly.
+        /// </summary>
+        public IList<Theme> BuiltInLightThemes
+        {
+            get { return this.themes.Where(t => t.Type == ThemeType.BuiltInLight).ToList(); }
+        }
+
+        /// <summary>
+        /// Gets a collection of the dark themes stored in the assembly.
+        /// </summary>
+        public IList<Theme> BuiltInDarkThemes
+        {
+            get { return this.themes.Where(t => t.Type == ThemeType.BuiltInDark).ToList(); }
+        }
+
+        /// <summary>
+        /// Gets a collection of the themes defined by the user ordered by name.
         /// </summary>
         public IList<Theme> UserProvidedThemes
         {
-            get { return this.themes.Where(c => !c.IsBuiltIn).ToList(); }
+            get { return this.themes.Where(t => t.Type == ThemeType.UserProvided).OrderBy(t => t.Name).ToList(); }
         }
 
         /// <summary>
@@ -114,7 +138,7 @@ namespace Hourglass.Managers
         /// </summary>
         public void ClearUserProvidedThemes()
         {
-            this.themes.RemoveAll(c => !c.IsBuiltIn);
+            this.themes.RemoveAll(t => t.Type == ThemeType.UserProvided);
         }
 
         /// <summary>
@@ -129,7 +153,7 @@ namespace Hourglass.Managers
                 return null;
             }
 
-            return this.themes.FirstOrDefault(c => c.Identifier == identifier);
+            return this.themes.FirstOrDefault(t => t.Identifier == identifier);
         }
 
         /// <summary>
@@ -157,7 +181,7 @@ namespace Hourglass.Managers
                 return null;
             }
 
-            return this.themes.FirstOrDefault(c => string.Equals(c.Name, name, stringComparison));
+            return this.themes.FirstOrDefault(t => string.Equals(t.Name, name, stringComparison));
         }
 
         /// <summary>
@@ -174,6 +198,52 @@ namespace Hourglass.Managers
         }
 
         /// <summary>
+        /// Returns the light variant of a theme.
+        /// </summary>
+        /// <param name="theme">A theme.</param>
+        /// <returns>The light variant of the <paramref name="theme"/>.</returns>
+        public Theme GetLightVariantForTheme(Theme theme)
+        {
+            switch (theme.Type)
+            {
+                case ThemeType.BuiltInLight:
+                    return theme;
+
+                case ThemeType.BuiltInDark:
+                    return this.GetThemeOrDefaultByIdentifier(theme.Identifier.Replace("-dark", string.Empty));
+
+                case ThemeType.UserProvided:
+                    return this.DefaultDarkTheme;
+
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
+        /// <summary>
+        /// Returns the dark variant of a theme.
+        /// </summary>
+        /// <param name="theme">A theme.</param>
+        /// <returns>The dark variant of the <paramref name="theme"/>.</returns>
+        public Theme GetDarkVariantForTheme(Theme theme)
+        {
+            switch (theme.Type)
+            {
+                case ThemeType.BuiltInLight:
+                    return this.GetThemeOrDefaultByIdentifier(theme.Identifier + "-dark");
+
+                case ThemeType.BuiltInDark:
+                    return theme;
+
+                case ThemeType.UserProvided:
+                    return this.DefaultTheme;
+
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
+        /// <summary>
         /// Loads the collection of themes defined in the assembly.
         /// </summary>
         /// <returns>A collection of themes defined in the assembly.</returns>
@@ -181,8 +251,13 @@ namespace Hourglass.Managers
         {
             return new List<Theme>
             {
+                // Light themes
                 new Theme(
+                    ThemeType.BuiltInLight,
+                    "red" /* identifier */,
+                    Resources.ThemeManagerRedLightTheme /* name */,
                     "#FFFFFF" /* backgroundColor */,
+                    "#C75050" /* progressBarColor */,
                     "#EEEEEE" /* progressBackgroundColor */,
                     "#C75050" /* expirationFlashColor */,
                     "#000000" /* mainTextColor */,
@@ -190,13 +265,113 @@ namespace Hourglass.Managers
                     "#808080" /* secondaryTextColor */,
                     "#808080" /* secondaryHintColor */,
                     "#0066CC" /* buttonColor */,
-                    "#FF0000" /* buttonHoverColor */,
-                    Resources.ThemeManagerLightTheme /* name */,
-                    "Light theme" /* invariantName */,
-                    true /* isBuiltIn */),
-
+                    "#FF0000" /* buttonHoverColor */),
                 new Theme(
+                    ThemeType.BuiltInLight,
+                    "orange" /* identifier */,
+                    Resources.ThemeManagerOrangeLightTheme /* name */,
+                    "#FFFFFF" /* backgroundColor */,
+                    "#FF7F50" /* progressBarColor */,
+                    "#EEEEEE" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#000000" /* mainTextColor */,
+                    "#808080" /* mainHintColor */,
+                    "#808080" /* secondaryTextColor */,
+                    "#808080" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInLight,
+                    "yellow" /* identifier */,
+                    Resources.ThemeManagerYellowLightTheme /* name */,
+                    "#FFFFFF" /* backgroundColor */,
+                    "#FFC800" /* progressBarColor */,
+                    "#EEEEEE" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#000000" /* mainTextColor */,
+                    "#808080" /* mainHintColor */,
+                    "#808080" /* secondaryTextColor */,
+                    "#808080" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInLight,
+                    "green" /* identifier */,
+                    Resources.ThemeManagerGreenLightTheme /* name */,
+                    "#FFFFFF" /* backgroundColor */,
+                    "#57A64A" /* progressBarColor */,
+                    "#EEEEEE" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#000000" /* mainTextColor */,
+                    "#808080" /* mainHintColor */,
+                    "#808080" /* secondaryTextColor */,
+                    "#808080" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInLight,
+                    "blue" /* identifier */,
+                    Resources.ThemeManagerBlueLightTheme /* name */,
+                    "#FFFFFF" /* backgroundColor */,
+                    "#3665B3" /* progressBarColor */,
+                    "#EEEEEE" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#000000" /* mainTextColor */,
+                    "#808080" /* mainHintColor */,
+                    "#808080" /* secondaryTextColor */,
+                    "#808080" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInLight,
+                    "purple" /* identifier */,
+                    Resources.ThemeManagerPurpleLightTheme /* name */,
+                    "#FFFFFF" /* backgroundColor */,
+                    "#843179" /* progressBarColor */,
+                    "#EEEEEE" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#000000" /* mainTextColor */,
+                    "#808080" /* mainHintColor */,
+                    "#808080" /* secondaryTextColor */,
+                    "#808080" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInLight,
+                    "gray" /* identifier */,
+                    Resources.ThemeManagerGrayLightTheme /* name */,
+                    "#FFFFFF" /* backgroundColor */,
+                    "#666666" /* progressBarColor */,
+                    "#EEEEEE" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#000000" /* mainTextColor */,
+                    "#808080" /* mainHintColor */,
+                    "#808080" /* secondaryTextColor */,
+                    "#808080" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInLight,
+                    "black" /* identifier */,
+                    Resources.ThemeManagerBlackLightTheme /* name */,
+                    "#FFFFFF" /* backgroundColor */,
+                    "#000000" /* progressBarColor */,
+                    "#EEEEEE" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#000000" /* mainTextColor */,
+                    "#808080" /* mainHintColor */,
+                    "#808080" /* secondaryTextColor */,
+                    "#808080" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+
+                // Dark themes
+                new Theme(
+                    ThemeType.BuiltInDark,
+                    "red-dark" /* identifier */,
+                    Resources.ThemeManagerRedDarkTheme /* name */,
                     "#1E1E1E" /* backgroundColor */,
+                    "#C75050" /* progressBarColor */,
                     "#2D2D30" /* progressBackgroundColor */,
                     "#C75050" /* expirationFlashColor */,
                     "#808080" /* mainTextColor */,
@@ -204,10 +379,105 @@ namespace Hourglass.Managers
                     "#505050" /* secondaryTextColor */,
                     "#505050" /* secondaryHintColor */,
                     "#0066CC" /* buttonColor */,
-                    "#FF0000" /* buttonHoverColor */,
-                    Resources.ThemeManagerDarkTheme /* name */,
-                    "Dark theme" /* invariantName */,
-                    true /* isBuiltIn */)
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInDark,
+                    "orange-dark" /* identifier */,
+                    Resources.ThemeManagerOrangeDarkTheme /* name */,
+                    "#1E1E1E" /* backgroundColor */,
+                    "#FF7F50" /* progressBarColor */,
+                    "#2D2D30" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#808080" /* mainTextColor */,
+                    "#505050" /* mainHintColor */,
+                    "#505050" /* secondaryTextColor */,
+                    "#505050" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInDark,
+                    "yellow-dark" /* identifier */,
+                    Resources.ThemeManagerYellowDarkTheme /* name */,
+                    "#1E1E1E" /* backgroundColor */,
+                    "#FFC800" /* progressBarColor */,
+                    "#2D2D30" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#808080" /* mainTextColor */,
+                    "#505050" /* mainHintColor */,
+                    "#505050" /* secondaryTextColor */,
+                    "#505050" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInDark,
+                    "green-dark" /* identifier */,
+                    Resources.ThemeManagerGreenDarkTheme /* name */,
+                    "#1E1E1E" /* backgroundColor */,
+                    "#57A64A" /* progressBarColor */,
+                    "#2D2D30" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#808080" /* mainTextColor */,
+                    "#505050" /* mainHintColor */,
+                    "#505050" /* secondaryTextColor */,
+                    "#505050" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInDark,
+                    "blue-dark" /* identifier */,
+                    Resources.ThemeManagerBlueDarkTheme /* name */,
+                    "#1E1E1E" /* backgroundColor */,
+                    "#3665B3" /* progressBarColor */,
+                    "#2D2D30" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#808080" /* mainTextColor */,
+                    "#505050" /* mainHintColor */,
+                    "#505050" /* secondaryTextColor */,
+                    "#505050" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInDark,
+                    "purple-dark" /* identifier */,
+                    Resources.ThemeManagerPurpleDarkTheme /* name */,
+                    "#1E1E1E" /* backgroundColor */,
+                    "#843179" /* progressBarColor */,
+                    "#2D2D30" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#808080" /* mainTextColor */,
+                    "#505050" /* mainHintColor */,
+                    "#505050" /* secondaryTextColor */,
+                    "#505050" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInDark,
+                    "gray-dark" /* identifier */,
+                    Resources.ThemeManagerGrayDarkTheme /* name */,
+                    "#1E1E1E" /* backgroundColor */,
+                    "#666666" /* progressBarColor */,
+                    "#2D2D30" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#808080" /* mainTextColor */,
+                    "#505050" /* mainHintColor */,
+                    "#505050" /* secondaryTextColor */,
+                    "#505050" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */),
+                new Theme(
+                    ThemeType.BuiltInDark,
+                    "black-dark" /* identifier */,
+                    Resources.ThemeManagerBlackDarkTheme /* name */,
+                    "#1E1E1E" /* backgroundColor */,
+                    "#000000" /* progressBarColor */,
+                    "#2D2D30" /* progressBackgroundColor */,
+                    "#C75050" /* expirationFlashColor */,
+                    "#808080" /* mainTextColor */,
+                    "#505050" /* mainHintColor */,
+                    "#505050" /* secondaryTextColor */,
+                    "#505050" /* secondaryHintColor */,
+                    "#0066CC" /* buttonColor */,
+                    "#FF0000" /* buttonHoverColor */)
             };
         }
 

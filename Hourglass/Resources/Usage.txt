@@ -69,7 +69,8 @@ Options:
         Alias           -n
 
   --show-time-elapsed on|off|last
-        Shows the time elapsed since the timer was started, rather than the time left until the timer expires.
+        Shows the time elapsed since the timer was started, rather than the
+        time left until the timer expires.
 
         Required        no
         Default value   last
@@ -103,15 +104,22 @@ Options:
         Default value   off
         Alias           -x
 
-  --color last|<color>
-        Sets the color of the timer window.
-
-        Required        no
-        Default value   last
-        Alias           -c
-
   --theme last|<theme>
         Sets the theme of the timer window.
+
+        You can specify the name of one of the built-in themes, or the name of
+        one of the themes that you have defined yourself.
+
+        The built-in themes are:
+
+            red            red-dark
+            orange         orange-dark
+            yellow         yellow-dark
+            green          green-dark
+            blue           blue-dark
+            purple         purple-dark
+            gray           gray-dark
+            black          black-dark
 
         Required        no
         Default value   last
@@ -179,8 +187,7 @@ Options:
             --pop-up-when-expired           on
             --close-when-expired            off
             --shut-down-when-expired        off
-            --color                         blue
-            --theme                         light theme
+            --theme                         blue
             --sound                         normal beep
             --loop-sound                    off
             --open-saved-timers             off

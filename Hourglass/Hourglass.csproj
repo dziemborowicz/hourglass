@@ -101,7 +101,6 @@
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Extensions\WindowsExtensions.cs" />
     <Compile Include="Managers\AppManager.cs" />
-    <Compile Include="Managers\ColorManager.cs" />
     <Compile Include="Managers\ErrorManager.cs" />
     <Compile Include="Managers\KeepAwakeManager.cs" />
     <Compile Include="Managers\Manager.cs" />
@@ -137,7 +136,6 @@
     <Compile Include="Serialization\TimerStartInfoList.cs" />
     <Compile Include="Serialization\UpdateInfo.cs" />
     <Compile Include="Serialization\WindowSizeInfo.cs" />
-    <Compile Include="Timing\Color.cs" />
     <Compile Include="Timing\Sound.cs" />
     <Compile Include="Timing\Theme.cs" />
     <Compile Include="Timing\Timer.cs" />

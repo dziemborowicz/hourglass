@@ -61,11 +61,6 @@ namespace Hourglass.Serialization
         public bool ShutDownWhenExpired { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the color of the timer progress bar.
-        /// </summary>
-        public string ColorIdentifier { get; set; }
-
-        /// <summary>
         /// Gets or sets the identifier of the theme of the timer window.
         /// </summary>
         public string ThemeIdentifier { get; set; }

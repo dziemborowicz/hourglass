@@ -6,6 +6,8 @@
 
 namespace Hourglass.Serialization
 {
+    using System.Windows.Media;
+
     using Hourglass.Timing;
 
     /// <summary>
@@ -14,6 +16,11 @@ namespace Hourglass.Serialization
     public class ThemeInfo
     {
         /// <summary>
+        /// Gets or sets the unique identifier for this theme.
+        /// </summary>
+        public string Identifier { get; set; }
+
+        /// <summary>
         /// Gets or sets the friendly name for this theme, or <c>null</c> if no friendly name is specified.
         /// </summary>
         public string Name { get; set; }
@@ -21,48 +28,52 @@ namespace Hourglass.Serialization
         /// <summary>
         /// Gets or sets the background color of the window.
         /// </summary>
-        public System.Windows.Media.Color BackgroundColor { get; set; }
+        public Color BackgroundColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the background color of the progress bar. See <see cref="TimerOptions.Color"/> for the
-        /// foreground color of the progress bar.
+        /// Gets or sets the color of the progress bar.
         /// </summary>
-        public System.Windows.Media.Color ProgressBackgroundColor { get; set; }
+        public Color ProgressBarColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the background color of the progress bar.
+        /// </summary>
+        public Color ProgressBackgroundColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color that is flashed on expiration.
         /// </summary>
-        public System.Windows.Media.Color ExpirationFlashColor { get; set; }
+        public Color ExpirationFlashColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the primary text.
         /// </summary>
-        public System.Windows.Media.Color PrimaryTextColor { get; set; }
+        public Color PrimaryTextColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the watermark in the primary text box.
         /// </summary>
-        public System.Windows.Media.Color PrimaryHintColor { get; set; }
+        public Color PrimaryHintColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of any secondary text.
         /// </summary>
-        public System.Windows.Media.Color SecondaryTextColor { get; set; }
+        public Color SecondaryTextColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the watermark in any secondary text box.
         /// </summary>
-        public System.Windows.Media.Color SecondaryHintColor { get; set; }
+        public Color SecondaryHintColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the button text.
         /// </summary>
-        public System.Windows.Media.Color ButtonColor { get; set; }
+        public Color ButtonColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the button text when the user hovers over the button.
         /// </summary>
-        public System.Windows.Media.Color ButtonHoverColor { get; set; }
+        public Color ButtonHoverColor { get; set; }
 
         /// <summary>
         /// Returns a <see cref="ThemeInfo"/> for the specified <see cref="Theme"/>.

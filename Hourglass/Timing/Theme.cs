@@ -14,6 +14,27 @@ namespace Hourglass.Timing
     using Hourglass.Serialization;
 
     /// <summary>
+    /// The type of theme.
+    /// </summary>
+    public enum ThemeType
+    {
+        /// <summary>
+        /// A built-in theme with a light background.
+        /// </summary>
+        BuiltInLight,
+
+        /// <summary>
+        /// A built-in theme with a dark background.
+        /// </summary>
+        BuiltInDark,
+
+        /// <summary>
+        /// A theme that is provided by the user.
+        /// </summary>
+        UserProvided
+    }
+
+    /// <summary>
     /// A theme for the timer window.
     /// </summary>
     public class Theme : INotifyPropertyChanged
@@ -21,9 +42,9 @@ namespace Hourglass.Timing
         #region Private Members
 
         /// <summary>
-        /// The friendly name for this theme, or <c>null</c> if no friendly name is specified.
+        /// The type of this theme.
         /// </summary>
-        private readonly string name;
+        private readonly ThemeType type;
 
         /// <summary>
         /// A unique identifier for this theme.
@@ -31,14 +52,14 @@ namespace Hourglass.Timing
         private readonly string identifier;
 
         /// <summary>
-        /// A value indicating whether this theme is defined in the assembly.
+        /// The friendly name for this theme, or <c>null</c> if no friendly name is specified.
         /// </summary>
-        private readonly bool isBuiltIn;
+        private string name;
 
         /// <summary>
         /// The background color of the window.
         /// </summary>
-        private System.Windows.Media.Color backgroundColor;
+        private Color backgroundColor;
 
         /// <summary>
         /// The brush used to paint the background color of the window.
@@ -46,21 +67,29 @@ namespace Hourglass.Timing
         private Brush backgroundBrush;
 
         /// <summary>
-        /// The background color of the progress bar. See <see cref="TimerOptions.Color"/> for the foreground color of
-        /// the progress bar.
+        /// The color of the progress bar.
         /// </summary>
-        private System.Windows.Media.Color progressBackgroundColor;
+        private Color progressBarColor;
 
         /// <summary>
-        /// The brush used to paint the background color of the progress bar. See <see cref="TimerOptions.Color"/> for
-        /// the foreground color of the progress bar.
+        /// The brush used to paint the color of the progress bar.
+        /// </summary>
+        private Brush progressBarBrush;
+
+        /// <summary>
+        /// The background color of the progress bar.
+        /// </summary>
+        private Color progressBackgroundColor;
+
+        /// <summary>
+        /// The brush used to paint the background color of the progress bar.
         /// </summary>
         private Brush progressBackgroundBrush;
 
         /// <summary>
         /// The color that is flashed on expiration.
         /// </summary>
-        private System.Windows.Media.Color expirationFlashColor;
+        private Color expirationFlashColor;
 
         /// <summary>
         /// The brush used to paint the color that is flashed on expiration.
@@ -70,7 +99,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// The color of the primary text.
         /// </summary>
-        private System.Windows.Media.Color primaryTextColor;
+        private Color primaryTextColor;
 
         /// <summary>
         /// The brush used to paint the color of the primary text.
@@ -80,7 +109,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// The color of the watermark in the primary text box.
         /// </summary>
-        private System.Windows.Media.Color primaryHintColor;
+        private Color primaryHintColor;
 
         /// <summary>
         /// The brush used to paint the color of the watermark in the primary text box.
@@ -90,7 +119,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// The color of any secondary text.
         /// </summary>
-        private System.Windows.Media.Color secondaryTextColor;
+        private Color secondaryTextColor;
 
         /// <summary>
         /// The brush used to paint the color of any secondary text.
@@ -100,7 +129,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// The color of the watermark in any secondary text box.
         /// </summary>
-        private System.Windows.Media.Color secondaryHintColor;
+        private Color secondaryHintColor;
 
         /// <summary>
         /// The brush used to paint the color of the watermark in any secondary text box.
@@ -110,7 +139,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// The color of the button text.
         /// </summary>
-        private System.Windows.Media.Color buttonColor;
+        private Color buttonColor;
 
         /// <summary>
         /// The brush used to paint the color of the button text.
@@ -120,7 +149,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// The color of the button text when the user hovers over the button.
         /// </summary>
-        private System.Windows.Media.Color buttonHoverColor;
+        private Color buttonHoverColor;
 
         /// <summary>
         /// The brush used to paint the color of the button text when the user hovers over the button.
@@ -134,9 +163,12 @@ namespace Hourglass.Timing
         /// <summary>
         /// Initializes a new instance of the <see cref="Theme"/> class.
         /// </summary>
+        /// <param name="type">The type of this theme.</param>
+        /// <param name="identifier">A unique identifier for this theme.</param>
+        /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
         /// <param name="backgroundColor">The background color of the window.</param>
-        /// <param name="progressBackgroundColor">The background color of the progress bar. See <see
-        /// cref="TimerOptions.Color"/> for the foreground color of</param>
+        /// <param name="progressBarColor">The color of the progress bar.</param>
+        /// <param name="progressBackgroundColor">The background color of the progress bar.</param>
         /// <param name="expirationFlashColor">The color that is flashed on expiration.</param>
         /// <param name="primaryTextColor">The color of the primary text.</param>
         /// <param name="primaryHintColor">The color of the watermark in the primary text box.</param>
@@ -144,28 +176,27 @@ namespace Hourglass.Timing
         /// <param name="secondaryHintColor">The color of the watermark in any secondary text box.</param>
         /// <param name="buttonColor">The color of the button text.</param>
         /// <param name="buttonHoverColor">The color of the button text when the user hovers over the button.</param>
-        /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
-        /// <param name="invariantName">A unique identifier for this theme.</param>
-        /// <param name="isBuiltIn">A value indicating whether this theme is defined in the assembly.</param>
         public Theme(
-            System.Windows.Media.Color backgroundColor,
-            System.Windows.Media.Color progressBackgroundColor,
-            System.Windows.Media.Color expirationFlashColor,
-            System.Windows.Media.Color primaryTextColor,
-            System.Windows.Media.Color primaryHintColor,
-            System.Windows.Media.Color secondaryTextColor,
-            System.Windows.Media.Color secondaryHintColor,
-            System.Windows.Media.Color buttonColor,
-            System.Windows.Media.Color buttonHoverColor,
+            ThemeType type,
+            string identifier,
             string name,
-            string invariantName = null,
-            bool isBuiltIn = false)
+            Color backgroundColor,
+            Color progressBarColor,
+            Color progressBackgroundColor,
+            Color expirationFlashColor,
+            Color primaryTextColor,
+            Color primaryHintColor,
+            Color secondaryTextColor,
+            Color secondaryHintColor,
+            Color buttonColor,
+            Color buttonHoverColor)
         {
+            this.type = type;
+            this.identifier = identifier;
             this.name = name;
-            this.identifier = isBuiltIn ? ("resource:" + invariantName) : ("theme:" + name);
-            this.isBuiltIn = isBuiltIn;
 
             this.backgroundColor = backgroundColor;
+            this.progressBarColor = progressBarColor;
             this.progressBackgroundColor = progressBackgroundColor;
             this.expirationFlashColor = expirationFlashColor;
             this.primaryTextColor = primaryTextColor;
@@ -179,9 +210,12 @@ namespace Hourglass.Timing
         /// <summary>
         /// Initializes a new instance of the <see cref="Theme"/> class.
         /// </summary>
+        /// <param name="type">The type of this theme.</param>
+        /// <param name="identifier">A unique identifier for this theme.</param>
+        /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
         /// <param name="backgroundColor">The background color of the window.</param>
-        /// <param name="progressBackgroundColor">The background color of the progress bar. See <see
-        /// cref="TimerOptions.Color"/> for the foreground color of</param>
+        /// <param name="progressBarColor">The color of the progress bar.</param>
+        /// <param name="progressBackgroundColor">The background color of the progress bar.</param>
         /// <param name="expirationFlashColor">The color that is flashed on expiration.</param>
         /// <param name="primaryTextColor">The color of the primary text.</param>
         /// <param name="primaryHintColor">The color of the watermark in the primary text box.</param>
@@ -189,11 +223,12 @@ namespace Hourglass.Timing
         /// <param name="secondaryHintColor">The color of the watermark in any secondary text box.</param>
         /// <param name="buttonColor">The color of the button text.</param>
         /// <param name="buttonHoverColor">The color of the button text when the user hovers over the button.</param>
-        /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
-        /// <param name="invariantName">A unique identifier for this theme.</param>
-        /// <param name="isBuiltIn">A value indicating whether this theme is defined in the assembly.</param>
         public Theme(
+            ThemeType type,
+            string identifier,
+            string name,
             string backgroundColor,
+            string progressBarColor,
             string progressBackgroundColor,
             string expirationFlashColor,
             string primaryTextColor,
@@ -201,12 +236,13 @@ namespace Hourglass.Timing
             string secondaryTextColor,
             string secondaryHintColor,
             string buttonColor,
-            string buttonHoverColor,
-            string name,
-            string invariantName = null,
-            bool isBuiltIn = false)
+            string buttonHoverColor)
             : this(
+                type,
+                identifier,
+                name,
                 ColorExtensions.ConvertFromString(backgroundColor),
+                ColorExtensions.ConvertFromString(progressBarColor),
                 ColorExtensions.ConvertFromString(progressBackgroundColor),
                 ColorExtensions.ConvertFromString(expirationFlashColor),
                 ColorExtensions.ConvertFromString(primaryTextColor),
@@ -214,10 +250,7 @@ namespace Hourglass.Timing
                 ColorExtensions.ConvertFromString(secondaryTextColor),
                 ColorExtensions.ConvertFromString(secondaryHintColor),
                 ColorExtensions.ConvertFromString(buttonColor),
-                ColorExtensions.ConvertFromString(buttonHoverColor),
-                name,
-                invariantName,
-                isBuiltIn)
+                ColorExtensions.ConvertFromString(buttonHoverColor))
         {
         }
 
@@ -227,11 +260,12 @@ namespace Hourglass.Timing
         /// <param name="info">A <see cref="ThemeInfo"/>.</param>
         public Theme(ThemeInfo info)
         {
+            this.type = ThemeType.UserProvided;
             this.name = info.Name;
-            this.identifier = "theme:" + info.Name;
-            this.isBuiltIn = false;
+            this.identifier = info.Identifier;
 
             this.backgroundColor = info.BackgroundColor;
+            this.progressBarColor = info.ProgressBarColor;
             this.progressBackgroundColor = info.ProgressBackgroundColor;
             this.expirationFlashColor = info.ExpirationFlashColor;
             this.primaryTextColor = info.PrimaryTextColor;
@@ -264,11 +298,11 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
-        /// Gets the friendly name of this theme, or <c>null</c> if no friendly name is specified.
+        /// Gets the type of this theme.
         /// </summary>
-        public string Name
+        public ThemeType Type
         {
-            get { return this.name; }
+            get { return this.type; }
         }
 
         /// <summary>
@@ -280,17 +314,31 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
-        /// Gets a value indicating whether this theme is defined in the assembly.
+        /// Gets or sets the friendly name of this theme, or <c>null</c> if no friendly name is specified.
         /// </summary>
-        public bool IsBuiltIn
+        public string Name
         {
-            get { return this.isBuiltIn; }
+            get
+            {
+                return this.name;
+            }
+
+            set
+            {
+                if (this.name == value)
+                {
+                    return;
+                }
+
+                this.name = value;
+                this.OnPropertyChanged(nameof(this.Name));
+            }
         }
 
         /// <summary>
         /// Gets or sets the background color of the window.
         /// </summary>
-        public System.Windows.Media.Color BackgroundColor
+        public Color BackgroundColor
         {
             get
             {
@@ -327,10 +375,48 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
-        /// Gets or sets the background color of the progress bar. See <see cref="TimerOptions.Color"/> for the
-        /// foreground color of the progress bar.
+        /// Gets or sets the color of the progress bar.
         /// </summary>
-        public System.Windows.Media.Color ProgressBackgroundColor
+        public Color ProgressBarColor
+        {
+            get
+            {
+                return this.progressBarColor;
+            }
+
+            set
+            {
+                if (this.progressBarColor == value)
+                {
+                    return;
+                }
+
+                this.progressBarColor = value;
+                this.progressBarBrush = null;
+                this.OnPropertyChanged(nameof(this.ProgressBarColor));
+            }
+        }
+
+        /// <summary>
+        /// Gets the brush used to paint the color of the progress bar.
+        /// </summary>
+        public Brush ProgressBarBrush
+        {
+            get
+            {
+                if (this.progressBarBrush == null)
+                {
+                    this.progressBarBrush = new SolidColorBrush(this.progressBarColor);
+                }
+
+                return this.progressBarBrush;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the background color of the progress bar.
+        /// </summary>
+        public Color ProgressBackgroundColor
         {
             get
             {
@@ -351,8 +437,7 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
-        /// Gets the brush used to paint the background color of the progress bar. See <see cref="TimerOptions.Color"/>
-        /// for the foreground color of the progress bar.
+        /// Gets the brush used to paint the background color of the progress bar.
         /// </summary>
         public Brush ProgressBackgroundBrush
         {
@@ -370,7 +455,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// Gets or sets the color that is flashed on expiration.
         /// </summary>
-        public System.Windows.Media.Color ExpirationFlashColor
+        public Color ExpirationFlashColor
         {
             get
             {
@@ -409,7 +494,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// Gets or sets the color of the primary text.
         /// </summary>
-        public System.Windows.Media.Color PrimaryTextColor
+        public Color PrimaryTextColor
         {
             get
             {
@@ -448,7 +533,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// Gets or sets the color of the watermark in the primary text box.
         /// </summary>
-        public System.Windows.Media.Color PrimaryHintColor
+        public Color PrimaryHintColor
         {
             get
             {
@@ -487,7 +572,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// Gets or sets the color of any secondary text.
         /// </summary>
-        public System.Windows.Media.Color SecondaryTextColor
+        public Color SecondaryTextColor
         {
             get
             {
@@ -526,7 +611,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// Gets or sets the color of the watermark in any secondary text box.
         /// </summary>
-        public System.Windows.Media.Color SecondaryHintColor
+        public Color SecondaryHintColor
         {
             get
             {
@@ -565,7 +650,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// Gets or sets the color of the button text.
         /// </summary>
-        public System.Windows.Media.Color ButtonColor
+        public Color ButtonColor
         {
             get
             {
@@ -604,7 +689,7 @@ namespace Hourglass.Timing
         /// <summary>
         /// Gets or sets the color of the button text when the user hovers over the button.
         /// </summary>
-        public System.Windows.Media.Color ButtonHoverColor
+        public Color ButtonHoverColor
         {
             get
             {
@@ -638,6 +723,22 @@ namespace Hourglass.Timing
 
                 return this.buttonHoverBrush;
             }
+        }
+
+        /// <summary>
+        /// Gets the light variant of this theme.
+        /// </summary>
+        public Theme LightVariant
+        {
+            get { return ThemeManager.Instance.GetLightVariantForTheme(this); }
+        }
+
+        /// <summary>
+        /// Gets the dark variant of this theme.
+        /// </summary>
+        public Theme DarkVariant
+        {
+            get { return ThemeManager.Instance.GetDarkVariantForTheme(this); }
         }
 
         #endregion
@@ -678,8 +779,10 @@ namespace Hourglass.Timing
         {
             return new ThemeInfo
             {
+                Identifier = this.identifier,
                 Name = this.name,
                 BackgroundColor = this.backgroundColor,
+                ProgressBarColor = this.progressBarColor,
                 ProgressBackgroundColor = this.progressBackgroundColor,
                 ExpirationFlashColor = this.expirationFlashColor,
                 PrimaryTextColor = this.primaryTextColor,

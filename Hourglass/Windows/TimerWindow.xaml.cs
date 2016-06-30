@@ -1075,7 +1075,7 @@ namespace Hourglass.Windows
         private void UpdateBoundTheme()
         {
             this.InnerGrid.Background = this.Theme.BackgroundBrush;
-            this.ProgressBar.Foreground = this.Options.Color.Brush;
+            this.ProgressBar.Foreground = this.Theme.ProgressBarBrush;
             this.ProgressBar.Background  = this.Theme.ProgressBackgroundBrush;
             this.InnerNotificationBorder.BorderBrush = this.Theme.ExpirationFlashBrush;
             this.OuterNotificationBorder.Background = this.Theme.ExpirationFlashBrush;
