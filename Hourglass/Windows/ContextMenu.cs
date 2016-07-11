@@ -919,7 +919,7 @@ namespace Hourglass.Windows
             {
                 this.manageThemesMenuItem = new MenuItem();
                 this.manageThemesMenuItem.Header = Properties.Resources.ContextMenuManageThemesMenuItem;
-                this.manageThemesMenuItem.IsEnabled = false;
+                this.manageThemesMenuItem.Click += this.ManageThemesMenuItemClick;
             }
 
             this.themeMenuItem.Items.Add(this.manageThemesMenuItem);
@@ -1015,6 +1015,26 @@ namespace Hourglass.Windows
 
             MenuItem selectedMenuItem = (MenuItem)sender;
             this.timerWindow.Options.Theme = (Theme)selectedMenuItem.Tag;
+        }
+
+        /// <summary>
+        /// Invoked when the "Manage themes" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void ManageThemesMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            ThemeManagerWindow window = Application.Current.Windows.OfType<ThemeManagerWindow>().FirstOrDefault();
+            if (window != null)
+            {
+                window.SetTimerWindow(this.timerWindow);
+                window.BringToFrontAndActivate();
+            }
+            else
+            {
+                window = new ThemeManagerWindow(this.timerWindow);
+                window.Show();
+            }
         }
 
         #endregion

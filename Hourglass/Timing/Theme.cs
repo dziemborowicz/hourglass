@@ -7,6 +7,7 @@
 namespace Hourglass.Timing
 {
     using System.ComponentModel;
+    using System.Linq;
     using System.Windows.Media;
 
     using Hourglass.Extensions;
@@ -241,16 +242,41 @@ namespace Hourglass.Timing
                 type,
                 identifier,
                 name,
-                ColorExtensions.ConvertFromString(backgroundColor),
-                ColorExtensions.ConvertFromString(progressBarColor),
-                ColorExtensions.ConvertFromString(progressBackgroundColor),
-                ColorExtensions.ConvertFromString(expirationFlashColor),
-                ColorExtensions.ConvertFromString(primaryTextColor),
-                ColorExtensions.ConvertFromString(primaryHintColor),
-                ColorExtensions.ConvertFromString(secondaryTextColor),
-                ColorExtensions.ConvertFromString(secondaryHintColor),
-                ColorExtensions.ConvertFromString(buttonColor),
-                ColorExtensions.ConvertFromString(buttonHoverColor))
+                ColorExtensions.FromString(backgroundColor),
+                ColorExtensions.FromString(progressBarColor),
+                ColorExtensions.FromString(progressBackgroundColor),
+                ColorExtensions.FromString(expirationFlashColor),
+                ColorExtensions.FromString(primaryTextColor),
+                ColorExtensions.FromString(primaryHintColor),
+                ColorExtensions.FromString(secondaryTextColor),
+                ColorExtensions.FromString(secondaryHintColor),
+                ColorExtensions.FromString(buttonColor),
+                ColorExtensions.FromString(buttonHoverColor))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Theme"/> class.
+        /// </summary>
+        /// <param name="type">The type of this theme.</param>
+        /// <param name="identifier">A unique identifier for this theme.</param>
+        /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
+        /// <param name="theme">A theme from which to copy colors.</param>
+        public Theme(ThemeType type, string identifier, string name, Theme theme)
+            : this(
+                type,
+                identifier,
+                name,
+                theme.backgroundColor,
+                theme.progressBarColor,
+                theme.progressBackgroundColor,
+                theme.expirationFlashColor,
+                theme.primaryTextColor,
+                theme.primaryHintColor,
+                theme.secondaryTextColor,
+                theme.secondaryHintColor,
+                theme.buttonColor,
+                theme.buttonHoverColor)
         {
         }
 
@@ -259,21 +285,21 @@ namespace Hourglass.Timing
         /// </summary>
         /// <param name="info">A <see cref="ThemeInfo"/>.</param>
         public Theme(ThemeInfo info)
+            : this(
+                ThemeType.UserProvided,
+                info.Identifier,
+                info.Name,
+                info.BackgroundColor,
+                info.ProgressBarColor,
+                info.ProgressBackgroundColor,
+                info.ExpirationFlashColor,
+                info.PrimaryTextColor,
+                info.PrimaryHintColor,
+                info.SecondaryTextColor,
+                info.SecondaryHintColor,
+                info.ButtonColor,
+                info.ButtonHoverColor)
         {
-            this.type = ThemeType.UserProvided;
-            this.name = info.Name;
-            this.identifier = info.Identifier;
-
-            this.backgroundColor = info.BackgroundColor;
-            this.progressBarColor = info.ProgressBarColor;
-            this.progressBackgroundColor = info.ProgressBackgroundColor;
-            this.expirationFlashColor = info.ExpirationFlashColor;
-            this.primaryTextColor = info.PrimaryTextColor;
-            this.primaryHintColor = info.PrimaryHintColor;
-            this.secondaryTextColor = info.SecondaryTextColor;
-            this.secondaryHintColor = info.SecondaryHintColor;
-            this.buttonColor = info.ButtonColor;
-            this.buttonHoverColor = info.ButtonHoverColor;
         }
 
         #endregion
@@ -355,6 +381,7 @@ namespace Hourglass.Timing
                 this.backgroundColor = value;
                 this.backgroundBrush = null;
                 this.OnPropertyChanged(nameof(this.BackgroundColor));
+                this.OnPropertyChanged(nameof(this.BackgroundBrush));
             }
         }
 
@@ -394,6 +421,7 @@ namespace Hourglass.Timing
                 this.progressBarColor = value;
                 this.progressBarBrush = null;
                 this.OnPropertyChanged(nameof(this.ProgressBarColor));
+                this.OnPropertyChanged(nameof(this.ProgressBarBrush));
             }
         }
 
@@ -433,6 +461,7 @@ namespace Hourglass.Timing
                 this.progressBackgroundColor = value;
                 this.progressBackgroundBrush = null;
                 this.OnPropertyChanged(nameof(this.ProgressBackgroundColor));
+                this.OnPropertyChanged(nameof(this.ProgressBackgroundBrush));
             }
         }
 
@@ -472,6 +501,7 @@ namespace Hourglass.Timing
                 this.expirationFlashColor = value;
                 this.expirationFlashBrush = null;
                 this.OnPropertyChanged(nameof(this.ExpirationFlashColor));
+                this.OnPropertyChanged(nameof(this.ExpirationFlashBrush));
             }
         }
 
@@ -511,6 +541,7 @@ namespace Hourglass.Timing
                 this.primaryTextColor = value;
                 this.primaryTextBrush = null;
                 this.OnPropertyChanged(nameof(this.PrimaryTextColor));
+                this.OnPropertyChanged(nameof(this.PrimaryTextBrush));
             }
         }
 
@@ -550,6 +581,7 @@ namespace Hourglass.Timing
                 this.primaryHintColor = value;
                 this.primaryHintBrush = null;
                 this.OnPropertyChanged(nameof(this.PrimaryHintColor));
+                this.OnPropertyChanged(nameof(this.PrimaryHintBrush));
             }
         }
 
@@ -589,6 +621,7 @@ namespace Hourglass.Timing
                 this.secondaryTextColor = value;
                 this.secondaryTextBrush = null;
                 this.OnPropertyChanged(nameof(this.SecondaryTextColor));
+                this.OnPropertyChanged(nameof(this.SecondaryTextBrush));
             }
         }
 
@@ -628,6 +661,7 @@ namespace Hourglass.Timing
                 this.secondaryHintColor = value;
                 this.secondaryHintBrush = null;
                 this.OnPropertyChanged(nameof(this.SecondaryHintColor));
+                this.OnPropertyChanged(nameof(this.SecondaryHintBrush));
             }
         }
 
@@ -667,6 +701,7 @@ namespace Hourglass.Timing
                 this.buttonColor = value;
                 this.buttonBrush = null;
                 this.OnPropertyChanged(nameof(this.ButtonColor));
+                this.OnPropertyChanged(nameof(this.ButtonBrush));
             }
         }
 
@@ -706,6 +741,7 @@ namespace Hourglass.Timing
                 this.buttonHoverColor = value;
                 this.buttonHoverBrush = null;
                 this.OnPropertyChanged(nameof(this.ButtonHoverColor));
+                this.OnPropertyChanged(nameof(this.ButtonHoverBrush));
             }
         }
 
@@ -756,6 +792,19 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Returns a <see cref="Theme"/> that is a copy of another <see cref="Theme"/>.
+        /// </summary>
+        /// <param name="type">The type of this theme.</param>
+        /// <param name="identifier">A unique identifier for this theme.</param>
+        /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
+        /// <param name="theme">A theme from which to copy colors.</param>
+        /// <returns>A <see cref="Theme"/> that is a copy of another <see cref="Theme"/>.</returns>
+        public static Theme FromTheme(ThemeType type, string identifier, string name, Theme theme)
+        {
+            return new Theme(type, identifier, name, theme);
+        }
+
+        /// <summary>
         /// Returns a <see cref="Theme"/> for the specified <see cref="ThemeInfo"/>, or <c>null</c> if the specified
         /// <see cref="ThemeInfo"/> is <c>null</c>.
         /// </summary>
@@ -770,6 +819,49 @@ namespace Hourglass.Timing
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Returns the unique colors used in this theme.
+        /// </summary>
+        /// <returns>The unique colors used in this theme.</returns>
+        public Color[] GetPalette()
+        {
+            Color[] allColors =
+            {
+                this.ProgressBarColor,
+                this.ProgressBackgroundColor,
+                this.BackgroundColor,
+                this.ExpirationFlashColor,
+                this.PrimaryTextColor,
+                this.PrimaryHintColor,
+                this.SecondaryTextColor,
+                this.SecondaryHintColor,
+                this.ButtonColor,
+                this.ButtonHoverColor
+            };
+
+            return allColors.Distinct().ToArray();
+        }
+
+        /// <summary>
+        /// Sets all of the properties, except for <see cref="Type"/> and <see cref="Identifier"/>, from another
+        /// instance of the <see cref="Theme"/> class.
+        /// </summary>
+        /// <param name="theme">Another instance of the <see cref="Theme"/> class.</param>
+        public void Set(Theme theme)
+        {
+            this.Name = theme.Name;
+            this.BackgroundColor = theme.BackgroundColor;
+            this.ProgressBarColor = theme.ProgressBarColor;
+            this.ProgressBackgroundColor = theme.ProgressBackgroundColor;
+            this.ExpirationFlashColor = theme.ExpirationFlashColor;
+            this.PrimaryTextColor = theme.PrimaryTextColor;
+            this.PrimaryHintColor = theme.PrimaryHintColor;
+            this.SecondaryTextColor = theme.SecondaryTextColor;
+            this.SecondaryHintColor = theme.SecondaryHintColor;
+            this.ButtonColor = theme.ButtonColor;
+            this.ButtonHoverColor = theme.ButtonHoverColor;
+        }
 
         /// <summary>
         /// Returns the representation of the <see cref="Theme"/> used for XML serialization.

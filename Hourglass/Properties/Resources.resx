@@ -1157,4 +1157,28 @@ $</value>
     <value>_Manage themes...</value>
     <comment>The text for the manage themes menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ThemeManagerNewTheme" xml:space="preserve">
+    <value>New theme</value>
+    <comment>The name of a new theme</comment>
+  </data>
+  <data name="ThemeManagerWindowSavePrompt" xml:space="preserve">
+    <value>Do you want to save the changes to the current theme?</value>
+    <comment>The prompt displayed when the user tries to close the window or navigate away while there are unsaved changes to a theme</comment>
+  </data>
+  <data name="ThemeManagerWindowDarkThemesSectionHeader" xml:space="preserve">
+    <value>Dark themes</value>
+    <comment>The section header text for dark themes</comment>
+  </data>
+  <data name="ThemeManagerWindowLightThemesSectionHeader" xml:space="preserve">
+    <value>Light themes</value>
+    <comment>The section header text for light themes</comment>
+  </data>
+  <data name="ThemeManagerWindowUserProvidedThemesSectionHeader" xml:space="preserve">
+    <value>Custom themes</value>
+    <comment>The section header text for user-provided themes</comment>
+  </data>
+  <data name="ThemeManagerWindowDeletePrompt" xml:space="preserve">
+    <value>Are you sure you want to delete the selected theme?</value>
+    <comment>The prompt displayed when the user deletes a theme</comment>
+  </data>
 </root>

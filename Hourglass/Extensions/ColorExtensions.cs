@@ -19,7 +19,7 @@ namespace Hourglass.Extensions
         /// </summary>
         /// <param name="color">A <see cref="Color"/>.</param>
         /// <returns>An <see cref="int"/> for <paramref name="color"/>.</returns>
-        public static int ConverToInt(Color color)
+        public static int ToInt(this Color color)
         {
             return (color.R << 0) | (color.G << 8) | (color.B << 16);
         }
@@ -29,7 +29,7 @@ namespace Hourglass.Extensions
         /// </summary>
         /// <param name="colorString">A <see cref="string"/> representation of a <see cref="Color"/>.</param>
         /// <returns>A <see cref="Color"/>.</returns>
-        public static Color ConvertFromString(string colorString)
+        public static Color FromString(string colorString)
         {
             object color = ColorConverter.ConvertFromString(colorString);
 

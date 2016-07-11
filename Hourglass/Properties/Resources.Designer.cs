@@ -1385,6 +1385,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New theme.
+        /// </summary>
+        internal static string ThemeManagerNewTheme {
+            get {
+                return ResourceManager.GetString("ThemeManagerNewTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Orange.
         /// </summary>
         internal static string ThemeManagerOrangeDarkTheme {
@@ -1435,6 +1444,51 @@ namespace Hourglass.Properties {
         internal static string ThemeManagerRedLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerRedLightTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark themes.
+        /// </summary>
+        internal static string ThemeManagerWindowDarkThemesSectionHeader {
+            get {
+                return ResourceManager.GetString("ThemeManagerWindowDarkThemesSectionHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the selected theme?.
+        /// </summary>
+        internal static string ThemeManagerWindowDeletePrompt {
+            get {
+                return ResourceManager.GetString("ThemeManagerWindowDeletePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light themes.
+        /// </summary>
+        internal static string ThemeManagerWindowLightThemesSectionHeader {
+            get {
+                return ResourceManager.GetString("ThemeManagerWindowLightThemesSectionHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to save the changes to the current theme?.
+        /// </summary>
+        internal static string ThemeManagerWindowSavePrompt {
+            get {
+                return ResourceManager.GetString("ThemeManagerWindowSavePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom themes.
+        /// </summary>
+        internal static string ThemeManagerWindowUserProvidedThemesSectionHeader {
+            get {
+                return ResourceManager.GetString("ThemeManagerWindowUserProvidedThemesSectionHeader", resourceCulture);
             }
         }
         

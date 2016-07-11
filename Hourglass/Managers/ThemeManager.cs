@@ -134,11 +134,17 @@ namespace Hourglass.Managers
         }
 
         /// <summary>
-        /// Clears all <see cref="UserProvidedThemes"/>.
+        /// Adds a theme based on another theme.
         /// </summary>
-        public void ClearUserProvidedThemes()
+        /// <param name="theme">A <see cref="Theme"/>.</param>
+        /// <returns>The newly added theme.</returns>
+        public Theme AddThemeBasedOnTheme(Theme theme)
         {
-            this.themes.RemoveAll(t => t.Type == ThemeType.UserProvided);
+            string identifier = Guid.NewGuid().ToString();
+            string name = Resources.ThemeManagerNewTheme;
+            Theme newTheme = Theme.FromTheme(ThemeType.UserProvided, identifier, name, theme);
+            this.Add(newTheme);
+            return newTheme;
         }
 
         /// <summary>
@@ -213,7 +219,7 @@ namespace Hourglass.Managers
                     return this.GetThemeOrDefaultByIdentifier(theme.Identifier.Replace("-dark", string.Empty));
 
                 case ThemeType.UserProvided:
-                    return this.DefaultDarkTheme;
+                    return this.DefaultTheme;
 
                 default:
                     throw new ArgumentException();
@@ -236,11 +242,25 @@ namespace Hourglass.Managers
                     return theme;
 
                 case ThemeType.UserProvided:
-                    return this.DefaultTheme;
+                    return this.DefaultDarkTheme;
 
                 default:
                     throw new ArgumentException();
             }
+        }
+
+        /// <summary>
+        /// Removes a theme, and updates any timers using the theme to use the default theme.
+        /// </summary>
+        /// <param name="theme">A <see cref="Theme"/>.</param>
+        public void Remove(Theme theme)
+        {
+            foreach (Timer timer in TimerManager.Instance.Timers.Where(t => t.Options.Theme == theme))
+            {
+                timer.Options.Theme = this.DefaultTheme;
+            }
+
+            this.themes.Remove(theme);
         }
 
         /// <summary>

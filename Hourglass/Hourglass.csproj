@@ -142,6 +142,9 @@
     <Compile Include="Timing\TimerBase.cs" />
     <Compile Include="Timing\TimerOptions.cs" />
     <Compile Include="Timing\TimerStart.cs" />
+    <Compile Include="Windows\ColorControl.xaml.cs">
+      <DependentUpon>ColorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ContextMenu.cs" />
     <Compile Include="Windows\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
@@ -151,6 +154,9 @@
     <Compile Include="Windows\RegexMatchConverter.cs" />
     <Compile Include="Windows\SizeToFitTextBox.cs" />
     <Compile Include="Windows\SoundPlayer.cs" />
+    <Compile Include="Windows\ThemeManagerWindow.xaml.cs">
+      <DependentUpon>ThemeManagerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\TimerWindow.xaml.cs">
       <DependentUpon>TimerWindow.xaml</DependentUpon>
     </Compile>
@@ -160,7 +166,15 @@
     <Compile Include="Windows\Watermark.cs" />
     <Compile Include="Windows\WatermarkAdorner.cs" />
     <Compile Include="Windows\WindowSize.cs" />
+    <Page Include="Windows\ColorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ErrorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ThemeManagerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
