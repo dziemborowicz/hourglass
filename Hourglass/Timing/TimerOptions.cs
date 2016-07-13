@@ -14,6 +14,32 @@ namespace Hourglass.Timing
     using Hourglass.Windows;
 
     /// <summary>
+    /// Modes indicating what information to display in the timer window title.
+    /// </summary>
+    public enum WindowTitleMode
+    {
+        /// <summary>
+        /// The timer window title is set to show the application name.
+        /// </summary>
+        ApplicationName,
+
+        /// <summary>
+        /// The timer window title is set to show the time left.
+        /// </summary>
+        TimeLeft,
+
+        /// <summary>
+        /// The timer window title is set to show the time elapsed.
+        /// </summary>
+        TimeElapsed,
+
+        /// <summary>
+        /// The timer window title is set to show the timer title.
+        /// </summary>
+        TimerTitle
+    }
+
+    /// <summary>
     /// Configuration data for a timer.
     /// </summary>
     public class TimerOptions : INotifyPropertyChanged
@@ -83,6 +109,11 @@ namespace Hourglass.Timing
         private Theme theme;
 
         /// <summary>
+        /// A value indicating what information to display in the timer window title.
+        /// </summary>
+        private WindowTitleMode windowTitleMode;
+
+        /// <summary>
         /// The size, position, and state of the timer window.
         /// </summary>
         private WindowSize windowSize;
@@ -108,6 +139,7 @@ namespace Hourglass.Timing
             this.theme = Theme.DefaultTheme;
             this.sound = Sound.DefaultSound;
             this.loopSound = false;
+            this.windowTitleMode = WindowTitleMode.ApplicationName;
             this.windowSize = new WindowSize(
                 new Rect(double.PositiveInfinity, double.PositiveInfinity, 350, 150),
                 WindowState.Normal,
@@ -415,6 +447,28 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Gets or sets a value indicating what information to display in the timer window title.
+        /// </summary>
+        public WindowTitleMode WindowTitleMode
+        {
+            get
+            {
+                return this.windowTitleMode;
+            }
+
+            set
+            {
+                if (this.windowTitleMode == value)
+                {
+                    return;
+                }
+
+                this.windowTitleMode = value;
+                this.OnPropertyChanged("WindowTitleMode");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the size, position, and state of the timer window.
         /// </summary>
         public WindowSize WindowSize
@@ -487,6 +541,7 @@ namespace Hourglass.Timing
             this.theme = options.theme;
             this.sound = options.sound;
             this.loopSound = options.loopSound;
+            this.windowTitleMode = options.windowTitleMode;
             this.windowSize = WindowSize.FromWindowSize(options.WindowSize);
 
             this.OnPropertyChanged(
@@ -502,6 +557,7 @@ namespace Hourglass.Timing
                 "Theme",
                 "Sound",
                 "LoopSound",
+                "WindowTitleMode",
                 "WindowSize");
         }
 
@@ -528,6 +584,7 @@ namespace Hourglass.Timing
             this.theme = Theme.FromIdentifier(info.ThemeIdentifier);
             this.sound = Sound.FromIdentifier(info.SoundIdentifier);
             this.loopSound = info.LoopSound;
+            this.windowTitleMode = info.WindowTitleMode;
             this.windowSize = WindowSize.FromWindowSizeInfo(info.WindowSize);
 
             this.OnPropertyChanged(
@@ -543,6 +600,7 @@ namespace Hourglass.Timing
                 "Theme",
                 "Sound",
                 "LoopSound",
+                "WindowTitleMode",
                 "WindowSize");
         }
 
@@ -566,6 +624,7 @@ namespace Hourglass.Timing
                 ThemeIdentifier = this.theme?.Identifier,
                 SoundIdentifier = this.sound?.Identifier,
                 LoopSound = this.loopSound,
+                WindowTitleMode = this.windowTitleMode,
                 WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize)
             };
         }

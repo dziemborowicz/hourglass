@@ -140,6 +140,11 @@ namespace Hourglass
         public bool OpenSavedTimers { get; private set; }
 
         /// <summary>
+        /// Gets or sets a value indicating what information to display in the timer window title.
+        /// </summary>
+        public WindowTitleMode WindowTitleMode { get; set; }
+
+        /// <summary>
         /// Gets a value that indicates whether the timer window is restored, minimized, or maximized.
         /// </summary>
         public WindowState WindowState { get; private set; }
@@ -218,6 +223,7 @@ namespace Hourglass
                 Theme = this.Theme,
                 Sound = this.Sound,
                 LoopSound = this.LoopSound,
+                WindowTitleMode = this.WindowTitleMode,
                 WindowSize = this.GetWindowSize()
             };
         }
@@ -265,6 +271,7 @@ namespace Hourglass
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
                 OpenSavedTimers = Settings.Default.OpenSavedTimersOnStartup,
+                WindowTitleMode = options.WindowTitleMode,
                 WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
                 RestoreWindowState = windowSize.RestoreWindowState,
                 WindowBounds = windowSize.RestoreBounds
@@ -300,6 +307,7 @@ namespace Hourglass
                 Sound = defaultOptions.Sound,
                 LoopSound = defaultOptions.LoopSound,
                 OpenSavedTimers = false,
+                WindowTitleMode = WindowTitleMode.ApplicationName,
                 WindowState = defaultOptions.WindowSize.WindowState,
                 RestoreWindowState = defaultOptions.WindowSize.RestoreWindowState,
                 WindowBounds = defaultWindowBoundsWithLocation
@@ -528,17 +536,17 @@ namespace Hourglass
                         argumentsBasedOnFactoryDefaults.OpenSavedTimers = openSavedTimers;
                         break;
 
-                    case "--window-bounds":
-                    case "-b":
-                        ThrowIfDuplicateSwitch(specifiedSwitches, "--window-bounds");
+                    case "--window-title":
+                    case "-i":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--window-title");
 
-                        Rect windowBounds = GetRectValue(
+                        WindowTitleMode windowTitleMode = GetWindowTitleModeValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnMostRecentOptions.WindowBounds);
+                            argumentsBasedOnMostRecentOptions.WindowTitleMode);
 
-                        argumentsBasedOnMostRecentOptions.WindowBounds = argumentsBasedOnMostRecentOptions.WindowBounds.Merge(windowBounds);
-                        argumentsBasedOnFactoryDefaults.WindowBounds = argumentsBasedOnFactoryDefaults.WindowBounds.Merge(windowBounds);
+                        argumentsBasedOnMostRecentOptions.WindowTitleMode = windowTitleMode;
+                        argumentsBasedOnFactoryDefaults.WindowTitleMode = windowTitleMode;
                         break;
 
                     case "--window-state":
@@ -552,6 +560,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.WindowState = windowState;
                         argumentsBasedOnFactoryDefaults.WindowState = windowState;
+                        break;
+
+                    case "--window-bounds":
+                    case "-b":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--window-bounds");
+
+                        Rect windowBounds = GetRectValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.WindowBounds);
+
+                        argumentsBasedOnMostRecentOptions.WindowBounds = argumentsBasedOnMostRecentOptions.WindowBounds.Merge(windowBounds);
+                        argumentsBasedOnFactoryDefaults.WindowBounds = argumentsBasedOnFactoryDefaults.WindowBounds.Merge(windowBounds);
                         break;
 
                     case "--use-factory-defaults":
@@ -651,7 +672,7 @@ namespace Hourglass
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "on":
                     return true;
@@ -684,7 +705,7 @@ namespace Hourglass
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "on":
                     return true;
@@ -721,7 +742,7 @@ namespace Hourglass
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "last":
                     return last;
@@ -760,7 +781,7 @@ namespace Hourglass
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "none":
                     return null;
@@ -787,6 +808,49 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Returns the next <see cref="WindowTitleMode"/> value in <paramref name="remainingArgs"/>, or throws an
+        /// exception if <paramref name="remainingArgs"/> is empty or the next argument is not "app", "left", "elapsed",
+        /// "title", or "last".
+        /// </summary>
+        /// <param name="arg">The name of the argument for which the value is to be returned.</param>
+        /// <param name="remainingArgs">The unparsed arguments.</param>
+        /// <param name="last">The value of the argument returned when the user specifies "last".</param>
+        /// <returns>The next <see cref="WindowTitleMode"/> value in <paramref name="remainingArgs"/>.</returns>
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
+        /// "app", "left", "elapsed", "title", or "last".</exception>
+        private static WindowTitleMode GetWindowTitleModeValue(string arg, Queue<string> remainingArgs, WindowTitleMode last)
+        {
+            string value = GetRequiredValue(arg, remainingArgs);
+
+            switch (value.ToLowerInvariant())
+            {
+                case "app":
+                    return WindowTitleMode.ApplicationName;
+
+                case "left":
+                    return WindowTitleMode.TimeLeft;
+
+                case "elapsed":
+                    return WindowTitleMode.TimeElapsed;
+
+                case "title":
+                    return WindowTitleMode.TimerTitle;
+
+                case "last":
+                    return last;
+
+                default:
+                    string message = string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(),
+                        Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                        arg,
+                        value);
+
+                    throw new ParseException(message);
+            }
+        }
+
+        /// <summary>
         /// Returns the next <see cref="WindowState"/> value in <paramref name="remainingArgs"/>, or throws an
         /// exception if <paramref name="remainingArgs"/> is empty or the next argument is not "normal", "maximized",
         /// "minimized", or "last".
@@ -801,7 +865,7 @@ namespace Hourglass
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "normal":
                     return WindowState.Normal;

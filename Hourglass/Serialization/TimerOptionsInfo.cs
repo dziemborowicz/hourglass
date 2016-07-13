@@ -78,6 +78,11 @@ namespace Hourglass.Serialization
         public bool LoopSound { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating what information to display in the timer window title.
+        /// </summary>
+        public WindowTitleMode WindowTitleMode { get; set; }
+
+        /// <summary>
         /// Gets or sets the size, position, and state of the timer window.
         /// </summary>
         public WindowSizeInfo WindowSize { get; set; }

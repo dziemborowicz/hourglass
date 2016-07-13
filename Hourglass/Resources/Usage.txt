@@ -112,14 +112,14 @@ Options:
 
         The built-in themes are:
 
-            red            red-dark
-            orange         orange-dark
-            yellow         yellow-dark
-            green          green-dark
-            blue           blue-dark
-            purple         purple-dark
-            gray           gray-dark
-            black          black-dark
+            red             red-dark
+            orange          orange-dark
+            yellow          yellow-dark
+            green           green-dark
+            blue            blue-dark
+            purple          purple-dark
+            gray            gray-dark
+            black           black-dark
 
         Required        no
         Default value   last
@@ -145,6 +145,20 @@ Options:
         Required        no
         Default value   last
         Alias           -v
+
+  --window-title app|left|elapsed|title|last
+        Sets the timer window title.
+
+        The options are:
+
+            app             Application name
+            left            Time remaining
+            elapsed         Time elapsed
+            title           Timer title
+
+        Required        no
+        Default value   last
+        Alias           -i
 
   --window-state normal|maximized|minimized|last
         Sets the state of the timer window.

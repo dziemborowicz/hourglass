@@ -703,8 +703,6 @@ namespace Hourglass.Windows
         /// </summary>
         private void InitializeResources()
         {
-            this.Title = Properties.Resources.TimerWindowTitle;
-            
             Watermark.SetHint(this.TitleTextBox, Properties.Resources.TimerWindowTitleTextHint);
             Watermark.SetHint(this.TimerTextBox, Properties.Resources.TimerWindowTimerTextHint);
 
@@ -1021,10 +1019,6 @@ namespace Hourglass.Windows
             switch (this.Mode)
             {
                 case TimerWindowMode.Input:
-                    this.Title = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired && this.WindowState == WindowState.Minimized
-                        ? this.Timer.TimeLeftAsString
-                        : Properties.Resources.TimerWindowTitle;
-
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
                     this.UpdateTaskbarProgress();
 
@@ -1040,13 +1034,10 @@ namespace Hourglass.Windows
 
                     this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
+                    this.UpdateWindowTitle();
                     return;
 
                 case TimerWindowMode.Status:
-                    this.Title = this.WindowState == WindowState.Minimized
-                        ? this.Timer.TimeLeftAsString
-                        : Properties.Resources.TimerWindowTitle;
-
                     this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
                         ? this.Timer.TimeElapsedAsString
                         : this.Timer.TimeLeftAsString;
@@ -1065,6 +1056,7 @@ namespace Hourglass.Windows
 
                     this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
+                    this.UpdateWindowTitle();
                     return;
             }
         }
@@ -1153,6 +1145,37 @@ namespace Hourglass.Windows
             else
             {
                 KeepAwakeManager.Instance.StopKeepAwakeFor(this);
+            }
+        }
+
+        /// <summary>
+        /// Updates the window title.
+        /// </summary>
+        private void UpdateWindowTitle()
+        {
+            switch (this.Options.WindowTitleMode)
+            {
+                case WindowTitleMode.ApplicationName:
+                    this.Title = Properties.Resources.TimerWindowTitle;
+                    break;
+
+                case WindowTitleMode.TimeLeft:
+                    this.Title = this.Timer.State != TimerState.Stopped
+                        ? this.Timer.TimeLeftAsString
+                        : Properties.Resources.TimerWindowTitle;
+                    break;
+
+                case WindowTitleMode.TimeElapsed:
+                    this.Title = this.Timer.State != TimerState.Stopped
+                        ? this.Timer.TimeElapsedAsString
+                        : Properties.Resources.TimerWindowTitle;
+                    break;
+
+                case WindowTitleMode.TimerTitle:
+                    this.Title = !string.IsNullOrWhiteSpace(this.Options.Title)
+                        ? this.Options.Title
+                        : Properties.Resources.TimerWindowTitle;
+                    break;
             }
         }
 

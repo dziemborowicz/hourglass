@@ -161,6 +161,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Application name.
+        /// </summary>
+        internal static string ContextMenuApplicationNameWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuApplicationNameWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Clear recent inputs.
         /// </summary>
         internal static string ContextMenuClearRecentInputsMenuItem {
@@ -395,11 +404,47 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time _elapsed.
+        /// </summary>
+        internal static string ContextMenuTimeElapsedWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuTimeElapsedWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time _left.
+        /// </summary>
+        internal static string ContextMenuTimeLeftWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuTimeLeftWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timer _title.
+        /// </summary>
+        internal static string ContextMenuTimerTitleWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuTimerTitleWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unnamed theme.
         /// </summary>
         internal static string ContextMenuUnnamedTheme {
             get {
                 return ResourceManager.GetString("ContextMenuUnnamedTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Window title.
+        /// </summary>
+        internal static string ContextMenuWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuWindowTitleMenuItem", resourceCulture);
             }
         }
         
