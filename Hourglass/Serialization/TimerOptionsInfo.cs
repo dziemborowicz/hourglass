@@ -61,9 +61,9 @@ namespace Hourglass.Serialization
         public bool ShutDownWhenExpired { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the color of the timer progress bar.
+        /// Gets or sets the identifier of the theme of the timer window.
         /// </summary>
-        public string ColorIdentifier { get; set; }
+        public string ThemeIdentifier { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the sound to play when the timer expires, or <c>null</c> if no sound is to
@@ -76,6 +76,11 @@ namespace Hourglass.Serialization
         /// stopped by the user.
         /// </summary>
         public bool LoopSound { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating what information to display in the timer window title.
+        /// </summary>
+        public WindowTitleMode WindowTitleMode { get; set; }
 
         /// <summary>
         /// Gets or sets the size, position, and state of the timer window.

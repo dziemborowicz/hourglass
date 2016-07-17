@@ -732,42 +732,6 @@ $</value>
     <value> </value>
     <comment>The separator between the units of a time span (e.g., " " =&gt; "5 minutes 30 seconds", " : " =&gt; "5 minutes : 30 seconds")</comment>
   </data>
-  <data name="ColorManagerBlack" xml:space="preserve">
-    <value>Black</value>
-    <comment>The string for the gray color</comment>
-  </data>
-  <data name="ColorManagerBlue" xml:space="preserve">
-    <value>Blue</value>
-    <comment>The string for the blue color</comment>
-  </data>
-  <data name="ColorManagerDefaultColor" xml:space="preserve">
-    <value>Default color</value>
-    <comment>The string for the default color</comment>
-  </data>
-  <data name="ColorManagerGray" xml:space="preserve">
-    <value>Gray</value>
-    <comment>The string for the gray color</comment>
-  </data>
-  <data name="ColorManagerGreen" xml:space="preserve">
-    <value>Green</value>
-    <comment>The string for the green color</comment>
-  </data>
-  <data name="ColorManagerOrange" xml:space="preserve">
-    <value>Orange</value>
-    <comment>The string for the orange color</comment>
-  </data>
-  <data name="ColorManagerPurple" xml:space="preserve">
-    <value>Purple</value>
-    <comment>The string for the purple color</comment>
-  </data>
-  <data name="ColorManagerRed" xml:space="preserve">
-    <value>Red</value>
-    <comment>The string for the red color</comment>
-  </data>
-  <data name="ColorManagerYellow" xml:space="preserve">
-    <value>Yellow</value>
-    <comment>The string for the yellow color</comment>
-  </data>
   <data name="SoundManagerLoudBeep" xml:space="preserve">
     <value>Loud beep</value>
     <comment>The string for the loud beep sound</comment>
@@ -812,17 +776,9 @@ $</value>
     <value>Unrecognized switch "{0}"</value>
     <comment>A format string for the error message displayed when a command-line argument switch is unrecognized, where {0} is the unrecognized switch (e.g., "Unrecognized switch '{0}'." =&gt; "Unrecognized switch '--junk'.")</comment>
   </data>
-  <data name="ContextMenuAddCustomColorMenuItem" xml:space="preserve">
-    <value>_Add custom color...</value>
-    <comment>The text for the add custom color menu item, where the character following the optional underscore (_) is the access key</comment>
-  </data>
   <data name="ContextMenuAlwaysOnTopMenuItem" xml:space="preserve">
     <value>_Always on top</value>
     <comment>The text for the always on top menu item, where the character following the optional underscore (_) is the access key</comment>
-  </data>
-  <data name="ContextMenuClearCustomColorsMenuItem" xml:space="preserve">
-    <value>_Clear custom colors</value>
-    <comment>The text for the clear custom colors menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuClearRecentInputsMenuItem" xml:space="preserve">
     <value>_Clear recent inputs</value>
@@ -839,14 +795,6 @@ $</value>
   <data name="ContextMenuCloseWhenExpiredMenuItem" xml:space="preserve">
     <value>Close when _expired</value>
     <comment>The text for the close when expired menu item, where the character following the optional underscore (_) is the access key</comment>
-  </data>
-  <data name="ContextMenuColorMenuItem" xml:space="preserve">
-    <value>C_olor</value>
-    <comment>The text for the color menu item, where the character following the optional underscore (_) is the access key</comment>
-  </data>
-  <data name="ContextMenuCustomColorMenuItem" xml:space="preserve">
-    <value>Custom color</value>
-    <comment>The text for a custom color menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuFullScreenMenuItem" xml:space="preserve">
     <value>_Full screen</value>
@@ -885,7 +833,7 @@ $</value>
     <comment>The text for the recent inputs menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuSavedTimersMenuItem" xml:space="preserve">
-    <value>Saved _timers</value>
+    <value>Sa_ved timers</value>
     <comment>The text for the saved timers menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuShowInNotificationAreaMenuItem" xml:space="preserve">
@@ -1124,5 +1072,133 @@ $</value>
   <data name="ContextMenuDoNotKeepComputerAwakeMenuItem" xml:space="preserve">
     <value>Do not _keep computer awake</value>
     <comment>The text for the do not keep computer awake menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuThemeMenuItem" xml:space="preserve">
+    <value>_Theme</value>
+    <comment>The text for the theme menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ThemeManagerBlackDarkTheme" xml:space="preserve">
+    <value>Black</value>
+    <comment>The name of the black theme with a dark background</comment>
+  </data>
+  <data name="ThemeManagerBlackLightTheme" xml:space="preserve">
+    <value>Black</value>
+    <comment>The name of the black theme with a light background</comment>
+  </data>
+  <data name="ThemeManagerBlueDarkTheme" xml:space="preserve">
+    <value>Blue</value>
+    <comment>The name of the blue theme with a dark background</comment>
+  </data>
+  <data name="ThemeManagerBlueLightTheme" xml:space="preserve">
+    <value>Blue</value>
+    <comment>The name of the blue theme with a light background</comment>
+  </data>
+  <data name="ThemeManagerGrayDarkTheme" xml:space="preserve">
+    <value>Gray</value>
+    <comment>The name of the gray theme with a dark background</comment>
+  </data>
+  <data name="ThemeManagerGrayLightTheme" xml:space="preserve">
+    <value>Gray</value>
+    <comment>The name of the gray theme with a light background</comment>
+  </data>
+  <data name="ThemeManagerGreenDarkTheme" xml:space="preserve">
+    <value>Green</value>
+    <comment>The name of the green theme with a dark background</comment>
+  </data>
+  <data name="ThemeManagerGreenLightTheme" xml:space="preserve">
+    <value>Green</value>
+    <comment>The name of the green theme with a light background</comment>
+  </data>
+  <data name="ThemeManagerOrangeDarkTheme" xml:space="preserve">
+    <value>Orange</value>
+    <comment>The name of the orange theme with a dark background</comment>
+  </data>
+  <data name="ThemeManagerOrangeLightTheme" xml:space="preserve">
+    <value>Orange</value>
+    <comment>The name of the orange theme with a light background</comment>
+  </data>
+  <data name="ThemeManagerPurpleDarkTheme" xml:space="preserve">
+    <value>Purple</value>
+    <comment>The name of the purple theme with a dark background</comment>
+  </data>
+  <data name="ThemeManagerPurpleLightTheme" xml:space="preserve">
+    <value>Purple</value>
+    <comment>The name of the purple theme with a light background</comment>
+  </data>
+  <data name="ThemeManagerRedDarkTheme" xml:space="preserve">
+    <value>Red</value>
+    <comment>The name of the red theme with a dark background</comment>
+  </data>
+  <data name="ThemeManagerRedLightTheme" xml:space="preserve">
+    <value>Red</value>
+    <comment>The name of the red theme with a light background</comment>
+  </data>
+  <data name="ThemeManagerYellowDarkTheme" xml:space="preserve">
+    <value>Yellow</value>
+    <comment>The name of the yellow theme with a dark background</comment>
+  </data>
+  <data name="ThemeManagerYellowLightTheme" xml:space="preserve">
+    <value>Yellow</value>
+    <comment>The name of the yellow theme with a light background</comment>
+  </data>
+  <data name="ContextMenuUnnamedTheme" xml:space="preserve">
+    <value>Unnamed theme</value>
+    <comment>The text for the unnamed theme menu items, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuDarkThemeMenuItem" xml:space="preserve">
+    <value>_Dark theme</value>
+    <comment>The text for the dark theme menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuLightThemeMenuItem" xml:space="preserve">
+    <value>_Light theme</value>
+    <comment>The text for the light theme menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuManageThemesMenuItem" xml:space="preserve">
+    <value>_Manage themes...</value>
+    <comment>The text for the manage themes menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ThemeManagerNewTheme" xml:space="preserve">
+    <value>New theme</value>
+    <comment>The name of a new theme</comment>
+  </data>
+  <data name="ThemeManagerWindowSavePrompt" xml:space="preserve">
+    <value>Do you want to save the changes to the current theme?</value>
+    <comment>The prompt displayed when the user tries to close the window or navigate away while there are unsaved changes to a theme</comment>
+  </data>
+  <data name="ThemeManagerWindowDarkThemesSectionHeader" xml:space="preserve">
+    <value>Dark themes</value>
+    <comment>The section header text for dark themes</comment>
+  </data>
+  <data name="ThemeManagerWindowLightThemesSectionHeader" xml:space="preserve">
+    <value>Light themes</value>
+    <comment>The section header text for light themes</comment>
+  </data>
+  <data name="ThemeManagerWindowUserProvidedThemesSectionHeader" xml:space="preserve">
+    <value>Custom themes</value>
+    <comment>The section header text for user-provided themes</comment>
+  </data>
+  <data name="ThemeManagerWindowDeletePrompt" xml:space="preserve">
+    <value>Are you sure you want to delete the selected theme?</value>
+    <comment>The prompt displayed when the user deletes a theme</comment>
+  </data>
+  <data name="ContextMenuApplicationNameWindowTitleMenuItem" xml:space="preserve">
+    <value>_Application name</value>
+    <comment>The text for the application name menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuTimeElapsedWindowTitleMenuItem" xml:space="preserve">
+    <value>Time _elapsed</value>
+    <comment>The text for the time elapsed menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuTimeLeftWindowTitleMenuItem" xml:space="preserve">
+    <value>Time _left</value>
+    <comment>The text for the time left menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuTimerTitleWindowTitleMenuItem" xml:space="preserve">
+    <value>Timer _title</value>
+    <comment>The text for the timer title menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuWindowTitleMenuItem" xml:space="preserve">
+    <value>_Window title</value>
+    <comment>The text for the window title menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
 </root>

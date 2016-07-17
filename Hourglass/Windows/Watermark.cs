@@ -12,6 +12,7 @@ namespace Hourglass.Windows
     using System.Windows.Controls.Primitives;
     using System.Windows.Documents;
     using System.Windows.Input;
+    using System.Windows.Media;
 
     /// <summary>
     /// Provides a <see cref="DependencyProperty"/> that allows a watermark to be applied to <see cref="TextBox"/> and
@@ -28,7 +29,17 @@ namespace Hourglass.Windows
             "Hint",
             typeof(object),
             typeof(Watermark),
-            new FrameworkPropertyMetadata(HintPropertyChanged));
+            new FrameworkPropertyMetadata(DependencyPropertyChanged));
+
+        /// <summary>
+        /// A <see cref="DependencyProperty"/> that specifies the foreground of the watermark to be displayed when the
+        /// control has no actual value and no keyboard focus.
+        /// </summary>
+        public static readonly DependencyProperty HintBrushProperty = DependencyProperty.RegisterAttached(
+            "HintBrush",
+            typeof(Brush),
+            typeof(Watermark),
+            new FrameworkPropertyMetadata(DependencyPropertyChanged));
 
         /// <summary>
         /// Returns the value of the <see cref="HintProperty"/>.
@@ -51,13 +62,33 @@ namespace Hourglass.Windows
         }
 
         /// <summary>
-        /// Invoked when the effective value of the <see cref="HintProperty"/> changes.
+        /// Returns the value of the <see cref="HintBrushProperty"/>.
         /// </summary>
-        /// <param name="sender">The <see cref="DependencyObject"/> on which the <see cref="HintProperty"/> has changed
-        /// value.</param>
+        /// <param name="control">A <see cref="Control"/>.</param>
+        /// <returns>The value of the <see cref="HintBrushProperty"/>.</returns>
+        public static Brush GetHintBrush(Control control)
+        {
+            return (Brush)control.GetValue(HintBrushProperty);
+        }
+
+        /// <summary>
+        /// Sets the value of the <see cref="HintBrushProperty"/>.
+        /// </summary>
+        /// <param name="control">A <see cref="Control"/>.</param>
+        /// <param name="value">The value to set.</param>
+        public static void SetHintBrush(Control control, Brush value)
+        {
+            control.SetValue(HintBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Invoked when the effective value of a <see cref="DependencyProperty"/> changes.
+        /// </summary>
+        /// <param name="sender">The <see cref="DependencyObject"/> on which the <see cref="DependencyProperty"/> has
+        /// changed value.</param>
         /// <param name="e">Event data that is issued by any event that tracks changes to the effective value of this
         /// property.</param>
-        private static void HintPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void DependencyPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             if (!(sender is TextBox) && !(sender is ComboBox))
             {
@@ -65,7 +96,16 @@ namespace Hourglass.Windows
             }
 
             Control control = (Control)sender;
+            BindControl(control);
+            UpdateWatermark(control);
+        }
 
+        /// <summary>
+        /// Binds the event handlers for to a <see cref="Control"/>.
+        /// </summary>
+        /// <param name="control">A <see cref="Control"/>.</param>
+        private static void BindControl(Control control)
+        {
             control.Loaded -= ControlLoaded;
             control.Loaded += ControlLoaded;
 
@@ -91,8 +131,6 @@ namespace Hourglass.Windows
                 comboBox.RemoveHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(ComboBoxTextChanged));
                 comboBox.AddHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(ComboBoxTextChanged));
             }
-
-            UpdateWatermark(control);
         }
 
         /// <summary>
@@ -166,7 +204,8 @@ namespace Hourglass.Windows
         /// </summary>
         /// <param name="control">A <see cref="Control"/>.</param>
         /// <param name="hint">The content of the watermark, typically a <see cref="string"/>.</param>
-        private static void AddWatermarkAdorner(Control control, object hint)
+        /// <param name="brush">The foreground of the watermark.</param>
+        private static void AddWatermarkAdorner(Control control, object hint, Brush brush)
         {
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
             if (layer == null)
@@ -174,7 +213,7 @@ namespace Hourglass.Windows
                 return;
             }
 
-            layer.Add(new WatermarkAdorner(control, hint));
+            layer.Add(new WatermarkAdorner(control, hint, brush));
         }
 
         /// <summary>
@@ -207,18 +246,22 @@ namespace Hourglass.Windows
         /// <param name="control">A <see cref="Control"/>.</param>
         private static void UpdateWatermark(Control control)
         {
-            if (!control.IsKeyboardFocused && !HasActualValue(control))
+            object hint = GetHint(control);
+            Brush brush = GetHintBrush(control);
+
+            if (!control.IsKeyboardFocused && !HasActualValue(control) && hint != null && brush != null)
             {
                 WatermarkAdorner watermarkAdorner = GetWatermarkAdorner(control);
-                object hint = GetHint(control);
 
                 if (watermarkAdorner == null)
                 {
-                    AddWatermarkAdorner(control, hint);
+                    AddWatermarkAdorner(control, hint, brush);
                 }
-                else if (!object.Equals(watermarkAdorner.Hint, hint))
+                else
                 {
                     watermarkAdorner.Hint = hint;
+                    watermarkAdorner.Brush = brush;
+                    UpdateAdornerLayer(control);
                 }
             }
             else
@@ -272,6 +315,21 @@ namespace Hourglass.Windows
             }
 
             return adorners.OfType<WatermarkAdorner>().FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Forces the <see cref="AdornerLayer"/> to re-render.
+        /// </summary>
+        /// <param name="control">A <see cref="Control"/>.</param>
+        private static void UpdateAdornerLayer(Control control)
+        {
+            AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
+            if (layer == null)
+            {
+                return;
+            }
+
+            layer.Update();
         }
     }
 }

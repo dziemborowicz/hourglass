@@ -20,7 +20,7 @@
     <Setting Name="UniqueId" Type="System.Guid" Scope="User">
       <Value Profile="(Default)">00000000-0000-0000-0000-000000000000</Value>
     </Setting>
-    <Setting Name="UserProvidedColorIdentifiers" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="UserProvidedThemeInfos" Type="Hourglass.Serialization.ThemeInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="WindowSizeInfo" Type="Hourglass.Serialization.WindowSizeInfo" Scope="User">

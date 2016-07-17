@@ -9,6 +9,7 @@ namespace Hourglass.Windows
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -142,6 +143,11 @@ namespace Hourglass.Windows
         /// The last <see cref="TimerStart"/> used to start a timer in the window.
         /// </summary>
         private TimerStart lastTimerStart = TimerStartManager.Instance.LastTimerStart;
+
+        /// <summary>
+        /// The currently loaded theme.
+        /// </summary>
+        private Theme theme;
 
         /// <summary>
         /// The number of times the flash expiration storyboard has completed since the timer last expired.
@@ -345,6 +351,14 @@ namespace Hourglass.Windows
                 this.lastTimerStart = value;
                 this.OnPropertyChanged("TimerStart");
             }
+        }
+
+        /// <summary>
+        /// Gets the currently loaded theme.
+        /// </summary>
+        public Theme Theme
+        {
+            get { return this.theme; }
         }
 
         /// <summary>
@@ -689,8 +703,6 @@ namespace Hourglass.Windows
         /// </summary>
         private void InitializeResources()
         {
-            this.Title = Properties.Resources.TimerWindowTitle;
-            
             Watermark.SetHint(this.TitleTextBox, Properties.Resources.TimerWindowTitleTextHint);
             Watermark.SetHint(this.TimerTextBox, Properties.Resources.TimerWindowTimerTextHint);
 
@@ -993,6 +1005,9 @@ namespace Hourglass.Windows
             this.Timer.PropertyChanged += this.TimerPropertyChanged;
             this.Options.PropertyChanged += this.TimerOptionsPropertyChanged;
 
+            this.theme = this.Options.Theme;
+            this.theme.PropertyChanged += this.ThemePropertyChanged;
+
             this.UpdateBoundControls();
         }
 
@@ -1004,11 +1019,6 @@ namespace Hourglass.Windows
             switch (this.Mode)
             {
                 case TimerWindowMode.Input:
-                    this.Title = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired && this.WindowState == WindowState.Minimized
-                        ? this.Timer.TimeLeftAsString
-                        : Properties.Resources.TimerWindowTitle;
-
-                    this.ProgressBar.Foreground = this.Options.Color.Brush;
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
                     this.UpdateTaskbarProgress();
 
@@ -1022,18 +1032,15 @@ namespace Hourglass.Windows
 
                     this.Topmost = this.Options.AlwaysOnTop;
 
+                    this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
+                    this.UpdateWindowTitle();
                     return;
 
                 case TimerWindowMode.Status:
-                    this.Title = this.WindowState == WindowState.Minimized
-                        ? this.Timer.TimeLeftAsString
-                        : Properties.Resources.TimerWindowTitle;
-
                     this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
                         ? this.Timer.TimeElapsedAsString
                         : this.Timer.TimeLeftAsString;
-                    this.ProgressBar.Foreground = this.Options.Color.Brush;
                     this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
                     this.UpdateTaskbarProgress();
 
@@ -1047,8 +1054,34 @@ namespace Hourglass.Windows
 
                     this.Topmost = this.Options.AlwaysOnTop;
 
+                    this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
+                    this.UpdateWindowTitle();
                     return;
+            }
+        }
+
+        /// <summary>
+        /// Updates the control properties set by the bound theme.
+        /// </summary>
+        private void UpdateBoundTheme()
+        {
+            this.InnerGrid.Background = this.Theme.BackgroundBrush;
+            this.ProgressBar.Foreground = this.Theme.ProgressBarBrush;
+            this.ProgressBar.Background  = this.Theme.ProgressBackgroundBrush;
+            this.InnerNotificationBorder.BorderBrush = this.Theme.ExpirationFlashBrush;
+            this.OuterNotificationBorder.Background = this.Theme.ExpirationFlashBrush;
+            this.TimerTextBox.Foreground = this.Theme.PrimaryTextBrush;
+            this.TimerTextBox.CaretBrush = this.Theme.PrimaryTextBrush;
+            Watermark.SetHintBrush(this.TimerTextBox, this.Theme.PrimaryHintBrush);
+            this.TitleTextBox.Foreground = this.Theme.SecondaryTextBrush;
+            this.TitleTextBox.CaretBrush = this.Theme.SecondaryTextBrush;
+            Watermark.SetHintBrush(this.TitleTextBox, this.Theme.SecondaryHintBrush);
+            this.TimeExpiredLabel.Foreground = this.Theme.SecondaryTextBrush;
+
+            foreach (Button button in this.ButtonPanel.GetAllVisualChildren().OfType<Button>())
+            {
+                button.Foreground = button.IsMouseOver ? this.Theme.ButtonHoverBrush : this.Theme.ButtonBrush;
             }
         }
 
@@ -1112,6 +1145,37 @@ namespace Hourglass.Windows
             else
             {
                 KeepAwakeManager.Instance.StopKeepAwakeFor(this);
+            }
+        }
+
+        /// <summary>
+        /// Updates the window title.
+        /// </summary>
+        private void UpdateWindowTitle()
+        {
+            switch (this.Options.WindowTitleMode)
+            {
+                case WindowTitleMode.ApplicationName:
+                    this.Title = Properties.Resources.TimerWindowTitle;
+                    break;
+
+                case WindowTitleMode.TimeLeft:
+                    this.Title = this.Timer.State != TimerState.Stopped
+                        ? this.Timer.TimeLeftAsString
+                        : Properties.Resources.TimerWindowTitle;
+                    break;
+
+                case WindowTitleMode.TimeElapsed:
+                    this.Title = this.Timer.State != TimerState.Stopped
+                        ? this.Timer.TimeElapsedAsString
+                        : Properties.Resources.TimerWindowTitle;
+                    break;
+
+                case WindowTitleMode.TimerTitle:
+                    this.Title = !string.IsNullOrWhiteSpace(this.Options.Title)
+                        ? this.Options.Title
+                        : Properties.Resources.TimerWindowTitle;
+                    break;
             }
         }
 
@@ -1218,6 +1282,23 @@ namespace Hourglass.Windows
         /// <param name="sender">The <see cref="TimerOptions"/>.</param>
         /// <param name="e">The event data.</param>
         private void TimerOptionsPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Theme")
+            {
+                this.theme.PropertyChanged -= this.ThemePropertyChanged;
+                this.theme = this.Options.Theme;
+                this.theme.PropertyChanged += this.ThemePropertyChanged;
+            }
+
+            this.UpdateBoundControls();
+        }
+
+        /// <summary>
+        /// Invoked when a <see cref="Theme"/> property value changes.
+        /// </summary>
+        /// <param name="sender">The <see cref="Theme"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void ThemePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             this.UpdateBoundControls();
         }
@@ -1381,6 +1462,28 @@ namespace Hourglass.Windows
         #endregion
 
         #region Private Methods (Window Events)
+
+        /// <summary>
+        /// Invoked when the mouse pointer enters the bounds of a <see cref="Button"/>.
+        /// </summary>
+        /// <param name="sender">A <see cref="Button"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void ButtonMouseEnter(object sender, MouseEventArgs e)
+        {
+            Button button = (Button)sender;
+            button.Foreground = this.Theme.ButtonHoverBrush;
+        }
+
+        /// <summary>
+        /// Invoked when the mouse pointer leaves the bounds of a <see cref="Button"/>.
+        /// </summary>
+        /// <param name="sender">A <see cref="Button"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void ButtonMouseLeave(object sender, MouseEventArgs e)
+        {
+            Button button = (Button)sender;
+            button.Foreground = this.Theme.ButtonBrush;
+        }
 
         /// <summary>
         /// Invoked when a key on the keyboard is pressed in the <see cref="TitleTextBox"/>.

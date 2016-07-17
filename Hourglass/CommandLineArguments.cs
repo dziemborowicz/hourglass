@@ -119,9 +119,9 @@ namespace Hourglass
         public bool ShutDownWhenExpired { get; private set; }
 
         /// <summary>
-        /// Gets the color of the timer progress bar.
+        /// Gets the theme of the timer window.
         /// </summary>
-        public Color Color { get; private set; }
+        public Theme Theme { get; private set; }
 
         /// <summary>
         /// Gets the sound to play when the timer expires, or <c>null</c> if no sound is to be played.
@@ -138,6 +138,11 @@ namespace Hourglass
         /// Gets a value indicating whether all saved timers should be opened when the application starts.
         /// </summary>
         public bool OpenSavedTimers { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating what information to display in the timer window title.
+        /// </summary>
+        public WindowTitleMode WindowTitleMode { get; set; }
 
         /// <summary>
         /// Gets a value that indicates whether the timer window is restored, minimized, or maximized.
@@ -215,9 +220,10 @@ namespace Hourglass
                 PopUpWhenExpired = this.PopUpWhenExpired,
                 CloseWhenExpired = this.CloseWhenExpired,
                 ShutDownWhenExpired = this.ShutDownWhenExpired,
-                Color = this.Color,
+                Theme = this.Theme,
                 Sound = this.Sound,
                 LoopSound = this.LoopSound,
+                WindowTitleMode = this.WindowTitleMode,
                 WindowSize = this.GetWindowSize()
             };
         }
@@ -261,10 +267,11 @@ namespace Hourglass
                 PopUpWhenExpired = options.PopUpWhenExpired,
                 CloseWhenExpired = options.CloseWhenExpired,
                 ShutDownWhenExpired = options.ShutDownWhenExpired,
-                Color = options.Color,
+                Theme = options.Theme,
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
                 OpenSavedTimers = Settings.Default.OpenSavedTimersOnStartup,
+                WindowTitleMode = options.WindowTitleMode,
                 WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
                 RestoreWindowState = windowSize.RestoreWindowState,
                 WindowBounds = windowSize.RestoreBounds
@@ -296,10 +303,11 @@ namespace Hourglass
                 PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
                 CloseWhenExpired = defaultOptions.CloseWhenExpired,
                 ShutDownWhenExpired = defaultOptions.ShutDownWhenExpired,
-                Color = defaultOptions.Color,
+                Theme = defaultOptions.Theme,
                 Sound = defaultOptions.Sound,
                 LoopSound = defaultOptions.LoopSound,
                 OpenSavedTimers = false,
+                WindowTitleMode = WindowTitleMode.ApplicationName,
                 WindowState = defaultOptions.WindowSize.WindowState,
                 RestoreWindowState = defaultOptions.WindowSize.RestoreWindowState,
                 WindowBounds = defaultWindowBoundsWithLocation
@@ -476,17 +484,17 @@ namespace Hourglass
                         argumentsBasedOnFactoryDefaults.ShutDownWhenExpired = shutDownWhenExpired;
                         break;
 
-                    case "--color":
-                    case "-c":
-                        ThrowIfDuplicateSwitch(specifiedSwitches, "--color");
+                    case "--theme":
+                    case "-m":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--theme");
 
-                        Color color = GetColorValue(
+                        Theme theme = GetThemeValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnMostRecentOptions.Color);
+                            argumentsBasedOnMostRecentOptions.Theme);
 
-                        argumentsBasedOnMostRecentOptions.Color = color;
-                        argumentsBasedOnFactoryDefaults.Color = color;
+                        argumentsBasedOnMostRecentOptions.Theme = theme;
+                        argumentsBasedOnFactoryDefaults.Theme = theme;
                         break;
 
                     case "--sound":
@@ -528,17 +536,17 @@ namespace Hourglass
                         argumentsBasedOnFactoryDefaults.OpenSavedTimers = openSavedTimers;
                         break;
 
-                    case "--window-bounds":
-                    case "-b":
-                        ThrowIfDuplicateSwitch(specifiedSwitches, "--window-bounds");
+                    case "--window-title":
+                    case "-i":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--window-title");
 
-                        Rect windowBounds = GetRectValue(
+                        WindowTitleMode windowTitleMode = GetWindowTitleModeValue(
                             arg,
                             remainingArgs,
-                            argumentsBasedOnMostRecentOptions.WindowBounds);
+                            argumentsBasedOnMostRecentOptions.WindowTitleMode);
 
-                        argumentsBasedOnMostRecentOptions.WindowBounds = argumentsBasedOnMostRecentOptions.WindowBounds.Merge(windowBounds);
-                        argumentsBasedOnFactoryDefaults.WindowBounds = argumentsBasedOnFactoryDefaults.WindowBounds.Merge(windowBounds);
+                        argumentsBasedOnMostRecentOptions.WindowTitleMode = windowTitleMode;
+                        argumentsBasedOnFactoryDefaults.WindowTitleMode = windowTitleMode;
                         break;
 
                     case "--window-state":
@@ -552,6 +560,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.WindowState = windowState;
                         argumentsBasedOnFactoryDefaults.WindowState = windowState;
+                        break;
+
+                    case "--window-bounds":
+                    case "-b":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--window-bounds");
+
+                        Rect windowBounds = GetRectValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.WindowBounds);
+
+                        argumentsBasedOnMostRecentOptions.WindowBounds = argumentsBasedOnMostRecentOptions.WindowBounds.Merge(windowBounds);
+                        argumentsBasedOnFactoryDefaults.WindowBounds = argumentsBasedOnFactoryDefaults.WindowBounds.Merge(windowBounds);
                         break;
 
                     case "--use-factory-defaults":
@@ -651,7 +672,7 @@ namespace Hourglass
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "on":
                     return true;
@@ -684,7 +705,7 @@ namespace Hourglass
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "on":
                     return true;
@@ -707,48 +728,41 @@ namespace Hourglass
         }
 
         /// <summary>
-        /// Returns the next <see cref="Color"/> value in <paramref name="remainingArgs"/>, or throws an exception if
+        /// Returns the next <see cref="Theme"/> value in <paramref name="remainingArgs"/>, or throws an exception if
         /// <paramref name="remainingArgs"/> is empty or the next argument is not "last" or a valid representation of a
-        /// <see cref="Color"/>.
+        /// <see cref="Theme"/>.
         /// </summary>
         /// <param name="arg">The name of the argument for which the value is to be returned.</param>
         /// <param name="remainingArgs">The unparsed arguments.</param>
         /// <param name="last">The value of the argument returned when the user specifies "last".</param>
-        /// <returns>The next <see cref="Color"/> value in <paramref name="remainingArgs"/></returns>
+        /// <returns>The next <see cref="Theme"/> value in <paramref name="remainingArgs"/></returns>
         /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
-        /// "last" or a valid representation of a <see cref="Color"/>.</exception>
-        private static Color GetColorValue(string arg, Queue<string> remainingArgs, Color last)
+        /// "last" or a valid representation of a <see cref="Theme"/>.</exception>
+        private static Theme GetThemeValue(string arg, Queue<string> remainingArgs, Theme last)
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "last":
                     return last;
 
                 default:
-                    Color color = ColorManager.Instance.GetColorByName(value, StringComparison.CurrentCultureIgnoreCase);
+                    Theme theme = ThemeManager.Instance.GetThemeByIdentifier(value.ToLowerInvariant()) ??
+                        ThemeManager.Instance.GetThemeByName(value, StringComparison.CurrentCultureIgnoreCase);
 
-                    if (color == null)
+                    if (theme == null)
                     {
-                        try
-                        {
-                            color = new Color(value);
-                            ColorManager.Instance.Add(color);
-                        }
-                        catch
-                        {
-                            string message = string.Format(
-                                Resources.ResourceManager.GetEffectiveProvider(),
-                                Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
-                                arg,
-                                value);
+                        string message = string.Format(
+                            Resources.ResourceManager.GetEffectiveProvider(),
+                            Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                            arg,
+                            value);
 
-                            throw new ParseException(message);
-                        }
+                        throw new ParseException(message);
                     }
 
-                    return color;
+                    return theme;
             }
         }
 
@@ -767,7 +781,7 @@ namespace Hourglass
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "none":
                     return null;
@@ -794,6 +808,49 @@ namespace Hourglass
         }
 
         /// <summary>
+        /// Returns the next <see cref="WindowTitleMode"/> value in <paramref name="remainingArgs"/>, or throws an
+        /// exception if <paramref name="remainingArgs"/> is empty or the next argument is not "app", "left", "elapsed",
+        /// "title", or "last".
+        /// </summary>
+        /// <param name="arg">The name of the argument for which the value is to be returned.</param>
+        /// <param name="remainingArgs">The unparsed arguments.</param>
+        /// <param name="last">The value of the argument returned when the user specifies "last".</param>
+        /// <returns>The next <see cref="WindowTitleMode"/> value in <paramref name="remainingArgs"/>.</returns>
+        /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not
+        /// "app", "left", "elapsed", "title", or "last".</exception>
+        private static WindowTitleMode GetWindowTitleModeValue(string arg, Queue<string> remainingArgs, WindowTitleMode last)
+        {
+            string value = GetRequiredValue(arg, remainingArgs);
+
+            switch (value.ToLowerInvariant())
+            {
+                case "app":
+                    return WindowTitleMode.ApplicationName;
+
+                case "left":
+                    return WindowTitleMode.TimeLeft;
+
+                case "elapsed":
+                    return WindowTitleMode.TimeElapsed;
+
+                case "title":
+                    return WindowTitleMode.TimerTitle;
+
+                case "last":
+                    return last;
+
+                default:
+                    string message = string.Format(
+                        Resources.ResourceManager.GetEffectiveProvider(),
+                        Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                        arg,
+                        value);
+
+                    throw new ParseException(message);
+            }
+        }
+
+        /// <summary>
         /// Returns the next <see cref="WindowState"/> value in <paramref name="remainingArgs"/>, or throws an
         /// exception if <paramref name="remainingArgs"/> is empty or the next argument is not "normal", "maximized",
         /// "minimized", or "last".
@@ -808,7 +865,7 @@ namespace Hourglass
         {
             string value = GetRequiredValue(arg, remainingArgs);
 
-            switch (value)
+            switch (value.ToLowerInvariant())
             {
                 case "normal":
                     return WindowState.Normal;

@@ -37,6 +37,18 @@ namespace Hourglass.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OpenSavedTimersOnStartup {
+            get {
+                return ((bool)(this["OpenSavedTimersOnStartup"]));
+            }
+            set {
+                this["OpenSavedTimersOnStartup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ShowInNotificationArea {
             get {
                 return ((bool)(this["ShowInNotificationArea"]));
@@ -82,12 +94,12 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection UserProvidedColorIdentifiers {
+        public global::Hourglass.Serialization.ThemeInfoList UserProvidedThemeInfos {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["UserProvidedColorIdentifiers"]));
+                return ((global::Hourglass.Serialization.ThemeInfoList)(this["UserProvidedThemeInfos"]));
             }
             set {
-                this["UserProvidedColorIdentifiers"] = value;
+                this["UserProvidedThemeInfos"] = value;
             }
         }
         
@@ -99,18 +111,6 @@ namespace Hourglass.Properties {
             }
             set {
                 this["WindowSizeInfo"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool OpenSavedTimersOnStartup {
-            get {
-                return ((bool)(this["OpenSavedTimersOnStartup"]));
-            }
-            set {
-                this["OpenSavedTimersOnStartup"] = value;
             }
         }
     }

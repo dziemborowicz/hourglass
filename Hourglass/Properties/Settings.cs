@@ -7,7 +7,6 @@
 namespace Hourglass.Properties
 {
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Linq;
 
     using Hourglass.Serialization;
@@ -68,31 +67,20 @@ namespace Hourglass.Properties
         }
 
         /// <summary>
-        /// Gets or sets the collection of the colors defined by the user.
+        /// Gets or sets the collection of the themes defined by the user.
         /// </summary>
-        public IList<Color> UserProvidedColors
+        public IList<Theme> UserProvidedThemes
         {
             get
             {
-                List<Color> userProvidedColors = new List<Color>();
-
-                StringCollection userProvidedColorIdentifiers = this.UserProvidedColorIdentifiers;
-                if (userProvidedColorIdentifiers != null)
-                {
-                    foreach (string identifier in userProvidedColorIdentifiers)
-                    {
-                        userProvidedColors.Add(Color.FromIdentifier(identifier));
-                    }
-                }
-
-                return userProvidedColors;
+                IEnumerable<ThemeInfo> userProvidedThemeInfos = this.UserProvidedThemeInfos ?? new ThemeInfoList();
+                return userProvidedThemeInfos.Select(Theme.FromThemeInfo).ToList();
             }
 
             set
             {
-                StringCollection userProvidedColorIdentifiers = new StringCollection();
-                userProvidedColorIdentifiers.AddRange(value.Select(c => c.Identifier).ToArray());
-                this.UserProvidedColorIdentifiers = userProvidedColorIdentifiers;
+                IEnumerable<ThemeInfo> userProvidedThemeInfos = value.Select(ThemeInfo.FromTheme);
+                this.UserProvidedThemeInfos = new ThemeInfoList(userProvidedThemeInfos);
             }
         }
 

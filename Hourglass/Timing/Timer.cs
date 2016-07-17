@@ -8,7 +8,6 @@ namespace Hourglass.Timing
 {
     using System;
     using System.Globalization;
-    using System.Resources;
 
     using Hourglass.Extensions;
     using Hourglass.Properties;

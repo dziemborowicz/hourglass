@@ -11,7 +11,6 @@ namespace Hourglass.Windows
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
 
@@ -19,10 +18,6 @@ namespace Hourglass.Windows
     using Hourglass.Managers;
     using Hourglass.Properties;
     using Hourglass.Timing;
-
-    using Color = Hourglass.Timing.Color;
-    using ColorDialog = System.Windows.Forms.ColorDialog;
-    using DialogResult = System.Windows.Forms.DialogResult;
 
     /// <summary>
     /// A <see cref="System.Windows.Controls.ContextMenu"/> for the <see cref="TimerWindow"/>.
@@ -107,24 +102,29 @@ namespace Hourglass.Windows
         private MenuItem clearSavedTimersMenuItem;
 
         /// <summary>
-        /// The "Color" <see cref="MenuItem"/>.
+        /// The "Theme" <see cref="MenuItem"/>.
         /// </summary>
-        private MenuItem colorMenuItem;
+        private MenuItem themeMenuItem;
 
         /// <summary>
-        /// The "Color" <see cref="MenuItem"/>s associated with <see cref="Color"/>s.
+        /// The "Light theme" <see cref="MenuItem"/>.
         /// </summary>
-        private IList<MenuItem> selectableColorMenuItems;
+        private MenuItem lightThemeMenuItem;
 
         /// <summary>
-        /// The "Add custom color..." <see cref="MenuItem"/>.
+        /// The "Dark theme" <see cref="MenuItem"/>.
         /// </summary>
-        private MenuItem addCustomColorMenuItem;
+        private MenuItem darkThemeMenuItem;
 
         /// <summary>
-        /// The "Clear custom colors" <see cref="MenuItem"/>.
+        /// The "Manage themes" <see cref="MenuItem"/>.
         /// </summary>
-        private MenuItem clearCustomColorsMenuItem;
+        private MenuItem manageThemesMenuItem;
+
+        /// <summary>
+        /// The "Theme" <see cref="MenuItem"/>s associated with <see cref="Theme"/>s.
+        /// </summary>
+        private IList<MenuItem> selectableThemeMenuItems;
 
         /// <summary>
         /// The "Sound" <see cref="MenuItem"/>.
@@ -165,6 +165,36 @@ namespace Hourglass.Windows
         /// The "Shut down when expired" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem shutDownWhenExpiredMenuItem;
+
+        /// <summary>
+        /// The "Window title" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem windowTitleMenuItem;
+
+        /// <summary>
+        /// The "Application name" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem applicationNameWindowTitleMenuItem;
+
+        /// <summary>
+        /// The "Time left" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem timeLeftWindowTitleMenuItem;
+
+        /// <summary>
+        /// The "Time elapsed" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem timeElapsedWindowTitleMenuItem;
+
+        /// <summary>
+        /// The "Timer title" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem timerTitleWindowTitleMenuItem;
+
+        /// <summary>
+        /// The "Window title" <see cref="MenuItem"/>s associated with <see cref="WindowTitleMode"/>s.
+        /// </summary>
+        private IList<MenuItem> selectableWindowTitleMenuItems;
 
         /// <summary>
         /// The "Close" <see cref="MenuItem"/>.
@@ -221,8 +251,9 @@ namespace Hourglass.Windows
             this.dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             this.dispatcherTimer.Tick += this.DispatcherTimerTick;
 
-            this.selectableColorMenuItems = new List<MenuItem>();
+            this.selectableThemeMenuItems = new List<MenuItem>();
             this.selectableSoundMenuItems = new List<MenuItem>();
+            this.selectableWindowTitleMenuItems = new List<MenuItem>();
 
             // Build the menu
             this.BuildMenu();
@@ -242,7 +273,7 @@ namespace Hourglass.Windows
             // Update dynamic items
             this.UpdateRecentInputsMenuItem();
             this.UpdateSavedTimersMenuItem();
-            this.UpdateColorMenuItem();
+            this.UpdateThemeMenuItem();
             this.UpdateSoundMenuItem();
 
             // Update binding
@@ -326,11 +357,27 @@ namespace Hourglass.Windows
                 this.closeWhenExpiredMenuItem.IsEnabled = false;
             }
 
-            // Color
-            foreach (MenuItem menuItem in this.selectableColorMenuItems)
+            // Theme
+            foreach (MenuItem menuItem in this.selectableThemeMenuItems)
             {
-                menuItem.IsChecked = object.Equals(menuItem.Tag, this.timerWindow.Options.Color);
+                Theme menuItemTheme = (Theme)menuItem.Tag;
+                menuItem.IsChecked = menuItemTheme == this.timerWindow.Options.Theme;
+                if (this.timerWindow.Options.Theme.Type == ThemeType.UserProvided)
+                {
+                    menuItem.Visibility = menuItemTheme.Type == ThemeType.BuiltInLight || menuItemTheme.Type == ThemeType.UserProvided
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+                }
+                else
+                {
+                    menuItem.Visibility = menuItemTheme.Type == this.timerWindow.Options.Theme.Type || menuItemTheme.Type == ThemeType.UserProvided
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+                }
             }
+
+            this.lightThemeMenuItem.IsChecked = this.timerWindow.Options.Theme.Type == ThemeType.BuiltInLight;
+            this.darkThemeMenuItem.IsChecked = this.timerWindow.Options.Theme.Type == ThemeType.BuiltInDark;
 
             // Sound
             foreach (MenuItem menuItem in this.selectableSoundMenuItems)
@@ -361,6 +408,13 @@ namespace Hourglass.Windows
                 this.shutDownWhenExpiredMenuItem.IsChecked = false;
                 this.shutDownWhenExpiredMenuItem.IsEnabled = false;
             }
+
+            // Window title
+            foreach (MenuItem menuItem in this.selectableWindowTitleMenuItems)
+            {
+                WindowTitleMode windowTitleMode = (WindowTitleMode)menuItem.Tag;
+                menuItem.IsChecked = windowTitleMode == this.timerWindow.Options.WindowTitleMode;
+            }
         }
 
         /// <summary>
@@ -373,7 +427,7 @@ namespace Hourglass.Windows
 
             // Full screen
             this.timerWindow.IsFullScreen = this.fullScreenMenuItem.IsChecked;
-            
+
             // Prompt on exit
             this.timerWindow.Options.PromptOnExit = this.promptOnExitMenuItem.IsChecked;
 
@@ -394,10 +448,6 @@ namespace Hourglass.Windows
             {
                 this.timerWindow.Options.CloseWhenExpired = this.closeWhenExpiredMenuItem.IsChecked;
             }
-
-            // Color
-            MenuItem selectedColorMenuItem = this.selectableColorMenuItems.FirstOrDefault(mi => mi.IsChecked);
-            this.timerWindow.Options.Color = selectedColorMenuItem != null ? selectedColorMenuItem.Tag as Color : Color.DefaultColor;
 
             // Sound
             MenuItem selectedSoundMenuItem = this.selectableSoundMenuItems.FirstOrDefault(mi => mi.IsChecked);
@@ -420,6 +470,12 @@ namespace Hourglass.Windows
             {
                 this.timerWindow.Options.ShutDownWhenExpired = this.shutDownWhenExpiredMenuItem.IsChecked;
             }
+
+            // Window title
+            MenuItem selectedWindowTitleMenuItem = this.selectableWindowTitleMenuItems.FirstOrDefault(mi => mi.IsChecked);
+            this.timerWindow.Options.WindowTitleMode = selectedWindowTitleMenuItem != null
+                ? (WindowTitleMode)selectedWindowTitleMenuItem.Tag
+                : WindowTitleMode.ApplicationName;
         }
 
         /// <summary>
@@ -444,6 +500,7 @@ namespace Hourglass.Windows
         {
             this.Items.Clear();
 
+            // New timer
             this.newTimerMenuItem = new MenuItem();
             this.newTimerMenuItem.Header = Properties.Resources.ContextMenuNewTimerMenuItem;
             this.newTimerMenuItem.Click += this.NewTimerMenuItemClick;
@@ -451,24 +508,28 @@ namespace Hourglass.Windows
 
             this.Items.Add(new Separator());
 
+            // Always on top
             this.alwaysOnTopMenuItem = new MenuItem();
             this.alwaysOnTopMenuItem.Header = Properties.Resources.ContextMenuAlwaysOnTopMenuItem;
             this.alwaysOnTopMenuItem.IsCheckable = true;
             this.alwaysOnTopMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.alwaysOnTopMenuItem);
 
+            // Full screen
             this.fullScreenMenuItem = new MenuItem();
             this.fullScreenMenuItem.Header = Properties.Resources.ContextMenuFullScreenMenuItem;
             this.fullScreenMenuItem.IsCheckable = true;
             this.fullScreenMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.fullScreenMenuItem);
 
+            // Prompt on exit
             this.promptOnExitMenuItem = new MenuItem();
             this.promptOnExitMenuItem.Header = Properties.Resources.ContextMenuPromptOnExitMenuItem;
             this.promptOnExitMenuItem.IsCheckable = true;
             this.promptOnExitMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.promptOnExitMenuItem);
 
+            // Show in notification area
             this.showInNotificationAreaMenuItem = new MenuItem();
             this.showInNotificationAreaMenuItem.Header = Properties.Resources.ContextMenuShowInNotificationAreaMenuItem;
             this.showInNotificationAreaMenuItem.IsCheckable = true;
@@ -477,18 +538,21 @@ namespace Hourglass.Windows
 
             this.Items.Add(new Separator());
 
+            // Loop timer
             this.loopTimerMenuItem = new MenuItem();
             this.loopTimerMenuItem.Header = Properties.Resources.ContextMenuLoopTimerMenuItem;
             this.loopTimerMenuItem.IsCheckable = true;
             this.loopTimerMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.loopTimerMenuItem);
 
+            // Pop up when expired
             this.popUpWhenExpiredMenuItem = new MenuItem();
             this.popUpWhenExpiredMenuItem.Header = Properties.Resources.ContextMenuPopUpWhenExpiredMenuItem;
             this.popUpWhenExpiredMenuItem.IsCheckable = true;
             this.popUpWhenExpiredMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.popUpWhenExpiredMenuItem);
 
+            // Close when expired
             this.closeWhenExpiredMenuItem = new MenuItem();
             this.closeWhenExpiredMenuItem.Header = Properties.Resources.ContextMenuCloseWhenExpiredMenuItem;
             this.closeWhenExpiredMenuItem.IsCheckable = true;
@@ -497,20 +561,24 @@ namespace Hourglass.Windows
 
             this.Items.Add(new Separator());
 
+            // Recent inputs
             this.recentInputsMenuItem = new MenuItem();
             this.recentInputsMenuItem.Header = Properties.Resources.ContextMenuRecentInputsMenuItem;
             this.Items.Add(this.recentInputsMenuItem);
 
+            // Saved timers
             this.savedTimersMenuItem = new MenuItem();
             this.savedTimersMenuItem.Header = Properties.Resources.ContextMenuSavedTimersMenuItem;
             this.Items.Add(this.savedTimersMenuItem);
 
             this.Items.Add(new Separator());
 
-            this.colorMenuItem = new MenuItem();
-            this.colorMenuItem.Header = Properties.Resources.ContextMenuColorMenuItem;
-            this.Items.Add(this.colorMenuItem);
+            // Theme
+            this.themeMenuItem = new MenuItem();
+            this.themeMenuItem.Header = Properties.Resources.ContextMenuThemeMenuItem;
+            this.Items.Add(this.themeMenuItem);
 
+            // Sound
             this.soundMenuItem = new MenuItem();
             this.soundMenuItem.Header = Properties.Resources.ContextMenuSoundMenuItem;
             this.Items.Add(this.soundMenuItem);
@@ -518,36 +586,87 @@ namespace Hourglass.Windows
             Separator separator = new Separator();
             this.Items.Add(separator);
 
+            // Advanced options
             this.advancedOptionsMenuItem = new MenuItem();
             this.advancedOptionsMenuItem.Header = Properties.Resources.ContextMenuAdvancedOptionsMenuItem;
             this.Items.Add(this.advancedOptionsMenuItem);
 
+            // Do not keep computer awake
             this.doNotKeepComputerAwakeMenuItem = new MenuItem();
             this.doNotKeepComputerAwakeMenuItem.Header = Properties.Resources.ContextMenuDoNotKeepComputerAwakeMenuItem;
             this.doNotKeepComputerAwakeMenuItem.IsCheckable = true;
             this.doNotKeepComputerAwakeMenuItem.Click += this.CheckableMenuItemClick;
             this.advancedOptionsMenuItem.Items.Add(this.doNotKeepComputerAwakeMenuItem);
 
+            // Open saved timers on startup
             this.openSavedTimersOnStartupMenuItem = new MenuItem();
             this.openSavedTimersOnStartupMenuItem.Header = Properties.Resources.ContextMenuOpenSavedTimersOnStartupMenuItem;
             this.openSavedTimersOnStartupMenuItem.IsCheckable = true;
             this.openSavedTimersOnStartupMenuItem.Click += this.CheckableMenuItemClick;
             this.advancedOptionsMenuItem.Items.Add(this.openSavedTimersOnStartupMenuItem);
 
+            // Show time elapsed
             this.showTimeElapsedMenuItem = new MenuItem();
             this.showTimeElapsedMenuItem.Header = Properties.Resources.ContextMenuShowTimeElapsedMenuItem;
             this.showTimeElapsedMenuItem.IsCheckable = true;
             this.showTimeElapsedMenuItem.Click += this.CheckableMenuItemClick;
             this.advancedOptionsMenuItem.Items.Add(this.showTimeElapsedMenuItem);
 
+            // Shut down when expired
             this.shutDownWhenExpiredMenuItem = new MenuItem();
             this.shutDownWhenExpiredMenuItem.Header = Properties.Resources.ContextMenuShutDownWhenExpiredMenuItem;
             this.shutDownWhenExpiredMenuItem.IsCheckable = true;
             this.shutDownWhenExpiredMenuItem.Click += this.CheckableMenuItemClick;
             this.advancedOptionsMenuItem.Items.Add(this.shutDownWhenExpiredMenuItem);
 
+            // Window title
+            this.windowTitleMenuItem = new MenuItem();
+            this.windowTitleMenuItem.Header = Properties.Resources.ContextMenuWindowTitleMenuItem;
+            this.advancedOptionsMenuItem.Items.Add(this.windowTitleMenuItem);
+
+            // Application name (window title)
+            this.applicationNameWindowTitleMenuItem = new MenuItem();
+            this.applicationNameWindowTitleMenuItem.Header = Properties.Resources.ContextMenuApplicationNameWindowTitleMenuItem;
+            this.applicationNameWindowTitleMenuItem.IsCheckable = true;
+            this.applicationNameWindowTitleMenuItem.Tag = WindowTitleMode.ApplicationName;
+            this.applicationNameWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.applicationNameWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.applicationNameWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.applicationNameWindowTitleMenuItem);
+
+            // Time left (window title)
+            this.timeLeftWindowTitleMenuItem = new MenuItem();
+            this.timeLeftWindowTitleMenuItem.Header = Properties.Resources.ContextMenuTimeLeftWindowTitleMenuItem;
+            this.timeLeftWindowTitleMenuItem.IsCheckable = true;
+            this.timeLeftWindowTitleMenuItem.Tag = WindowTitleMode.TimeLeft;
+            this.timeLeftWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.timeLeftWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.timeLeftWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.timeLeftWindowTitleMenuItem);
+
+            // Time elapsed (window title)
+            this.timeElapsedWindowTitleMenuItem = new MenuItem();
+            this.timeElapsedWindowTitleMenuItem.Header = Properties.Resources.ContextMenuTimeElapsedWindowTitleMenuItem;
+            this.timeElapsedWindowTitleMenuItem.IsCheckable = true;
+            this.timeElapsedWindowTitleMenuItem.Tag = WindowTitleMode.TimeElapsed;
+            this.timeElapsedWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.timeElapsedWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.timeElapsedWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.timeElapsedWindowTitleMenuItem);
+
+            // Timer title (window title)
+            this.timerTitleWindowTitleMenuItem = new MenuItem();
+            this.timerTitleWindowTitleMenuItem.Header = Properties.Resources.ContextMenuTimerTitleWindowTitleMenuItem;
+            this.timerTitleWindowTitleMenuItem.IsCheckable = true;
+            this.timerTitleWindowTitleMenuItem.Tag = WindowTitleMode.TimerTitle;
+            this.timerTitleWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.timerTitleWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.timerTitleWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.timerTitleWindowTitleMenuItem);
+
             this.Items.Add(new Separator());
 
+            // Close
             this.closeMenuItem = new MenuItem();
             this.closeMenuItem.Header = Properties.Resources.ContextMenuCloseMenuItem;
             this.closeMenuItem.Click += this.CloseMenuItemClick;
@@ -752,7 +871,7 @@ namespace Hourglass.Windows
             if (timer.State == TimerState.Expired)
             {
                 Border progress = new Border();
-                progress.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(199, 80, 80));
+                progress.Background = new SolidColorBrush(Color.FromRgb(199, 80, 80));
                 progress.Width = 16;
                 progress.Height = 6;
 
@@ -761,7 +880,7 @@ namespace Hourglass.Windows
             else if (timer.TimeLeftAsPercentage.HasValue)
             {
                 Border progress = new Border();
-                progress.Background = timer.Options.Color.Brush;
+                progress.Background = timer.Options.Theme.ProgressBarBrush;
                 progress.HorizontalAlignment = HorizontalAlignment.Left;
                 progress.Width = timer.TimeLeftAsPercentage.Value / 100.0 * 16.0;
                 progress.Height = 6;
@@ -860,98 +979,106 @@ namespace Hourglass.Windows
 
         #endregion
 
-        #region Private Methods (Color)
+        #region Private Methods (Theme)
 
         /// <summary>
-        /// Updates the <see cref="colorMenuItem"/>.
+        /// Updates the <see cref="themeMenuItem"/>.
         /// </summary>
-        private void UpdateColorMenuItem()
+        private void UpdateThemeMenuItem()
         {
-            this.colorMenuItem.Items.Clear();
-            this.selectableColorMenuItems.Clear();
+            this.themeMenuItem.Items.Clear();
+            this.selectableThemeMenuItems.Clear();
 
-            // Ensure the current timer color is registered
-            if (!this.timerWindow.Options.Color.IsBuiltIn)
+            // Switch between light and dark themes
+            if (this.lightThemeMenuItem == null)
             {
-                ColorManager.Instance.Add(this.timerWindow.Options.Color);
+                this.lightThemeMenuItem = new MenuItem();
+                this.lightThemeMenuItem.Header = Properties.Resources.ContextMenuLightThemeMenuItem;
+                this.lightThemeMenuItem.Tag = ThemeType.BuiltInLight;
+                this.lightThemeMenuItem.Click += this.ThemeTypeMenuItemClick;
             }
 
-            // Colors
-            this.CreateColorMenuItem(Color.DefaultColor);
-            this.CreateColorMenuItemsFromList(ColorManager.Instance.BuiltInColors.Where(c => c != Color.DefaultColor).ToList());
-            this.CreateColorMenuItemsFromList(ColorManager.Instance.UserProvidedColors);
+            this.themeMenuItem.Items.Add(this.lightThemeMenuItem);
 
-            // Custom color actions
-            this.colorMenuItem.Items.Add(new Separator());
-
-            if (this.addCustomColorMenuItem == null)
+            if (this.darkThemeMenuItem == null)
             {
-                this.addCustomColorMenuItem = new MenuItem();
-                this.addCustomColorMenuItem.Header = Properties.Resources.ContextMenuAddCustomColorMenuItem;
-                this.addCustomColorMenuItem.Click += this.AddCustomColorMenuItemClick;
+                this.darkThemeMenuItem = new MenuItem();
+                this.darkThemeMenuItem.Header = Properties.Resources.ContextMenuDarkThemeMenuItem;
+                this.darkThemeMenuItem.Tag = ThemeType.BuiltInDark;
+                this.darkThemeMenuItem.Click += this.ThemeTypeMenuItemClick;
             }
 
-            this.colorMenuItem.Items.Add(this.addCustomColorMenuItem);
+            this.themeMenuItem.Items.Add(this.darkThemeMenuItem);
 
-            if (this.clearCustomColorsMenuItem == null)
+            // Built-in themes
+            this.CreateThemeMenuItemsFromList(ThemeManager.Instance.BuiltInThemes);
+
+            // User-provided themes
+            if (ThemeManager.Instance.UserProvidedThemes.Count > 0)
             {
-                this.clearCustomColorsMenuItem = new MenuItem();
-                this.clearCustomColorsMenuItem.Header = Properties.Resources.ContextMenuClearCustomColorsMenuItem;
-                this.clearCustomColorsMenuItem.Click += this.ClearCustomColorsMenuItemClick;
+                this.CreateThemeMenuItemsFromList(ThemeManager.Instance.UserProvidedThemes);
             }
 
-            this.colorMenuItem.Items.Add(this.clearCustomColorsMenuItem);
+            // Manage themes
+            this.themeMenuItem.Items.Add(new Separator());
+
+            if (this.manageThemesMenuItem == null)
+            {
+                this.manageThemesMenuItem = new MenuItem();
+                this.manageThemesMenuItem.Header = Properties.Resources.ContextMenuManageThemesMenuItem;
+                this.manageThemesMenuItem.Click += this.ManageThemesMenuItemClick;
+            }
+
+            this.themeMenuItem.Items.Add(this.manageThemesMenuItem);
         }
 
         /// <summary>
-        /// Creates a <see cref="MenuItem"/> for a <see cref="Color"/>.
+        /// Creates a <see cref="MenuItem"/> for each <see cref="Theme"/> in the collection.
         /// </summary>
-        /// <param name="color">A <see cref="Color"/>.</param>
-        private void CreateColorMenuItem(Color color)
+        /// <param name="themes">A collection of <see cref="Theme"/>s.</param>
+        private void CreateThemeMenuItemsFromList(IList<Theme> themes)
+        {
+            this.themeMenuItem.Items.Add(new Separator());
+
+            foreach (Theme theme in themes)
+            {
+                this.CreateThemeMenuItem(theme);
+            }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="MenuItem"/> for a <see cref="Theme"/>.
+        /// </summary>
+        /// <param name="theme">A <see cref="Theme"/>.</param>
+        private void CreateThemeMenuItem(Theme theme)
         {
             MenuItem menuItem = new MenuItem();
-            menuItem.Header = this.GetHeaderForColor(color);
-            menuItem.Tag = color;
+            menuItem.Header = this.GetHeaderForTheme(theme);
+            menuItem.Tag = theme;
             menuItem.IsCheckable = true;
-            menuItem.Click += this.ColorMenuItemClick;
+            menuItem.Click += this.ThemeMenuItemClick;
             menuItem.Click += this.CheckableMenuItemClick;
 
-            this.colorMenuItem.Items.Add(menuItem);
-            this.selectableColorMenuItems.Add(menuItem);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="MenuItem"/> for each <see cref="Color"/> in the collection.
-        /// </summary>
-        /// <param name="colors">A collection of <see cref="Color"/>s.</param>
-        private void CreateColorMenuItemsFromList(IList<Color> colors)
-        {
-            if (colors.Count > 0)
-            {
-                this.colorMenuItem.Items.Add(new Separator());
-                foreach (Color color in colors)
-                {
-                    this.CreateColorMenuItem(color);
-                }
-            }
+            this.themeMenuItem.Items.Add(menuItem);
+            this.selectableThemeMenuItems.Add(menuItem);
         }
 
         /// <summary>
         /// Returns an object that can be set for the <see cref="MenuItem.Header"/> of a <see cref="MenuItem"/> that
-        /// displays a <see cref="Color"/>.
+        /// displays a <see cref="Theme"/>.
         /// </summary>
-        /// <param name="color">A <see cref="Color"/>.</param>
+        /// <param name="theme">A <see cref="Theme"/>.</param>
         /// <returns>An object that can be set for the <see cref="MenuItem.Header"/>.</returns>
-        private object GetHeaderForColor(Color color)
+        private object GetHeaderForTheme(Theme theme)
         {
             Border border = new Border();
-            border.Background = color.Brush;
+            border.Background = theme.ProgressBarBrush;
             border.CornerRadius = new CornerRadius(2);
             border.Width = 8;
             border.Height = 8;
 
             TextBlock textBlock = new TextBlock();
-            textBlock.Text = color.Name ?? Properties.Resources.ContextMenuCustomColorMenuItem;
+            textBlock.Text = theme.Name ?? Properties.Resources.ContextMenuUnnamedTheme;
             textBlock.Margin = new Thickness(5, 0, 0, 0);
 
             StackPanel stackPanel = new StackPanel();
@@ -962,50 +1089,59 @@ namespace Hourglass.Windows
         }
 
         /// <summary>
-        /// Invoked when a color <see cref="MenuItem"/> is clicked.
+        /// Invoked when a theme type <see cref="MenuItem"/> is clicked.
         /// </summary>
         /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
         /// <param name="e">The event data.</param>
-        private void ColorMenuItemClick(object sender, RoutedEventArgs e)
+        private void ThemeTypeMenuItemClick(object sender, RoutedEventArgs e)
         {
-            foreach (MenuItem menuItem in this.selectableColorMenuItems)
+            MenuItem clickedMenuItem = (MenuItem)sender;
+            ThemeType type = (ThemeType)clickedMenuItem.Tag;
+
+            if (type == ThemeType.BuiltInDark)
+            {
+                this.timerWindow.Options.Theme = this.timerWindow.Options.Theme.DarkVariant;
+            }
+            else
+            {
+                this.timerWindow.Options.Theme = this.timerWindow.Options.Theme.LightVariant;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when a theme <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void ThemeMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            foreach (MenuItem menuItem in this.selectableThemeMenuItems)
             {
                 menuItem.IsChecked = object.ReferenceEquals(menuItem, sender);
             }
+
+            MenuItem selectedMenuItem = (MenuItem)sender;
+            this.timerWindow.Options.Theme = (Theme)selectedMenuItem.Tag;
         }
 
         /// <summary>
-        /// Invoked when the <see cref="addCustomColorMenuItem"/> is clicked.
+        /// Invoked when the "Manage themes" <see cref="MenuItem"/> is clicked.
         /// </summary>
         /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
         /// <param name="e">The event data.</param>
-        private void AddCustomColorMenuItemClick(object sender, RoutedEventArgs e)
+        private void ManageThemesMenuItemClick(object sender, RoutedEventArgs e)
         {
-            ColorDialog dialog = new ColorDialog();
-            dialog.AnyColor = true;
-            dialog.FullOpen = true;
-            dialog.CustomColors = ColorManager.Instance.AllColors
-                .Where(c => c != Color.DefaultColor)
-                .Select(c => c.ToInt())
-                .ToArray();
-
-            DialogResult result = dialog.ShowDialog();
-            if (result == DialogResult.OK)
+            ThemeManagerWindow window = Application.Current.Windows.OfType<ThemeManagerWindow>().FirstOrDefault();
+            if (window != null)
             {
-                Color color = new Color(dialog.Color.R, dialog.Color.G, dialog.Color.B);
-                ColorManager.Instance.Add(color);
-                this.timerWindow.Options.Color = color;
+                window.SetTimerWindow(this.timerWindow);
+                window.BringToFrontAndActivate();
             }
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="clearCustomColorsMenuItem"/> is clicked.
-        /// </summary>
-        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
-        /// <param name="e">The event data.</param>
-        private void ClearCustomColorsMenuItemClick(object sender, RoutedEventArgs e)
-        {
-            ColorManager.Instance.ClearUserProvidedColors();
+            else
+            {
+                window = new ThemeManagerWindow(this.timerWindow);
+                window.Show();
+            }
         }
 
         #endregion
@@ -1080,6 +1216,23 @@ namespace Hourglass.Windows
         private void SoundMenuItemClick(object sender, RoutedEventArgs e)
         {
             foreach (MenuItem menuItem in this.selectableSoundMenuItems)
+            {
+                menuItem.IsChecked = object.ReferenceEquals(menuItem, sender);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods (Window Title)
+
+        /// <summary>
+        /// Invoked when a window title <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void WindowTitleMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            foreach (MenuItem menuItem in this.selectableWindowTitleMenuItems)
             {
                 menuItem.IsChecked = object.ReferenceEquals(menuItem, sender);
             }
