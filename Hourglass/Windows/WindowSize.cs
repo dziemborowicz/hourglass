@@ -125,7 +125,9 @@ namespace Hourglass.Windows
             }
 
             return new WindowSize(
-                window.RestoreBounds,
+                window.WindowState == WindowState.Normal
+                    ? new Rect(window.Left, window.Top, window.Width, window.Height)
+                    : window.RestoreBounds,
                 window.WindowState,
                 window.RestoreWindowState,
                 window.IsFullScreen);

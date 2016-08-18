@@ -16,11 +16,6 @@ namespace Hourglass.Extensions
     public interface IRestorableWindow
     {
         /// <summary>
-        /// Gets the default size of the window.
-        /// </summary>
-        Size DefaultSize { get; }
-
-        /// <summary>
         /// Gets the <see cref="WindowSize"/> for the window persisted in the settings.
         /// </summary>
         WindowSize PersistedSize { get; }
