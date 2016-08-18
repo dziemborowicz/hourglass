@@ -239,21 +239,6 @@ namespace Hourglass.Windows
         #region Properties
 
         /// <summary>
-        /// Gets the default size of the window.
-        /// </summary>
-        public Size DefaultSize
-        {
-            get
-            {
-                TimerOptions defaultOptions = new TimerOptions();
-
-                return new Size(
-                    defaultOptions.WindowSize.RestoreBounds.Width,
-                    defaultOptions.WindowSize.RestoreBounds.Height);
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="WindowSize"/> for the window persisted in the settings.
         /// </summary>
         public WindowSize PersistedSize

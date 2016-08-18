@@ -164,16 +164,10 @@ namespace Hourglass.Extensions
                     windowSize.IsFullScreen);
             }
 
-            // If the window is restored to a size or position that does not fit on the screen, fallback to center
+            // If the window is restored to a size or position that is not on the screen, center the window
             if (!window.IsOnScreen())
             {
                 window.CenterOnScreen();
-            }
-
-            // If the window still does not fit on the screen, fallback to its default size and state
-            if (!window.IsOnScreen())
-            {
-                window.ResetSizeAndState();
             }
         }
 
@@ -395,6 +389,23 @@ namespace Hourglass.Extensions
         }
 
         /// <summary>
+        /// Returns the <see cref="Point"/> at the center of a <see cref="Rect"/>.
+        /// </summary>
+        /// <param name="rect">A <see cref="Rect"/>.</param>
+        /// <returns>The <see cref="Point"/> at the center of a <see cref="Rect"/>.</returns>
+        private static Point GetCenter(this Rect rect)
+        {
+            if (rect.HasSizeAndLocation())
+            {
+                return new Point(
+                    (int)(rect.X + (rect.Width / 2)),
+                    (int)(rect.Y + (rect.Height / 2)));
+            }
+
+            return rect.Location;
+        }
+
+        /// <summary>
         /// Returns a value indicating whether the <see cref="Rect"/> has a valid location.
         /// </summary>
         /// <param name="rect">A <see cref="Rect"/>.</param>
@@ -425,45 +436,35 @@ namespace Hourglass.Extensions
         }
 
         /// <summary>
-        /// Returns a value indicating whether the size and position of the <see cref="Rect"/> are such that the <see
-        /// cref="Rect"/> is entirely visible on the screen.
+        /// Returns a value indicating whether the size and position of the <see cref="Rect"/> are such that the center
+        /// of the <see cref="Rect"/> is visible on the screen.
         /// </summary>
         /// <param name="rect">A <see cref="Rect"/>.</param>
-        /// <returns>A value indicating whether the size and position of the <see cref="Rect"/> are such that the <see
-        /// cref="Rect"/> is entirely visible on the screen.</returns>
+        /// <returns>A value indicating whether the size and position of the <see cref="Rect"/> are such that the center
+        /// of the <see cref="Rect"/> is visible on the screen.</returns>
         private static bool IsOnScreen(this Rect rect)
         {
-            Rect virtualScreenRect = new Rect(
-                SystemParameters.VirtualScreenLeft,
-                SystemParameters.VirtualScreenTop,
-                SystemParameters.VirtualScreenWidth,
-                SystemParameters.VirtualScreenHeight);
+            if (rect.HasLocation())
+            {
+                Rect virtualScreenRect = new Rect(
+                    SystemParameters.VirtualScreenLeft,
+                    SystemParameters.VirtualScreenTop,
+                    SystemParameters.VirtualScreenWidth,
+                    SystemParameters.VirtualScreenHeight);
 
-            if (rect.HasSizeAndLocation())
-            {
-                return virtualScreenRect.Contains(rect);
+                return virtualScreenRect.Contains(rect.GetCenter());
             }
-            else if (rect.HasSize())
-            {
-                return rect.Width <= virtualScreenRect.Width && rect.Height <= virtualScreenRect.Height;
-            }
-            else if (rect.HasLocation())
-            {
-                return virtualScreenRect.Contains(rect.Location);
-            }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
 
         /// <summary>
-        /// Returns a value indicating whether the size and position of the window are such that the window is entirely
-        /// visible on the screen when in its normal state.
+        /// Returns a value indicating whether the size and position of the window are such that the center of the
+        /// window is visible on the screen when in its normal state.
         /// </summary>
         /// <param name="window">A window.</param>
-        /// <returns>A value indicating whether the size and position of the window are such that the window is entirely
-        /// visible on the screen when in its normal state.</returns>
+        /// <returns>A value indicating whether the size and position of the window are such that the center of the
+        /// window is visible on the screen when in its normal state.</returns>
         private static bool IsOnScreen(this Window window)
         {
             Rect windowRect = window.GetBoundsForNormalState();
@@ -526,28 +527,6 @@ namespace Hourglass.Extensions
 
             // Center the rect as a fallback
             return rect.CenterOnScreen();
-        }
-
-        /// <summary>
-        /// Resizes a window to its default size (or the <see cref="SystemParameters.WorkArea"/> if it is smaller than
-        /// its default size) and state.
-        /// </summary>
-        /// <typeparam name="T">The type of the window.</typeparam>
-        /// <param name="window">A window.</param>
-        private static void ResetSizeAndState<T>(this T window)
-            where T : Window, IRestorableWindow
-        {
-            // Reset state
-            window.IsFullScreen = false;
-            window.WindowState = WindowState.Normal;
-            window.RestoreWindowState = WindowState.Normal;
-
-            // Reset size
-            window.Width = Math.Min(window.DefaultSize.Width, SystemParameters.WorkArea.Width);
-            window.Height = Math.Min(window.DefaultSize.Height, SystemParameters.WorkArea.Height);
-
-            // Center
-            window.CenterOnScreen();
         }
 
         #endregion
