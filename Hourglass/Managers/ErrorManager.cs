@@ -82,7 +82,7 @@ namespace Hourglass.Managers
 
                 // Show an error dialog
                 ErrorDialog errorDialog = new ErrorDialog();
-                errorDialog.ShowDialog(Resources.ErrorManagerUnexpectedError, errorMessage);
+                errorDialog.ShowDialog(Resources.ErrorManagerUnexpectedError, details: errorMessage);
             }
             finally
             {

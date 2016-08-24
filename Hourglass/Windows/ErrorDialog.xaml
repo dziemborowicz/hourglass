@@ -32,12 +32,21 @@
     </Window.Resources>
     <Grid Background="#F9F9F9">
         <StackPanel>
-            <TextBlock x:Name="MessageTextBlock"
+            <TextBlock x:Name="TitleTextBlock"
                        Background="#C75050"
                        FontFamily="Segoe UI Light, Segoe UI"
                        FontSize="20"
                        Foreground="#F5F5F5"
                        Padding="20 20 80 20"/>
+            <Border x:Name="MessageBorder" BorderBrush="#DDDDDD" BorderThickness="0 0 0 1" Visibility="Collapsed">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <TextBox x:Name="MessageTextBox"
+                             Background="{x:Null}"
+                             BorderThickness="0"
+                             IsReadOnly="true"
+                             Margin="20"/>
+                </ScrollViewer>
+            </Border>
             <Border x:Name="DetailsBorder" BorderBrush="#DDDDDD" BorderThickness="0 0 0 1" Visibility="Collapsed">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <TextBox x:Name="DetailsTextBox"
