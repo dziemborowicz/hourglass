@@ -42,13 +42,6 @@ namespace Hourglass.Managers
         public bool IsKeepingSystemAwake { get; private set; }
 
         /// <summary>
-        /// Initializes the class.
-        /// </summary>
-        public override void Initialize()
-        {
-        }
-
-        /// <summary>
         /// Adds the specified object to the set of objects that require that the system be kept awake and starts
         /// keeping the system awake if it was not already being kept awake.
         /// </summary>
