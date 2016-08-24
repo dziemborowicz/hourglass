@@ -1790,6 +1790,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To update Hourglass, visit {0} in your web browser..
+        /// </summary>
+        internal static string TimerWindowCouldNotLaunchWebBrowserErrorMessage {
+            get {
+                return ResourceManager.GetString("TimerWindowCouldNotLaunchWebBrowserErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not launch web browser.
+        /// </summary>
+        internal static string TimerWindowCouldNotLaunchWebBrowserErrorTitle {
+            get {
+                return ResourceManager.GetString("TimerWindowCouldNotLaunchWebBrowserErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New timer: {0} &quot;{1}&quot;.
         /// </summary>
         internal static string TimerWindowNewTimerWithTitleFormatString {

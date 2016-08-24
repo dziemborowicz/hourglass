@@ -26,6 +26,19 @@ namespace Hourglass.Managers
         }
 
         /// <summary>
+        /// Initializes the class.
+        /// </summary>
+        public override void Initialize()
+        {
+            if (Settings.Default.UpgradeRequired)
+            {
+                Settings.Default.Upgrade();
+                Settings.Default.UpgradeRequired = false;
+                Settings.Default.Save();
+            }
+        }
+
+        /// <summary>
         /// Persists the state of the class.
         /// </summary>
         public override void Persist()

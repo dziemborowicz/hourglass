@@ -1413,7 +1413,22 @@ namespace Hourglass.Windows
             Uri updateUri = UpdateManager.Instance.UpdateUri;
             if (updateUri != null && (updateUri.Scheme == Uri.UriSchemeHttp || updateUri.Scheme == Uri.UriSchemeHttps))
             {
-                Process.Start(updateUri.ToString());
+                try
+                {
+                    Process.Start(updateUri.ToString());
+                }
+                catch (Exception ex)
+                {
+                    string message = string.Format(
+                        Properties.Resources.TimerWindowCouldNotLaunchWebBrowserErrorMessage,
+                        updateUri);
+
+                    ErrorDialog dialog = new ErrorDialog();
+                    dialog.ShowDialog(
+                        title: Properties.Resources.TimerWindowCouldNotLaunchWebBrowserErrorTitle,
+                        message: message,
+                        details: ex.ToString());
+                }
             }
         }
 

@@ -1201,4 +1201,12 @@ $</value>
     <value>_Window title</value>
     <comment>The text for the window title menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="TimerWindowCouldNotLaunchWebBrowserErrorMessage" xml:space="preserve">
+    <value>To update Hourglass, visit {0} in your web browser.</value>
+    <comment>The message in the error dialog shown when the web browser could not be launched to open the download page for the latest version of the app</comment>
+  </data>
+  <data name="TimerWindowCouldNotLaunchWebBrowserErrorTitle" xml:space="preserve">
+    <value>Could not launch web browser</value>
+    <comment>The title of the error dialog shown when the web browser could not be launched to open the download page for the latest version of the app</comment>
+  </data>
 </root>

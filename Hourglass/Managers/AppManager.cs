@@ -6,6 +6,8 @@
 
 namespace Hourglass.Managers
 {
+    using System.Linq;
+
     /// <summary>
     /// Manages the app.
     /// </summary>
@@ -22,6 +24,7 @@ namespace Hourglass.Managers
         private static readonly Manager[] Managers = 
         {
             ErrorManager.Instance,
+            SettingsManager.Instance,
             UpdateManager.Instance,
             KeepAwakeManager.Instance,
             WakeUpManager.Instance,
@@ -30,8 +33,7 @@ namespace Hourglass.Managers
             SoundManager.Instance,
             TimerStartManager.Instance,
             TimerOptionsManager.Instance,
-            TimerManager.Instance,
-            SettingsManager.Instance
+            TimerManager.Instance
         };
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace Hourglass.Managers
         /// </summary>
         public override void Persist()
         {
-            foreach (Manager manager in Managers)
+            foreach (Manager manager in Managers.Reverse())
             {
                 manager.Persist();
             }
@@ -77,7 +79,7 @@ namespace Hourglass.Managers
 
             if (disposing)
             {
-                foreach (Manager manager in Managers)
+                foreach (Manager manager in Managers.Reverse())
                 {
                     manager.Dispose();
                 }

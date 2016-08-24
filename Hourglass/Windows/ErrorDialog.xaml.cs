@@ -26,11 +26,16 @@ namespace Hourglass.Windows
         /// <summary>
         /// Opens the window and returns only when the window is closed.
         /// </summary>
-        /// <param name="message">An error message.</param>
-        /// <param name="details">Details of the error. (Optional.)</param>
-        public void ShowDialog(string message, string details = null)
+        /// <param name="title">The title for the error dialog..</param>
+        /// <param name="message">The error message to show. (Optional.)</param>
+        /// <param name="details">Details of the error, such as a call stack. (Optional.)</param>
+        public void ShowDialog(string title, string message = null, string details = null)
         {
-            this.MessageTextBlock.Text = message;
+            this.TitleTextBlock.Text = title;
+
+            this.MessageTextBox.Text = message ?? string.Empty;
+            this.MessageBorder.Visibility = string.IsNullOrEmpty(message) ? Visibility.Collapsed : Visibility.Visible;
+
             this.DetailsTextBox.Text = details ?? string.Empty;
             this.ShowDetailsButton.IsEnabled = !string.IsNullOrEmpty(details);
 
@@ -43,7 +48,7 @@ namespace Hourglass.Windows
         private void InitializeResources()
         {
             this.Title = Properties.Resources.ErrorDialogTitle;
-            this.MessageTextBlock.Text = Properties.Resources.ErrorDialogDefaultMessageText;
+            this.TitleTextBlock.Text = Properties.Resources.ErrorDialogDefaultMessageText;
             this.ShowDetailsButton.Content = Properties.Resources.ErrorDialogShowDetailsButtonContent;
             this.CloseButton.Content = Properties.Resources.ErrorDialogCloseButtonContent;
         }
