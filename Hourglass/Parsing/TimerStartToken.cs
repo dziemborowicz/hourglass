@@ -54,7 +54,11 @@ namespace Hourglass.Parsing
                 return null;
             }
 
-            string preferDateTimePattern = Resources.ResourceManager.GetString("TimerStartTokenUseDateTimeParserPattern", provider);
+			//Parse out leading spaces
+			str = str.TrimStart(' ');
+			str = str.TrimEnd(' ');
+
+			string preferDateTimePattern = Resources.ResourceManager.GetString("TimerStartTokenUseDateTimeParserPattern", provider);
             if (Regex.IsMatch(str, preferDateTimePattern, Parser.RegexOptions))
             {
                 str = Regex.Replace(str, preferDateTimePattern, string.Empty, Parser.RegexOptions);
