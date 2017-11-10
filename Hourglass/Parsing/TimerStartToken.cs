@@ -49,14 +49,12 @@ namespace Hourglass.Parsing
         /// supported representation of a <see cref="TimerStartToken"/>.</returns>
         public static TimerStartToken FromString(string str, IFormatProvider provider)
         {
+            str = str.Trim();
+
             if (string.IsNullOrEmpty(str))
             {
                 return null;
             }
-
-			//Parse out leading spaces
-			str = str.TrimStart(' ');
-			str = str.TrimEnd(' ');
 
 			string preferDateTimePattern = Resources.ResourceManager.GetString("TimerStartTokenUseDateTimeParserPattern", provider);
             if (Regex.IsMatch(str, preferDateTimePattern, Parser.RegexOptions))
