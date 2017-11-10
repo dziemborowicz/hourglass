@@ -56,7 +56,7 @@ namespace Hourglass.Parsing
                 return null;
             }
 
-			string preferDateTimePattern = Resources.ResourceManager.GetString("TimerStartTokenUseDateTimeParserPattern", provider);
+            string preferDateTimePattern = Resources.ResourceManager.GetString("TimerStartTokenUseDateTimeParserPattern", provider);
             if (Regex.IsMatch(str, preferDateTimePattern, Parser.RegexOptions))
             {
                 str = Regex.Replace(str, preferDateTimePattern, string.Empty, Parser.RegexOptions);
@@ -220,7 +220,7 @@ namespace Hourglass.Parsing
 
                 return timerStartToken;
             }
-            
+
             /// <summary>
             /// Parses a string into a <see cref="TimerStartToken"/>.
             /// </summary>
