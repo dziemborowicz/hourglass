@@ -49,6 +49,8 @@ namespace Hourglass.Parsing
         /// supported representation of a <see cref="TimerStartToken"/>.</returns>
         public static TimerStartToken FromString(string str, IFormatProvider provider)
         {
+            str = str.Trim();
+
             if (string.IsNullOrEmpty(str))
             {
                 return null;
@@ -218,7 +220,7 @@ namespace Hourglass.Parsing
 
                 return timerStartToken;
             }
-            
+
             /// <summary>
             /// Parses a string into a <see cref="TimerStartToken"/>.
             /// </summary>
