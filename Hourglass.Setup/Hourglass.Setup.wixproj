@@ -12,6 +12,9 @@
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
   <PropertyGroup>
+    <Win10SDKInstallationFolder>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\Windows\v10.0@InstallationFolder)</Win10SDKInstallationFolder>
+    <Win10SDKProductVersion>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\Windows\v10.0@ProductVersion)</Win10SDKProductVersion>
+    <SignToolPath Condition=" ('$(SignToolPath)'=='') and Exists('$(Win10SDKInstallationFolder)bin\$(Win10SDKProductVersion).0\x86\signtool.exe') ">$(Win10SDKInstallationFolder)bin\$(Win10SDKProductVersion).0\x86\signtool.exe</SignToolPath>
     <Win81SDK>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1@InstallationFolder)</Win81SDK>
     <SignToolPath Condition=" ('$(SignToolPath)'=='') and Exists('$(Win81SDK)\bin\x86\signtool.exe') ">$(Win81SDK)\bin\x86\signtool.exe</SignToolPath>
     <Win8SDK>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.0@InstallationFolder)</Win8SDK>
