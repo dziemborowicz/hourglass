@@ -1161,6 +1161,98 @@ namespace Hourglass.Windows
                         ? this.Options.Title
                         : Properties.Resources.TimerWindowTitle;
                     break;
+
+                case WindowTitleMode.TimeLeftPlusTimerTitle:
+                    if (this.Timer.State != TimerState.Stopped && !string.IsNullOrWhiteSpace(this.Options.Title))
+                    {
+                        this.Title = string.Join(
+                            Properties.Resources.TimerWindowTitleSeparator,
+                            this.Timer.TimeLeftAsString,
+                            this.Options.Title);
+                    }
+                    else if (this.Timer.State != TimerState.Stopped)
+                    {
+                        this.Title = this.Timer.TimeLeftAsString;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(this.Options.Title))
+                    {
+                        this.Title = this.Options.Title;
+                    }
+                    else
+                    {
+                        this.Title = Properties.Resources.TimerWindowTitle;
+                    }
+
+                    break;
+
+                case WindowTitleMode.TimeElapsedPlusTimerTitle:
+                    if (this.Timer.State != TimerState.Stopped && !string.IsNullOrWhiteSpace(this.Options.Title))
+                    {
+                        this.Title = string.Join(
+                            Properties.Resources.TimerWindowTitleSeparator,
+                            this.Timer.TimeElapsedAsString,
+                            this.Options.Title);
+                    }
+                    else if (this.Timer.State != TimerState.Stopped)
+                    {
+                        this.Title = this.Timer.TimeElapsedAsString;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(this.Options.Title))
+                    {
+                        this.Title = this.Options.Title;
+                    }
+                    else
+                    {
+                        this.Title = Properties.Resources.TimerWindowTitle;
+                    }
+
+                    break;
+
+                case WindowTitleMode.TimerTitlePlusTimeLeft:
+                    if (this.Timer.State != TimerState.Stopped && !string.IsNullOrWhiteSpace(this.Options.Title))
+                    {
+                        this.Title = string.Join(
+                            Properties.Resources.TimerWindowTitleSeparator,
+                            this.Options.Title,
+                            this.Timer.TimeLeftAsString);
+                    }
+                    else if (this.Timer.State != TimerState.Stopped)
+                    {
+                        this.Title = this.Timer.TimeLeftAsString;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(this.Options.Title))
+                    {
+                        this.Title = this.Options.Title;
+                    }
+                    else
+                    {
+                        this.Title = Properties.Resources.TimerWindowTitle;
+                    }
+
+                    break;
+
+                case WindowTitleMode.TimerTitlePlusTimeElapsed:
+                    if (this.Timer.State != TimerState.Stopped && !string.IsNullOrWhiteSpace(this.Options.Title))
+                    {
+                        this.Title = string.Join(
+                            Properties.Resources.TimerWindowTitleSeparator,
+                            this.Options.Title,
+                            this.Timer.TimeElapsedAsString);
+                    }
+                    else if (this.Timer.State != TimerState.Stopped)
+                    {
+                        this.Title = this.Timer.TimeElapsedAsString;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(this.Options.Title))
+                    {
+                        this.Title = this.Options.Title;
+                    }
+                    else
+                    {
+                        this.Title = Properties.Resources.TimerWindowTitle;
+                    }
+
+                    break;
             }
         }
 

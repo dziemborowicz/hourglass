@@ -36,7 +36,27 @@ namespace Hourglass.Timing
         /// <summary>
         /// The timer window title is set to show the timer title.
         /// </summary>
-        TimerTitle
+        TimerTitle,
+
+        /// <summary>
+        /// The timer window title is set to show the time left then the timer title.
+        /// </summary>
+        TimeLeftPlusTimerTitle,
+
+        /// <summary>
+        /// The timer window title is set to show the time elapsed then the timer title.
+        /// </summary>
+        TimeElapsedPlusTimerTitle,
+
+        /// <summary>
+        /// The timer window title is set to show the timer title then the time left.
+        /// </summary>
+        TimerTitlePlusTimeLeft,
+
+        /// <summary>
+        /// The timer window title is set to show the timer title then the time elapsed.
+        /// </summary>
+        TimerTitlePlusTimeElapsed
     }
 
     /// <summary>

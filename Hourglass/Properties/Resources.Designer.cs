@@ -19,7 +19,7 @@ namespace Hourglass.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -404,6 +404,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time ela_psed · Timer title.
+        /// </summary>
+        internal static string ContextMenuTimeElapsedPlusTimerTitleWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuTimeElapsedPlusTimerTitleWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time _elapsed.
         /// </summary>
         internal static string ContextMenuTimeElapsedWindowTitleMenuItem {
@@ -413,11 +422,38 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time le_ft · Timer title.
+        /// </summary>
+        internal static string ContextMenuTimeLeftPlusTimerTitleWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuTimeLeftPlusTimerTitleWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time _left.
         /// </summary>
         internal static string ContextMenuTimeLeftWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuTimeLeftWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ti_mer title · Time elapsed.
+        /// </summary>
+        internal static string ContextMenuTimerTitlePlusTimeElapsedWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuTimerTitlePlusTimeElapsedWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T_imer title · Time left.
+        /// </summary>
+        internal static string ContextMenuTimerTitlePlusTimeLeftWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuTimerTitlePlusTimeLeftWindowTitleMenuItem", resourceCulture);
             }
         }
         
@@ -1876,6 +1912,15 @@ namespace Hourglass.Properties {
         internal static string TimerWindowTitle {
             get {
                 return ResourceManager.GetString("TimerWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  · .
+        /// </summary>
+        internal static string TimerWindowTitleSeparator {
+            get {
+                return ResourceManager.GetString("TimerWindowTitleSeparator", resourceCulture);
             }
         }
         

@@ -192,6 +192,26 @@ namespace Hourglass.Windows
         private MenuItem timerTitleWindowTitleMenuItem;
 
         /// <summary>
+        /// The "Timer title + time left" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem timerTitlePlusTimeLeftWindowTitleMenuItem;
+
+        /// <summary>
+        /// The "Timer title + time elapsed" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem timerTitlePlusTimeElapsedWindowTitleMenuItem;
+
+        /// <summary>
+        /// The "Time left + timer title" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem timeLeftPlusTimerTitleWindowTitleMenuItem;
+
+        /// <summary>
+        /// The "Time elapsed + timer title" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem timeElapsedPlusTimerTitleWindowTitleMenuItem;
+
+        /// <summary>
         /// The "Window title" <see cref="MenuItem"/>s associated with <see cref="WindowTitleMode"/>s.
         /// </summary>
         private IList<MenuItem> selectableWindowTitleMenuItems;
@@ -634,6 +654,8 @@ namespace Hourglass.Windows
             this.windowTitleMenuItem.Items.Add(this.applicationNameWindowTitleMenuItem);
             this.selectableWindowTitleMenuItems.Add(this.applicationNameWindowTitleMenuItem);
 
+            this.windowTitleMenuItem.Items.Add(new Separator());
+
             // Time left (window title)
             this.timeLeftWindowTitleMenuItem = new MenuItem();
             this.timeLeftWindowTitleMenuItem.Header = Properties.Resources.ContextMenuTimeLeftWindowTitleMenuItem;
@@ -663,6 +685,50 @@ namespace Hourglass.Windows
             this.timerTitleWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
             this.windowTitleMenuItem.Items.Add(this.timerTitleWindowTitleMenuItem);
             this.selectableWindowTitleMenuItems.Add(this.timerTitleWindowTitleMenuItem);
+
+            this.windowTitleMenuItem.Items.Add(new Separator());
+
+            // Time left + timer title (window title)
+            this.timeLeftPlusTimerTitleWindowTitleMenuItem = new MenuItem();
+            this.timeLeftPlusTimerTitleWindowTitleMenuItem.Header = Properties.Resources.ContextMenuTimeLeftPlusTimerTitleWindowTitleMenuItem;
+            this.timeLeftPlusTimerTitleWindowTitleMenuItem.IsCheckable = true;
+            this.timeLeftPlusTimerTitleWindowTitleMenuItem.Tag = WindowTitleMode.TimeLeftPlusTimerTitle;
+            this.timeLeftPlusTimerTitleWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.timeLeftPlusTimerTitleWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.timeLeftPlusTimerTitleWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.timeLeftPlusTimerTitleWindowTitleMenuItem);
+
+            // Time elapsed + timer title (window title)
+            this.timeElapsedPlusTimerTitleWindowTitleMenuItem = new MenuItem();
+            this.timeElapsedPlusTimerTitleWindowTitleMenuItem.Header = Properties.Resources.ContextMenuTimeElapsedPlusTimerTitleWindowTitleMenuItem;
+            this.timeElapsedPlusTimerTitleWindowTitleMenuItem.IsCheckable = true;
+            this.timeElapsedPlusTimerTitleWindowTitleMenuItem.Tag = WindowTitleMode.TimeElapsedPlusTimerTitle;
+            this.timeElapsedPlusTimerTitleWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.timeElapsedPlusTimerTitleWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.timeElapsedPlusTimerTitleWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.timeElapsedPlusTimerTitleWindowTitleMenuItem);
+
+            this.windowTitleMenuItem.Items.Add(new Separator());
+
+            // Timer title + time left (window title)
+            this.timerTitlePlusTimeLeftWindowTitleMenuItem = new MenuItem();
+            this.timerTitlePlusTimeLeftWindowTitleMenuItem.Header = Properties.Resources.ContextMenuTimerTitlePlusTimeLeftWindowTitleMenuItem;
+            this.timerTitlePlusTimeLeftWindowTitleMenuItem.IsCheckable = true;
+            this.timerTitlePlusTimeLeftWindowTitleMenuItem.Tag = WindowTitleMode.TimerTitlePlusTimeLeft;
+            this.timerTitlePlusTimeLeftWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.timerTitlePlusTimeLeftWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.timerTitlePlusTimeLeftWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.timerTitlePlusTimeLeftWindowTitleMenuItem);
+
+            // Timer title + time elapsed (window title)
+            this.timerTitlePlusTimeElapsedWindowTitleMenuItem = new MenuItem();
+            this.timerTitlePlusTimeElapsedWindowTitleMenuItem.Header = Properties.Resources.ContextMenuTimerTitlePlusTimeElapsedWindowTitleMenuItem;
+            this.timerTitlePlusTimeElapsedWindowTitleMenuItem.IsCheckable = true;
+            this.timerTitlePlusTimeElapsedWindowTitleMenuItem.Tag = WindowTitleMode.TimerTitlePlusTimeElapsed;
+            this.timerTitlePlusTimeElapsedWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.timerTitlePlusTimeElapsedWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.timerTitlePlusTimeElapsedWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.timerTitlePlusTimeElapsedWindowTitleMenuItem);
 
             this.Items.Add(new Separator());
 
