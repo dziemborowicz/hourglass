@@ -14,7 +14,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Chris Dziemborowicz")]
 [assembly: AssemblyProduct("Hourglass")]
-[assembly: AssemblyCopyright("Copyright © 2016 Chris Dziemborowicz")]
+[assembly: AssemblyCopyright("Copyright © 2017 Chris Dziemborowicz")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.8.0.0")]
