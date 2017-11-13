@@ -1209,4 +1209,24 @@ $</value>
     <value>Could not launch web browser</value>
     <comment>The title of the error dialog shown when the web browser could not be launched to open the download page for the latest version of the app</comment>
   </data>
+  <data name="ContextMenuTimeElapsedPlusTimerTitleWindowTitleMenuItem" xml:space="preserve">
+    <value>Time ela_psed · Timer title</value>
+    <comment>The text for the time elapsed plus timer title menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuTimeLeftPlusTimerTitleWindowTitleMenuItem" xml:space="preserve">
+    <value>Time le_ft · Timer title</value>
+    <comment>The text for the time left plus timer title menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuTimerTitlePlusTimeElapsedWindowTitleMenuItem" xml:space="preserve">
+    <value>Ti_mer title · Time elapsed</value>
+    <comment>The text for the timer title plus time elapsed menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuTimerTitlePlusTimeLeftWindowTitleMenuItem" xml:space="preserve">
+    <value>T_imer title · Time left</value>
+    <comment>The text for the timer title plus time left menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerWindowTitleSeparator" xml:space="preserve">
+    <value> · </value>
+    <comment>The separator for parts of the window title for the timer window</comment>
+  </data>
 </root>

@@ -152,9 +152,16 @@ Options:
         The options are:
 
             app             Application name
+
             left            Time remaining
             elapsed         Time elapsed
             title           Timer title
+
+            left+title      Time remaining · Timer title
+            elapsed+title   Time elapsed · Timer title
+
+            title+left      Timer title · Time remaining
+            title+elapsed   Timer title · Time elapsed
 
         Required        no
         Default value   last

@@ -836,6 +836,18 @@ namespace Hourglass
                 case "title":
                     return WindowTitleMode.TimerTitle;
 
+                case "left+title":
+                    return WindowTitleMode.TimeLeftPlusTimerTitle;
+
+                case "elapsed+title":
+                    return WindowTitleMode.TimeElapsedPlusTimerTitle;
+
+                case "title+left":
+                    return WindowTitleMode.TimerTitlePlusTimeLeft;
+
+                case "title+elapsed":
+                    return WindowTitleMode.TimerTitlePlusTimeElapsed;
+
                 case "last":
                     return last;
 

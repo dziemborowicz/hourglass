@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
-    <Bundle Name="Hourglass" Version="1.8.0.0" Manufacturer="Chris Dziemborowicz" UpgradeCode="f1d002c9-cfc9-40fb-84af-96e7aec26e0b" IconSourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico">
+    <Bundle Name="Hourglass" Version="1.9.0.0" Manufacturer="Chris Dziemborowicz" UpgradeCode="f1d002c9-cfc9-40fb-84af-96e7aec26e0b" IconSourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico">
         <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
             <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png"/>
         </BootstrapperApplicationRef>
