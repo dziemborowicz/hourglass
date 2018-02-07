@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Hourglass.Test")]
-[assembly: AssemblyCopyright("Copyright © 2017 Chris Dziemborowicz")]
+[assembly: AssemblyCopyright("Copyright © 2018 Chris Dziemborowicz")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
