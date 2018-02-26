@@ -138,6 +138,12 @@ namespace Hourglass.Timing
         /// </summary>
         private WindowSize windowSize;
 
+        /// <summary>
+        /// A value indicating whether the user interface should be locked, preventing the user from taking any action
+        /// until the timer expires.
+        /// </summary>
+        private bool lockInterface;
+
         #endregion
 
         #region Constructors
@@ -165,6 +171,7 @@ namespace Hourglass.Timing
                 WindowState.Normal,
                 WindowState.Normal,
                 false /* isFullScreen */);
+            this.lockInterface = false;
         }
 
         /// <summary>
@@ -510,6 +517,29 @@ namespace Hourglass.Timing
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the user interface should be locked, preventing the user from taking
+        /// any action until the timer expires.
+        /// </summary>
+        public bool LockInterface
+        {
+            get
+            {
+                return this.lockInterface;
+            }
+
+            set
+            {
+                if (this.lockInterface == value)
+                {
+                    return;
+                }
+
+                this.lockInterface = value;
+                this.OnPropertyChanged("LockInterface");
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -563,6 +593,7 @@ namespace Hourglass.Timing
             this.loopSound = options.loopSound;
             this.windowTitleMode = options.windowTitleMode;
             this.windowSize = WindowSize.FromWindowSize(options.WindowSize);
+            this.lockInterface = options.lockInterface;
 
             this.OnPropertyChanged(
                 "Title",
@@ -578,7 +609,8 @@ namespace Hourglass.Timing
                 "Sound",
                 "LoopSound",
                 "WindowTitleMode",
-                "WindowSize");
+                "WindowSize",
+                "LockInterface");
         }
 
         /// <summary>
@@ -606,6 +638,7 @@ namespace Hourglass.Timing
             this.loopSound = info.LoopSound;
             this.windowTitleMode = info.WindowTitleMode;
             this.windowSize = WindowSize.FromWindowSizeInfo(info.WindowSize);
+            this.lockInterface = info.LockInterface;
 
             this.OnPropertyChanged(
                 "Title",
@@ -621,7 +654,8 @@ namespace Hourglass.Timing
                 "Sound",
                 "LoopSound",
                 "WindowTitleMode",
-                "WindowSize");
+                "WindowSize",
+                "LockInterface");
         }
 
         /// <summary>
@@ -645,7 +679,8 @@ namespace Hourglass.Timing
                 SoundIdentifier = this.sound?.Identifier,
                 LoopSound = this.loopSound,
                 WindowTitleMode = this.windowTitleMode,
-                WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize)
+                WindowSize = WindowSizeInfo.FromWindowSize(this.windowSize),
+                LockInterface = this.lockInterface
             };
         }
 

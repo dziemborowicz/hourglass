@@ -90,7 +90,7 @@ namespace Hourglass.Parsing
             endTime = endTime.AddMonths(this.Months);
             endTime = endTime.AddYears(this.Years);
 
-            if (endTime <= startTime)
+            if (endTime < startTime)
             {
                 throw new InvalidOperationException();
             }

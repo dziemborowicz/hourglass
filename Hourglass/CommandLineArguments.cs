@@ -159,6 +159,12 @@ namespace Hourglass
         /// </summary>
         public Rect WindowBounds { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether the user interface should be locked, preventing the user from taking any
+        /// action until the timer expires.
+        /// </summary>
+        public bool LockInterface { get; private set; }
+
         #endregion
 
         #region Public Methods
@@ -224,7 +230,8 @@ namespace Hourglass
                 Sound = this.Sound,
                 LoopSound = this.LoopSound,
                 WindowTitleMode = this.WindowTitleMode,
-                WindowSize = this.GetWindowSize()
+                WindowSize = this.GetWindowSize(),
+                LockInterface = this.LockInterface
             };
         }
 
@@ -274,7 +281,8 @@ namespace Hourglass
                 WindowTitleMode = options.WindowTitleMode,
                 WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
                 RestoreWindowState = windowSize.RestoreWindowState,
-                WindowBounds = windowSize.RestoreBounds
+                WindowBounds = windowSize.RestoreBounds,
+                LockInterface = options.LockInterface
             };
         }
 
@@ -310,7 +318,8 @@ namespace Hourglass
                 WindowTitleMode = WindowTitleMode.ApplicationName,
                 WindowState = defaultOptions.WindowSize.WindowState,
                 RestoreWindowState = defaultOptions.WindowSize.RestoreWindowState,
-                WindowBounds = defaultWindowBoundsWithLocation
+                WindowBounds = defaultWindowBoundsWithLocation,
+                LockInterface = defaultOptions.LockInterface
             };
         }
 
@@ -573,6 +582,18 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.WindowBounds = argumentsBasedOnMostRecentOptions.WindowBounds.Merge(windowBounds);
                         argumentsBasedOnFactoryDefaults.WindowBounds = argumentsBasedOnFactoryDefaults.WindowBounds.Merge(windowBounds);
+                        break;
+
+                    case "--lock-interface":
+                    case "-z":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--lock-interface");
+
+                        bool lockInterface = GetBoolValue(
+                            arg,
+                            remainingArgs);
+
+                        argumentsBasedOnMostRecentOptions.LockInterface = lockInterface;
+                        argumentsBasedOnFactoryDefaults.LockInterface = lockInterface;
                         break;
 
                     case "--use-factory-defaults":

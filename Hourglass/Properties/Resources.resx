@@ -1229,4 +1229,8 @@ $</value>
     <value> · </value>
     <comment>The separator for parts of the window title for the timer window</comment>
   </data>
+  <data name="TimerStartZero" xml:space="preserve">
+    <value>0 seconds</value>
+    <comment>The zero-length value for a timer</comment>
+  </data>
 </root>

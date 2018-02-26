@@ -75,14 +75,23 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Gets the zero-length <see cref="TimerStart"/> object.
+        /// </summary>
+        public static TimerStart Zero
+        {
+            get { return TimerStart.FromString(Resources.TimerStartZero); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the <see cref="TimerStart"/> can be used to start a timer now.
         /// </summary>
         public bool IsCurrent
         {
             get
             {
+                DateTime now = DateTime.Now;
                 DateTime endTime;
-                return this.timerStartToken.TryGetEndTime(DateTime.Now, out endTime) && endTime > DateTime.Now;
+                return this.timerStartToken.TryGetEndTime(now, out endTime) && endTime >= now;
             }
         }
 

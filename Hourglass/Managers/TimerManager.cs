@@ -84,6 +84,7 @@ namespace Hourglass.Managers
         {
             Settings.Default.Timers = this.timers
                 .Where(t => t.State != TimerState.Stopped && t.State != TimerState.Expired)
+                .Where(t => !t.Options.LockInterface)
                 .Take(MaxSavedTimers)
                 .ToList();
         }

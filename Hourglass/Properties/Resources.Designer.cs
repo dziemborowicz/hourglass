@@ -1718,6 +1718,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 0 seconds.
+        /// </summary>
+        internal static string TimerStartZero {
+            get {
+                return ResourceManager.GetString("TimerStartZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stopped.
         /// </summary>
         internal static string TimerStoppedFormatString {
