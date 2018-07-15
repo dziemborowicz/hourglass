@@ -88,6 +88,12 @@ namespace Hourglass.Serialization
         public WindowSizeInfo WindowSize { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the user interface should be locked, preventing the user from taking
+        /// any action until the timer expires.
+        /// </summary>
+        public bool LockInterface { get; set; }
+
+        /// <summary>
         /// Returns a <see cref="TimerOptionsInfo"/> for the specified <see cref="TimerOptions"/>.
         /// </summary>
         /// <param name="options">A <see cref="TimerOptions"/>.</param>

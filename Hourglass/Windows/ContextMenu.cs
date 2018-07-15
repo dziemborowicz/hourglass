@@ -290,6 +290,13 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void WindowContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
+            // Do not show the context menu if the user interface is locked
+            if (this.timerWindow.Options.LockInterface)
+            {
+                e.Handled = true;
+                return;
+            }
+
             // Update dynamic items
             this.UpdateRecentInputsMenuItem();
             this.UpdateSavedTimersMenuItem();

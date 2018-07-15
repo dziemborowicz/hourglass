@@ -191,6 +191,21 @@ Options:
         Default value   last
         Alias           -b
 
+  --lock-interface on|off
+        Prevents the user from starting, pausing, resetting, or stopping the
+        timer, changing the timer options, or closing the timer window until the
+        timer expires.
+
+        This option is never remembered. It must be specified as a command-line
+        argument each time the timer is started.
+
+        Timers that are started with this option turned on never appear in the
+        "Saved timers" list.
+
+        Required        no
+        Default value   off
+        Alias           -z
+
   --use-factory-defaults
         If specified, any options that are not explicitly set with another
         switch are set to their factory default setting rather than the last
@@ -214,6 +229,7 @@ Options:
             --open-saved-timers             off
             --window-state                  normal
             --window-bounds                 auto,auto,350,150
+            --lock-interface                off
 
         Required        no
         Alias           -d
