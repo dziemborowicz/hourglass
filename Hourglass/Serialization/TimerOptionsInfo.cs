@@ -30,6 +30,12 @@ namespace Hourglass.Serialization
         public bool PromptOnExit { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to show progress in taskbar
+        /// running.
+        /// </summary>
+        public bool ShowProgressInTaskbar { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to keep the computer awake while the timer is running.
         /// </summary>
         public bool DoNotKeepComputerAwake { get; set; }

@@ -368,6 +368,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show progress in taskbar.
+        /// </summary>
+        internal static string ContextMenuShowProgressInTaskbarMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuShowProgressInTaskbarMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Show time elapsed instead of time left.
         /// </summary>
         internal static string ContextMenuShowTimeElapsedMenuItem {

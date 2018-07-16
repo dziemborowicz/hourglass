@@ -54,6 +54,13 @@ Options:
         Default value   last
         Alias           -o
 
+  --show-progress-in-taskbar on|off|last
+        Shows progress in taskbar.
+
+        Required        no
+        Default value   last
+        Alias           -y
+
   --do-not-keep-awake on|off|last
         Do not keep the computer awake while the timer is running.
 
@@ -220,6 +227,7 @@ Options:
             --show-in-notification-area     off
             --show-time-elapsed             off
             --loop-timer                    off
+            --show-progress-in-taskbar      on
             --pop-up-when-expired           on
             --close-when-expired            off
             --shut-down-when-expired        off
