@@ -1235,6 +1235,6 @@ $</value>
   </data>
   <data name="ContextMenuShowProgressInTaskbarMenuItem" xml:space="preserve">
     <value>Show progress in taskbar</value>
-    <comment>The text for show progress in taskbar menu item</comment>
+    <comment>The text for the show progress in taskbar menu item</comment>
   </data>
 </root>

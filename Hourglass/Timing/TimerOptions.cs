@@ -82,7 +82,7 @@ namespace Hourglass.Timing
         private bool promptOnExit;
 
         /// <summary>
-        /// A value indicating whether to show progress in taskbar
+        /// A value indicating whether to show progress in the taskbar.
         /// </summary>
         private bool showProgressInTaskbar;
 
@@ -280,8 +280,7 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show progress in taskbar
-        /// running.
+        /// Gets or sets a value indicating whether to show progress in the taskbar.
         /// </summary>
         public bool ShowProgressInTaskbar
         {

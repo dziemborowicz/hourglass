@@ -82,7 +82,7 @@ namespace Hourglass
         public bool PromptOnExit { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether to show progress in taskbar
+        /// Gets a value indicating whether to show progress in the taskbar.
         /// </summary>
         public bool ShowProgressInTaskbar { get; private set; }
 

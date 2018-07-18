@@ -52,14 +52,14 @@ namespace Hourglass.Windows
         private MenuItem fullScreenMenuItem;
 
         /// <summary>
-        /// The "Show progress in taskbar" <see cref="MenuItem"/>.
-        /// </summary>
-        private MenuItem showProgressInTaskbarMenuItem;
-
-        /// <summary>
         /// The "Prompt on exit" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem promptOnExitMenuItem;
+
+        /// <summary>
+        /// The "Show progress in taskbar" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem showProgressInTaskbarMenuItem;
 
         /// <summary>
         /// The "Show in notification area" <see cref="MenuItem"/>.
@@ -359,7 +359,7 @@ namespace Hourglass.Windows
             // Prompt on exit
             this.promptOnExitMenuItem.IsChecked = this.timerWindow.Options.PromptOnExit;
 
-            // Show in taskbar
+            // Show progress in taskbar
             this.showProgressInTaskbarMenuItem.IsChecked = this.timerWindow.Options.ShowProgressInTaskbar;
 
             // Show in notification area
@@ -466,7 +466,7 @@ namespace Hourglass.Windows
             // Prompt on exit
             this.timerWindow.Options.PromptOnExit = this.promptOnExitMenuItem.IsChecked;
 
-            // Show in taskbar
+            // Show progress in taskbar
             this.timerWindow.Options.ShowProgressInTaskbar = this.showProgressInTaskbarMenuItem.IsChecked;
 
             // Show in notification area
@@ -567,6 +567,7 @@ namespace Hourglass.Windows
             this.promptOnExitMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.promptOnExitMenuItem);
 
+            // Show progress in taskbar
             this.showProgressInTaskbarMenuItem = new MenuItem();
             this.showProgressInTaskbarMenuItem.Header = Properties.Resources.ContextMenuShowProgressInTaskbarMenuItem;
             this.showProgressInTaskbarMenuItem.IsCheckable = true;

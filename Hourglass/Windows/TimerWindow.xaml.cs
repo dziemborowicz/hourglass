@@ -1138,10 +1138,10 @@ namespace Hourglass.Windows
         {
             if (!this.Options.ShowProgressInTaskbar)
             {
-                if (this.TaskbarItemInfo.ProgressState != TaskbarItemProgressState.None)
-                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
+                this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
                 return;
             }
+
             switch (this.Timer.State)
             {
                 case TimerState.Stopped:

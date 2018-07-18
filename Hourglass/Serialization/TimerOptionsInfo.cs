@@ -30,8 +30,7 @@ namespace Hourglass.Serialization
         public bool PromptOnExit { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show progress in taskbar
-        /// running.
+        /// Gets or sets a value indicating whether to show progress in the taskbar.
         /// </summary>
         public bool ShowProgressInTaskbar { get; set; }
 
