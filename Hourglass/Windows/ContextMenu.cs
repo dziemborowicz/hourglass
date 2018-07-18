@@ -52,6 +52,11 @@ namespace Hourglass.Windows
         private MenuItem fullScreenMenuItem;
 
         /// <summary>
+        /// The "Show progress in taskbar" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem showProgressInTaskbarMenuItem;
+
+        /// <summary>
         /// The "Prompt on exit" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem promptOnExitMenuItem;
@@ -354,6 +359,9 @@ namespace Hourglass.Windows
             // Prompt on exit
             this.promptOnExitMenuItem.IsChecked = this.timerWindow.Options.PromptOnExit;
 
+            // Show in taskbar
+            this.showProgressInTaskbarMenuItem.IsChecked = this.timerWindow.Options.ShowProgressInTaskbar;
+
             // Show in notification area
             this.showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
 
@@ -458,6 +466,9 @@ namespace Hourglass.Windows
             // Prompt on exit
             this.timerWindow.Options.PromptOnExit = this.promptOnExitMenuItem.IsChecked;
 
+            // Show in taskbar
+            this.timerWindow.Options.ShowProgressInTaskbar = this.showProgressInTaskbarMenuItem.IsChecked;
+
             // Show in notification area
             Settings.Default.ShowInNotificationArea = this.showInNotificationAreaMenuItem.IsChecked;
 
@@ -555,6 +566,12 @@ namespace Hourglass.Windows
             this.promptOnExitMenuItem.IsCheckable = true;
             this.promptOnExitMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.promptOnExitMenuItem);
+
+            this.showProgressInTaskbarMenuItem = new MenuItem();
+            this.showProgressInTaskbarMenuItem.Header = Properties.Resources.ContextMenuShowProgressInTaskbarMenuItem;
+            this.showProgressInTaskbarMenuItem.IsCheckable = true;
+            this.showProgressInTaskbarMenuItem.Click += this.CheckableMenuItemClick;
+            this.Items.Add(this.showProgressInTaskbarMenuItem);
 
             // Show in notification area
             this.showInNotificationAreaMenuItem = new MenuItem();

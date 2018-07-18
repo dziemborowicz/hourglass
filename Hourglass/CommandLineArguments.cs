@@ -82,6 +82,11 @@ namespace Hourglass
         public bool PromptOnExit { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether to show progress in taskbar
+        /// </summary>
+        public bool ShowProgressInTaskbar { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether to keep the computer awake while the timer is running.
         /// </summary>
         public bool DoNotKeepComputerAwake { get; private set; }
@@ -220,6 +225,7 @@ namespace Hourglass
                 Title = this.Title,
                 AlwaysOnTop = this.AlwaysOnTop,
                 PromptOnExit = this.PromptOnExit,
+                ShowProgressInTaskbar = this.ShowProgressInTaskbar,
                 DoNotKeepComputerAwake = this.DoNotKeepComputerAwake,
                 ShowTimeElapsed = this.ShowTimeElapsed,
                 LoopTimer = this.LoopTimer,
@@ -267,6 +273,7 @@ namespace Hourglass
                 AlwaysOnTop = options.AlwaysOnTop,
                 IsFullScreen = windowSize.IsFullScreen,
                 PromptOnExit = options.PromptOnExit,
+                ShowProgressInTaskbar = options.ShowProgressInTaskbar,
                 DoNotKeepComputerAwake = options.DoNotKeepComputerAwake,
                 ShowTimeElapsed = options.ShowTimeElapsed,
                 ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
@@ -304,6 +311,7 @@ namespace Hourglass
                 AlwaysOnTop = defaultOptions.AlwaysOnTop,
                 IsFullScreen = defaultOptions.WindowSize.IsFullScreen,
                 PromptOnExit = defaultOptions.PromptOnExit,
+                ShowProgressInTaskbar = defaultOptions.ShowProgressInTaskbar,
                 DoNotKeepComputerAwake = defaultOptions.DoNotKeepComputerAwake,
                 ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
                 ShowInNotificationArea = false,
@@ -401,6 +409,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.PromptOnExit = promptOnExit;
                         argumentsBasedOnFactoryDefaults.PromptOnExit = promptOnExit;
+                        break;
+
+                    case "--show-progress-in-taskbar":
+                    case "-y":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--show-progress-in-taskbar");
+
+                        bool showProgressInTaskbar = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.ShowProgressInTaskbar);
+
+                        argumentsBasedOnMostRecentOptions.ShowProgressInTaskbar = showProgressInTaskbar;
+                        argumentsBasedOnFactoryDefaults.ShowProgressInTaskbar = showProgressInTaskbar;
                         break;
 
                     case "--do-not-keep-awake":
