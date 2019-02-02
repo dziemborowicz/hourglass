@@ -305,6 +305,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _None.
+        /// </summary>
+        internal static string ContextMenuNoWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuNoWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Open all saved timers.
         /// </summary>
         internal static string ContextMenuOpenAllSavedTimersMenuItem {

@@ -19,6 +19,11 @@ namespace Hourglass.Timing
     public enum WindowTitleMode
     {
         /// <summary>
+        /// Hides the timer window title bar.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// The timer window title is set to show the application name.
         /// </summary>
         ApplicationName,

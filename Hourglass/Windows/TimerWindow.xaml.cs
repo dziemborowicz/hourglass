@@ -364,21 +364,7 @@ namespace Hourglass.Windows
                 }
 
                 this.isFullScreen = value;
-
-                if (this.isFullScreen)
-                {
-                    this.WindowStyle = WindowStyle.None;
-                    this.WindowState = WindowState.Normal; // Needed to put the window on top of the taskbar
-                    this.WindowState = WindowState.Maximized;
-                    this.ResizeMode = ResizeMode.NoResize;
-                }
-                else
-                {
-                    this.WindowStyle = WindowStyle.SingleBorderWindow;
-                    this.WindowState = this.restoreWindowState;
-                    this.ResizeMode = ResizeMode.CanResize;
-                }
-
+                this.UpdateWindowStyle();
                 this.OnPropertyChanged("IsFullScreen");
             }
         }
@@ -1048,6 +1034,7 @@ namespace Hourglass.Windows
                     this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
                     this.UpdateWindowTitle();
+                    this.UpdateWindowStyle();
                     return;
 
                 case TimerWindowMode.Status:
@@ -1103,6 +1090,7 @@ namespace Hourglass.Windows
                     this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
                     this.UpdateWindowTitle();
+                    this.UpdateWindowStyle();
                     return;
             }
         }
@@ -1114,7 +1102,7 @@ namespace Hourglass.Windows
         {
             this.InnerGrid.Background = this.Theme.BackgroundBrush;
             this.ProgressBar.Foreground = this.Theme.ProgressBarBrush;
-            this.ProgressBar.Background  = this.Theme.ProgressBackgroundBrush;
+            this.ProgressBar.Background = this.Theme.ProgressBackgroundBrush;
             this.InnerNotificationBorder.BorderBrush = this.Theme.ExpirationFlashBrush;
             this.OuterNotificationBorder.Background = this.Theme.ExpirationFlashBrush;
             this.TimerTextBox.Foreground = this.Theme.PrimaryTextBrush;
@@ -1207,6 +1195,11 @@ namespace Hourglass.Windows
         {
             switch (this.Options.WindowTitleMode)
             {
+                case WindowTitleMode.None:
+                    // Although the title bar is hidden in this mode, the window title is still used for the Taskbar.
+                    this.Title = Properties.Resources.TimerWindowTitle;
+                    break;
+
                 case WindowTitleMode.ApplicationName:
                     this.Title = Properties.Resources.TimerWindowTitle;
                     break;
@@ -1320,6 +1313,33 @@ namespace Hourglass.Windows
                     }
 
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Updates the window style.
+        /// </summary>
+        private void UpdateWindowStyle()
+        {
+            if (this.isFullScreen)
+            {
+                this.WindowStyle = WindowStyle.None;
+
+                if (this.WindowState != WindowState.Maximized)
+                {
+                    this.WindowState = WindowState.Normal; // Needed to put the window on top of the taskbar
+                    this.WindowState = WindowState.Maximized;
+                }
+
+                this.ResizeMode = ResizeMode.NoResize;
+            }
+            else
+            {
+                this.WindowStyle = this.Options.WindowTitleMode == WindowTitleMode.None
+                    ? WindowStyle.None
+                    : WindowStyle.SingleBorderWindow;
+                this.WindowState = this.restoreWindowState;
+                this.ResizeMode = ResizeMode.CanResize;
             }
         }
 
@@ -1823,6 +1843,11 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+
             if (e.OriginalSource is Panel)
             {
                 this.CancelOrReset();

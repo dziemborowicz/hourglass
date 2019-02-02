@@ -153,10 +153,12 @@ Options:
         Default value   last
         Alias           -v
 
-  --window-title app|left|elapsed|title|last
+  --window-title none|app|left|elapsed|title|last
         Sets the timer window title.
 
         The options are:
+
+            none            Hides the timer window title bar.
 
             app             Application name
 

@@ -866,6 +866,9 @@ namespace Hourglass
 
             switch (value.ToLowerInvariant())
             {
+                case "none":
+                    return WindowTitleMode.None;
+
                 case "app":
                     return WindowTitleMode.ApplicationName;
 
