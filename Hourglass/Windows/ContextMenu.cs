@@ -177,6 +177,11 @@ namespace Hourglass.Windows
         private MenuItem windowTitleMenuItem;
 
         /// <summary>
+        /// The "None" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem noWindowTitleMenuItem;
+
+        /// <summary>
         /// The "Application name" window title <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem applicationNameWindowTitleMenuItem;
@@ -668,6 +673,16 @@ namespace Hourglass.Windows
             this.windowTitleMenuItem = new MenuItem();
             this.windowTitleMenuItem.Header = Properties.Resources.ContextMenuWindowTitleMenuItem;
             this.advancedOptionsMenuItem.Items.Add(this.windowTitleMenuItem);
+
+            // No window title
+            this.noWindowTitleMenuItem = new MenuItem();
+            this.noWindowTitleMenuItem.Header = Properties.Resources.ContextMenuNoWindowTitleMenuItem;
+            this.noWindowTitleMenuItem.IsCheckable = true;
+            this.noWindowTitleMenuItem.Tag = WindowTitleMode.None;
+            this.noWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.noWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.noWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.noWindowTitleMenuItem);
 
             // Application name (window title)
             this.applicationNameWindowTitleMenuItem = new MenuItem();

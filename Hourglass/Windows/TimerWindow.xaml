@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Hourglass.Windows"
         Width="350" Height="150" MinWidth="250" MinHeight="150"
+        ResizeMode="CanResize"
         Loaded="WindowLoaded" StateChanged="WindowStateChanged" Closing="WindowClosing"
         MouseDown="WindowMouseDown" MouseDoubleClick="WindowMouseDoubleClick">
     <Window.CommandBindings>

@@ -364,17 +364,16 @@ namespace Hourglass.Windows
                 }
 
                 this.isFullScreen = value;
+                this.WindowStyle = GetWindowStyle();
 
                 if (this.isFullScreen)
                 {
-                    this.WindowStyle = WindowStyle.None;
                     this.WindowState = WindowState.Normal; // Needed to put the window on top of the taskbar
                     this.WindowState = WindowState.Maximized;
                     this.ResizeMode = ResizeMode.NoResize;
                 }
                 else
                 {
-                    this.WindowStyle = WindowStyle.SingleBorderWindow;
                     this.WindowState = this.restoreWindowState;
                     this.ResizeMode = ResizeMode.CanResize;
                 }
@@ -1114,7 +1113,7 @@ namespace Hourglass.Windows
         {
             this.InnerGrid.Background = this.Theme.BackgroundBrush;
             this.ProgressBar.Foreground = this.Theme.ProgressBarBrush;
-            this.ProgressBar.Background  = this.Theme.ProgressBackgroundBrush;
+            this.ProgressBar.Background = this.Theme.ProgressBackgroundBrush;
             this.InnerNotificationBorder.BorderBrush = this.Theme.ExpirationFlashBrush;
             this.OuterNotificationBorder.Background = this.Theme.ExpirationFlashBrush;
             this.TimerTextBox.Foreground = this.Theme.PrimaryTextBrush;
@@ -1200,6 +1199,16 @@ namespace Hourglass.Windows
             }
         }
 
+        private WindowStyle GetWindowStyle()
+        {
+            if (this.Options.WindowTitleMode == WindowTitleMode.None || this.isFullScreen)
+            {
+                return WindowStyle.None;
+            }
+
+            return WindowStyle.SingleBorderWindow;
+        }
+
         /// <summary>
         /// Updates the window title.
         /// </summary>
@@ -1207,6 +1216,9 @@ namespace Hourglass.Windows
         {
             switch (this.Options.WindowTitleMode)
             {
+                case WindowTitleMode.None:
+                    break;
+
                 case WindowTitleMode.ApplicationName:
                     this.Title = Properties.Resources.TimerWindowTitle;
                     break;
@@ -1321,6 +1333,8 @@ namespace Hourglass.Windows
 
                     break;
             }
+
+            this.WindowStyle = GetWindowStyle();
         }
 
         /// <summary>
@@ -1823,6 +1837,11 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+
             if (e.OriginalSource is Panel)
             {
                 this.CancelOrReset();

@@ -1181,6 +1181,10 @@ $</value>
     <value>Are you sure you want to delete the selected theme?</value>
     <comment>The prompt displayed when the user deletes a theme</comment>
   </data>
+  <data name="ContextMenuNoWindowTitleMenuItem" xml:space="preserve">
+    <value>_None</value>
+    <comment>The text for the application name menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
   <data name="ContextMenuApplicationNameWindowTitleMenuItem" xml:space="preserve">
     <value>_Application name</value>
     <comment>The text for the application name menu item, where the character following the optional underscore (_) is the access key</comment>
