@@ -1014,6 +1014,18 @@ namespace Hourglass.Windows
             this.UpdateBoundControls();
         }
 
+        private double GetTimerProgress()
+        {
+            if (this.Options.ShowTimeElapsed)
+            {
+                return this.Timer.TimeLeftAsPercentage ?? 0.0;
+            }
+            else
+            {
+                return this.Timer.TimeElapsedAsPercentage ?? 100.0;
+            }
+        }
+
         /// <summary>
         /// Updates the controls bound to timer properties.
         /// </summary>
@@ -1022,7 +1034,7 @@ namespace Hourglass.Windows
             switch (this.Mode)
             {
                 case TimerWindowMode.Input:
-                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
+                    this.ProgressBar.Value = GetTimerProgress();
                     this.UpdateTaskbarProgress();
 
                     // Enable and disable command buttons as required
@@ -1054,7 +1066,7 @@ namespace Hourglass.Windows
                     this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
                         ? this.Timer.TimeElapsedAsString
                         : this.Timer.TimeLeftAsString;
-                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
+                    this.ProgressBar.Value = GetTimerProgress();
                     this.UpdateTaskbarProgress();
 
                     if (this.Options.LockInterface)
