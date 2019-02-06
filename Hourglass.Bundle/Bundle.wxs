@@ -15,7 +15,7 @@
       <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" />
     </BootstrapperApplicationRef>
     <Chain>
-      <PackageGroupRef Id="NetFx40ClientWeb" />
+      <PackageGroupRef Id="NetFx45Web" />
       <MsiPackage Id="HourglassSetup" SourceFile="$(var.Hourglass.Setup.TargetPath)">
         <!-- Pass this selection down to the Hourglass.Setup msi -->
         <MsiProperty Name="APPLICATIONFOLDER" Value="[InstallFolder]" />
