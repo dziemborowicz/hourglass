@@ -40,6 +40,11 @@ namespace Hourglass.Serialization
         public bool DoNotKeepComputerAwake { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to reverse the progress bar (count backwards).
+        /// </summary>
+        public bool ReverseProgressBar { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to show the time elapsed rather than the time left.
         /// </summary>
         public bool ShowTimeElapsed { get; set; }

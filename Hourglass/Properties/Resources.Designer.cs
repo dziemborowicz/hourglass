@@ -359,6 +359,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Reverse progress bar.
+        /// </summary>
+        internal static string ContextMenuReverseProgressBarMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuReverseProgressBarMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sa_ved timers.
         /// </summary>
         internal static string ContextMenuSavedTimersMenuItem {
