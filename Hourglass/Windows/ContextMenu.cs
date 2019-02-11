@@ -162,6 +162,11 @@ namespace Hourglass.Windows
         private MenuItem openSavedTimersOnStartupMenuItem;
 
         /// <summary>
+        /// The "Reverse progress bar" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem reverseProgressBarMenuItem;
+
+        /// <summary>
         /// The "Show time elapsed" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem showTimeElapsedMenuItem;
@@ -434,6 +439,9 @@ namespace Hourglass.Windows
             // Open saved timers on startup
             this.openSavedTimersOnStartupMenuItem.IsChecked = Settings.Default.OpenSavedTimersOnStartup;
 
+            // Reverse progress bar
+            this.reverseProgressBarMenuItem.IsChecked = this.timerWindow.Options.ReverseProgressBar;
+
             // Show time elapsed
             this.showTimeElapsedMenuItem.IsChecked = this.timerWindow.Options.ShowTimeElapsed;
 
@@ -504,6 +512,9 @@ namespace Hourglass.Windows
 
             // Open saved timers on startup
             Settings.Default.OpenSavedTimersOnStartup = this.openSavedTimersOnStartupMenuItem.IsChecked;
+
+            // Reverse progress bar
+            this.timerWindow.Options.ReverseProgressBar = this.reverseProgressBarMenuItem.IsChecked;
 
             // Show time elapsed
             this.timerWindow.Options.ShowTimeElapsed = this.showTimeElapsedMenuItem.IsChecked;
@@ -654,6 +665,13 @@ namespace Hourglass.Windows
             this.openSavedTimersOnStartupMenuItem.IsCheckable = true;
             this.openSavedTimersOnStartupMenuItem.Click += this.CheckableMenuItemClick;
             this.advancedOptionsMenuItem.Items.Add(this.openSavedTimersOnStartupMenuItem);
+
+            // Reverse progress bar
+            this.reverseProgressBarMenuItem = new MenuItem();
+            this.reverseProgressBarMenuItem.Header = Properties.Resources.ContextMenuReverseProgressBarMenuItem;
+            this.reverseProgressBarMenuItem.IsCheckable = true;
+            this.reverseProgressBarMenuItem.Click += this.CheckableMenuItemClick;
+            this.advancedOptionsMenuItem.Items.Add(this.reverseProgressBarMenuItem);
 
             // Show time elapsed
             this.showTimeElapsedMenuItem = new MenuItem();

@@ -75,6 +75,13 @@ Options:
         Default value   last
         Alias           -n
 
+  --reverse-progress-bar on|off|last
+        Reverses the direction of the progress bar, causing it to run backwards.
+
+        Required        no
+        Default value   last
+        Alias           -g
+
   --show-time-elapsed on|off|last
         Shows the time elapsed since the timer was started, rather than the
         time left until the timer expires.

@@ -98,6 +98,11 @@ namespace Hourglass
         public bool ShowInNotificationArea { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether to reverse the progress bar (count backwards).
+        /// </summary>
+        public bool ReverseProgressBar { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether to show the time elapsed rather than the time left.
         /// </summary>
         public bool ShowTimeElapsed { get; private set; }
@@ -227,6 +232,7 @@ namespace Hourglass
                 PromptOnExit = this.PromptOnExit,
                 ShowProgressInTaskbar = this.ShowProgressInTaskbar,
                 DoNotKeepComputerAwake = this.DoNotKeepComputerAwake,
+                ReverseProgressBar = this.ReverseProgressBar,
                 ShowTimeElapsed = this.ShowTimeElapsed,
                 LoopTimer = this.LoopTimer,
                 PopUpWhenExpired = this.PopUpWhenExpired,
@@ -275,6 +281,7 @@ namespace Hourglass
                 PromptOnExit = options.PromptOnExit,
                 ShowProgressInTaskbar = options.ShowProgressInTaskbar,
                 DoNotKeepComputerAwake = options.DoNotKeepComputerAwake,
+                ReverseProgressBar = options.ReverseProgressBar,
                 ShowTimeElapsed = options.ShowTimeElapsed,
                 ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
                 LoopTimer = options.LoopTimer,
@@ -313,6 +320,7 @@ namespace Hourglass
                 PromptOnExit = defaultOptions.PromptOnExit,
                 ShowProgressInTaskbar = defaultOptions.ShowProgressInTaskbar,
                 DoNotKeepComputerAwake = defaultOptions.DoNotKeepComputerAwake,
+                ReverseProgressBar = defaultOptions.ReverseProgressBar,
                 ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
                 ShowInNotificationArea = false,
                 LoopTimer = defaultOptions.LoopTimer,
@@ -435,6 +443,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.DoNotKeepComputerAwake = doNotKeepComputerAwake;
                         argumentsBasedOnFactoryDefaults.DoNotKeepComputerAwake = doNotKeepComputerAwake;
+                        break;
+
+                    case "--reverse-progress-bar":
+                    case "-g":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--reverse-progress-bar");
+
+                        bool reverseProgressBar = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.ReverseProgressBar);
+
+                        argumentsBasedOnMostRecentOptions.ReverseProgressBar = reverseProgressBar;
+                        argumentsBasedOnFactoryDefaults.ReverseProgressBar = reverseProgressBar;
                         break;
 
                     case "--show-time-elapsed":
