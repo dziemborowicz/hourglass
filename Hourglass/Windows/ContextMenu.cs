@@ -1003,12 +1003,22 @@ namespace Hourglass.Windows
 
                 outerBorder.Child = progress;
             }
-            else if (timer.TimeLeftAsPercentage.HasValue)
+            else if (!timer.Options.ReverseProgressBar && timer.TimeLeftAsPercentage.HasValue)
             {
                 Border progress = new Border();
                 progress.Background = timer.Options.Theme.ProgressBarBrush;
                 progress.HorizontalAlignment = HorizontalAlignment.Left;
                 progress.Width = timer.TimeLeftAsPercentage.Value / 100.0 * 16.0;
+                progress.Height = 6;
+
+                outerBorder.Child = progress;
+            }
+            else if (timer.Options.ReverseProgressBar && timer.TimeElapsedAsPercentage.HasValue)
+            {
+                Border progress = new Border();
+                progress.Background = timer.Options.Theme.ProgressBarBrush;
+                progress.HorizontalAlignment = HorizontalAlignment.Left;
+                progress.Width = timer.TimeElapsedAsPercentage.Value / 100.0 * 16.0;
                 progress.Height = 6;
 
                 outerBorder.Child = progress;
