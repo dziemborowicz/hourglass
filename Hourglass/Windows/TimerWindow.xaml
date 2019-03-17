@@ -55,7 +55,7 @@
                         <Condition Binding="{Binding ElementName=UpdateButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=InnerGrid, Path=IsMouseOver}" Value="False"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=ContextMenu.IsOpen}" Value="False"/>
-                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.State}" Value="Running"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Mode}" Value="Status"/>
                         <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value=""/>
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.EnterActions>
