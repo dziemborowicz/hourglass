@@ -1157,7 +1157,7 @@ namespace Hourglass.Windows
                     if (this.Timer.SupportsProgress)
                     {
                         this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
-                        this.TaskbarItemInfo.ProgressValue = (this.Timer.TimeLeftAsPercentage ?? 0.0) / 100.0;
+                        this.TaskbarItemInfo.ProgressValue = GetProgressBarValue() / 100.0;
                     }
                     else
                     {
@@ -1171,7 +1171,7 @@ namespace Hourglass.Windows
                     if (this.Timer.SupportsProgress)
                     {
                         this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Paused;
-                        this.TaskbarItemInfo.ProgressValue = (this.Timer.TimeLeftAsPercentage ?? 0.0) / 100.0;
+                        this.TaskbarItemInfo.ProgressValue = GetProgressBarValue() / 100.0;
                     }
                     else
                     {
