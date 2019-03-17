@@ -586,6 +586,7 @@ namespace Hourglass.Windows
         {
             this.Mode = TimerWindowMode.Input;
 
+            this.TitleTextBox.Text = this.Timer.Options.Title;
             this.TimerTextBox.Text = this.LastTimerStart != null ? this.LastTimerStart.ToString() : string.Empty;
 
             textBoxToFocus = textBoxToFocus ?? this.TimerTextBox;
@@ -1054,9 +1055,27 @@ namespace Hourglass.Windows
                     return;
 
                 case TimerWindowMode.Status:
-                    this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
-                        ? this.Timer.TimeElapsedAsString
-                        : this.Timer.TimeLeftAsString;
+                    if (this.Timer.State == TimerState.Expired && !string.IsNullOrWhiteSpace(this.Timer.Options.Title) && !this.TitleTextBox.IsFocused)
+                    {
+                        this.TitleTextBox.TextChanged -= this.TitleTextBoxTextChanged;
+                        this.TitleTextBox.Text = this.Timer.Options.ShowTimeElapsed
+                            ? this.Timer.TimeElapsedAsString
+                            : this.Timer.TimeLeftAsString;
+                        this.TitleTextBox.TextChanged += this.TitleTextBoxTextChanged;
+
+                        this.TimerTextBox.Text = this.Timer.Options.Title;
+                    }
+                    else
+                    {
+                        this.TitleTextBox.TextChanged -= this.TitleTextBoxTextChanged;
+                        this.TitleTextBox.Text = this.Timer.Options.Title;
+                        this.TitleTextBox.TextChanged += this.TitleTextBoxTextChanged;
+
+                        this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
+                            ? this.Timer.TimeElapsedAsString
+                            : this.Timer.TimeLeftAsString;
+                    }
+
                     this.ProgressBar.Value = this.GetProgressBarValue();
                     this.UpdateTaskbarProgress();
 
@@ -1740,7 +1759,15 @@ namespace Hourglass.Windows
         {
             if (e.Key == Key.Enter && this.Mode == TimerWindowMode.Status)
             {
-                this.TitleTextBox.Unfocus();
+                if (this.Timer.State == TimerState.Expired)
+                {
+                    this.SwitchToInputMode(this.TimerTextBox /* textBoxToFocus */);
+                }
+                else
+                {
+                    this.TitleTextBox.Unfocus();
+                }
+
                 e.Handled = true;
             }
         }
@@ -1789,6 +1816,18 @@ namespace Hourglass.Windows
             {
                 this.TitleTextBox.SelectAll();
             }
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="TitleTextBox"/> content changes.
+        /// </summary>
+        /// <param name="sender">The <see cref="TitleTextBox"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TitleTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.Timer.Options.Title = string.IsNullOrWhiteSpace(this.TitleTextBox.Text)
+                ? string.Empty
+                : this.TitleTextBox.Text;
         }
 
         /// <summary>

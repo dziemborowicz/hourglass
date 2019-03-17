@@ -220,8 +220,8 @@
                                         PreviewMouseDown="TitleTextBoxPreviewMouseDown"
                                         PreviewGotKeyboardFocus="TitleTextBoxPreviewGotKeyboardFocus"
                                         Style="{StaticResource TitleTextBoxStyle}"
-                                        Text="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.Options.Title, UpdateSourceTrigger=PropertyChanged}"
-                                        TextAlignment="Center"/>
+                                        TextAlignment="Center"
+                                        TextChanged="TitleTextBoxTextChanged"/>
                 <local:SizeToFitTextBox x:Name="TimerTextBox"
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
