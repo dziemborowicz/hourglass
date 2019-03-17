@@ -1024,7 +1024,7 @@ namespace Hourglass.Windows
             switch (this.Mode)
             {
                 case TimerWindowMode.Input:
-                    this.ProgressBar.Value = GetProgressBarValue();
+                    this.ProgressBar.Value = this.GetProgressBarValue();
                     this.UpdateTaskbarProgress();
 
                     // Enable and disable command buttons as required
@@ -1057,7 +1057,7 @@ namespace Hourglass.Windows
                     this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
                         ? this.Timer.TimeElapsedAsString
                         : this.Timer.TimeLeftAsString;
-                    this.ProgressBar.Value = GetProgressBarValue();
+                    this.ProgressBar.Value = this.GetProgressBarValue();
                     this.UpdateTaskbarProgress();
 
                     if (this.Options.LockInterface)
@@ -1157,7 +1157,7 @@ namespace Hourglass.Windows
                     if (this.Timer.SupportsProgress)
                     {
                         this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
-                        this.TaskbarItemInfo.ProgressValue = GetProgressBarValue() / 100.0;
+                        this.TaskbarItemInfo.ProgressValue = this.GetProgressBarValue() / 100.0;
                     }
                     else
                     {
@@ -1171,7 +1171,7 @@ namespace Hourglass.Windows
                     if (this.Timer.SupportsProgress)
                     {
                         this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Paused;
-                        this.TaskbarItemInfo.ProgressValue = GetProgressBarValue() / 100.0;
+                        this.TaskbarItemInfo.ProgressValue = this.GetProgressBarValue() / 100.0;
                     }
                     else
                     {
