@@ -9,7 +9,7 @@ namespace Hourglass.Windows
     using System;
     using System.Windows.Media;
     using System.Windows.Threading;
-
+    using Hourglass.Managers;
     using Hourglass.Timing;
 
     /// <summary>
@@ -58,6 +58,7 @@ namespace Hourglass.Windows
             // File sound player
             this.mediaPlayer = new MediaPlayer();
             this.mediaPlayer.MediaEnded += this.MediaPlayerOnMediaEnded;
+            this.mediaPlayer.MediaFailed += this.MediaPlayerOnMediaFailed;
         }
 
         #endregion
@@ -332,6 +333,16 @@ namespace Hourglass.Windows
             {
                 this.OnPlaybackCompleted();
             }
+        }
+
+        /// <summary>
+        /// Invoked when an error is encountered in the <see cref="MediaPlayer"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="MediaPlayer"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void MediaPlayerOnMediaFailed(object sender, ExceptionEventArgs e)
+        {
+            ErrorManager.Instance.ReportError(e.ErrorException.ToString());
         }
 
         #endregion

@@ -49,6 +49,37 @@ namespace Hourglass.Managers
         }
 
         /// <summary>
+        /// Reports an error by displaying an error dialog and logging the error to a text file.
+        /// </summary>
+        /// <param name="errorMessage">An error message.</param>
+        public void ReportError(string errorMessage)
+        {
+            // Dump the error to a file
+            string dumpPath;
+            if (TryDumpError(errorMessage, out dumpPath))
+            {
+                errorMessage += Environment.NewLine;
+                errorMessage += Environment.NewLine;
+                errorMessage += string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(),
+                    Resources.ErrorManagerErrorHasBeenWritten,
+                    dumpPath);
+            }
+
+            // Clean up old error dumps
+            if (!TryCleanErrorDumps())
+            {
+                errorMessage += Environment.NewLine;
+                errorMessage += Environment.NewLine;
+                errorMessage += Resources.ErrorManagerFailedToClean;
+            }
+
+            // Show an error dialog
+            ErrorDialog errorDialog = new ErrorDialog();
+            errorDialog.ShowDialog(Resources.ErrorManagerUnexpectedError, details: errorMessage);
+        }
+
+        /// <summary>
         /// Invoked when an exception is not caught.
         /// </summary>
         /// <param name="sender">The <see cref="AppDomain"/>.</param>
@@ -57,32 +88,7 @@ namespace Hourglass.Managers
         {
             try
             {
-                // Get the error message
-                string errorMessage = e.ExceptionObject.ToString();
-
-                // Dump the error to a file
-                string dumpPath;
-                if (TryDumpError(errorMessage, out dumpPath))
-                {
-                    errorMessage += Environment.NewLine;
-                    errorMessage += Environment.NewLine;
-                    errorMessage += string.Format(
-                        Resources.ResourceManager.GetEffectiveProvider(),
-                        Resources.ErrorManagerErrorHasBeenWritten,
-                        dumpPath);
-                }
-
-                // Clean up old error dumps
-                if (!TryCleanErrorDumps())
-                {
-                    errorMessage += Environment.NewLine;
-                    errorMessage += Environment.NewLine;
-                    errorMessage += Resources.ErrorManagerFailedToClean;
-                }
-
-                // Show an error dialog
-                ErrorDialog errorDialog = new ErrorDialog();
-                errorDialog.ShowDialog(Resources.ErrorManagerUnexpectedError, details: errorMessage);
+                ErrorManager.Instance.ReportError(e.ExceptionObject.ToString());
             }
             finally
             {
