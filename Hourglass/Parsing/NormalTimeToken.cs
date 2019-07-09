@@ -298,7 +298,12 @@ namespace Hourglass.Parsing
                 }
                 else
                 {
-                    if (timeToken.Hour < 8)
+                    if (timeToken.Hour == 0)
+                    {
+                        timeToken.Hour = 12;
+                        timeToken.HourPeriod = HourPeriod.Am;
+                    }
+                    else if (timeToken.Hour < 8)
                     {
                         timeToken.HourPeriod = HourPeriod.Pm;
                     }
