@@ -1370,29 +1370,36 @@ namespace Hourglass.Windows
 
                 WindowChrome.SetWindowChrome(this, null);
             }
-            else if (this.Options.WindowTitleMode == WindowTitleMode.None)
-            {
-                this.WindowStyle = WindowStyle.SingleBorderWindow;
-                this.WindowState = this.restoreWindowState;
-                this.ResizeMode = ResizeMode.CanResize;
-
-                if (WindowChrome.GetWindowChrome(this)?.CaptionHeight != 0)
-                {
-                    WindowChrome.SetWindowChrome(
-                        this,
-                        new WindowChrome
-                        {
-                            CaptionHeight = 0
-                        });
-                }
-            }
             else
             {
                 this.WindowStyle = WindowStyle.SingleBorderWindow;
-                this.WindowState = this.restoreWindowState;
+
+                if (this.WindowState != WindowState.Minimized)
+                {
+                    this.WindowState = this.restoreWindowState;
+                }
+
                 this.ResizeMode = ResizeMode.CanResize;
 
-                WindowChrome.SetWindowChrome(this, null);
+                if (this.Options.WindowTitleMode == WindowTitleMode.None)
+                {
+                    if (WindowChrome.GetWindowChrome(this)?.CaptionHeight != 0)
+                    {
+                        WindowChrome.SetWindowChrome(
+                            this,
+                            new WindowChrome
+                            {
+                                CaptionHeight = 0
+                            });
+                    }
+                }
+                else
+                {
+                    if (WindowChrome.GetWindowChrome(this) != null)
+                    {
+                        WindowChrome.SetWindowChrome(this, null);
+                    }
+                }
             }
         }
 
