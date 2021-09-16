@@ -230,6 +230,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild" Condition=" ('$(Configuration)' == 'Release') Or ('$(Configuration)' == 'Release Portable') ">
-    <SignFile CertificateThumbprint="CE0BA5E4B388D469012D010B514D493DBA91B022" SigningTarget="$(TargetPath)" TimestampUrl="http://timestamp.comodoca.com/authenticode" TargetFrameworkVersion="$(TargetFrameworkVersion)" />
+    <SignFile CertificateThumbprint="B77A97E1103C36360CDC8D49CF0D3D5BBBE6827E" SigningTarget="$(TargetPath)" TimestampUrl="http://timestamp.digicert.com" TargetFrameworkVersion="$(TargetFrameworkVersion)" />
   </Target>
 </Project>
