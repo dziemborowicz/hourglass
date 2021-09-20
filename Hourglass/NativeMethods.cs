@@ -12,6 +12,104 @@ namespace Hourglass
     using System.Security;
 
     /// <summary>
+    /// Flags used to specify window attributes for Desktop Window Manager (DWM) non-client rendering.
+    /// </summary>
+    internal enum DwmWindowAttribute : uint
+    {
+        /// <summary>
+        /// Discovers whether non-client rendering is enabled.
+        /// </summary>
+        NCRenderingEnabled = 1,
+
+        /// <summary>
+        /// Sets the non-client rendering policy.
+        /// </summary>
+        NCRenderingPolicy = 2,
+
+        /// <summary>
+        /// Enables or forcibly disables DWM transitions.
+        /// </summary>
+        TransitionsForceDisabled = 3,
+
+        /// <summary>
+        /// Enables content rendered in the non-client area to be visible on the frame drawn by DWM.
+        /// </summary>
+        AllowNCPaint = 4,
+
+        /// <summary>
+        /// Retrieves the bounds of the caption button area in the window-relative space.
+        /// </summary>
+        CaptionButtonBounds = 5,
+
+        /// <summary>
+        /// Specifies whether non-client content is right-to-left (RTL) mirrored.
+        /// </summary>
+        NonClientRtlLayout = 6,
+
+        /// <summary>
+        /// Forces the window to display an iconic thumbnail or peek representation (a static bitmap), even if a live
+        /// or snapshot representation of the window is available. This value is normally set during a window's
+        /// creation, and not changed throughout the window's lifetime. Some scenarios, however, might require the
+        /// value to change over time.
+        /// </summary>
+        ForceIconicRepresentation = 7,
+
+        /// <summary>
+        /// Sets how Flip3D treats the window.
+        /// </summary>
+        Flip3DPolicy = 8,
+
+        /// <summary>
+        /// Retrieves the extended frame bounds rectangle in screen space.
+        /// </summary>
+        ExtendedFrameBounds = 9,
+
+        /// <summary>
+        /// The window will provide a bitmap for use by DWM as an iconic thumbnail or peek representation (a static
+        /// bitmap) for the window.
+        /// </summary>
+        HasIconicBitmap = 10,
+
+        /// <summary>
+        /// Do not show peek preview for the window. The peek view shows a full-sized preview of the window when the
+        /// mouse hovers over the window's thumbnail in the taskbar.
+        /// </summary>
+        DisallowPeek = 11,
+
+        /// <summary>
+        /// Prevents a window from fading to a glass sheet when peek is invoked.
+        /// </summary>
+        ExcludedFromPeek = 12,
+
+        /// <summary>
+        /// Cloaks the window such that it is not visible to the user. The window is still composed by DWM.
+        /// </summary>
+        Cloak = 13,
+
+        /// <summary>
+        /// If the window is cloaked, provides a value explaining why.
+        /// </summary>
+        Cloaked = 14,
+
+        /// <summary>
+        /// Freeze the window's thumbnail image with its current visuals. Do no further live updates on the thumbnail
+        /// image to match the window's contents.
+        /// </summary>
+        FreezeRepresentation = 15,
+
+        /// <summary>
+        /// Enabled immersive dark mode for a Window. Has no effect before Windows 10 Build 17763. After Windows 10
+        /// Build 18985, use <see cref="UseImmersiveDarkMode"/>.
+        /// </summary>
+        UseImmersiveDarkModeBefore20H1 = 19,
+
+        /// <summary>
+        /// Enabled immersive dark mode for a Window. Has no effect before Windows 10 Build 18985.
+        /// </summary>
+        UseImmersiveDarkMode = 20
+    }
+
+    /// <summary>
     /// The thread's execution requirements.
     /// </summary>
     [Flags]
@@ -72,6 +170,35 @@ namespace Hourglass
     /// </summary>
     internal static class NativeMethods
     {
+        /// <summary>
+        /// Gets a value of Desktop Window Manager (DWM) non-client rendering attributes for a window.
+        /// </summary>
+        /// <param name="hwnd">The handle to the window for which the attribute value is to be retrieved.</param>
+        /// <param name="dwAttribute">A flag describing which value to retrieve.</param>
+        /// <param name="pvAttribute">A pointer to a value which, when this function returns successfully, receives the
+        /// current value of the attribute. The type of the retrieved value depends on the value of the <paramref
+        /// name="dwAttribute"/> parameter.</param>
+        /// <param name="cbAttribute">The size, in bytes, of the attribute value being received via the <paramref
+        /// name="pvAttribute"/> parameter. The type of the retrieved value, and therefore its size in bytes, depends
+        /// on the value of the <paramref name="dwAttribute"/> parameter.</param>
+        /// <returns>0 if the successful, or nonzero otherwise.</returns>
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmGetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, out bool pvAttribute, int cbAttribute);
+
+        /// <summary>
+        /// Sets the value of Desktop Window Manager (DWM) non-client rendering attributes for a window.
+        /// </summary>
+        /// <param name="hwnd">The handle to the window for which the attribute value is to be set.</param>
+        /// <param name="dwAttribute">A flag describing which value to set.</param>
+        /// <param name="pvAttribute">A pointer to an object containing the attribute value to set. The type of the
+        /// value set depends on the value of the <paramref name="dwAttribute"/> parameter.</param>
+        /// <param name="cbAttribute">The size, in bytes, of the attribute value being set via the <paramref
+        /// name="pvAttribute"/> parameter. The type of the value set, and therefore its size in bytes, depends on the
+        /// value of the <paramref name="dwAttribute"/> parameter.</param>
+        /// <returns>0 if the successful, or nonzero otherwise.</returns>
+        [DllImport("dwmapi.dll", PreserveSig = true)]
+        public static extern int DwmSetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, ref bool pvAttribute, int cbAttribute);
+
         /// <summary>
         /// Sets the specified timer to the inactive state.
         /// </summary>

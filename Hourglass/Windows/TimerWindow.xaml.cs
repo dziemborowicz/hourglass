@@ -1390,6 +1390,8 @@ namespace Hourglass.Windows
                     WindowChrome.SetWindowChrome(this, null);
                 }
             }
+
+            this.SetImmersiveDarkMode(this.Options.Theme.Type == ThemeType.BuiltInDark);
         }
 
         /// <summary>
