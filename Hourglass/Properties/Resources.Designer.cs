@@ -19,7 +19,7 @@ namespace Hourglass.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -269,6 +269,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ma_ximize.
+        /// </summary>
+        internal static string ContextMenuMaximizeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuMaximizeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Minimize.
+        /// </summary>
+        internal static string ContextMenuMinimizeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuMinimizeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _New timer.
         /// </summary>
         internal static string ContextMenuNewTimerMenuItem {
@@ -355,6 +373,15 @@ namespace Hourglass.Properties {
         internal static string ContextMenuRecentInputsMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuRecentInputsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rest_ore.
+        /// </summary>
+        internal static string ContextMenuRestoreMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuRestoreMenuItem", resourceCulture);
             }
         }
         

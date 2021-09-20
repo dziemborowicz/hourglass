@@ -232,6 +232,26 @@ namespace Hourglass.Windows
         private IList<MenuItem> selectableWindowTitleMenuItems;
 
         /// <summary>
+        /// The "Restore" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem restoreMenuItem;
+
+        /// <summary>
+        /// The "Minimize" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem minimizeMenuItem;
+
+        /// <summary>
+        /// The "Maximize" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem maximizeMenuItem;
+
+        /// <summary>
+        /// Separates the "Restore", "Minimize", and "Maximize" menu items from the "Close" menu item.
+        /// </summary>
+        private Separator windowStateItemsSeparator;
+
+        /// <summary>
         /// The "Close" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem closeMenuItem;
@@ -317,6 +337,7 @@ namespace Hourglass.Windows
             this.UpdateSavedTimersMenuItem();
             this.UpdateThemeMenuItem();
             this.UpdateSoundMenuItem();
+            this.UpdateWindowStateMenuItems();
 
             // Update binding
             this.UpdateMenuFromOptions();
@@ -644,8 +665,7 @@ namespace Hourglass.Windows
             this.soundMenuItem.Header = Properties.Resources.ContextMenuSoundMenuItem;
             this.Items.Add(this.soundMenuItem);
 
-            Separator separator = new Separator();
-            this.Items.Add(separator);
+            this.Items.Add(new Separator());
 
             // Advanced options
             this.advancedOptionsMenuItem = new MenuItem();
@@ -791,6 +811,27 @@ namespace Hourglass.Windows
             this.selectableWindowTitleMenuItems.Add(this.timerTitlePlusTimeElapsedWindowTitleMenuItem);
 
             this.Items.Add(new Separator());
+
+            // Restore
+            this.restoreMenuItem = new MenuItem();
+            this.restoreMenuItem.Header = Properties.Resources.ContextMenuRestoreMenuItem;
+            this.restoreMenuItem.Click += this.RestoreMenuItemClick;
+            this.Items.Add(this.restoreMenuItem);
+
+            // Minimize
+            this.minimizeMenuItem = new MenuItem();
+            this.minimizeMenuItem.Header = Properties.Resources.ContextMenuMinimizeMenuItem;
+            this.minimizeMenuItem.Click += this.MinimizeMenuItemClick;
+            this.Items.Add(this.minimizeMenuItem);
+
+            // Maximize
+            this.maximizeMenuItem = new MenuItem();
+            this.maximizeMenuItem.Header = Properties.Resources.ContextMenuMaximizeMenuItem;
+            this.maximizeMenuItem.Click += this.MaximizeMenuItemClick;
+            this.Items.Add(this.maximizeMenuItem);
+
+            this.windowStateItemsSeparator = new Separator();
+            this.Items.Add(this.windowStateItemsSeparator);
 
             // Close
             this.closeMenuItem = new MenuItem();
@@ -1372,6 +1413,77 @@ namespace Hourglass.Windows
             {
                 menuItem.IsChecked = object.ReferenceEquals(menuItem, sender);
             }
+        }
+
+        #endregion
+
+        #region Private Methods (Window State)
+
+        /// <summary>
+        /// Updates the <see cref="restoreMenuItem"/>, <see cref="minimizeMenuItem"/>, and
+        /// <see cref="maximizeMenuItem"/>.
+        /// </summary>
+        private void UpdateWindowStateMenuItems()
+        {
+            this.restoreMenuItem.IsEnabled = this.timerWindow.WindowState != WindowState.Normal;
+            this.minimizeMenuItem.IsEnabled = this.timerWindow.WindowState != WindowState.Minimized;
+            this.maximizeMenuItem.IsEnabled = this.timerWindow.WindowState != WindowState.Maximized;
+
+            if (this.timerWindow.IsFullScreen || this.timerWindow.Options.WindowTitleMode == WindowTitleMode.None)
+            {
+                // "Restore", "Minimize", and "Maximize" are not on the window, so we provide our own.
+                this.restoreMenuItem.Visibility = Visibility.Visible;
+                this.minimizeMenuItem.Visibility = Visibility.Visible;
+                this.maximizeMenuItem.Visibility = Visibility.Visible;
+                this.windowStateItemsSeparator.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // "Restore", "Minimize", and "Maximize" are on the window, so no need for them here.
+                this.restoreMenuItem.Visibility = Visibility.Collapsed;
+                this.minimizeMenuItem.Visibility = Visibility.Collapsed;
+                this.maximizeMenuItem.Visibility = Visibility.Collapsed;
+                this.windowStateItemsSeparator.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the "Restore" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void RestoreMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            if (this.timerWindow.IsFullScreen)
+            {
+                // Must set the menu item value here, since it will sync to the TimerWindow on menu close.
+                this.fullScreenMenuItem.IsChecked = false;
+                this.timerWindow.IsFullScreen = false;
+            }
+            else
+            {
+                this.timerWindow.WindowState = WindowState.Normal;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the "Minimize" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void MinimizeMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            this.timerWindow.WindowState = WindowState.Minimized;
+        }
+
+        /// <summary>
+        /// Invoked when the "Maximize" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void MaximizeMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            this.timerWindow.WindowState = WindowState.Maximized;
         }
 
         #endregion

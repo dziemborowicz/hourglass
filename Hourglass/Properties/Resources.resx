@@ -1245,4 +1245,16 @@ $</value>
     <value>Show progress in taskbar</value>
     <comment>The text for the show progress in taskbar menu item</comment>
   </data>
+  <data name="ContextMenuMaximizeMenuItem" xml:space="preserve">
+    <value>Ma_ximize</value>
+    <comment>The text for the maximize menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuMinimizeMenuItem" xml:space="preserve">
+    <value>_Minimize</value>
+    <comment>The text for the minimize menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuRestoreMenuItem" xml:space="preserve">
+    <value>Rest_ore</value>
+    <comment>The text for the restore menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
 </root>
