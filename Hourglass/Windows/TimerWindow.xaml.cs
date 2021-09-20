@@ -1367,8 +1367,6 @@ namespace Hourglass.Windows
                 }
 
                 this.ResizeMode = ResizeMode.NoResize;
-
-                WindowChrome.SetWindowChrome(this, null);
             }
             else
             {
@@ -1380,26 +1378,26 @@ namespace Hourglass.Windows
                 }
 
                 this.ResizeMode = ResizeMode.CanResize;
+            }
 
-                if (this.Options.WindowTitleMode == WindowTitleMode.None)
+            if (this.Options.WindowTitleMode == WindowTitleMode.None)
+            {
+                if (WindowChrome.GetWindowChrome(this)?.CaptionHeight != 0 || WindowChrome.GetWindowChrome(this)?.UseAeroCaptionButtons != false)
                 {
-                    if (WindowChrome.GetWindowChrome(this)?.CaptionHeight != 0 || WindowChrome.GetWindowChrome(this)?.UseAeroCaptionButtons != false)
-                    {
-                        WindowChrome.SetWindowChrome(
-                            this,
-                            new WindowChrome
-                            {
-                                CaptionHeight = 0,
-                                UseAeroCaptionButtons = false
-                            });
-                    }
+                    WindowChrome.SetWindowChrome(
+                        this,
+                        new WindowChrome
+                        {
+                            CaptionHeight = 0,
+                            UseAeroCaptionButtons = false
+                        });
                 }
-                else
+            }
+            else
+            {
+                if (WindowChrome.GetWindowChrome(this) != null)
                 {
-                    if (WindowChrome.GetWindowChrome(this) != null)
-                    {
-                        WindowChrome.SetWindowChrome(this, null);
-                    }
+                    WindowChrome.SetWindowChrome(this, null);
                 }
             }
         }
