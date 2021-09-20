@@ -1383,13 +1383,14 @@ namespace Hourglass.Windows
 
                 if (this.Options.WindowTitleMode == WindowTitleMode.None)
                 {
-                    if (WindowChrome.GetWindowChrome(this)?.CaptionHeight != 0)
+                    if (WindowChrome.GetWindowChrome(this)?.CaptionHeight != 0 || WindowChrome.GetWindowChrome(this)?.UseAeroCaptionButtons != false)
                     {
                         WindowChrome.SetWindowChrome(
                             this,
                             new WindowChrome
                             {
-                                CaptionHeight = 0
+                                CaptionHeight = 0,
+                                UseAeroCaptionButtons = false
                             });
                     }
                 }
