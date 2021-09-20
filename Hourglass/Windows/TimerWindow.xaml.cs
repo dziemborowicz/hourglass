@@ -364,7 +364,21 @@ namespace Hourglass.Windows
                 }
 
                 this.isFullScreen = value;
-                this.UpdateWindowStyle();
+
+                if (this.isFullScreen)
+                {
+                    this.WindowStyle = WindowStyle.None;
+                    this.WindowState = WindowState.Normal; // Needed to put the window on top of the taskbar
+                    this.WindowState = WindowState.Maximized;
+                    this.ResizeMode = ResizeMode.NoResize;
+                }
+                else
+                {
+                    this.WindowStyle = WindowStyle.SingleBorderWindow;
+                    this.WindowState = this.restoreWindowState;
+                    this.ResizeMode = ResizeMode.CanResize;
+                }
+
                 this.OnPropertyChanged("IsFullScreen");
             }
         }
@@ -1051,7 +1065,7 @@ namespace Hourglass.Windows
                     this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
                     this.UpdateWindowTitle();
-                    this.UpdateWindowStyle();
+                    this.UpdateWindowChrome();
                     return;
 
                 case TimerWindowMode.Status:
@@ -1125,7 +1139,7 @@ namespace Hourglass.Windows
                     this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
                     this.UpdateWindowTitle();
-                    this.UpdateWindowStyle();
+                    this.UpdateWindowChrome();
                     return;
             }
         }
@@ -1352,34 +1366,10 @@ namespace Hourglass.Windows
         }
 
         /// <summary>
-        /// Updates the window style.
+        /// Updates the window chrome.
         /// </summary>
-        private void UpdateWindowStyle()
+        private void UpdateWindowChrome()
         {
-            if (this.isFullScreen)
-            {
-                this.WindowStyle = WindowStyle.None;
-
-                if (this.WindowState != WindowState.Maximized)
-                {
-                    this.WindowState = WindowState.Normal; // Needed to put the window on top of the taskbar
-                    this.WindowState = WindowState.Maximized;
-                }
-
-                this.ResizeMode = ResizeMode.NoResize;
-            }
-            else
-            {
-                this.WindowStyle = WindowStyle.SingleBorderWindow;
-
-                if (this.WindowState != WindowState.Minimized)
-                {
-                    this.WindowState = this.restoreWindowState;
-                }
-
-                this.ResizeMode = ResizeMode.CanResize;
-            }
-
             if (this.Options.WindowTitleMode == WindowTitleMode.None)
             {
                 if (WindowChrome.GetWindowChrome(this)?.CaptionHeight != 0 || WindowChrome.GetWindowChrome(this)?.UseAeroCaptionButtons != false)
