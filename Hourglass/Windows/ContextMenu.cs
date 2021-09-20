@@ -1049,7 +1049,7 @@ namespace Hourglass.Windows
                 Border progress = new Border();
                 progress.Background = timer.Options.Theme.ProgressBarBrush;
                 progress.HorizontalAlignment = HorizontalAlignment.Left;
-                progress.Width = timer.TimeLeftAsPercentage.Value / 100.0 * 16.0;
+                progress.Width = MathExtensions.LimitToRange(timer.TimeLeftAsPercentage.Value / 100.0 * 16.0, 0.0, 16.0);
                 progress.Height = 6;
 
                 outerBorder.Child = progress;
@@ -1059,7 +1059,7 @@ namespace Hourglass.Windows
                 Border progress = new Border();
                 progress.Background = timer.Options.Theme.ProgressBarBrush;
                 progress.HorizontalAlignment = HorizontalAlignment.Left;
-                progress.Width = timer.TimeElapsedAsPercentage.Value / 100.0 * 16.0;
+                progress.Width = MathExtensions.LimitToRange(timer.TimeElapsedAsPercentage.Value / 100.0 * 16.0, 0.0, 16.0);
                 progress.Height = 6;
 
                 outerBorder.Child = progress;
