@@ -30,7 +30,7 @@ namespace Hourglass.Managers
         /// <summary>
         /// The URL for the XML file containing information about the latest version of the app.
         /// </summary>
-        private const string UpdateCheckUrl = "http://update.dziemborowicz.com/hourglass";
+        private const string UpdateCheckUrl = "https://updates.dziemborowicz.com/hourglass";
 
         /// <summary>
         /// The latest version of the app.
@@ -115,6 +115,9 @@ namespace Hourglass.Managers
         /// </summary>
         public override void Initialize()
         {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | /* Tls13 */ (SecurityProtocolType)12288;
+
             Task.Factory.StartNew(() => this.SetUpdateInfo(this.FetchUpdateInfo()));
         }
 
