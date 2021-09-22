@@ -74,11 +74,14 @@ namespace Hourglass.Extensions
             }
 
             // This hack appears to be the only way to get the non-client area of the window to redraw correctly.
-            WindowStyle prevWindowStyle = window.WindowStyle;
-            window.WindowStyle = prevWindowStyle != WindowStyle.None
-                ? WindowStyle.None
-                : WindowStyle.SingleBorderWindow;
-            window.WindowStyle = prevWindowStyle;
+            if (window.IsVisible)
+            {
+                WindowStyle prevWindowStyle = window.WindowStyle;
+                window.WindowStyle = prevWindowStyle != WindowStyle.None
+                    ? WindowStyle.None
+                    : WindowStyle.SingleBorderWindow;
+                window.WindowStyle = prevWindowStyle;
+            }
 
             return true;
         }
