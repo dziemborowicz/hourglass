@@ -359,6 +359,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prefer 24-_hour time when parsing.
+        /// </summary>
+        internal static string ContextMenuPrefer24HourTimeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuPrefer24HourTimeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pro_mpt on exit.
         /// </summary>
         internal static string ContextMenuPromptOnExitMenuItem {

@@ -148,13 +148,35 @@ namespace Hourglass.Parsing
                 StringBuilder stringBuilder = new StringBuilder();
 
                 // Hour
+                int adjustedHour;
+                if (Settings.Default.Prefer24HourTime)
+                {
+                    // This class stores its data in 12-hour format, so adust it back to 24-hour time.
+                    if (this.Hour == 12 && this.HourPeriod == HourPeriod.Am)
+                    {
+                        adjustedHour = 0;
+                    }
+                    else if (this.HourPeriod == HourPeriod.Pm)
+                    {
+                        adjustedHour = this.Hour + 12;
+                    }
+                    else
+                    {
+                        adjustedHour = this.Hour;
+                    }
+                }
+                else
+                {
+                    adjustedHour = this.Hour;
+                }
+
                 stringBuilder.AppendFormat(
                     Resources.ResourceManager.GetEffectiveProvider(provider),
                     Resources.ResourceManager.GetString("NormalTimeTokenHourPartFormatString", provider),
-                    this.Hour);
+                    adjustedHour);
 
                 // Minute
-                if (this.Minute != 0 || this.Second != 0)
+                if (this.Minute != 0 || this.Second != 0 || this.HourPeriod == HourPeriod.Undefined || Settings.Default.Prefer24HourTime)
                 {
                     stringBuilder.AppendFormat(
                         Resources.ResourceManager.GetEffectiveProvider(provider),
@@ -172,7 +194,11 @@ namespace Hourglass.Parsing
                 }
 
                 // Hour period
-                if (this.IsMidday)
+                if (Settings.Default.Prefer24HourTime)
+                {
+                    // No suffix when outputting 24-hour time.
+                }
+                else if (this.IsMidday)
                 {
                     stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenMiddaySuffix", provider));
                 }
@@ -272,7 +298,7 @@ namespace Hourglass.Parsing
                 {
                     timeToken.HourPeriod = HourPeriod.Pm;
                 }
-                else if (match.Groups["military"].Success)
+                else if (match.Groups["military"].Success || Settings.Default.Prefer24HourTime)
                 {
                     if (timeToken.Hour == 0)
                     {

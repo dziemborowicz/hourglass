@@ -172,6 +172,7 @@ namespace Hourglass
         {
             Settings.Default.ShowInNotificationArea = arguments.ShowInNotificationArea;
             Settings.Default.OpenSavedTimersOnStartup = arguments.OpenSavedTimers;
+            Settings.Default.Prefer24HourTime = arguments.Prefer24HourTime;
         }
 
         /// <summary>

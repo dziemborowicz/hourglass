@@ -150,6 +150,11 @@ namespace Hourglass
         public bool OpenSavedTimers { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether to prefer interpreting time of day values as 24-hour time.
+        /// </summary>
+        public bool Prefer24HourTime { get; private set; }
+
+        /// <summary>
         /// Gets or sets a value indicating what information to display in the timer window title.
         /// </summary>
         public WindowTitleMode WindowTitleMode { get; set; }
@@ -292,6 +297,7 @@ namespace Hourglass
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
                 OpenSavedTimers = Settings.Default.OpenSavedTimersOnStartup,
+                Prefer24HourTime = Settings.Default.Prefer24HourTime,
                 WindowTitleMode = options.WindowTitleMode,
                 WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
                 RestoreWindowState = windowSize.RestoreWindowState,
@@ -331,6 +337,7 @@ namespace Hourglass
                 Sound = defaultOptions.Sound,
                 LoopSound = defaultOptions.LoopSound,
                 OpenSavedTimers = false,
+                Prefer24HourTime = false,
                 WindowTitleMode = WindowTitleMode.ApplicationName,
                 WindowState = defaultOptions.WindowSize.WindowState,
                 RestoreWindowState = defaultOptions.WindowSize.RestoreWindowState,
@@ -585,6 +592,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.OpenSavedTimers = openSavedTimers;
                         argumentsBasedOnFactoryDefaults.OpenSavedTimers = openSavedTimers;
+                        break;
+
+                    case "--prefer-24h-time":
+                    case "-j":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--prefer-24h-time");
+
+                        bool prefer24HourTime = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.Prefer24HourTime);
+
+                        argumentsBasedOnMostRecentOptions.Prefer24HourTime = prefer24HourTime;
+                        argumentsBasedOnFactoryDefaults.Prefer24HourTime = prefer24HourTime;
                         break;
 
                     case "--window-title":

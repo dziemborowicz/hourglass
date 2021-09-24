@@ -162,6 +162,11 @@ namespace Hourglass.Windows
         private MenuItem openSavedTimersOnStartupMenuItem;
 
         /// <summary>
+        /// The "Prefer 24-hour time when parsing" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem prefer24HourTimeMenuItem;
+
+        /// <summary>
         /// The "Reverse progress bar" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem reverseProgressBarMenuItem;
@@ -460,6 +465,9 @@ namespace Hourglass.Windows
             // Open saved timers on startup
             this.openSavedTimersOnStartupMenuItem.IsChecked = Settings.Default.OpenSavedTimersOnStartup;
 
+            // Prefer 24-hour time when parsing
+            this.prefer24HourTimeMenuItem.IsChecked = Settings.Default.Prefer24HourTime;
+
             // Reverse progress bar
             this.reverseProgressBarMenuItem.IsChecked = this.timerWindow.Options.ReverseProgressBar;
 
@@ -533,6 +541,9 @@ namespace Hourglass.Windows
 
             // Open saved timers on startup
             Settings.Default.OpenSavedTimersOnStartup = this.openSavedTimersOnStartupMenuItem.IsChecked;
+
+            // Prefer 24-hour time when parsing
+            Settings.Default.Prefer24HourTime = this.prefer24HourTimeMenuItem.IsChecked;
 
             // Reverse progress bar
             this.timerWindow.Options.ReverseProgressBar = this.reverseProgressBarMenuItem.IsChecked;
@@ -685,6 +696,13 @@ namespace Hourglass.Windows
             this.openSavedTimersOnStartupMenuItem.IsCheckable = true;
             this.openSavedTimersOnStartupMenuItem.Click += this.CheckableMenuItemClick;
             this.advancedOptionsMenuItem.Items.Add(this.openSavedTimersOnStartupMenuItem);
+
+            // Prefer 24-hour time when parsing
+            this.prefer24HourTimeMenuItem = new MenuItem();
+            this.prefer24HourTimeMenuItem.Header = Properties.Resources.ContextMenuPrefer24HourTimeMenuItem;
+            this.prefer24HourTimeMenuItem.IsCheckable = true;
+            this.prefer24HourTimeMenuItem.Click += this.CheckableMenuItemClick;
+            this.advancedOptionsMenuItem.Items.Add(this.prefer24HourTimeMenuItem);
 
             // Reverse progress bar
             this.reverseProgressBarMenuItem = new MenuItem();

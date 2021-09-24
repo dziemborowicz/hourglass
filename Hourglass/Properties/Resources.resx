@@ -1257,4 +1257,8 @@ $</value>
     <value>Rest_ore</value>
     <comment>The text for the restore menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuPrefer24HourTimeMenuItem" xml:space="preserve">
+    <value>Prefer 24-_hour time when parsing</value>
+    <comment>The text for the prefer 24-hour time when parsing menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
 </root>
