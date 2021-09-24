@@ -1057,6 +1057,10 @@ $</value>
     <value>Shut _down when expired</value>
     <comment>The text for the shut down when expired menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuReverseProgressBarMenuItem" xml:space="preserve">
+    <value>_Reverse progress bar</value>
+    <comment>The text for the reverse progress bar menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
   <data name="ContextMenuOpenAllSavedTimersMenuItem" xml:space="preserve">
     <value>_Open all saved timers</value>
     <comment>The text for the open all saved timers menu item, where the character following the optional underscore (_) is the access key</comment>
@@ -1181,6 +1185,10 @@ $</value>
     <value>Are you sure you want to delete the selected theme?</value>
     <comment>The prompt displayed when the user deletes a theme</comment>
   </data>
+  <data name="ContextMenuNoWindowTitleMenuItem" xml:space="preserve">
+    <value>_None</value>
+    <comment>The text for the application name menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
   <data name="ContextMenuApplicationNameWindowTitleMenuItem" xml:space="preserve">
     <value>_Application name</value>
     <comment>The text for the application name menu item, where the character following the optional underscore (_) is the access key</comment>
@@ -1232,5 +1240,25 @@ $</value>
   <data name="TimerStartZero" xml:space="preserve">
     <value>0 seconds</value>
     <comment>The zero-length value for a timer</comment>
+  </data>
+  <data name="ContextMenuShowProgressInTaskbarMenuItem" xml:space="preserve">
+    <value>Show progress in taskbar</value>
+    <comment>The text for the show progress in taskbar menu item</comment>
+  </data>
+  <data name="ContextMenuMaximizeMenuItem" xml:space="preserve">
+    <value>Ma_ximize</value>
+    <comment>The text for the maximize menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuMinimizeMenuItem" xml:space="preserve">
+    <value>_Minimize</value>
+    <comment>The text for the minimize menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuRestoreMenuItem" xml:space="preserve">
+    <value>Rest_ore</value>
+    <comment>The text for the restore menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuPrefer24HourTimeMenuItem" xml:space="preserve">
+    <value>Prefer 24-_hour time when parsing</value>
+    <comment>The text for the prefer 24-hour time when parsing menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
 </root>

@@ -600,6 +600,7 @@ namespace Hourglass.Windows
         {
             this.Mode = TimerWindowMode.Input;
 
+            this.TitleTextBox.Text = this.Timer.Options.Title;
             this.TimerTextBox.Text = this.LastTimerStart != null ? this.LastTimerStart.ToString() : string.Empty;
 
             textBoxToFocus = textBoxToFocus ?? this.TimerTextBox;
@@ -1015,6 +1016,22 @@ namespace Hourglass.Windows
         }
 
         /// <summary>
+        /// Returns the progress bar value for the current timer.
+        /// </summary>
+        /// <returns>The progress bar value for the current timer.</returns>
+        private double GetProgressBarValue()
+        {
+            if (this.Options.ReverseProgressBar)
+            {
+                return this.Timer.TimeElapsedAsPercentage ?? 100.0;
+            }
+            else
+            {
+                return this.Timer.TimeLeftAsPercentage ?? 0.0;
+            }
+        }
+
+        /// <summary>
         /// Updates the controls bound to timer properties.
         /// </summary>
         private void UpdateBoundControls()
@@ -1022,7 +1039,7 @@ namespace Hourglass.Windows
             switch (this.Mode)
             {
                 case TimerWindowMode.Input:
-                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
+                    this.ProgressBar.Value = this.GetProgressBarValue();
                     this.UpdateTaskbarProgress();
 
                     // Enable and disable command buttons as required
@@ -1048,13 +1065,32 @@ namespace Hourglass.Windows
                     this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
                     this.UpdateWindowTitle();
+                    this.UpdateWindowChrome();
                     return;
 
                 case TimerWindowMode.Status:
-                    this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
-                        ? this.Timer.TimeElapsedAsString
-                        : this.Timer.TimeLeftAsString;
-                    this.ProgressBar.Value = this.Timer.TimeLeftAsPercentage ?? 0.0;
+                    if (this.Timer.State == TimerState.Expired && !string.IsNullOrWhiteSpace(this.Timer.Options.Title) && !this.TitleTextBox.IsFocused)
+                    {
+                        this.TitleTextBox.TextChanged -= this.TitleTextBoxTextChanged;
+                        this.TitleTextBox.Text = this.Timer.Options.ShowTimeElapsed
+                            ? this.Timer.TimeElapsedAsString
+                            : this.Timer.TimeLeftAsString;
+                        this.TitleTextBox.TextChanged += this.TitleTextBoxTextChanged;
+
+                        this.TimerTextBox.Text = this.Timer.Options.Title;
+                    }
+                    else
+                    {
+                        this.TitleTextBox.TextChanged -= this.TitleTextBoxTextChanged;
+                        this.TitleTextBox.Text = this.Timer.Options.Title;
+                        this.TitleTextBox.TextChanged += this.TitleTextBoxTextChanged;
+
+                        this.TimerTextBox.Text = this.Timer.Options.ShowTimeElapsed
+                            ? this.Timer.TimeElapsedAsString
+                            : this.Timer.TimeLeftAsString;
+                    }
+
+                    this.ProgressBar.Value = this.GetProgressBarValue();
                     this.UpdateTaskbarProgress();
 
                     if (this.Options.LockInterface)
@@ -1103,6 +1139,7 @@ namespace Hourglass.Windows
                     this.UpdateBoundTheme();
                     this.UpdateKeepAwake();
                     this.UpdateWindowTitle();
+                    this.UpdateWindowChrome();
                     return;
             }
         }
@@ -1114,7 +1151,7 @@ namespace Hourglass.Windows
         {
             this.InnerGrid.Background = this.Theme.BackgroundBrush;
             this.ProgressBar.Foreground = this.Theme.ProgressBarBrush;
-            this.ProgressBar.Background  = this.Theme.ProgressBackgroundBrush;
+            this.ProgressBar.Background = this.Theme.ProgressBackgroundBrush;
             this.InnerNotificationBorder.BorderBrush = this.Theme.ExpirationFlashBrush;
             this.OuterNotificationBorder.Background = this.Theme.ExpirationFlashBrush;
             this.TimerTextBox.Foreground = this.Theme.PrimaryTextBrush;
@@ -1136,6 +1173,12 @@ namespace Hourglass.Windows
         /// </summary>
         private void UpdateTaskbarProgress()
         {
+            if (!this.Options.ShowProgressInTaskbar)
+            {
+                this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
+                return;
+            }
+
             switch (this.Timer.State)
             {
                 case TimerState.Stopped:
@@ -1147,7 +1190,7 @@ namespace Hourglass.Windows
                     if (this.Timer.SupportsProgress)
                     {
                         this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
-                        this.TaskbarItemInfo.ProgressValue = (this.Timer.TimeLeftAsPercentage ?? 0.0) / 100.0;
+                        this.TaskbarItemInfo.ProgressValue = this.GetProgressBarValue() / 100.0;
                     }
                     else
                     {
@@ -1161,7 +1204,7 @@ namespace Hourglass.Windows
                     if (this.Timer.SupportsProgress)
                     {
                         this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Paused;
-                        this.TaskbarItemInfo.ProgressValue = (this.Timer.TimeLeftAsPercentage ?? 0.0) / 100.0;
+                        this.TaskbarItemInfo.ProgressValue = this.GetProgressBarValue() / 100.0;
                     }
                     else
                     {
@@ -1201,6 +1244,11 @@ namespace Hourglass.Windows
         {
             switch (this.Options.WindowTitleMode)
             {
+                case WindowTitleMode.None:
+                    // Although the title bar is hidden in this mode, the window title is still used for the Taskbar.
+                    this.Title = Properties.Resources.TimerWindowTitle;
+                    break;
+
                 case WindowTitleMode.ApplicationName:
                     this.Title = Properties.Resources.TimerWindowTitle;
                     break;
@@ -1315,6 +1363,35 @@ namespace Hourglass.Windows
 
                     break;
             }
+        }
+
+        /// <summary>
+        /// Updates the window chrome.
+        /// </summary>
+        private void UpdateWindowChrome()
+        {
+            if (this.Options.WindowTitleMode == WindowTitleMode.None)
+            {
+                if (WindowChrome.GetWindowChrome(this)?.CaptionHeight != 0 || WindowChrome.GetWindowChrome(this)?.UseAeroCaptionButtons != false)
+                {
+                    WindowChrome.SetWindowChrome(
+                        this,
+                        new WindowChrome
+                        {
+                            CaptionHeight = 0,
+                            UseAeroCaptionButtons = false
+                        });
+                }
+            }
+            else
+            {
+                if (WindowChrome.GetWindowChrome(this) != null)
+                {
+                    WindowChrome.SetWindowChrome(this, null);
+                }
+            }
+
+            this.SetImmersiveDarkMode(this.Options.Theme.Type == ThemeType.BuiltInDark);
         }
 
         /// <summary>
@@ -1680,7 +1757,15 @@ namespace Hourglass.Windows
         {
             if (e.Key == Key.Enter && this.Mode == TimerWindowMode.Status)
             {
-                this.TitleTextBox.Unfocus();
+                if (this.Timer.State == TimerState.Expired)
+                {
+                    this.SwitchToInputMode(this.TimerTextBox /* textBoxToFocus */);
+                }
+                else
+                {
+                    this.TitleTextBox.Unfocus();
+                }
+
                 e.Handled = true;
             }
         }
@@ -1729,6 +1814,18 @@ namespace Hourglass.Windows
             {
                 this.TitleTextBox.SelectAll();
             }
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="TitleTextBox"/> content changes.
+        /// </summary>
+        /// <param name="sender">The <see cref="TitleTextBox"/>.</param>
+        /// <param name="e">The event data.</param>
+        private void TitleTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.Timer.Options.Title = string.IsNullOrWhiteSpace(this.TitleTextBox.Text)
+                ? string.Empty
+                : this.TitleTextBox.Text;
         }
 
         /// <summary>
@@ -1817,6 +1914,11 @@ namespace Hourglass.Windows
         /// <param name="e">The event data.</param>
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+
             if (e.OriginalSource is Panel)
             {
                 this.CancelOrReset();

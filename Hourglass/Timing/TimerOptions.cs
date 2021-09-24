@@ -19,6 +19,11 @@ namespace Hourglass.Timing
     public enum WindowTitleMode
     {
         /// <summary>
+        /// Hides the timer window title bar.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// The timer window title is set to show the application name.
         /// </summary>
         ApplicationName,
@@ -82,9 +87,19 @@ namespace Hourglass.Timing
         private bool promptOnExit;
 
         /// <summary>
+        /// A value indicating whether to show progress in the taskbar.
+        /// </summary>
+        private bool showProgressInTaskbar;
+
+        /// <summary>
         /// A value indicating whether to keep the computer awake while the timer is running.
         /// </summary>
         private bool doNotKeepComputerAwake;
+
+        /// <summary>
+        /// A value indicating whether to reverse the progress bar (count backwards).
+        /// </summary>
+        private bool reverseProgressBar;
 
         /// <summary>
         /// A value indicating whether to show the time elapsed rather than the time left.
@@ -156,7 +171,9 @@ namespace Hourglass.Timing
             this.title = string.Empty;
             this.alwaysOnTop = false;
             this.promptOnExit = true;
+            this.showProgressInTaskbar = true;
             this.doNotKeepComputerAwake = false;
+            this.reverseProgressBar = false;
             this.showTimeElapsed = false;
             this.loopTimer = false;
             this.popUpWhenExpired = true;
@@ -274,6 +291,28 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to show progress in the taskbar.
+        /// </summary>
+        public bool ShowProgressInTaskbar
+        {
+            get
+            {
+                return this.showProgressInTaskbar;
+            }
+
+            set
+            {
+                if (this.showProgressInTaskbar == value)
+                {
+                    return;
+                }
+
+                this.showProgressInTaskbar = value;
+                this.OnPropertyChanged("ShowProgressInTaskbar");
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to keep the computer awake while the timer is running.
         /// </summary>
         public bool DoNotKeepComputerAwake
@@ -292,6 +331,28 @@ namespace Hourglass.Timing
 
                 this.doNotKeepComputerAwake = value;
                 this.OnPropertyChanged("DoNotKeepComputerAwake");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to reverse the progress bar (count backwards).
+        /// </summary>
+        public bool ReverseProgressBar
+        {
+            get
+            {
+                return this.reverseProgressBar;
+            }
+
+            set
+            {
+                if (this.reverseProgressBar == value)
+                {
+                    return;
+                }
+
+                this.reverseProgressBar = value;
+                this.OnPropertyChanged("ReverseProgressBar");
             }
         }
 
@@ -582,7 +643,9 @@ namespace Hourglass.Timing
             this.title = options.title;
             this.alwaysOnTop = options.alwaysOnTop;
             this.promptOnExit = options.promptOnExit;
+            this.showProgressInTaskbar = options.showProgressInTaskbar;
             this.doNotKeepComputerAwake = options.doNotKeepComputerAwake;
+            this.reverseProgressBar = options.reverseProgressBar;
             this.showTimeElapsed = options.showTimeElapsed;
             this.loopTimer = options.loopTimer;
             this.popUpWhenExpired = options.popUpWhenExpired;
@@ -599,7 +662,9 @@ namespace Hourglass.Timing
                 "Title",
                 "AlwaysOnTop",
                 "PromptOnExit",
+                "ShowProgressInTaskbar",
                 "DoNotKeepComputerAwake",
+                "ReverseProgressBar",
                 "ShowTimeElapsed",
                 "LoopTimer",
                 "PopUpWhenExpired",
@@ -627,7 +692,9 @@ namespace Hourglass.Timing
             this.title = info.Title;
             this.alwaysOnTop = info.AlwaysOnTop;
             this.promptOnExit = info.PromptOnExit;
+            this.showProgressInTaskbar = info.ShowProgressInTaskbar;
             this.doNotKeepComputerAwake = info.DoNotKeepComputerAwake;
+            this.reverseProgressBar = info.ReverseProgressBar;
             this.showTimeElapsed = info.ShowTimeElapsed;
             this.loopTimer = info.LoopTimer;
             this.popUpWhenExpired = info.PopUpWhenExpired;
@@ -644,7 +711,9 @@ namespace Hourglass.Timing
                 "Title",
                 "AlwaysOnTop",
                 "PromptOnExit",
+                "ShowProgressInTaskbar",
                 "DoNotKeepComputerAwake",
+                "ReverseProgressBar",
                 "ShowTimeElapsed",
                 "LoopTimer",
                 "PopUpWhenExpired",
@@ -669,7 +738,9 @@ namespace Hourglass.Timing
                 Title = this.title,
                 AlwaysOnTop = this.alwaysOnTop,
                 PromptOnExit = this.promptOnExit,
+                ShowProgressInTaskbar = this.showProgressInTaskbar,
                 DoNotKeepComputerAwake = this.doNotKeepComputerAwake,
+                ReverseProgressBar = this.reverseProgressBar,
                 ShowTimeElapsed = this.showTimeElapsed,
                 LoopTimer = this.loopTimer,
                 PopUpWhenExpired = this.popUpWhenExpired,

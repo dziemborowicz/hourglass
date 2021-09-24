@@ -54,6 +54,13 @@ Options:
         Default value   last
         Alias           -o
 
+  --show-progress-in-taskbar on|off|last
+        Shows progress in taskbar.
+
+        Required        no
+        Default value   last
+        Alias           -y
+
   --do-not-keep-awake on|off|last
         Do not keep the computer awake while the timer is running.
 
@@ -67,6 +74,13 @@ Options:
         Required        no
         Default value   last
         Alias           -n
+
+  --reverse-progress-bar on|off|last
+        Reverses the direction of the progress bar, causing it to run backwards.
+
+        Required        no
+        Default value   last
+        Alias           -g
 
   --show-time-elapsed on|off|last
         Shows the time elapsed since the timer was started, rather than the
@@ -146,10 +160,26 @@ Options:
         Default value   last
         Alias           -v
 
-  --window-title app|left|elapsed|title|last
+  --prefer-24h-time on|off|last
+        When the input used to start the timer contains a time of day that does
+        not explicitly specify "am" or "pm", prefer interpreting the input as a
+        24-hour time rather than the closest 12-hour time to the current time.
+
+        For example, if the current time is 3:00 pm (15:00) and the input is
+        "until 05:00" the timer will --
+        - if this setting is on, count down until 5:00 am (05:00); or
+        - if this setting is off, count down until 5:00 pm (17:00).
+
+        Required        no
+        Default value   last
+        Alias           -j
+
+  --window-title none|app|left|elapsed|title|last
         Sets the timer window title.
 
         The options are:
+
+            none            Hides the timer window title bar.
 
             app             Application name
 
@@ -220,6 +250,7 @@ Options:
             --show-in-notification-area     off
             --show-time-elapsed             off
             --loop-timer                    off
+            --show-progress-in-taskbar      on
             --pop-up-when-expired           on
             --close-when-expired            off
             --shut-down-when-expired        off
@@ -227,6 +258,7 @@ Options:
             --sound                         normal beep
             --loop-sound                    off
             --open-saved-timers             off
+            --prefer-24h-time               off
             --window-state                  normal
             --window-bounds                 auto,auto,350,150
             --lock-interface                off

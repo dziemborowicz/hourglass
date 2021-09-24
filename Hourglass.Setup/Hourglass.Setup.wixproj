@@ -28,6 +28,10 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <SignCabs>true</SignCabs>
     <SignOutput>true</SignOutput>
   </PropertyGroup>
@@ -52,15 +56,15 @@
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <Target Name="SignCabs">
-    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 CE0BA5E4B388D469012D010B514D493DBA91B022 /t http://timestamp.comodoca.com/authenticode &quot;%(SignCabs.FullPath)&quot;" />
+    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 B77A97E1103C36360CDC8D49CF0D3D5BBBE6827E /t http://timestamp.digicert.com &quot;%(SignCabs.FullPath)&quot;" />
   </Target>
   <Target Name="SignMsi">
-    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 CE0BA5E4B388D469012D010B514D493DBA91B022 /t http://timestamp.comodoca.com/authenticode &quot;%(SignMsi.FullPath)&quot;" />
+    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 B77A97E1103C36360CDC8D49CF0D3D5BBBE6827E /t http://timestamp.digicert.com &quot;%(SignMsi.FullPath)&quot;" />
   </Target>
   <Target Name="SignBundleEngine">
-    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 CE0BA5E4B388D469012D010B514D493DBA91B022 /t http://timestamp.comodoca.com/authenticode &quot;@(SignBundleEngine)&quot;" />
+    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 B77A97E1103C36360CDC8D49CF0D3D5BBBE6827E /t http://timestamp.digicert.com &quot;@(SignBundleEngine)&quot;" />
   </Target>
   <Target Name="SignBundle">
-    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 CE0BA5E4B388D469012D010B514D493DBA91B022 /t http://timestamp.comodoca.com/authenticode &quot;@(SignBundle)&quot;" />
+    <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 B77A97E1103C36360CDC8D49CF0D3D5BBBE6827E /t http://timestamp.digicert.com &quot;@(SignBundle)&quot;" />
   </Target>
 </Project>

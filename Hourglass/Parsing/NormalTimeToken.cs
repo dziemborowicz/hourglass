@@ -27,7 +27,12 @@ namespace Hourglass.Parsing
         /// <summary>
         /// Post meridiem.
         /// </summary>
-        Pm
+        Pm,
+
+        /// <summary>
+        /// Ante or post meridiem, whichever is closest to the current time.
+        /// </summary>
+        Undefined
     }
 
     /// <summary>
@@ -56,37 +61,11 @@ namespace Hourglass.Parsing
         public int Second { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="Hour"/> expressed as a value between 0 and 23 inclusive.
-        /// </summary>
-        public int NormalizedHour
-        {
-            get
-            {
-                this.ThrowIfNotValid();
-
-                // Convert 12 am to 0000h
-                if (this.HourPeriod == HourPeriod.Am && this.Hour == 12)
-                {
-                    return 0;
-                }
-
-                // Convert 1-11 pm to 1300-2300h
-                if (this.HourPeriod == HourPeriod.Pm && this.Hour > 0 && this.Hour < 12)
-                {
-                    return this.Hour + 12;
-                }
-
-                // Other values are already normalized
-                return this.Hour;
-            }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether this token represents midnight.
         /// </summary>
         public bool IsMidnight
         {
-            get { return this.NormalizedHour == 0 && this.Minute == 0 && this.Second == 0; }
+            get { return this.Hour == 12 && this.Minute == 0 && this.Second == 0 && this.HourPeriod == HourPeriod.Am; }
         }
 
         /// <summary>
@@ -94,7 +73,7 @@ namespace Hourglass.Parsing
         /// </summary>
         public bool IsMidday
         {
-            get { return this.NormalizedHour == 12 && this.Minute == 0 && this.Second == 0; }
+            get { return this.Hour == 12 && this.Minute == 0 && this.Second == 0 && this.HourPeriod == HourPeriod.Pm; }
         }
 
         /// <summary>
@@ -126,15 +105,33 @@ namespace Hourglass.Parsing
         {
             this.ThrowIfNotValid();
 
-            DateTime dateTime = new DateTime(
+            DateTime earlyDateTime = new DateTime(
                 datePart.Year,
                 datePart.Month,
                 datePart.Day,
-                this.NormalizedHour,
+                this.Hour == 12 ? 0 : this.Hour,
                 this.Minute,
                 this.Second);
 
-            return dateTime;
+            DateTime lateDateTime = new DateTime(
+                datePart.Year,
+                datePart.Month,
+                datePart.Day,
+                this.Hour < 12 ? this.Hour + 12 : this.Hour,
+                this.Minute,
+                this.Second);
+
+            switch (this.HourPeriod)
+            {
+                case HourPeriod.Am:
+                    return earlyDateTime;
+                case HourPeriod.Pm:
+                    return lateDateTime;
+                case HourPeriod.Undefined:
+                    return earlyDateTime < minDate ? lateDateTime : earlyDateTime;
+            }
+
+            throw new InvalidOperationException();
         }
 
         /// <summary>
@@ -151,13 +148,35 @@ namespace Hourglass.Parsing
                 StringBuilder stringBuilder = new StringBuilder();
 
                 // Hour
+                int adjustedHour;
+                if (Settings.Default.Prefer24HourTime)
+                {
+                    // This class stores its data in 12-hour format, so adust it back to 24-hour time.
+                    if (this.Hour == 12 && this.HourPeriod == HourPeriod.Am)
+                    {
+                        adjustedHour = 0;
+                    }
+                    else if (this.HourPeriod == HourPeriod.Pm)
+                    {
+                        adjustedHour = this.Hour + 12;
+                    }
+                    else
+                    {
+                        adjustedHour = this.Hour;
+                    }
+                }
+                else
+                {
+                    adjustedHour = this.Hour;
+                }
+
                 stringBuilder.AppendFormat(
                     Resources.ResourceManager.GetEffectiveProvider(provider),
                     Resources.ResourceManager.GetString("NormalTimeTokenHourPartFormatString", provider),
-                    this.Hour);
+                    adjustedHour);
 
                 // Minute
-                if (this.Minute != 0 || this.Second != 0)
+                if (this.Minute != 0 || this.Second != 0 || this.HourPeriod == HourPeriod.Undefined || Settings.Default.Prefer24HourTime)
                 {
                     stringBuilder.AppendFormat(
                         Resources.ResourceManager.GetEffectiveProvider(provider),
@@ -175,7 +194,11 @@ namespace Hourglass.Parsing
                 }
 
                 // Hour period
-                if (this.IsMidday)
+                if (Settings.Default.Prefer24HourTime)
+                {
+                    // No suffix when outputting 24-hour time.
+                }
+                else if (this.IsMidday)
                 {
                     stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenMiddaySuffix", provider));
                 }
@@ -187,7 +210,7 @@ namespace Hourglass.Parsing
                 {
                     stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenAmSuffix", provider));
                 }
-                else
+                else if (this.HourPeriod == HourPeriod.Pm)
                 {
                     stringBuilder.Append(Resources.ResourceManager.GetString("NormalTimeTokenPmSuffix", provider));
                 }
@@ -275,7 +298,7 @@ namespace Hourglass.Parsing
                 {
                     timeToken.HourPeriod = HourPeriod.Pm;
                 }
-                else if (match.Groups["military"].Success)
+                else if (match.Groups["military"].Success || Settings.Default.Prefer24HourTime)
                 {
                     if (timeToken.Hour == 0)
                     {
@@ -298,17 +321,14 @@ namespace Hourglass.Parsing
                 }
                 else
                 {
-                    if (timeToken.Hour < 8)
+                    if (timeToken.Hour == 0)
                     {
-                        timeToken.HourPeriod = HourPeriod.Pm;
-                    }
-                    else if (timeToken.Hour < 12)
-                    {
+                        timeToken.Hour = 12;
                         timeToken.HourPeriod = HourPeriod.Am;
                     }
-                    else if (timeToken.Hour == 12)
+                    else if (timeToken.Hour <= 12)
                     {
-                        timeToken.HourPeriod = HourPeriod.Pm;
+                        timeToken.HourPeriod = HourPeriod.Undefined;
                     }
                     else
                     {

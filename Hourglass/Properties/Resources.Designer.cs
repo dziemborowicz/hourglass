@@ -19,7 +19,7 @@ namespace Hourglass.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -269,6 +269,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ma_ximize.
+        /// </summary>
+        internal static string ContextMenuMaximizeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuMaximizeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Minimize.
+        /// </summary>
+        internal static string ContextMenuMinimizeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuMinimizeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _New timer.
         /// </summary>
         internal static string ContextMenuNewTimerMenuItem {
@@ -305,6 +323,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _None.
+        /// </summary>
+        internal static string ContextMenuNoWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuNoWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Open all saved timers.
         /// </summary>
         internal static string ContextMenuOpenAllSavedTimersMenuItem {
@@ -332,6 +359,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prefer 24-_hour time when parsing.
+        /// </summary>
+        internal static string ContextMenuPrefer24HourTimeMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuPrefer24HourTimeMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pro_mpt on exit.
         /// </summary>
         internal static string ContextMenuPromptOnExitMenuItem {
@@ -350,6 +386,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rest_ore.
+        /// </summary>
+        internal static string ContextMenuRestoreMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuRestoreMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Reverse progress bar.
+        /// </summary>
+        internal static string ContextMenuReverseProgressBarMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuReverseProgressBarMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sa_ved timers.
         /// </summary>
         internal static string ContextMenuSavedTimersMenuItem {
@@ -364,6 +418,15 @@ namespace Hourglass.Properties {
         internal static string ContextMenuShowInNotificationAreaMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuShowInNotificationAreaMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show progress in taskbar.
+        /// </summary>
+        internal static string ContextMenuShowProgressInTaskbarMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuShowProgressInTaskbarMenuItem", resourceCulture);
             }
         }
         

@@ -8,6 +8,7 @@ namespace Hourglass.Extensions
 {
     using System;
     using System.Windows;
+    using System.Windows.Interop;
 
     using Hourglass.Windows;
 
@@ -35,6 +36,55 @@ namespace Hourglass.Extensions
     public static class WindowExtensions
     {
         #region Public Methods
+
+        /// <summary>
+        /// Sets the Desktop Window Manager (DWM) non-client rendering attributes on the window to use (or not use)
+        /// immersive dark mode. This method has no effect on versions of windows that do not support it.
+        /// </summary>
+        /// <param name="window">A <see cref="Window"/>.</param>
+        /// <param name="useImmersiveDarkMode">A value indicating whether to use immersive dark mode.</param>
+        /// <returns>A value indicating whether immersive dark mode was successfully applied.</returns>
+        public static bool SetImmersiveDarkMode(this Window window, bool useImmersiveDarkMode)
+        {
+            if (!EnvironmentExtensions.IsWindows10BuildOrNewer(17763))
+            {
+                return false;
+            }
+
+            IntPtr handle = new WindowInteropHelper(window).EnsureHandle();
+
+            var attribute = EnvironmentExtensions.IsWindows10BuildOrNewer(18985)
+                ? DwmWindowAttribute.UseImmersiveDarkMode
+                : DwmWindowAttribute.UseImmersiveDarkModeBefore20H1;
+
+            bool prevUseImmersiveDarkMode;
+            if (NativeMethods.DwmGetWindowAttribute(handle, attribute, out prevUseImmersiveDarkMode, sizeof(int)) != 0)
+            {
+                return false;
+            }
+
+            if (prevUseImmersiveDarkMode == useImmersiveDarkMode)
+            {
+                return true;
+            }
+
+            if (NativeMethods.DwmSetWindowAttribute(handle, attribute, ref useImmersiveDarkMode, sizeof(int)) != 0)
+            {
+                return false;
+            }
+
+            // This hack appears to be the only way to get the non-client area of the window to redraw correctly.
+            if (window.IsVisible)
+            {
+                WindowStyle prevWindowStyle = window.WindowStyle;
+                window.WindowStyle = prevWindowStyle != WindowStyle.None
+                    ? WindowStyle.None
+                    : WindowStyle.SingleBorderWindow;
+                window.WindowStyle = prevWindowStyle;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Returns a new <see cref="Rect"/> with the merged properties of <paramref name="rect"/> and <paramref

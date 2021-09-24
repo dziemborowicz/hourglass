@@ -82,6 +82,11 @@ namespace Hourglass
         public bool PromptOnExit { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether to show progress in the taskbar.
+        /// </summary>
+        public bool ShowProgressInTaskbar { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether to keep the computer awake while the timer is running.
         /// </summary>
         public bool DoNotKeepComputerAwake { get; private set; }
@@ -91,6 +96,11 @@ namespace Hourglass
         /// taskbar.
         /// </summary>
         public bool ShowInNotificationArea { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to reverse the progress bar (count backwards).
+        /// </summary>
+        public bool ReverseProgressBar { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether to show the time elapsed rather than the time left.
@@ -138,6 +148,11 @@ namespace Hourglass
         /// Gets a value indicating whether all saved timers should be opened when the application starts.
         /// </summary>
         public bool OpenSavedTimers { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to prefer interpreting time of day values as 24-hour time.
+        /// </summary>
+        public bool Prefer24HourTime { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating what information to display in the timer window title.
@@ -220,7 +235,9 @@ namespace Hourglass
                 Title = this.Title,
                 AlwaysOnTop = this.AlwaysOnTop,
                 PromptOnExit = this.PromptOnExit,
+                ShowProgressInTaskbar = this.ShowProgressInTaskbar,
                 DoNotKeepComputerAwake = this.DoNotKeepComputerAwake,
+                ReverseProgressBar = this.ReverseProgressBar,
                 ShowTimeElapsed = this.ShowTimeElapsed,
                 LoopTimer = this.LoopTimer,
                 PopUpWhenExpired = this.PopUpWhenExpired,
@@ -267,7 +284,9 @@ namespace Hourglass
                 AlwaysOnTop = options.AlwaysOnTop,
                 IsFullScreen = windowSize.IsFullScreen,
                 PromptOnExit = options.PromptOnExit,
+                ShowProgressInTaskbar = options.ShowProgressInTaskbar,
                 DoNotKeepComputerAwake = options.DoNotKeepComputerAwake,
+                ReverseProgressBar = options.ReverseProgressBar,
                 ShowTimeElapsed = options.ShowTimeElapsed,
                 ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
                 LoopTimer = options.LoopTimer,
@@ -278,6 +297,7 @@ namespace Hourglass
                 Sound = options.Sound,
                 LoopSound = options.LoopSound,
                 OpenSavedTimers = Settings.Default.OpenSavedTimersOnStartup,
+                Prefer24HourTime = Settings.Default.Prefer24HourTime,
                 WindowTitleMode = options.WindowTitleMode,
                 WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
                 RestoreWindowState = windowSize.RestoreWindowState,
@@ -304,7 +324,9 @@ namespace Hourglass
                 AlwaysOnTop = defaultOptions.AlwaysOnTop,
                 IsFullScreen = defaultOptions.WindowSize.IsFullScreen,
                 PromptOnExit = defaultOptions.PromptOnExit,
+                ShowProgressInTaskbar = defaultOptions.ShowProgressInTaskbar,
                 DoNotKeepComputerAwake = defaultOptions.DoNotKeepComputerAwake,
+                ReverseProgressBar = defaultOptions.ReverseProgressBar,
                 ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
                 ShowInNotificationArea = false,
                 LoopTimer = defaultOptions.LoopTimer,
@@ -315,6 +337,7 @@ namespace Hourglass
                 Sound = defaultOptions.Sound,
                 LoopSound = defaultOptions.LoopSound,
                 OpenSavedTimers = false,
+                Prefer24HourTime = false,
                 WindowTitleMode = WindowTitleMode.ApplicationName,
                 WindowState = defaultOptions.WindowSize.WindowState,
                 RestoreWindowState = defaultOptions.WindowSize.RestoreWindowState,
@@ -403,6 +426,19 @@ namespace Hourglass
                         argumentsBasedOnFactoryDefaults.PromptOnExit = promptOnExit;
                         break;
 
+                    case "--show-progress-in-taskbar":
+                    case "-y":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--show-progress-in-taskbar");
+
+                        bool showProgressInTaskbar = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.ShowProgressInTaskbar);
+
+                        argumentsBasedOnMostRecentOptions.ShowProgressInTaskbar = showProgressInTaskbar;
+                        argumentsBasedOnFactoryDefaults.ShowProgressInTaskbar = showProgressInTaskbar;
+                        break;
+
                     case "--do-not-keep-awake":
                     case "-k":
                         ThrowIfDuplicateSwitch(specifiedSwitches, "--do-not-keep-awake");
@@ -414,6 +450,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.DoNotKeepComputerAwake = doNotKeepComputerAwake;
                         argumentsBasedOnFactoryDefaults.DoNotKeepComputerAwake = doNotKeepComputerAwake;
+                        break;
+
+                    case "--reverse-progress-bar":
+                    case "-g":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--reverse-progress-bar");
+
+                        bool reverseProgressBar = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.ReverseProgressBar);
+
+                        argumentsBasedOnMostRecentOptions.ReverseProgressBar = reverseProgressBar;
+                        argumentsBasedOnFactoryDefaults.ReverseProgressBar = reverseProgressBar;
                         break;
 
                     case "--show-time-elapsed":
@@ -543,6 +592,19 @@ namespace Hourglass
 
                         argumentsBasedOnMostRecentOptions.OpenSavedTimers = openSavedTimers;
                         argumentsBasedOnFactoryDefaults.OpenSavedTimers = openSavedTimers;
+                        break;
+
+                    case "--prefer-24h-time":
+                    case "-j":
+                        ThrowIfDuplicateSwitch(specifiedSwitches, "--prefer-24h-time");
+
+                        bool prefer24HourTime = GetBoolValue(
+                            arg,
+                            remainingArgs,
+                            argumentsBasedOnMostRecentOptions.Prefer24HourTime);
+
+                        argumentsBasedOnMostRecentOptions.Prefer24HourTime = prefer24HourTime;
+                        argumentsBasedOnFactoryDefaults.Prefer24HourTime = prefer24HourTime;
                         break;
 
                     case "--window-title":
@@ -845,6 +907,9 @@ namespace Hourglass
 
             switch (value.ToLowerInvariant())
             {
+                case "none":
+                    return WindowTitleMode.None;
+
                 case "app":
                     return WindowTitleMode.ApplicationName;
 

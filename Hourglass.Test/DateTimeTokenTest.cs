@@ -2549,7 +2549,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 1);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 1);
         }
 
         /// <summary>
@@ -2568,7 +2568,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 2);
         }
 
         /// <summary>
@@ -2587,7 +2587,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 3);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 3);
         }
 
         /// <summary>
@@ -2606,7 +2606,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 4);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 4);
         }
 
         /// <summary>
@@ -2625,7 +2625,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 5);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 5);
         }
 
         /// <summary>
@@ -2644,7 +2644,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 6);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 6);
         }
 
         /// <summary>
@@ -2663,7 +2663,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 7);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 7);
         }
 
         /// <summary>
@@ -2682,7 +2682,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 8);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 8);
         }
 
         /// <summary>
@@ -2701,7 +2701,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 9);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 9);
         }
 
         /// <summary>
@@ -2720,7 +2720,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 10);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 10);
         }
 
         /// <summary>
@@ -2739,7 +2739,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Am, expectedHour: 11);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 11);
         }
 
         /// <summary>
@@ -2758,7 +2758,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 12);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 12);
         }
 
         /// <summary>
@@ -3655,7 +3655,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 2, expectedMinute: 30);
         }
 
         /// <summary>
@@ -3902,7 +3902,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 2, expectedMinute: 30);
         }
 
         /// <summary>
@@ -4149,7 +4149,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 2, expectedMinute: 30);
         }
 
         /// <summary>
@@ -4400,7 +4400,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
         }
 
         /// <summary>
@@ -4647,7 +4647,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
         }
 
         /// <summary>
@@ -4894,7 +4894,7 @@ namespace Hourglass.Test
 
             // Assert
             AssertIsEmpty(GetDateToken(actual));
-            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Pm, expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
+            AssertAreEqual(GetTimeToken(actual), expectedHourPeriod: HourPeriod.Undefined, expectedHour: 2, expectedMinute: 30, expectedSecond: 15);
         }
 
         /// <summary>

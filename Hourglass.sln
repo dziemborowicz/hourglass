@@ -24,6 +24,10 @@ Global
 		Release Portable|x86 = Release Portable|x86
 		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|x86 = Release|x86
+		Signed Portable|Mixed Platforms = Signed Portable|Mixed Platforms
+		Signed Portable|x86 = Signed Portable|x86
+		Signed|Mixed Platforms = Signed|Mixed Platforms
+		Signed|x86 = Signed|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Debug Portable|Mixed Platforms.ActiveCfg = Debug Portable|Any CPU
@@ -38,6 +42,12 @@ Global
 		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Release|x86.ActiveCfg = Release|Any CPU
+		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Signed Portable|Mixed Platforms.ActiveCfg = Signed Portable|Any CPU
+		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Signed Portable|Mixed Platforms.Build.0 = Signed Portable|Any CPU
+		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Signed Portable|x86.ActiveCfg = Signed Portable|Any CPU
+		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Signed|Mixed Platforms.ActiveCfg = Signed|Any CPU
+		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Signed|Mixed Platforms.Build.0 = Signed|Any CPU
+		{4E327D2C-9171-4596-82C5-A9C3CF5028E4}.Signed|x86.ActiveCfg = Signed|Any CPU
 		{CBE74854-0344-4606-A854-BFA719896A98}.Debug Portable|Mixed Platforms.ActiveCfg = Debug Portable|Any CPU
 		{CBE74854-0344-4606-A854-BFA719896A98}.Debug Portable|Mixed Platforms.Build.0 = Debug Portable|Any CPU
 		{CBE74854-0344-4606-A854-BFA719896A98}.Debug Portable|x86.ActiveCfg = Debug Portable|Any CPU
@@ -50,6 +60,12 @@ Global
 		{CBE74854-0344-4606-A854-BFA719896A98}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CBE74854-0344-4606-A854-BFA719896A98}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CBE74854-0344-4606-A854-BFA719896A98}.Release|x86.ActiveCfg = Release|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Signed Portable|Mixed Platforms.ActiveCfg = Signed Portable|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Signed Portable|Mixed Platforms.Build.0 = Signed Portable|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Signed Portable|x86.ActiveCfg = Signed Portable|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Signed|Mixed Platforms.ActiveCfg = Signed|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Signed|Mixed Platforms.Build.0 = Signed|Any CPU
+		{CBE74854-0344-4606-A854-BFA719896A98}.Signed|x86.ActiveCfg = Signed|Any CPU
 		{45E7F177-CA65-468A-B528-330A13D931D4}.Debug Portable|Mixed Platforms.ActiveCfg = Debug|x86
 		{45E7F177-CA65-468A-B528-330A13D931D4}.Debug Portable|x86.ActiveCfg = Debug|x86
 		{45E7F177-CA65-468A-B528-330A13D931D4}.Debug Portable|x86.Build.0 = Debug|x86
@@ -64,6 +80,13 @@ Global
 		{45E7F177-CA65-468A-B528-330A13D931D4}.Release|Mixed Platforms.Build.0 = Release|x86
 		{45E7F177-CA65-468A-B528-330A13D931D4}.Release|x86.ActiveCfg = Release|x86
 		{45E7F177-CA65-468A-B528-330A13D931D4}.Release|x86.Build.0 = Release|x86
+		{45E7F177-CA65-468A-B528-330A13D931D4}.Signed Portable|Mixed Platforms.ActiveCfg = Signed|x86
+		{45E7F177-CA65-468A-B528-330A13D931D4}.Signed Portable|x86.ActiveCfg = Signed|x86
+		{45E7F177-CA65-468A-B528-330A13D931D4}.Signed Portable|x86.Build.0 = Signed|x86
+		{45E7F177-CA65-468A-B528-330A13D931D4}.Signed|Mixed Platforms.ActiveCfg = Signed|x86
+		{45E7F177-CA65-468A-B528-330A13D931D4}.Signed|Mixed Platforms.Build.0 = Signed|x86
+		{45E7F177-CA65-468A-B528-330A13D931D4}.Signed|x86.ActiveCfg = Signed|x86
+		{45E7F177-CA65-468A-B528-330A13D931D4}.Signed|x86.Build.0 = Signed|x86
 		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Debug Portable|Mixed Platforms.ActiveCfg = Debug|x86
 		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Debug Portable|x86.ActiveCfg = Debug|x86
 		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Debug Portable|x86.Build.0 = Debug|x86
@@ -78,6 +101,13 @@ Global
 		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Release|x86.ActiveCfg = Release|x86
 		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Release|x86.Build.0 = Release|x86
+		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Signed Portable|Mixed Platforms.ActiveCfg = Signed|x86
+		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Signed Portable|x86.ActiveCfg = Signed|x86
+		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Signed Portable|x86.Build.0 = Signed|x86
+		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Signed|Mixed Platforms.ActiveCfg = Signed|x86
+		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Signed|Mixed Platforms.Build.0 = Signed|x86
+		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Signed|x86.ActiveCfg = Signed|x86
+		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Signed|x86.Build.0 = Signed|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

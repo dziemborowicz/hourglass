@@ -57,6 +57,11 @@ namespace Hourglass.Windows
         private MenuItem promptOnExitMenuItem;
 
         /// <summary>
+        /// The "Show progress in taskbar" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem showProgressInTaskbarMenuItem;
+
+        /// <summary>
         /// The "Show in notification area" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem showInNotificationAreaMenuItem;
@@ -157,6 +162,16 @@ namespace Hourglass.Windows
         private MenuItem openSavedTimersOnStartupMenuItem;
 
         /// <summary>
+        /// The "Prefer 24-hour time when parsing" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem prefer24HourTimeMenuItem;
+
+        /// <summary>
+        /// The "Reverse progress bar" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem reverseProgressBarMenuItem;
+
+        /// <summary>
         /// The "Show time elapsed" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem showTimeElapsedMenuItem;
@@ -170,6 +185,11 @@ namespace Hourglass.Windows
         /// The "Window title" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem windowTitleMenuItem;
+
+        /// <summary>
+        /// The "None" window title <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem noWindowTitleMenuItem;
 
         /// <summary>
         /// The "Application name" window title <see cref="MenuItem"/>.
@@ -215,6 +235,26 @@ namespace Hourglass.Windows
         /// The "Window title" <see cref="MenuItem"/>s associated with <see cref="WindowTitleMode"/>s.
         /// </summary>
         private IList<MenuItem> selectableWindowTitleMenuItems;
+
+        /// <summary>
+        /// The "Restore" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem restoreMenuItem;
+
+        /// <summary>
+        /// The "Minimize" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem minimizeMenuItem;
+
+        /// <summary>
+        /// The "Maximize" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem maximizeMenuItem;
+
+        /// <summary>
+        /// Separates the "Restore", "Minimize", and "Maximize" menu items from the "Close" menu item.
+        /// </summary>
+        private Separator windowStateItemsSeparator;
 
         /// <summary>
         /// The "Close" <see cref="MenuItem"/>.
@@ -302,6 +342,7 @@ namespace Hourglass.Windows
             this.UpdateSavedTimersMenuItem();
             this.UpdateThemeMenuItem();
             this.UpdateSoundMenuItem();
+            this.UpdateWindowStateMenuItems();
 
             // Update binding
             this.UpdateMenuFromOptions();
@@ -353,6 +394,9 @@ namespace Hourglass.Windows
 
             // Prompt on exit
             this.promptOnExitMenuItem.IsChecked = this.timerWindow.Options.PromptOnExit;
+
+            // Show progress in taskbar
+            this.showProgressInTaskbarMenuItem.IsChecked = this.timerWindow.Options.ShowProgressInTaskbar;
 
             // Show in notification area
             this.showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
@@ -421,6 +465,12 @@ namespace Hourglass.Windows
             // Open saved timers on startup
             this.openSavedTimersOnStartupMenuItem.IsChecked = Settings.Default.OpenSavedTimersOnStartup;
 
+            // Prefer 24-hour time when parsing
+            this.prefer24HourTimeMenuItem.IsChecked = Settings.Default.Prefer24HourTime;
+
+            // Reverse progress bar
+            this.reverseProgressBarMenuItem.IsChecked = this.timerWindow.Options.ReverseProgressBar;
+
             // Show time elapsed
             this.showTimeElapsedMenuItem.IsChecked = this.timerWindow.Options.ShowTimeElapsed;
 
@@ -458,6 +508,9 @@ namespace Hourglass.Windows
             // Prompt on exit
             this.timerWindow.Options.PromptOnExit = this.promptOnExitMenuItem.IsChecked;
 
+            // Show progress in taskbar
+            this.timerWindow.Options.ShowProgressInTaskbar = this.showProgressInTaskbarMenuItem.IsChecked;
+
             // Show in notification area
             Settings.Default.ShowInNotificationArea = this.showInNotificationAreaMenuItem.IsChecked;
 
@@ -488,6 +541,12 @@ namespace Hourglass.Windows
 
             // Open saved timers on startup
             Settings.Default.OpenSavedTimersOnStartup = this.openSavedTimersOnStartupMenuItem.IsChecked;
+
+            // Prefer 24-hour time when parsing
+            Settings.Default.Prefer24HourTime = this.prefer24HourTimeMenuItem.IsChecked;
+
+            // Reverse progress bar
+            this.timerWindow.Options.ReverseProgressBar = this.reverseProgressBarMenuItem.IsChecked;
 
             // Show time elapsed
             this.timerWindow.Options.ShowTimeElapsed = this.showTimeElapsedMenuItem.IsChecked;
@@ -556,6 +615,13 @@ namespace Hourglass.Windows
             this.promptOnExitMenuItem.Click += this.CheckableMenuItemClick;
             this.Items.Add(this.promptOnExitMenuItem);
 
+            // Show progress in taskbar
+            this.showProgressInTaskbarMenuItem = new MenuItem();
+            this.showProgressInTaskbarMenuItem.Header = Properties.Resources.ContextMenuShowProgressInTaskbarMenuItem;
+            this.showProgressInTaskbarMenuItem.IsCheckable = true;
+            this.showProgressInTaskbarMenuItem.Click += this.CheckableMenuItemClick;
+            this.Items.Add(this.showProgressInTaskbarMenuItem);
+
             // Show in notification area
             this.showInNotificationAreaMenuItem = new MenuItem();
             this.showInNotificationAreaMenuItem.Header = Properties.Resources.ContextMenuShowInNotificationAreaMenuItem;
@@ -610,8 +676,7 @@ namespace Hourglass.Windows
             this.soundMenuItem.Header = Properties.Resources.ContextMenuSoundMenuItem;
             this.Items.Add(this.soundMenuItem);
 
-            Separator separator = new Separator();
-            this.Items.Add(separator);
+            this.Items.Add(new Separator());
 
             // Advanced options
             this.advancedOptionsMenuItem = new MenuItem();
@@ -632,6 +697,20 @@ namespace Hourglass.Windows
             this.openSavedTimersOnStartupMenuItem.Click += this.CheckableMenuItemClick;
             this.advancedOptionsMenuItem.Items.Add(this.openSavedTimersOnStartupMenuItem);
 
+            // Prefer 24-hour time when parsing
+            this.prefer24HourTimeMenuItem = new MenuItem();
+            this.prefer24HourTimeMenuItem.Header = Properties.Resources.ContextMenuPrefer24HourTimeMenuItem;
+            this.prefer24HourTimeMenuItem.IsCheckable = true;
+            this.prefer24HourTimeMenuItem.Click += this.CheckableMenuItemClick;
+            this.advancedOptionsMenuItem.Items.Add(this.prefer24HourTimeMenuItem);
+
+            // Reverse progress bar
+            this.reverseProgressBarMenuItem = new MenuItem();
+            this.reverseProgressBarMenuItem.Header = Properties.Resources.ContextMenuReverseProgressBarMenuItem;
+            this.reverseProgressBarMenuItem.IsCheckable = true;
+            this.reverseProgressBarMenuItem.Click += this.CheckableMenuItemClick;
+            this.advancedOptionsMenuItem.Items.Add(this.reverseProgressBarMenuItem);
+
             // Show time elapsed
             this.showTimeElapsedMenuItem = new MenuItem();
             this.showTimeElapsedMenuItem.Header = Properties.Resources.ContextMenuShowTimeElapsedMenuItem;
@@ -650,6 +729,18 @@ namespace Hourglass.Windows
             this.windowTitleMenuItem = new MenuItem();
             this.windowTitleMenuItem.Header = Properties.Resources.ContextMenuWindowTitleMenuItem;
             this.advancedOptionsMenuItem.Items.Add(this.windowTitleMenuItem);
+
+            // No window title
+            this.noWindowTitleMenuItem = new MenuItem();
+            this.noWindowTitleMenuItem.Header = Properties.Resources.ContextMenuNoWindowTitleMenuItem;
+            this.noWindowTitleMenuItem.IsCheckable = true;
+            this.noWindowTitleMenuItem.Tag = WindowTitleMode.None;
+            this.noWindowTitleMenuItem.Click += this.WindowTitleMenuItemClick;
+            this.noWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
+            this.windowTitleMenuItem.Items.Add(this.noWindowTitleMenuItem);
+            this.selectableWindowTitleMenuItems.Add(this.noWindowTitleMenuItem);
+
+            this.windowTitleMenuItem.Items.Add(new Separator());
 
             // Application name (window title)
             this.applicationNameWindowTitleMenuItem = new MenuItem();
@@ -738,6 +829,27 @@ namespace Hourglass.Windows
             this.selectableWindowTitleMenuItems.Add(this.timerTitlePlusTimeElapsedWindowTitleMenuItem);
 
             this.Items.Add(new Separator());
+
+            // Restore
+            this.restoreMenuItem = new MenuItem();
+            this.restoreMenuItem.Header = Properties.Resources.ContextMenuRestoreMenuItem;
+            this.restoreMenuItem.Click += this.RestoreMenuItemClick;
+            this.Items.Add(this.restoreMenuItem);
+
+            // Minimize
+            this.minimizeMenuItem = new MenuItem();
+            this.minimizeMenuItem.Header = Properties.Resources.ContextMenuMinimizeMenuItem;
+            this.minimizeMenuItem.Click += this.MinimizeMenuItemClick;
+            this.Items.Add(this.minimizeMenuItem);
+
+            // Maximize
+            this.maximizeMenuItem = new MenuItem();
+            this.maximizeMenuItem.Header = Properties.Resources.ContextMenuMaximizeMenuItem;
+            this.maximizeMenuItem.Click += this.MaximizeMenuItemClick;
+            this.Items.Add(this.maximizeMenuItem);
+
+            this.windowStateItemsSeparator = new Separator();
+            this.Items.Add(this.windowStateItemsSeparator);
 
             // Close
             this.closeMenuItem = new MenuItem();
@@ -950,12 +1062,22 @@ namespace Hourglass.Windows
 
                 outerBorder.Child = progress;
             }
-            else if (timer.TimeLeftAsPercentage.HasValue)
+            else if (!timer.Options.ReverseProgressBar && timer.TimeLeftAsPercentage.HasValue)
             {
                 Border progress = new Border();
                 progress.Background = timer.Options.Theme.ProgressBarBrush;
                 progress.HorizontalAlignment = HorizontalAlignment.Left;
-                progress.Width = timer.TimeLeftAsPercentage.Value / 100.0 * 16.0;
+                progress.Width = MathExtensions.LimitToRange(timer.TimeLeftAsPercentage.Value / 100.0 * 16.0, 0.0, 16.0);
+                progress.Height = 6;
+
+                outerBorder.Child = progress;
+            }
+            else if (timer.Options.ReverseProgressBar && timer.TimeElapsedAsPercentage.HasValue)
+            {
+                Border progress = new Border();
+                progress.Background = timer.Options.Theme.ProgressBarBrush;
+                progress.HorizontalAlignment = HorizontalAlignment.Left;
+                progress.Width = MathExtensions.LimitToRange(timer.TimeElapsedAsPercentage.Value / 100.0 * 16.0, 0.0, 16.0);
                 progress.Height = 6;
 
                 outerBorder.Child = progress;
@@ -1309,6 +1431,77 @@ namespace Hourglass.Windows
             {
                 menuItem.IsChecked = object.ReferenceEquals(menuItem, sender);
             }
+        }
+
+        #endregion
+
+        #region Private Methods (Window State)
+
+        /// <summary>
+        /// Updates the <see cref="restoreMenuItem"/>, <see cref="minimizeMenuItem"/>, and
+        /// <see cref="maximizeMenuItem"/>.
+        /// </summary>
+        private void UpdateWindowStateMenuItems()
+        {
+            this.restoreMenuItem.IsEnabled = this.timerWindow.WindowState != WindowState.Normal;
+            this.minimizeMenuItem.IsEnabled = this.timerWindow.WindowState != WindowState.Minimized;
+            this.maximizeMenuItem.IsEnabled = this.timerWindow.WindowState != WindowState.Maximized;
+
+            if (this.timerWindow.IsFullScreen || this.timerWindow.Options.WindowTitleMode == WindowTitleMode.None)
+            {
+                // "Restore", "Minimize", and "Maximize" are not on the window, so we provide our own.
+                this.restoreMenuItem.Visibility = Visibility.Visible;
+                this.minimizeMenuItem.Visibility = Visibility.Visible;
+                this.maximizeMenuItem.Visibility = Visibility.Visible;
+                this.windowStateItemsSeparator.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // "Restore", "Minimize", and "Maximize" are on the window, so no need for them here.
+                this.restoreMenuItem.Visibility = Visibility.Collapsed;
+                this.minimizeMenuItem.Visibility = Visibility.Collapsed;
+                this.maximizeMenuItem.Visibility = Visibility.Collapsed;
+                this.windowStateItemsSeparator.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the "Restore" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void RestoreMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            if (this.timerWindow.IsFullScreen)
+            {
+                // Must set the menu item value here, since it will sync to the TimerWindow on menu close.
+                this.fullScreenMenuItem.IsChecked = false;
+                this.timerWindow.IsFullScreen = false;
+            }
+            else
+            {
+                this.timerWindow.WindowState = WindowState.Normal;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the "Minimize" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void MinimizeMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            this.timerWindow.WindowState = WindowState.Minimized;
+        }
+
+        /// <summary>
+        /// Invoked when the "Maximize" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void MaximizeMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            this.timerWindow.WindowState = WindowState.Maximized;
         }
 
         #endregion
