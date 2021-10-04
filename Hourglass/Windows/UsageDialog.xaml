@@ -2,10 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Hourglass"
+        xmlns:properties="clr-namespace:Hourglass.Properties"
         Loaded="WindowLoaded"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
         SnapsToDevicePixels="True"
+        Title="{x:Static properties:Resources.UsageDialogTitle}"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <DockPanel LastChildFill="True">
@@ -17,15 +19,21 @@
                        Foreground="#F5F5F5"
                        Padding="20 20 80 20"/>
             <Border DockPanel.Dock="Bottom" Background="#F9F9F9" BorderBrush="#DDDDDD" BorderThickness="0 1 0 0">
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button x:Name="CloseButton"
-                            Click="CloseButtonClick"
+                <DockPanel LastChildFill="true">
+                    <Button Click="CloseButtonClick"
+                            Content="{x:Static properties:Resources.UsageDialogCloseButtonContent}"
+                            DockPanel.Dock="Right"
+                            IsDefault="True"
+                            IsCancel="True"
                             Margin="10"
                             Width="100"
-                            Height="25"
-                            IsDefault="True"
-                            IsCancel="True"/>
-                </StackPanel>
+                            Height="25"/>
+                    <TextBlock Margin="15 0" VerticalAlignment="Center">
+                        <Hyperlink Click="AboutHourglassHyperlinkClick">
+                            <Run Text="{x:Static properties:Resources.UsageDialogAboutHourglassHyperlinkText}"/>
+                        </Hyperlink>
+                    </TextBlock>
+                </DockPanel>
             </Border>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <TextBox BorderThickness="0"

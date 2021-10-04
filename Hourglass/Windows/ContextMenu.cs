@@ -237,6 +237,11 @@ namespace Hourglass.Windows
         private IList<MenuItem> selectableWindowTitleMenuItems;
 
         /// <summary>
+        /// The "About" <see cref="MenuItem"/>.
+        /// </summary>
+        private MenuItem aboutMenuItem;
+
+        /// <summary>
         /// The "Restore" <see cref="MenuItem"/>.
         /// </summary>
         private MenuItem restoreMenuItem;
@@ -827,6 +832,14 @@ namespace Hourglass.Windows
             this.timerTitlePlusTimeElapsedWindowTitleMenuItem.Click += this.CheckableMenuItemClick;
             this.windowTitleMenuItem.Items.Add(this.timerTitlePlusTimeElapsedWindowTitleMenuItem);
             this.selectableWindowTitleMenuItems.Add(this.timerTitlePlusTimeElapsedWindowTitleMenuItem);
+
+            this.Items.Add(new Separator());
+
+            // About
+            this.aboutMenuItem = new MenuItem();
+            this.aboutMenuItem.Header = Properties.Resources.ContextMenuAboutMenuItem;
+            this.aboutMenuItem.Click += this.AboutMenuItemClick;
+            this.Items.Add(this.aboutMenuItem);
 
             this.Items.Add(new Separator());
 
@@ -1463,6 +1476,16 @@ namespace Hourglass.Windows
                 this.maximizeMenuItem.Visibility = Visibility.Collapsed;
                 this.windowStateItemsSeparator.Visibility = Visibility.Collapsed;
             }
+        }
+
+        /// <summary>
+        /// Invoked when the "About" <see cref="MenuItem"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+        /// <param name="e">The event data.</param>
+        private void AboutMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            AboutDialog.ShowOrActivate();
         }
 
         /// <summary>

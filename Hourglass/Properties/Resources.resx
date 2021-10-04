@@ -777,7 +777,7 @@ $</value>
     <comment>A format string for the error message displayed when a command-line argument switch is unrecognized, where {0} is the unrecognized switch (e.g., "Unrecognized switch '{0}'." =&gt; "Unrecognized switch '--junk'.")</comment>
   </data>
   <data name="ContextMenuAlwaysOnTopMenuItem" xml:space="preserve">
-    <value>_Always on top</value>
+    <value>Al_ways on top</value>
     <comment>The text for the always on top menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuClearRecentInputsMenuItem" xml:space="preserve">
@@ -1260,5 +1260,40 @@ $</value>
   <data name="ContextMenuPrefer24HourTimeMenuItem" xml:space="preserve">
     <value>Prefer 24-_hour time when parsing</value>
     <comment>The text for the prefer 24-hour time when parsing menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuAboutMenuItem" xml:space="preserve">
+    <value>_About</value>
+    <comment>The text for the about menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="License" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\License.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="AboutDialogCloseButtonContent" xml:space="preserve">
+    <value>_Close</value>
+    <comment>The text for the close button in the about dialog, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="AboutDialogContributeOnGitHub" xml:space="preserve">
+    <value>Contribute on GitHub:</value>
+    <comment>The label used as a heading above the app GitHub address in the about dialog</comment>
+  </data>
+  <data name="AboutDialogLicense" xml:space="preserve">
+    <value>License:</value>
+    <comment>The label used as a heading above the app license text box in the about dialog</comment>
+  </data>
+  <data name="AboutDialogMoreInformation" xml:space="preserve">
+    <value>More information:</value>
+    <comment>The label used as a heading above the app website address in the about dialog</comment>
+  </data>
+  <data name="AboutDialogTitle" xml:space="preserve">
+    <value>About Hourglass</value>
+    <comment>The window title for the about dialog</comment>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Hourglass</value>
+    <comment>The name of the app</comment>
+  </data>
+  <data name="UsageDialogAboutHourglassHyperlinkText" xml:space="preserve">
+    <value>About Hourglass</value>
+    <comment>The text for the hyperlink that launches the about dialog from the usage dialog</comment>
   </data>
 </root>
