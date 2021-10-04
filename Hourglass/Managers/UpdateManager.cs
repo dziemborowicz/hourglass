@@ -191,7 +191,7 @@ namespace Hourglass.Managers
                 return false;
             }
 
-            this.OnPropertyChanged("LatestVersion", "UpdateUri");
+            this.OnPropertyChanged("HasUpdates", "LatestVersion", "UpdateUri");
             return true;
         }
     }

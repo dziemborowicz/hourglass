@@ -1996,6 +1996,7 @@ namespace Hourglass.Windows
 
             Settings.Default.WindowSize = WindowSize.FromWindow(this /* window */);
 
+            UpdateManager.Instance.PropertyChanged -= this.UpdateManagerPropertyChanged;
             KeepAwakeManager.Instance.StopKeepAwakeFor(this);
             AppManager.Instance.Persist();
         }

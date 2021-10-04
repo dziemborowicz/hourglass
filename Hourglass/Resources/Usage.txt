@@ -187,11 +187,11 @@ Options:
             elapsed         Time elapsed
             title           Timer title
 
-            left+title      Time remaining · Timer title
-            elapsed+title   Time elapsed · Timer title
+            left+title      Time remaining ï¿½ Timer title
+            elapsed+title   Time elapsed ï¿½ Timer title
 
-            title+left      Timer title · Time remaining
-            title+elapsed   Timer title · Time elapsed
+            title+left      Timer title ï¿½ Time remaining
+            title+elapsed   Timer title ï¿½ Time elapsed
 
         Required        no
         Default value   last
@@ -246,11 +246,12 @@ Options:
             --always-on-top                 off
             --full-screen                   off
             --prompt-on-exit                on
+            --show-progress-in-taskbar      on
             --do-not-keep-awake             off
             --show-in-notification-area     off
+            --reverse-progress-bar          off
             --show-time-elapsed             off
             --loop-timer                    off
-            --show-progress-in-taskbar      on
             --pop-up-when-expired           on
             --close-when-expired            off
             --shut-down-when-expired        off
@@ -259,6 +260,7 @@ Options:
             --loop-sound                    off
             --open-saved-timers             off
             --prefer-24h-time               off
+            --window-title                  app
             --window-state                  normal
             --window-bounds                 auto,auto,350,150
             --lock-interface                off

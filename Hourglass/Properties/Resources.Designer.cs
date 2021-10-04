@@ -22,7 +22,7 @@ namespace Hourglass.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Hourglass.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Hourglass.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Hourglass.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,54 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Close.
+        /// </summary>
+        public static string AboutDialogCloseButtonContent {
+            get {
+                return ResourceManager.GetString("AboutDialogCloseButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contribute on GitHub:.
+        /// </summary>
+        public static string AboutDialogContributeOnGitHub {
+            get {
+                return ResourceManager.GetString("AboutDialogContributeOnGitHub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License:.
+        /// </summary>
+        public static string AboutDialogLicense {
+            get {
+                return ResourceManager.GetString("AboutDialogLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More information:.
+        /// </summary>
+        public static string AboutDialogMoreInformation {
+            get {
+                return ResourceManager.GetString("AboutDialogMoreInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About Hourglass.
+        /// </summary>
+        public static string AboutDialogTitle {
+            get {
+                return ResourceManager.GetString("AboutDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon AppIcon {
+        public static System.Drawing.Icon AppIcon {
             get {
                 object obj = ResourceManager.GetObject("AppIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -71,9 +116,18 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hourglass.
+        /// </summary>
+        public static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream BeepLoud {
+        public static System.IO.UnmanagedMemoryStream BeepLoud {
             get {
                 return ResourceManager.GetStream("BeepLoud", resourceCulture);
             }
@@ -82,7 +136,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream BeepNormal {
+        public static System.IO.UnmanagedMemoryStream BeepNormal {
             get {
                 return ResourceManager.GetStream("BeepNormal", resourceCulture);
             }
@@ -91,7 +145,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream BeepQuiet {
+        public static System.IO.UnmanagedMemoryStream BeepQuiet {
             get {
                 return ResourceManager.GetStream("BeepQuiet", resourceCulture);
             }
@@ -100,7 +154,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Duplicate switch &quot;{0}&quot;.
         /// </summary>
-        internal static string CommandLineArgumentsParseExceptionDuplicateSwitchFormatString {
+        public static string CommandLineArgumentsParseExceptionDuplicateSwitchFormatString {
             get {
                 return ResourceManager.GetString("CommandLineArgumentsParseExceptionDuplicateSwitchFormatString", resourceCulture);
             }
@@ -109,7 +163,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Invalid timer input &quot;{0}&quot;.
         /// </summary>
-        internal static string CommandLineArgumentsParseExceptionInvalidTimerInputFormatString {
+        public static string CommandLineArgumentsParseExceptionInvalidTimerInputFormatString {
             get {
                 return ResourceManager.GetString("CommandLineArgumentsParseExceptionInvalidTimerInputFormatString", resourceCulture);
             }
@@ -118,7 +172,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Invalid value &quot;{1}&quot; for switch &quot;{0}&quot;.
         /// </summary>
-        internal static string CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString {
+        public static string CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString {
             get {
                 return ResourceManager.GetString("CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString", resourceCulture);
             }
@@ -127,7 +181,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Missing value for switch &quot;{0}&quot;.
         /// </summary>
-        internal static string CommandLineArgumentsParseExceptionMissingValueForSwitchFormatString {
+        public static string CommandLineArgumentsParseExceptionMissingValueForSwitchFormatString {
             get {
                 return ResourceManager.GetString("CommandLineArgumentsParseExceptionMissingValueForSwitchFormatString", resourceCulture);
             }
@@ -136,25 +190,34 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Unrecognized switch &quot;{0}&quot;.
         /// </summary>
-        internal static string CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString {
+        public static string CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString {
             get {
                 return ResourceManager.GetString("CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _About.
+        /// </summary>
+        public static string ContextMenuAboutMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuAboutMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced options.
         /// </summary>
-        internal static string ContextMenuAdvancedOptionsMenuItem {
+        public static string ContextMenuAdvancedOptionsMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuAdvancedOptionsMenuItem", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Always on top.
+        ///   Looks up a localized string similar to Al_ways on top.
         /// </summary>
-        internal static string ContextMenuAlwaysOnTopMenuItem {
+        public static string ContextMenuAlwaysOnTopMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuAlwaysOnTopMenuItem", resourceCulture);
             }
@@ -163,7 +226,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Application name.
         /// </summary>
-        internal static string ContextMenuApplicationNameWindowTitleMenuItem {
+        public static string ContextMenuApplicationNameWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuApplicationNameWindowTitleMenuItem", resourceCulture);
             }
@@ -172,7 +235,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Clear recent inputs.
         /// </summary>
-        internal static string ContextMenuClearRecentInputsMenuItem {
+        public static string ContextMenuClearRecentInputsMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuClearRecentInputsMenuItem", resourceCulture);
             }
@@ -181,7 +244,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Clear saved timers.
         /// </summary>
-        internal static string ContextMenuClearSavedTimersMenuItem {
+        public static string ContextMenuClearSavedTimersMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuClearSavedTimersMenuItem", resourceCulture);
             }
@@ -190,7 +253,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Close.
         /// </summary>
-        internal static string ContextMenuCloseMenuItem {
+        public static string ContextMenuCloseMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuCloseMenuItem", resourceCulture);
             }
@@ -199,7 +262,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Close when _expired.
         /// </summary>
-        internal static string ContextMenuCloseWhenExpiredMenuItem {
+        public static string ContextMenuCloseWhenExpiredMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuCloseWhenExpiredMenuItem", resourceCulture);
             }
@@ -208,7 +271,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Dark theme.
         /// </summary>
-        internal static string ContextMenuDarkThemeMenuItem {
+        public static string ContextMenuDarkThemeMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuDarkThemeMenuItem", resourceCulture);
             }
@@ -217,7 +280,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Do not _keep computer awake.
         /// </summary>
-        internal static string ContextMenuDoNotKeepComputerAwakeMenuItem {
+        public static string ContextMenuDoNotKeepComputerAwakeMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuDoNotKeepComputerAwakeMenuItem", resourceCulture);
             }
@@ -226,7 +289,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Full screen.
         /// </summary>
-        internal static string ContextMenuFullScreenMenuItem {
+        public static string ContextMenuFullScreenMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuFullScreenMenuItem", resourceCulture);
             }
@@ -235,7 +298,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Light theme.
         /// </summary>
-        internal static string ContextMenuLightThemeMenuItem {
+        public static string ContextMenuLightThemeMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuLightThemeMenuItem", resourceCulture);
             }
@@ -244,7 +307,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Loop sound.
         /// </summary>
-        internal static string ContextMenuLoopSoundMenuItem {
+        public static string ContextMenuLoopSoundMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuLoopSoundMenuItem", resourceCulture);
             }
@@ -253,7 +316,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Loop timer.
         /// </summary>
-        internal static string ContextMenuLoopTimerMenuItem {
+        public static string ContextMenuLoopTimerMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuLoopTimerMenuItem", resourceCulture);
             }
@@ -262,7 +325,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Manage themes....
         /// </summary>
-        internal static string ContextMenuManageThemesMenuItem {
+        public static string ContextMenuManageThemesMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuManageThemesMenuItem", resourceCulture);
             }
@@ -271,7 +334,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ma_ximize.
         /// </summary>
-        internal static string ContextMenuMaximizeMenuItem {
+        public static string ContextMenuMaximizeMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuMaximizeMenuItem", resourceCulture);
             }
@@ -280,7 +343,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Minimize.
         /// </summary>
-        internal static string ContextMenuMinimizeMenuItem {
+        public static string ContextMenuMinimizeMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuMinimizeMenuItem", resourceCulture);
             }
@@ -289,7 +352,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _New timer.
         /// </summary>
-        internal static string ContextMenuNewTimerMenuItem {
+        public static string ContextMenuNewTimerMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuNewTimerMenuItem", resourceCulture);
             }
@@ -298,7 +361,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to No recent inputs.
         /// </summary>
-        internal static string ContextMenuNoRecentInputsMenuItem {
+        public static string ContextMenuNoRecentInputsMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuNoRecentInputsMenuItem", resourceCulture);
             }
@@ -307,7 +370,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to No saved timers.
         /// </summary>
-        internal static string ContextMenuNoSavedTimersMenuItem {
+        public static string ContextMenuNoSavedTimersMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuNoSavedTimersMenuItem", resourceCulture);
             }
@@ -316,7 +379,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _No sound.
         /// </summary>
-        internal static string ContextMenuNoSoundMenuItem {
+        public static string ContextMenuNoSoundMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuNoSoundMenuItem", resourceCulture);
             }
@@ -325,7 +388,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _None.
         /// </summary>
-        internal static string ContextMenuNoWindowTitleMenuItem {
+        public static string ContextMenuNoWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuNoWindowTitleMenuItem", resourceCulture);
             }
@@ -334,7 +397,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Open all saved timers.
         /// </summary>
-        internal static string ContextMenuOpenAllSavedTimersMenuItem {
+        public static string ContextMenuOpenAllSavedTimersMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuOpenAllSavedTimersMenuItem", resourceCulture);
             }
@@ -343,7 +406,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Open saved timers on startup.
         /// </summary>
-        internal static string ContextMenuOpenSavedTimersOnStartupMenuItem {
+        public static string ContextMenuOpenSavedTimersOnStartupMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuOpenSavedTimersOnStartupMenuItem", resourceCulture);
             }
@@ -352,7 +415,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Pop up when expired.
         /// </summary>
-        internal static string ContextMenuPopUpWhenExpiredMenuItem {
+        public static string ContextMenuPopUpWhenExpiredMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuPopUpWhenExpiredMenuItem", resourceCulture);
             }
@@ -361,7 +424,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Prefer 24-_hour time when parsing.
         /// </summary>
-        internal static string ContextMenuPrefer24HourTimeMenuItem {
+        public static string ContextMenuPrefer24HourTimeMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuPrefer24HourTimeMenuItem", resourceCulture);
             }
@@ -370,7 +433,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Pro_mpt on exit.
         /// </summary>
-        internal static string ContextMenuPromptOnExitMenuItem {
+        public static string ContextMenuPromptOnExitMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuPromptOnExitMenuItem", resourceCulture);
             }
@@ -379,7 +442,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Recent inputs.
         /// </summary>
-        internal static string ContextMenuRecentInputsMenuItem {
+        public static string ContextMenuRecentInputsMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuRecentInputsMenuItem", resourceCulture);
             }
@@ -388,7 +451,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Rest_ore.
         /// </summary>
-        internal static string ContextMenuRestoreMenuItem {
+        public static string ContextMenuRestoreMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuRestoreMenuItem", resourceCulture);
             }
@@ -397,7 +460,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Reverse progress bar.
         /// </summary>
-        internal static string ContextMenuReverseProgressBarMenuItem {
+        public static string ContextMenuReverseProgressBarMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuReverseProgressBarMenuItem", resourceCulture);
             }
@@ -406,7 +469,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Sa_ved timers.
         /// </summary>
-        internal static string ContextMenuSavedTimersMenuItem {
+        public static string ContextMenuSavedTimersMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuSavedTimersMenuItem", resourceCulture);
             }
@@ -415,7 +478,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to S_how in notification area.
         /// </summary>
-        internal static string ContextMenuShowInNotificationAreaMenuItem {
+        public static string ContextMenuShowInNotificationAreaMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuShowInNotificationAreaMenuItem", resourceCulture);
             }
@@ -424,7 +487,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Show progress in taskbar.
         /// </summary>
-        internal static string ContextMenuShowProgressInTaskbarMenuItem {
+        public static string ContextMenuShowProgressInTaskbarMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuShowProgressInTaskbarMenuItem", resourceCulture);
             }
@@ -433,7 +496,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Show time elapsed instead of time left.
         /// </summary>
-        internal static string ContextMenuShowTimeElapsedMenuItem {
+        public static string ContextMenuShowTimeElapsedMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuShowTimeElapsedMenuItem", resourceCulture);
             }
@@ -442,7 +505,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Shut _down when expired.
         /// </summary>
-        internal static string ContextMenuShutDownWhenExpiredMenuItem {
+        public static string ContextMenuShutDownWhenExpiredMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuShutDownWhenExpiredMenuItem", resourceCulture);
             }
@@ -451,7 +514,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Sound.
         /// </summary>
-        internal static string ContextMenuSoundMenuItem {
+        public static string ContextMenuSoundMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuSoundMenuItem", resourceCulture);
             }
@@ -460,7 +523,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Theme.
         /// </summary>
-        internal static string ContextMenuThemeMenuItem {
+        public static string ContextMenuThemeMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuThemeMenuItem", resourceCulture);
             }
@@ -469,7 +532,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Time ela_psed · Timer title.
         /// </summary>
-        internal static string ContextMenuTimeElapsedPlusTimerTitleWindowTitleMenuItem {
+        public static string ContextMenuTimeElapsedPlusTimerTitleWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuTimeElapsedPlusTimerTitleWindowTitleMenuItem", resourceCulture);
             }
@@ -478,7 +541,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Time _elapsed.
         /// </summary>
-        internal static string ContextMenuTimeElapsedWindowTitleMenuItem {
+        public static string ContextMenuTimeElapsedWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuTimeElapsedWindowTitleMenuItem", resourceCulture);
             }
@@ -487,7 +550,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Time le_ft · Timer title.
         /// </summary>
-        internal static string ContextMenuTimeLeftPlusTimerTitleWindowTitleMenuItem {
+        public static string ContextMenuTimeLeftPlusTimerTitleWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuTimeLeftPlusTimerTitleWindowTitleMenuItem", resourceCulture);
             }
@@ -496,7 +559,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Time _left.
         /// </summary>
-        internal static string ContextMenuTimeLeftWindowTitleMenuItem {
+        public static string ContextMenuTimeLeftWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuTimeLeftWindowTitleMenuItem", resourceCulture);
             }
@@ -505,7 +568,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ti_mer title · Time elapsed.
         /// </summary>
-        internal static string ContextMenuTimerTitlePlusTimeElapsedWindowTitleMenuItem {
+        public static string ContextMenuTimerTitlePlusTimeElapsedWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuTimerTitlePlusTimeElapsedWindowTitleMenuItem", resourceCulture);
             }
@@ -514,7 +577,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to T_imer title · Time left.
         /// </summary>
-        internal static string ContextMenuTimerTitlePlusTimeLeftWindowTitleMenuItem {
+        public static string ContextMenuTimerTitlePlusTimeLeftWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuTimerTitlePlusTimeLeftWindowTitleMenuItem", resourceCulture);
             }
@@ -523,7 +586,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Timer _title.
         /// </summary>
-        internal static string ContextMenuTimerTitleWindowTitleMenuItem {
+        public static string ContextMenuTimerTitleWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuTimerTitleWindowTitleMenuItem", resourceCulture);
             }
@@ -532,7 +595,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Unnamed theme.
         /// </summary>
-        internal static string ContextMenuUnnamedTheme {
+        public static string ContextMenuUnnamedTheme {
             get {
                 return ResourceManager.GetString("ContextMenuUnnamedTheme", resourceCulture);
             }
@@ -541,7 +604,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Window title.
         /// </summary>
-        internal static string ContextMenuWindowTitleMenuItem {
+        public static string ContextMenuWindowTitleMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuWindowTitleMenuItem", resourceCulture);
             }
@@ -550,7 +613,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to en-US.
         /// </summary>
-        internal static string CultureName {
+        public static string CultureName {
             get {
                 return ResourceManager.GetString("CultureName", resourceCulture);
             }
@@ -559,7 +622,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to April.
         /// </summary>
-        internal static string DateTimeExtensionsApril {
+        public static string DateTimeExtensionsApril {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsApril", resourceCulture);
             }
@@ -568,7 +631,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to August.
         /// </summary>
-        internal static string DateTimeExtensionsAugust {
+        public static string DateTimeExtensionsAugust {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsAugust", resourceCulture);
             }
@@ -577,7 +640,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to December.
         /// </summary>
-        internal static string DateTimeExtensionsDecember {
+        public static string DateTimeExtensionsDecember {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsDecember", resourceCulture);
             }
@@ -586,7 +649,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to February.
         /// </summary>
-        internal static string DateTimeExtensionsFebruary {
+        public static string DateTimeExtensionsFebruary {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsFebruary", resourceCulture);
             }
@@ -595,7 +658,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to January.
         /// </summary>
-        internal static string DateTimeExtensionsJanuary {
+        public static string DateTimeExtensionsJanuary {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsJanuary", resourceCulture);
             }
@@ -604,7 +667,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to July.
         /// </summary>
-        internal static string DateTimeExtensionsJuly {
+        public static string DateTimeExtensionsJuly {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsJuly", resourceCulture);
             }
@@ -613,7 +676,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to June.
         /// </summary>
-        internal static string DateTimeExtensionsJune {
+        public static string DateTimeExtensionsJune {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsJune", resourceCulture);
             }
@@ -622,7 +685,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to March.
         /// </summary>
-        internal static string DateTimeExtensionsMarch {
+        public static string DateTimeExtensionsMarch {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsMarch", resourceCulture);
             }
@@ -631,7 +694,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to May.
         /// </summary>
-        internal static string DateTimeExtensionsMay {
+        public static string DateTimeExtensionsMay {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsMay", resourceCulture);
             }
@@ -640,7 +703,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}nd.
         /// </summary>
-        internal static string DateTimeExtensionsNndFormatString {
+        public static string DateTimeExtensionsNndFormatString {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsNndFormatString", resourceCulture);
             }
@@ -649,7 +712,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to November.
         /// </summary>
-        internal static string DateTimeExtensionsNovember {
+        public static string DateTimeExtensionsNovember {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsNovember", resourceCulture);
             }
@@ -658,7 +721,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}rd.
         /// </summary>
-        internal static string DateTimeExtensionsNrdFormatString {
+        public static string DateTimeExtensionsNrdFormatString {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsNrdFormatString", resourceCulture);
             }
@@ -667,7 +730,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}st.
         /// </summary>
-        internal static string DateTimeExtensionsNstFormatString {
+        public static string DateTimeExtensionsNstFormatString {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsNstFormatString", resourceCulture);
             }
@@ -676,7 +739,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}th.
         /// </summary>
-        internal static string DateTimeExtensionsNthFormatString {
+        public static string DateTimeExtensionsNthFormatString {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsNthFormatString", resourceCulture);
             }
@@ -685,7 +748,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to October.
         /// </summary>
-        internal static string DateTimeExtensionsOctober {
+        public static string DateTimeExtensionsOctober {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsOctober", resourceCulture);
             }
@@ -694,7 +757,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to September.
         /// </summary>
-        internal static string DateTimeExtensionsSeptember {
+        public static string DateTimeExtensionsSeptember {
             get {
                 return ResourceManager.GetString("DateTimeExtensionsSeptember", resourceCulture);
             }
@@ -703,7 +766,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}.
         /// </summary>
-        internal static string DateTimeTokenDateOnlyFormatString {
+        public static string DateTimeTokenDateOnlyFormatString {
             get {
                 return ResourceManager.GetString("DateTimeTokenDateOnlyFormatString", resourceCulture);
             }
@@ -712,7 +775,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ^({0})$.
         /// </summary>
-        internal static string DateTimeTokenDateOnlyPatternFormatString {
+        public static string DateTimeTokenDateOnlyPatternFormatString {
             get {
                 return ResourceManager.GetString("DateTimeTokenDateOnlyPatternFormatString", resourceCulture);
             }
@@ -721,7 +784,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} at {1}.
         /// </summary>
-        internal static string DateTimeTokenDateTimeFormatString {
+        public static string DateTimeTokenDateTimeFormatString {
             get {
                 return ResourceManager.GetString("DateTimeTokenDateTimeFormatString", resourceCulture);
             }
@@ -730,7 +793,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ^({0})\s+(at\s+)?({1})$.
         /// </summary>
-        internal static string DateTimeTokenDateTimePatternFormatString {
+        public static string DateTimeTokenDateTimePatternFormatString {
             get {
                 return ResourceManager.GetString("DateTimeTokenDateTimePatternFormatString", resourceCulture);
             }
@@ -739,7 +802,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ^({0})\s+(on\s+)?({1})$.
         /// </summary>
-        internal static string DateTimeTokenTimeDatePatternFormatString {
+        public static string DateTimeTokenTimeDatePatternFormatString {
             get {
                 return ResourceManager.GetString("DateTimeTokenTimeDatePatternFormatString", resourceCulture);
             }
@@ -748,7 +811,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to until {0}.
         /// </summary>
-        internal static string DateTimeTokenTimeOnlyFormatString {
+        public static string DateTimeTokenTimeOnlyFormatString {
             get {
                 return ResourceManager.GetString("DateTimeTokenTimeOnlyFormatString", resourceCulture);
             }
@@ -757,7 +820,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ^({0})$.
         /// </summary>
-        internal static string DateTimeTokenTimeOnlyPatternFormatString {
+        public static string DateTimeTokenTimeOnlyPatternFormatString {
             get {
                 return ResourceManager.GetString("DateTimeTokenTimeOnlyPatternFormatString", resourceCulture);
             }
@@ -766,7 +829,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} after next.
         /// </summary>
-        internal static string DayOfWeekDateTokenAfterNextFormatString {
+        public static string DayOfWeekDateTokenAfterNextFormatString {
             get {
                 return ResourceManager.GetString("DayOfWeekDateTokenAfterNextFormatString", resourceCulture);
             }
@@ -777,7 +840,7 @@ namespace Hourglass.Properties {
         ///(\s*after)?
         ///\s*(?&lt;afternext&gt;next).
         /// </summary>
-        internal static string DayOfWeekDateTokenDaysOfWeekAfterNextPattern {
+        public static string DayOfWeekDateTokenDaysOfWeekAfterNextPattern {
             get {
                 return ResourceManager.GetString("DayOfWeekDateTokenDaysOfWeekAfterNextPattern", resourceCulture);
             }
@@ -787,7 +850,7 @@ namespace Hourglass.Properties {
         ///   Looks up a localized string similar to ((this|next)\s*)?
         ///(?&lt;weekday&gt;(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*).
         /// </summary>
-        internal static string DayOfWeekDateTokenDaysOfWeekNextPattern {
+        public static string DayOfWeekDateTokenDaysOfWeekNextPattern {
             get {
                 return ResourceManager.GetString("DayOfWeekDateTokenDaysOfWeekNextPattern", resourceCulture);
             }
@@ -797,7 +860,7 @@ namespace Hourglass.Properties {
         ///   Looks up a localized string similar to (?&lt;weekday&gt;(Sun|Mon|Tue|Wed|Thu|Fri|Sat)[a-z]*)
         ///\s*(?&lt;nextweek&gt;next\s*w(ee)?k).
         /// </summary>
-        internal static string DayOfWeekDateTokenDaysOfWeekNextWeekPattern {
+        public static string DayOfWeekDateTokenDaysOfWeekNextWeekPattern {
             get {
                 return ResourceManager.GetString("DayOfWeekDateTokenDaysOfWeekNextWeekPattern", resourceCulture);
             }
@@ -806,7 +869,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}.
         /// </summary>
-        internal static string DayOfWeekDateTokenNextFormatString {
+        public static string DayOfWeekDateTokenNextFormatString {
             get {
                 return ResourceManager.GetString("DayOfWeekDateTokenNextFormatString", resourceCulture);
             }
@@ -815,7 +878,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} next week.
         /// </summary>
-        internal static string DayOfWeekDateTokenNextWeekFormatString {
+        public static string DayOfWeekDateTokenNextWeekFormatString {
             get {
                 return ResourceManager.GetString("DayOfWeekDateTokenNextWeekFormatString", resourceCulture);
             }
@@ -824,7 +887,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Friday.
         /// </summary>
-        internal static string DayOfWeekExtensionsFriday {
+        public static string DayOfWeekExtensionsFriday {
             get {
                 return ResourceManager.GetString("DayOfWeekExtensionsFriday", resourceCulture);
             }
@@ -833,7 +896,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Monday.
         /// </summary>
-        internal static string DayOfWeekExtensionsMonday {
+        public static string DayOfWeekExtensionsMonday {
             get {
                 return ResourceManager.GetString("DayOfWeekExtensionsMonday", resourceCulture);
             }
@@ -842,7 +905,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Saturday.
         /// </summary>
-        internal static string DayOfWeekExtensionsSaturday {
+        public static string DayOfWeekExtensionsSaturday {
             get {
                 return ResourceManager.GetString("DayOfWeekExtensionsSaturday", resourceCulture);
             }
@@ -851,7 +914,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Sunday.
         /// </summary>
-        internal static string DayOfWeekExtensionsSunday {
+        public static string DayOfWeekExtensionsSunday {
             get {
                 return ResourceManager.GetString("DayOfWeekExtensionsSunday", resourceCulture);
             }
@@ -860,7 +923,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Thursday.
         /// </summary>
-        internal static string DayOfWeekExtensionsThursday {
+        public static string DayOfWeekExtensionsThursday {
             get {
                 return ResourceManager.GetString("DayOfWeekExtensionsThursday", resourceCulture);
             }
@@ -869,7 +932,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Tuesday.
         /// </summary>
-        internal static string DayOfWeekExtensionsTuesday {
+        public static string DayOfWeekExtensionsTuesday {
             get {
                 return ResourceManager.GetString("DayOfWeekExtensionsTuesday", resourceCulture);
             }
@@ -878,7 +941,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Wednesday.
         /// </summary>
-        internal static string DayOfWeekExtensionsWednesday {
+        public static string DayOfWeekExtensionsWednesday {
             get {
                 return ResourceManager.GetString("DayOfWeekExtensionsWednesday", resourceCulture);
             }
@@ -887,7 +950,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Close.
         /// </summary>
-        internal static string ErrorDialogCloseButtonContent {
+        public static string ErrorDialogCloseButtonContent {
             get {
                 return ResourceManager.GetString("ErrorDialogCloseButtonContent", resourceCulture);
             }
@@ -896,7 +959,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to An unexpected error has occurred.
         /// </summary>
-        internal static string ErrorDialogDefaultMessageText {
+        public static string ErrorDialogDefaultMessageText {
             get {
                 return ResourceManager.GetString("ErrorDialogDefaultMessageText", resourceCulture);
             }
@@ -905,7 +968,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Show details.
         /// </summary>
-        internal static string ErrorDialogShowDetailsButtonContent {
+        public static string ErrorDialogShowDetailsButtonContent {
             get {
                 return ResourceManager.GetString("ErrorDialogShowDetailsButtonContent", resourceCulture);
             }
@@ -914,7 +977,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hourglass.
         /// </summary>
-        internal static string ErrorDialogTitle {
+        public static string ErrorDialogTitle {
             get {
                 return ResourceManager.GetString("ErrorDialogTitle", resourceCulture);
             }
@@ -923,7 +986,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The error has been written to &quot;{0}&quot;..
         /// </summary>
-        internal static string ErrorManagerErrorHasBeenWritten {
+        public static string ErrorManagerErrorHasBeenWritten {
             get {
                 return ResourceManager.GetString("ErrorManagerErrorHasBeenWritten", resourceCulture);
             }
@@ -932,7 +995,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Failed to clean old error messages..
         /// </summary>
-        internal static string ErrorManagerFailedToClean {
+        public static string ErrorManagerFailedToClean {
             get {
                 return ResourceManager.GetString("ErrorManagerFailedToClean", resourceCulture);
             }
@@ -941,16 +1004,31 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to An unexpected error has occurred.
         /// </summary>
-        internal static string ErrorManagerUnexpectedError {
+        public static string ErrorManagerUnexpectedError {
             get {
                 return ResourceManager.GetString("ErrorManagerUnexpectedError", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MIT License
+        ///
+        ///Copyright © 2021 Chris Dziemborowicz
+        ///
+        ///Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+        ///
+        ///The above copyright n [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string License {
+            get {
+                return ResourceManager.GetString("License", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hourglass.
         /// </summary>
-        internal static string MessageBoxTitle {
+        public static string MessageBoxTitle {
             get {
                 return ResourceManager.GetString("MessageBoxTitle", resourceCulture);
             }
@@ -959,7 +1037,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} {1}.
         /// </summary>
-        internal static string NormalDateTokenDayAndMonthFormatString {
+        public static string NormalDateTokenDayAndMonthFormatString {
             get {
                 return ResourceManager.GetString("NormalDateTokenDayAndMonthFormatString", resourceCulture);
             }
@@ -968,7 +1046,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} {1} {2}.
         /// </summary>
-        internal static string NormalDateTokenDayMonthAndYearFormatString {
+        public static string NormalDateTokenDayMonthAndYearFormatString {
             get {
                 return ResourceManager.GetString("NormalDateTokenDayMonthAndYearFormatString", resourceCulture);
             }
@@ -977,7 +1055,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}.
         /// </summary>
-        internal static string NormalDateTokenDayOnlyFormatString {
+        public static string NormalDateTokenDayOnlyFormatString {
             get {
                 return ResourceManager.GetString("NormalDateTokenDayOnlyFormatString", resourceCulture);
             }
@@ -988,7 +1066,7 @@ namespace Hourglass.Properties {
         ///(?&lt;day&gt;\d\d?)
         ///(\s*(st|nd|rd|th)).
         /// </summary>
-        internal static string NormalDateTokenDayOnlyPattern {
+        public static string NormalDateTokenDayOnlyPattern {
             get {
                 return ResourceManager.GetString("NormalDateTokenDayOnlyPattern", resourceCulture);
             }
@@ -997,7 +1075,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {1} {0}.
         /// </summary>
-        internal static string NormalDateTokenMonthAndDayFormatString {
+        public static string NormalDateTokenMonthAndDayFormatString {
             get {
                 return ResourceManager.GetString("NormalDateTokenMonthAndDayFormatString", resourceCulture);
             }
@@ -1006,7 +1084,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} {1}.
         /// </summary>
-        internal static string NormalDateTokenMonthAndYearFormatString {
+        public static string NormalDateTokenMonthAndYearFormatString {
             get {
                 return ResourceManager.GetString("NormalDateTokenMonthAndYearFormatString", resourceCulture);
             }
@@ -1015,7 +1093,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {1} {0}, {2}.
         /// </summary>
-        internal static string NormalDateTokenMonthDayAndYearFormatString {
+        public static string NormalDateTokenMonthDayAndYearFormatString {
             get {
                 return ResourceManager.GetString("NormalDateTokenMonthDayAndYearFormatString", resourceCulture);
             }
@@ -1024,7 +1102,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}.
         /// </summary>
-        internal static string NormalDateTokenMonthOnlyFormatString {
+        public static string NormalDateTokenMonthOnlyFormatString {
             get {
                 return ResourceManager.GetString("NormalDateTokenMonthOnlyFormatString", resourceCulture);
             }
@@ -1039,7 +1117,7 @@ namespace Hourglass.Properties {
         ///    (?&lt;year&gt;(\d\d)?\d\d)
         ///)?.
         /// </summary>
-        internal static string NormalDateTokenNumericalDateWithDayFirstPattern {
+        public static string NormalDateTokenNumericalDateWithDayFirstPattern {
             get {
                 return ResourceManager.GetString("NormalDateTokenNumericalDateWithDayFirstPattern", resourceCulture);
             }
@@ -1054,7 +1132,7 @@ namespace Hourglass.Properties {
         ///    (?&lt;year&gt;(\d\d)?\d\d)
         ///)?.
         /// </summary>
-        internal static string NormalDateTokenNumericalDateWithMonthFirstPattern {
+        public static string NormalDateTokenNumericalDateWithMonthFirstPattern {
             get {
                 return ResourceManager.GetString("NormalDateTokenNumericalDateWithMonthFirstPattern", resourceCulture);
             }
@@ -1069,7 +1147,7 @@ namespace Hourglass.Properties {
         ///[.\-/]
         ///(?&lt;day&gt;\d\d?).
         /// </summary>
-        internal static string NormalDateTokenNumericalDateWithYearFirstPattern {
+        public static string NormalDateTokenNumericalDateWithYearFirstPattern {
             get {
                 return ResourceManager.GetString("NormalDateTokenNumericalDateWithYearFirstPattern", resourceCulture);
             }
@@ -1084,7 +1162,7 @@ namespace Hourglass.Properties {
         ///[.\-/]
         ///(?&lt;month&gt;\d\d?).
         /// </summary>
-        internal static string NormalDateTokenNumericalMonthAndYearPattern {
+        public static string NormalDateTokenNumericalMonthAndYearPattern {
             get {
                 return ResourceManager.GetString("NormalDateTokenNumericalMonthAndYearPattern", resourceCulture);
             }
@@ -1100,7 +1178,7 @@ namespace Hourglass.Properties {
         ///    (?&lt;year&gt;(\d\d)?\d\d)
         ///)?.
         /// </summary>
-        internal static string NormalDateTokenSpelledDateWithDayFirstPattern {
+        public static string NormalDateTokenSpelledDateWithDayFirstPattern {
             get {
                 return ResourceManager.GetString("NormalDateTokenSpelledDateWithDayFirstPattern", resourceCulture);
             }
@@ -1115,7 +1193,7 @@ namespace Hourglass.Properties {
         ///    (?&lt;year&gt;(\d\d)?\d\d)
         ///)?.
         /// </summary>
-        internal static string NormalDateTokenSpelledDateWithMonthFirstPattern {
+        public static string NormalDateTokenSpelledDateWithMonthFirstPattern {
             get {
                 return ResourceManager.GetString("NormalDateTokenSpelledDateWithMonthFirstPattern", resourceCulture);
             }
@@ -1128,7 +1206,7 @@ namespace Hourglass.Properties {
         ///    (?&lt;year&gt;\d\d\d\d)
         ///)?.
         /// </summary>
-        internal static string NormalDateTokenSpelledMonthAndOptionalYearPattern {
+        public static string NormalDateTokenSpelledMonthAndOptionalYearPattern {
             get {
                 return ResourceManager.GetString("NormalDateTokenSpelledMonthAndOptionalYearPattern", resourceCulture);
             }
@@ -1137,7 +1215,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}.
         /// </summary>
-        internal static string NormalDateTokenYearOnlyFormatString {
+        public static string NormalDateTokenYearOnlyFormatString {
             get {
                 return ResourceManager.GetString("NormalDateTokenYearOnlyFormatString", resourceCulture);
             }
@@ -1146,7 +1224,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  am.
         /// </summary>
-        internal static string NormalTimeTokenAmSuffix {
+        public static string NormalTimeTokenAmSuffix {
             get {
                 return ResourceManager.GetString("NormalTimeTokenAmSuffix", resourceCulture);
             }
@@ -1155,7 +1233,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0}.
         /// </summary>
-        internal static string NormalTimeTokenHourPartFormatString {
+        public static string NormalTimeTokenHourPartFormatString {
             get {
                 return ResourceManager.GetString("NormalTimeTokenHourPartFormatString", resourceCulture);
             }
@@ -1164,7 +1242,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  noon.
         /// </summary>
-        internal static string NormalTimeTokenMiddaySuffix {
+        public static string NormalTimeTokenMiddaySuffix {
             get {
                 return ResourceManager.GetString("NormalTimeTokenMiddaySuffix", resourceCulture);
             }
@@ -1173,7 +1251,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  midnight.
         /// </summary>
-        internal static string NormalTimeTokenMidnightSuffix {
+        public static string NormalTimeTokenMidnightSuffix {
             get {
                 return ResourceManager.GetString("NormalTimeTokenMidnightSuffix", resourceCulture);
             }
@@ -1184,7 +1262,7 @@ namespace Hourglass.Properties {
         ///(?&lt;minute&gt;\d\d)
         ///(?&lt;military&gt;|h|hrs|hours).
         /// </summary>
-        internal static string NormalTimeTokenMilitaryTimePattern {
+        public static string NormalTimeTokenMilitaryTimePattern {
             get {
                 return ResourceManager.GetString("NormalTimeTokenMilitaryTimePattern", resourceCulture);
             }
@@ -1193,7 +1271,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to :{0:00}.
         /// </summary>
-        internal static string NormalTimeTokenMinutePartFormatString {
+        public static string NormalTimeTokenMinutePartFormatString {
             get {
                 return ResourceManager.GetString("NormalTimeTokenMinutePartFormatString", resourceCulture);
             }
@@ -1202,7 +1280,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  pm.
         /// </summary>
-        internal static string NormalTimeTokenPmSuffix {
+        public static string NormalTimeTokenPmSuffix {
             get {
                 return ResourceManager.GetString("NormalTimeTokenPmSuffix", resourceCulture);
             }
@@ -1211,7 +1289,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to :{0:00}.
         /// </summary>
-        internal static string NormalTimeTokenSecondPartFormatString {
+        public static string NormalTimeTokenSecondPartFormatString {
             get {
                 return ResourceManager.GetString("NormalTimeTokenSecondPartFormatString", resourceCulture);
             }
@@ -1234,7 +1312,7 @@ namespace Hourglass.Properties {
         ///    o&apos;?clock
         ///)?.
         /// </summary>
-        internal static string NormalTimeTokenTimeWithoutSeparatorsPattern {
+        public static string NormalTimeTokenTimeWithoutSeparatorsPattern {
             get {
                 return ResourceManager.GetString("NormalTimeTokenTimeWithoutSeparatorsPattern", resourceCulture);
             }
@@ -1261,7 +1339,7 @@ namespace Hourglass.Properties {
         ///    o&apos;?clock
         ///)?.
         /// </summary>
-        internal static string NormalTimeTokenTimeWithSeparatorsPattern {
+        public static string NormalTimeTokenTimeWithSeparatorsPattern {
             get {
                 return ResourceManager.GetString("NormalTimeTokenTimeWithSeparatorsPattern", resourceCulture);
             }
@@ -1270,7 +1348,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to E&amp;xit.
         /// </summary>
-        internal static string NotificationAreaIconExitMenuItem {
+        public static string NotificationAreaIconExitMenuItem {
             get {
                 return ResourceManager.GetString("NotificationAreaIconExitMenuItem", resourceCulture);
             }
@@ -1279,7 +1357,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &amp;New timer.
         /// </summary>
-        internal static string NotificationAreaIconNewTimerMenuItem {
+        public static string NotificationAreaIconNewTimerMenuItem {
             get {
                 return ResourceManager.GetString("NotificationAreaIconNewTimerMenuItem", resourceCulture);
             }
@@ -1288,7 +1366,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Timer expired.
         /// </summary>
-        internal static string NotificationAreaIconTimerExpired {
+        public static string NotificationAreaIconTimerExpired {
             get {
                 return ResourceManager.GetString("NotificationAreaIconTimerExpired", resourceCulture);
             }
@@ -1297,7 +1375,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Your timer has expired..
         /// </summary>
-        internal static string NotificationAreaIconYourTimerHasExpired {
+        public static string NotificationAreaIconYourTimerHasExpired {
             get {
                 return ResourceManager.GetString("NotificationAreaIconYourTimerHasExpired", resourceCulture);
             }
@@ -1306,7 +1384,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to today.
         /// </summary>
-        internal static string RelativeDateTokenTodayName {
+        public static string RelativeDateTokenTodayName {
             get {
                 return ResourceManager.GetString("RelativeDateTokenTodayName", resourceCulture);
             }
@@ -1315,7 +1393,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to todd?ay.
         /// </summary>
-        internal static string RelativeDateTokenTodayPattern {
+        public static string RelativeDateTokenTodayPattern {
             get {
                 return ResourceManager.GetString("RelativeDateTokenTodayPattern", resourceCulture);
             }
@@ -1324,7 +1402,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to tomorrow.
         /// </summary>
-        internal static string RelativeDateTokenTomorrowName {
+        public static string RelativeDateTokenTomorrowName {
             get {
                 return ResourceManager.GetString("RelativeDateTokenTomorrowName", resourceCulture);
             }
@@ -1333,7 +1411,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to tomm?orr?ow.
         /// </summary>
-        internal static string RelativeDateTokenTomorrowPattern {
+        public static string RelativeDateTokenTomorrowPattern {
             get {
                 return ResourceManager.GetString("RelativeDateTokenTomorrowPattern", resourceCulture);
             }
@@ -1342,7 +1420,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Loud beep.
         /// </summary>
-        internal static string SoundManagerLoudBeep {
+        public static string SoundManagerLoudBeep {
             get {
                 return ResourceManager.GetString("SoundManagerLoudBeep", resourceCulture);
             }
@@ -1351,7 +1429,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Normal beep.
         /// </summary>
-        internal static string SoundManagerNormalBeep {
+        public static string SoundManagerNormalBeep {
             get {
                 return ResourceManager.GetString("SoundManagerNormalBeep", resourceCulture);
             }
@@ -1360,7 +1438,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Quiet beep.
         /// </summary>
-        internal static string SoundManagerQuietBeep {
+        public static string SoundManagerQuietBeep {
             get {
                 return ResourceManager.GetString("SoundManagerQuietBeep", resourceCulture);
             }
@@ -1369,7 +1447,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Christmas Day.
         /// </summary>
-        internal static string SpecialDateTokenChristmasDayName {
+        public static string SpecialDateTokenChristmasDayName {
             get {
                 return ResourceManager.GetString("SpecialDateTokenChristmasDayName", resourceCulture);
             }
@@ -1378,7 +1456,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to (ch?rist?|x)-?mass?(\s*day)?.
         /// </summary>
-        internal static string SpecialDateTokenChristmasDayPattern {
+        public static string SpecialDateTokenChristmasDayPattern {
             get {
                 return ResourceManager.GetString("SpecialDateTokenChristmasDayPattern", resourceCulture);
             }
@@ -1387,7 +1465,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Year.
         /// </summary>
-        internal static string SpecialDateTokenNewYearName {
+        public static string SpecialDateTokenNewYearName {
             get {
                 return ResourceManager.GetString("SpecialDateTokenNewYearName", resourceCulture);
             }
@@ -1396,7 +1474,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ny|new\s*year.
         /// </summary>
-        internal static string SpecialDateTokenNewYearPattern {
+        public static string SpecialDateTokenNewYearPattern {
             get {
                 return ResourceManager.GetString("SpecialDateTokenNewYearPattern", resourceCulture);
             }
@@ -1405,7 +1483,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Year&apos;s Eve.
         /// </summary>
-        internal static string SpecialDateTokenNewYearsEveName {
+        public static string SpecialDateTokenNewYearsEveName {
             get {
                 return ResourceManager.GetString("SpecialDateTokenNewYearsEveName", resourceCulture);
             }
@@ -1414,7 +1492,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to nye|new\s*year(&apos;?s)?\s*eve.
         /// </summary>
-        internal static string SpecialDateTokenNewYearsEvePattern {
+        public static string SpecialDateTokenNewYearsEvePattern {
             get {
                 return ResourceManager.GetString("SpecialDateTokenNewYearsEvePattern", resourceCulture);
             }
@@ -1423,7 +1501,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 12 noon.
         /// </summary>
-        internal static string SpecialTimeTokenMiddayName {
+        public static string SpecialTimeTokenMiddayName {
             get {
                 return ResourceManager.GetString("SpecialTimeTokenMiddayName", resourceCulture);
             }
@@ -1432,7 +1510,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to (12([.:]00([.:]00)?)?\s*)?(noon|mid(-?d)?ay).
         /// </summary>
-        internal static string SpecialTimeTokenMiddayPattern {
+        public static string SpecialTimeTokenMiddayPattern {
             get {
                 return ResourceManager.GetString("SpecialTimeTokenMiddayPattern", resourceCulture);
             }
@@ -1441,7 +1519,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 12 midnight.
         /// </summary>
-        internal static string SpecialTimeTokenMidnightName {
+        public static string SpecialTimeTokenMidnightName {
             get {
                 return ResourceManager.GetString("SpecialTimeTokenMidnightName", resourceCulture);
             }
@@ -1450,7 +1528,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to (12([.:]00([.:]00)?)?\s*)?mid-?night.
         /// </summary>
-        internal static string SpecialTimeTokenMidnightPattern {
+        public static string SpecialTimeTokenMidnightPattern {
             get {
                 return ResourceManager.GetString("SpecialTimeTokenMidnightPattern", resourceCulture);
             }
@@ -1459,7 +1537,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Black.
         /// </summary>
-        internal static string ThemeManagerBlackDarkTheme {
+        public static string ThemeManagerBlackDarkTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerBlackDarkTheme", resourceCulture);
             }
@@ -1468,7 +1546,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Black.
         /// </summary>
-        internal static string ThemeManagerBlackLightTheme {
+        public static string ThemeManagerBlackLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerBlackLightTheme", resourceCulture);
             }
@@ -1477,7 +1555,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Blue.
         /// </summary>
-        internal static string ThemeManagerBlueDarkTheme {
+        public static string ThemeManagerBlueDarkTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerBlueDarkTheme", resourceCulture);
             }
@@ -1486,7 +1564,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Blue.
         /// </summary>
-        internal static string ThemeManagerBlueLightTheme {
+        public static string ThemeManagerBlueLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerBlueLightTheme", resourceCulture);
             }
@@ -1495,7 +1573,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Gray.
         /// </summary>
-        internal static string ThemeManagerGrayDarkTheme {
+        public static string ThemeManagerGrayDarkTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerGrayDarkTheme", resourceCulture);
             }
@@ -1504,7 +1582,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Gray.
         /// </summary>
-        internal static string ThemeManagerGrayLightTheme {
+        public static string ThemeManagerGrayLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerGrayLightTheme", resourceCulture);
             }
@@ -1513,7 +1591,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Green.
         /// </summary>
-        internal static string ThemeManagerGreenDarkTheme {
+        public static string ThemeManagerGreenDarkTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerGreenDarkTheme", resourceCulture);
             }
@@ -1522,7 +1600,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Green.
         /// </summary>
-        internal static string ThemeManagerGreenLightTheme {
+        public static string ThemeManagerGreenLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerGreenLightTheme", resourceCulture);
             }
@@ -1531,7 +1609,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New theme.
         /// </summary>
-        internal static string ThemeManagerNewTheme {
+        public static string ThemeManagerNewTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerNewTheme", resourceCulture);
             }
@@ -1540,7 +1618,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Orange.
         /// </summary>
-        internal static string ThemeManagerOrangeDarkTheme {
+        public static string ThemeManagerOrangeDarkTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerOrangeDarkTheme", resourceCulture);
             }
@@ -1549,7 +1627,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Orange.
         /// </summary>
-        internal static string ThemeManagerOrangeLightTheme {
+        public static string ThemeManagerOrangeLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerOrangeLightTheme", resourceCulture);
             }
@@ -1558,7 +1636,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Purple.
         /// </summary>
-        internal static string ThemeManagerPurpleDarkTheme {
+        public static string ThemeManagerPurpleDarkTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerPurpleDarkTheme", resourceCulture);
             }
@@ -1567,7 +1645,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Purple.
         /// </summary>
-        internal static string ThemeManagerPurpleLightTheme {
+        public static string ThemeManagerPurpleLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerPurpleLightTheme", resourceCulture);
             }
@@ -1576,7 +1654,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Red.
         /// </summary>
-        internal static string ThemeManagerRedDarkTheme {
+        public static string ThemeManagerRedDarkTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerRedDarkTheme", resourceCulture);
             }
@@ -1585,7 +1663,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Red.
         /// </summary>
-        internal static string ThemeManagerRedLightTheme {
+        public static string ThemeManagerRedLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerRedLightTheme", resourceCulture);
             }
@@ -1594,7 +1672,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Dark themes.
         /// </summary>
-        internal static string ThemeManagerWindowDarkThemesSectionHeader {
+        public static string ThemeManagerWindowDarkThemesSectionHeader {
             get {
                 return ResourceManager.GetString("ThemeManagerWindowDarkThemesSectionHeader", resourceCulture);
             }
@@ -1603,7 +1681,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the selected theme?.
         /// </summary>
-        internal static string ThemeManagerWindowDeletePrompt {
+        public static string ThemeManagerWindowDeletePrompt {
             get {
                 return ResourceManager.GetString("ThemeManagerWindowDeletePrompt", resourceCulture);
             }
@@ -1612,7 +1690,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Light themes.
         /// </summary>
-        internal static string ThemeManagerWindowLightThemesSectionHeader {
+        public static string ThemeManagerWindowLightThemesSectionHeader {
             get {
                 return ResourceManager.GetString("ThemeManagerWindowLightThemesSectionHeader", resourceCulture);
             }
@@ -1621,7 +1699,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Do you want to save the changes to the current theme?.
         /// </summary>
-        internal static string ThemeManagerWindowSavePrompt {
+        public static string ThemeManagerWindowSavePrompt {
             get {
                 return ResourceManager.GetString("ThemeManagerWindowSavePrompt", resourceCulture);
             }
@@ -1630,7 +1708,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Custom themes.
         /// </summary>
-        internal static string ThemeManagerWindowUserProvidedThemesSectionHeader {
+        public static string ThemeManagerWindowUserProvidedThemesSectionHeader {
             get {
                 return ResourceManager.GetString("ThemeManagerWindowUserProvidedThemesSectionHeader", resourceCulture);
             }
@@ -1639,7 +1717,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Yellow.
         /// </summary>
-        internal static string ThemeManagerYellowDarkTheme {
+        public static string ThemeManagerYellowDarkTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerYellowDarkTheme", resourceCulture);
             }
@@ -1648,7 +1726,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Yellow.
         /// </summary>
-        internal static string ThemeManagerYellowLightTheme {
+        public static string ThemeManagerYellowLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerYellowLightTheme", resourceCulture);
             }
@@ -1657,7 +1735,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {1} (Expired).
         /// </summary>
-        internal static string TimerExpiredFormatString {
+        public static string TimerExpiredFormatString {
             get {
                 return ResourceManager.GetString("TimerExpiredFormatString", resourceCulture);
             }
@@ -1666,7 +1744,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {1} (Expired).
         /// </summary>
-        internal static string TimerExpiredLoopedFormatString {
+        public static string TimerExpiredLoopedFormatString {
             get {
                 return ResourceManager.GetString("TimerExpiredLoopedFormatString", resourceCulture);
             }
@@ -1675,7 +1753,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {1} &quot;{2}&quot; (Expired).
         /// </summary>
-        internal static string TimerExpiredWithTitleFormatString {
+        public static string TimerExpiredWithTitleFormatString {
             get {
                 return ResourceManager.GetString("TimerExpiredWithTitleFormatString", resourceCulture);
             }
@@ -1684,7 +1762,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {1} &quot;{2}&quot; (Expired).
         /// </summary>
-        internal static string TimerExpiredWithTitleLoopedFormatString {
+        public static string TimerExpiredWithTitleLoopedFormatString {
             get {
                 return ResourceManager.GetString("TimerExpiredWithTitleLoopedFormatString", resourceCulture);
             }
@@ -1693,7 +1771,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} ➔ {1} (Paused).
         /// </summary>
-        internal static string TimerPausedFormatString {
+        public static string TimerPausedFormatString {
             get {
                 return ResourceManager.GetString("TimerPausedFormatString", resourceCulture);
             }
@@ -1702,7 +1780,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} ➔ {1} (Paused).
         /// </summary>
-        internal static string TimerPausedLoopedFormatString {
+        public static string TimerPausedLoopedFormatString {
             get {
                 return ResourceManager.GetString("TimerPausedLoopedFormatString", resourceCulture);
             }
@@ -1711,7 +1789,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} ➔ {1} &quot;{2}&quot; (Paused).
         /// </summary>
-        internal static string TimerPausedWithTitleFormatString {
+        public static string TimerPausedWithTitleFormatString {
             get {
                 return ResourceManager.GetString("TimerPausedWithTitleFormatString", resourceCulture);
             }
@@ -1720,7 +1798,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} ➔ {1} &quot;{2}&quot; (Paused).
         /// </summary>
-        internal static string TimerPausedWithTitleLoopedFormatString {
+        public static string TimerPausedWithTitleLoopedFormatString {
             get {
                 return ResourceManager.GetString("TimerPausedWithTitleLoopedFormatString", resourceCulture);
             }
@@ -1729,7 +1807,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} ➔ {1}.
         /// </summary>
-        internal static string TimerRunningFormatString {
+        public static string TimerRunningFormatString {
             get {
                 return ResourceManager.GetString("TimerRunningFormatString", resourceCulture);
             }
@@ -1738,7 +1816,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} ➔ {1} (Looped).
         /// </summary>
-        internal static string TimerRunningLoopedFormatString {
+        public static string TimerRunningLoopedFormatString {
             get {
                 return ResourceManager.GetString("TimerRunningLoopedFormatString", resourceCulture);
             }
@@ -1747,7 +1825,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} ➔ {1} &quot;{2}&quot;.
         /// </summary>
-        internal static string TimerRunningWithTitleFormatString {
+        public static string TimerRunningWithTitleFormatString {
             get {
                 return ResourceManager.GetString("TimerRunningWithTitleFormatString", resourceCulture);
             }
@@ -1756,7 +1834,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} ➔ {1} &quot;{2}&quot; (Looped).
         /// </summary>
-        internal static string TimerRunningWithTitleLoopedFormatString {
+        public static string TimerRunningWithTitleLoopedFormatString {
             get {
                 return ResourceManager.GetString("TimerRunningWithTitleLoopedFormatString", resourceCulture);
             }
@@ -1765,7 +1843,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 5 minutes.
         /// </summary>
-        internal static string TimerStartDefault {
+        public static string TimerStartDefault {
             get {
                 return ResourceManager.GetString("TimerStartDefault", resourceCulture);
             }
@@ -1774,7 +1852,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ^\s*((un)?till?|@)\s*.
         /// </summary>
-        internal static string TimerStartTokenUseDateTimeParserPattern {
+        public static string TimerStartTokenUseDateTimeParserPattern {
             get {
                 return ResourceManager.GetString("TimerStartTokenUseDateTimeParserPattern", resourceCulture);
             }
@@ -1783,7 +1861,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 0 seconds.
         /// </summary>
-        internal static string TimerStartZero {
+        public static string TimerStartZero {
             get {
                 return ResourceManager.GetString("TimerStartZero", resourceCulture);
             }
@@ -1792,7 +1870,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Stopped.
         /// </summary>
-        internal static string TimerStoppedFormatString {
+        public static string TimerStoppedFormatString {
             get {
                 return ResourceManager.GetString("TimerStoppedFormatString", resourceCulture);
             }
@@ -1801,7 +1879,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Stopped.
         /// </summary>
-        internal static string TimerStoppedLoopedFormatString {
+        public static string TimerStoppedLoopedFormatString {
             get {
                 return ResourceManager.GetString("TimerStoppedLoopedFormatString", resourceCulture);
             }
@@ -1810,7 +1888,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Stopped &quot;{2}&quot;.
         /// </summary>
-        internal static string TimerStoppedWithTitleFormatString {
+        public static string TimerStoppedWithTitleFormatString {
             get {
                 return ResourceManager.GetString("TimerStoppedWithTitleFormatString", resourceCulture);
             }
@@ -1819,7 +1897,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Stopped &quot;{2}&quot;.
         /// </summary>
-        internal static string TimerStoppedWithTitleLoopedFormatString {
+        public static string TimerStoppedWithTitleLoopedFormatString {
             get {
                 return ResourceManager.GetString("TimerStoppedWithTitleLoopedFormatString", resourceCulture);
             }
@@ -1828,7 +1906,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} ago.
         /// </summary>
-        internal static string TimerTimeExpiredFormatString {
+        public static string TimerTimeExpiredFormatString {
             get {
                 return ResourceManager.GetString("TimerTimeExpiredFormatString", resourceCulture);
             }
@@ -1837,7 +1915,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Timer expired.
         /// </summary>
-        internal static string TimerTimerExpired {
+        public static string TimerTimerExpired {
             get {
                 return ResourceManager.GetString("TimerTimerExpired", resourceCulture);
             }
@@ -1846,7 +1924,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Timer not expired.
         /// </summary>
-        internal static string TimerTimerNotExpired {
+        public static string TimerTimerNotExpired {
             get {
                 return ResourceManager.GetString("TimerTimerNotExpired", resourceCulture);
             }
@@ -1855,7 +1933,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Timer stopped.
         /// </summary>
-        internal static string TimerTimerStopped {
+        public static string TimerTimerStopped {
             get {
                 return ResourceManager.GetString("TimerTimerStopped", resourceCulture);
             }
@@ -1864,7 +1942,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to —.
         /// </summary>
-        internal static string TimerWindowBlankTitlePlaceholder {
+        public static string TimerWindowBlankTitlePlaceholder {
             get {
                 return ResourceManager.GetString("TimerWindowBlankTitlePlaceholder", resourceCulture);
             }
@@ -1873,7 +1951,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Cancel.
         /// </summary>
-        internal static string TimerWindowCancelButtonContent {
+        public static string TimerWindowCancelButtonContent {
             get {
                 return ResourceManager.GetString("TimerWindowCancelButtonContent", resourceCulture);
             }
@@ -1882,7 +1960,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Close.
         /// </summary>
-        internal static string TimerWindowCloseButtonContent {
+        public static string TimerWindowCloseButtonContent {
             get {
                 return ResourceManager.GetString("TimerWindowCloseButtonContent", resourceCulture);
             }
@@ -1891,7 +1969,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to close this timer window?.
         /// </summary>
-        internal static string TimerWindowCloseMessageBoxText {
+        public static string TimerWindowCloseMessageBoxText {
             get {
                 return ResourceManager.GetString("TimerWindowCloseMessageBoxText", resourceCulture);
             }
@@ -1900,7 +1978,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to To update Hourglass, visit {0} in your web browser..
         /// </summary>
-        internal static string TimerWindowCouldNotLaunchWebBrowserErrorMessage {
+        public static string TimerWindowCouldNotLaunchWebBrowserErrorMessage {
             get {
                 return ResourceManager.GetString("TimerWindowCouldNotLaunchWebBrowserErrorMessage", resourceCulture);
             }
@@ -1909,7 +1987,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Could not launch web browser.
         /// </summary>
-        internal static string TimerWindowCouldNotLaunchWebBrowserErrorTitle {
+        public static string TimerWindowCouldNotLaunchWebBrowserErrorTitle {
             get {
                 return ResourceManager.GetString("TimerWindowCouldNotLaunchWebBrowserErrorTitle", resourceCulture);
             }
@@ -1918,7 +1996,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New timer: {0} &quot;{1}&quot;.
         /// </summary>
-        internal static string TimerWindowNewTimerWithTitleFormatString {
+        public static string TimerWindowNewTimerWithTitleFormatString {
             get {
                 return ResourceManager.GetString("TimerWindowNewTimerWithTitleFormatString", resourceCulture);
             }
@@ -1927,7 +2005,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Pause.
         /// </summary>
-        internal static string TimerWindowPauseButtonContent {
+        public static string TimerWindowPauseButtonContent {
             get {
                 return ResourceManager.GetString("TimerWindowPauseButtonContent", resourceCulture);
             }
@@ -1936,7 +2014,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Reset.
         /// </summary>
-        internal static string TimerWindowResetButtonContent {
+        public static string TimerWindowResetButtonContent {
             get {
                 return ResourceManager.GetString("TimerWindowResetButtonContent", resourceCulture);
             }
@@ -1945,7 +2023,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Resume.
         /// </summary>
-        internal static string TimerWindowResumeButtonContent {
+        public static string TimerWindowResumeButtonContent {
             get {
                 return ResourceManager.GetString("TimerWindowResumeButtonContent", resourceCulture);
             }
@@ -1954,7 +2032,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Start.
         /// </summary>
-        internal static string TimerWindowStartButtonContent {
+        public static string TimerWindowStartButtonContent {
             get {
                 return ResourceManager.GetString("TimerWindowStartButtonContent", resourceCulture);
             }
@@ -1963,7 +2041,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Stop.
         /// </summary>
-        internal static string TimerWindowStopButtonContent {
+        public static string TimerWindowStopButtonContent {
             get {
                 return ResourceManager.GetString("TimerWindowStopButtonContent", resourceCulture);
             }
@@ -1972,7 +2050,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Click to enter time or date.
         /// </summary>
-        internal static string TimerWindowTimerTextHint {
+        public static string TimerWindowTimerTextHint {
             get {
                 return ResourceManager.GetString("TimerWindowTimerTextHint", resourceCulture);
             }
@@ -1981,7 +2059,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hourglass.
         /// </summary>
-        internal static string TimerWindowTitle {
+        public static string TimerWindowTitle {
             get {
                 return ResourceManager.GetString("TimerWindowTitle", resourceCulture);
             }
@@ -1990,7 +2068,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  · .
         /// </summary>
-        internal static string TimerWindowTitleSeparator {
+        public static string TimerWindowTitleSeparator {
             get {
                 return ResourceManager.GetString("TimerWindowTitleSeparator", resourceCulture);
             }
@@ -1999,7 +2077,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Click to enter title.
         /// </summary>
-        internal static string TimerWindowTitleTextHint {
+        public static string TimerWindowTitleTextHint {
             get {
                 return ResourceManager.GetString("TimerWindowTitleTextHint", resourceCulture);
             }
@@ -2008,7 +2086,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Update.
         /// </summary>
-        internal static string TimerWindowUpdateButtonContent {
+        public static string TimerWindowUpdateButtonContent {
             get {
                 return ResourceManager.GetString("TimerWindowUpdateButtonContent", resourceCulture);
             }
@@ -2017,7 +2095,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New timer: {0}.
         /// </summary>
-        internal static string TimerWindwoNewTimerFormatString {
+        public static string TimerWindwoNewTimerFormatString {
             get {
                 return ResourceManager.GetString("TimerWindwoNewTimerFormatString", resourceCulture);
             }
@@ -2026,7 +2104,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} day.
         /// </summary>
-        internal static string TimeSpanExtensions1DayFormatString {
+        public static string TimeSpanExtensions1DayFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanExtensions1DayFormatString", resourceCulture);
             }
@@ -2035,7 +2113,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} hour.
         /// </summary>
-        internal static string TimeSpanExtensions1HourFormatString {
+        public static string TimeSpanExtensions1HourFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanExtensions1HourFormatString", resourceCulture);
             }
@@ -2044,7 +2122,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} minute.
         /// </summary>
-        internal static string TimeSpanExtensions1MinuteFormatString {
+        public static string TimeSpanExtensions1MinuteFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanExtensions1MinuteFormatString", resourceCulture);
             }
@@ -2053,7 +2131,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} second.
         /// </summary>
-        internal static string TimeSpanExtensions1SecondFormatString {
+        public static string TimeSpanExtensions1SecondFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanExtensions1SecondFormatString", resourceCulture);
             }
@@ -2062,7 +2140,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} days.
         /// </summary>
-        internal static string TimeSpanExtensionsNDaysFormatString {
+        public static string TimeSpanExtensionsNDaysFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanExtensionsNDaysFormatString", resourceCulture);
             }
@@ -2071,7 +2149,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} hours.
         /// </summary>
-        internal static string TimeSpanExtensionsNHoursFormatString {
+        public static string TimeSpanExtensionsNHoursFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanExtensionsNHoursFormatString", resourceCulture);
             }
@@ -2080,7 +2158,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} minutes.
         /// </summary>
-        internal static string TimeSpanExtensionsNMinutesFormatString {
+        public static string TimeSpanExtensionsNMinutesFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanExtensionsNMinutesFormatString", resourceCulture);
             }
@@ -2089,7 +2167,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} seconds.
         /// </summary>
-        internal static string TimeSpanExtensionsNSecondsFormatString {
+        public static string TimeSpanExtensionsNSecondsFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanExtensionsNSecondsFormatString", resourceCulture);
             }
@@ -2098,7 +2176,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  .
         /// </summary>
-        internal static string TimeSpanExtensionsUnitSeparator {
+        public static string TimeSpanExtensionsUnitSeparator {
             get {
                 return ResourceManager.GetString("TimeSpanExtensionsUnitSeparator", resourceCulture);
             }
@@ -2107,7 +2185,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} day.
         /// </summary>
-        internal static string TimeSpanToken1DayFormatString {
+        public static string TimeSpanToken1DayFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanToken1DayFormatString", resourceCulture);
             }
@@ -2116,7 +2194,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} hour.
         /// </summary>
-        internal static string TimeSpanToken1HourFormatString {
+        public static string TimeSpanToken1HourFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanToken1HourFormatString", resourceCulture);
             }
@@ -2125,7 +2203,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} minute.
         /// </summary>
-        internal static string TimeSpanToken1MinuteFormatString {
+        public static string TimeSpanToken1MinuteFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanToken1MinuteFormatString", resourceCulture);
             }
@@ -2134,7 +2212,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} month.
         /// </summary>
-        internal static string TimeSpanToken1MonthFormatString {
+        public static string TimeSpanToken1MonthFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanToken1MonthFormatString", resourceCulture);
             }
@@ -2143,7 +2221,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} second.
         /// </summary>
-        internal static string TimeSpanToken1SecondFormatString {
+        public static string TimeSpanToken1SecondFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanToken1SecondFormatString", resourceCulture);
             }
@@ -2152,7 +2230,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} week.
         /// </summary>
-        internal static string TimeSpanToken1WeekFormatString {
+        public static string TimeSpanToken1WeekFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanToken1WeekFormatString", resourceCulture);
             }
@@ -2161,7 +2239,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} year.
         /// </summary>
-        internal static string TimeSpanToken1YearFormatString {
+        public static string TimeSpanToken1YearFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanToken1YearFormatString", resourceCulture);
             }
@@ -2196,7 +2274,7 @@ namespace Hourglass.Properties {
         ///        |
         ///        ( [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string TimeSpanTokenLongFormPattern {
+        public static string TimeSpanTokenLongFormPattern {
             get {
                 return ResourceManager.GetString("TimeSpanTokenLongFormPattern", resourceCulture);
             }
@@ -2209,7 +2287,7 @@ namespace Hourglass.Properties {
         ///\s*
         ///$.
         /// </summary>
-        internal static string TimeSpanTokenMinutesOnlyPattern {
+        public static string TimeSpanTokenMinutesOnlyPattern {
             get {
                 return ResourceManager.GetString("TimeSpanTokenMinutesOnlyPattern", resourceCulture);
             }
@@ -2218,7 +2296,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} days.
         /// </summary>
-        internal static string TimeSpanTokenNDaysFormatString {
+        public static string TimeSpanTokenNDaysFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanTokenNDaysFormatString", resourceCulture);
             }
@@ -2227,7 +2305,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} hours.
         /// </summary>
-        internal static string TimeSpanTokenNHoursFormatString {
+        public static string TimeSpanTokenNHoursFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanTokenNHoursFormatString", resourceCulture);
             }
@@ -2236,7 +2314,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} minutes.
         /// </summary>
-        internal static string TimeSpanTokenNMinutesFormatString {
+        public static string TimeSpanTokenNMinutesFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanTokenNMinutesFormatString", resourceCulture);
             }
@@ -2245,7 +2323,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} months.
         /// </summary>
-        internal static string TimeSpanTokenNMonthsFormatString {
+        public static string TimeSpanTokenNMonthsFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanTokenNMonthsFormatString", resourceCulture);
             }
@@ -2254,7 +2332,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} seconds.
         /// </summary>
-        internal static string TimeSpanTokenNSecondsFormatString {
+        public static string TimeSpanTokenNSecondsFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanTokenNSecondsFormatString", resourceCulture);
             }
@@ -2263,7 +2341,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} weeks.
         /// </summary>
-        internal static string TimeSpanTokenNWeeksFormatString {
+        public static string TimeSpanTokenNWeeksFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanTokenNWeeksFormatString", resourceCulture);
             }
@@ -2272,7 +2350,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {0} years.
         /// </summary>
-        internal static string TimeSpanTokenNYearsFormatString {
+        public static string TimeSpanTokenNYearsFormatString {
             get {
                 return ResourceManager.GetString("TimeSpanTokenNYearsFormatString", resourceCulture);
             }
@@ -2303,7 +2381,7 @@ namespace Hourglass.Properties {
         ///\s*
         ///$.
         /// </summary>
-        internal static string TimeSpanTokenShortFormPattern {
+        public static string TimeSpanTokenShortFormPattern {
             get {
                 return ResourceManager.GetString("TimeSpanTokenShortFormPattern", resourceCulture);
             }
@@ -2312,7 +2390,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  .
         /// </summary>
-        internal static string TimeSpanTokenUnitSeparator {
+        public static string TimeSpanTokenUnitSeparator {
             get {
                 return ResourceManager.GetString("TimeSpanTokenUnitSeparator", resourceCulture);
             }
@@ -2321,7 +2399,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon TrayIcon {
+        public static System.Drawing.Icon TrayIcon {
             get {
                 object obj = ResourceManager.GetObject("TrayIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -2343,16 +2421,25 @@ namespace Hourglass.Properties {
         ///        &quot;5 minutes 30 seconds&quot;  count down for 5 minutes 30 seconds
         ///        &quot;7 hours 30 minutes&quot;    count d [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Usage {
+        public static string Usage {
             get {
                 return ResourceManager.GetString("Usage", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About Hourglass.
+        /// </summary>
+        public static string UsageDialogAboutHourglassHyperlinkText {
+            get {
+                return ResourceManager.GetString("UsageDialogAboutHourglassHyperlinkText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Close.
         /// </summary>
-        internal static string UsageDialogCloseButtonContent {
+        public static string UsageDialogCloseButtonContent {
             get {
                 return ResourceManager.GetString("UsageDialogCloseButtonContent", resourceCulture);
             }
@@ -2361,7 +2448,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Command-line usage.
         /// </summary>
-        internal static string UsageDialogDefaultMessageText {
+        public static string UsageDialogDefaultMessageText {
             get {
                 return ResourceManager.GetString("UsageDialogDefaultMessageText", resourceCulture);
             }
@@ -2370,7 +2457,7 @@ namespace Hourglass.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hourglass.
         /// </summary>
-        internal static string UsageDialogTitle {
+        public static string UsageDialogTitle {
             get {
                 return ResourceManager.GetString("UsageDialogTitle", resourceCulture);
             }
