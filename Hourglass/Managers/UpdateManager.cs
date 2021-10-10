@@ -116,7 +116,16 @@ namespace Hourglass.Managers
         public override void Initialize()
         {
             ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | /* Tls13 */ (SecurityProtocolType)12288;
+            try
+            {
+                // Try to use TLS 1.3 if it's supported.
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | /* Tls13 */ (SecurityProtocolType)12288;
+            }
+            catch (NotSupportedException)
+            {
+                // Otherwise, fall back to using TLS 1.2.
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            }
 
             Task.Factory.StartNew(() => this.SetUpdateInfo(this.FetchUpdateInfo()));
         }
