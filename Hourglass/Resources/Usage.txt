@@ -222,7 +222,7 @@ Options:
         Alias           -b
 
   --lock-interface on|off
-        Prevents the user from starting, pausing, resetting, or stopping the
+        Prevents the user from starting, pausing, stopping, or restarting the
         timer, changing the timer options, or closing the timer window until the
         timer expires.
 

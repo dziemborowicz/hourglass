@@ -205,6 +205,14 @@ namespace Hourglass.Timing
         }
 
         /// <summary>
+        /// Gets a value indicating whether the timer supports restarting.
+        /// </summary>
+        public bool SupportsRestart
+        {
+            get { return this.TimerStart != null && this.TimerStart.Type == TimerStartType.TimeSpan; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the timer supports displaying the elapsed time since the timer was started.
         /// </summary>
         public bool SupportsTimeElapsed
@@ -254,6 +262,25 @@ namespace Hourglass.Timing
 
                 this.Start(start, end);
                 return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Restarts the timer.
+        /// </summary>
+        /// <returns>A value indicating whether the timer was restarted successfully.</returns>
+        /// <exception cref="ObjectDisposedException">If the timer has been disposed.</exception>
+        public bool Restart()
+        {
+            this.ThrowIfDisposed();
+
+            TimerStart timerStart = this.timerStart;
+            if (timerStart != null && timerStart.Type == TimerStartType.TimeSpan)
+            {
+                this.Stop();
+                return this.Start(timerStart);
             }
 
             return false;

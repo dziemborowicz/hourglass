@@ -3,7 +3,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
   <Bundle Name="Hourglass"
-          Version="1.14.0.0"
+          Version="1.15.0.0"
           Manufacturer="Chris Dziemborowicz"
           UpgradeCode="f1d002c9-cfc9-40fb-84af-96e7aec26e0b"
           IconSourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico">
@@ -15,7 +15,7 @@
       <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" />
     </BootstrapperApplicationRef>
     <Chain>
-      <PackageGroupRef Id="NetFx45Web" />
+      <PackageGroupRef Id="NetFx48Web" />
       <MsiPackage Id="HourglassSetup" SourceFile="$(var.Hourglass.Setup.TargetPath)">
         <!-- Pass this selection down to the Hourglass.Setup msi -->
         <MsiProperty Name="APPLICATIONFOLDER" Value="[InstallFolder]" />

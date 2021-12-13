@@ -168,7 +168,7 @@ namespace Hourglass.Windows
                 this.timerWindow.PauseButton,
                 this.timerWindow.ResumeButton,
                 this.timerWindow.StopButton,
-                this.timerWindow.ResetButton,
+                this.timerWindow.RestartButton,
                 this.timerWindow.CloseButton,
                 this.timerWindow.CancelButton,
                 this.timerWindow.UpdateButton,

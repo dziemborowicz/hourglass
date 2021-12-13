@@ -19,7 +19,7 @@ namespace Hourglass.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -2012,16 +2012,16 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Reset.
+        ///   Looks up a localized string similar to _Restart.
         /// </summary>
-        public static string TimerWindowResetButtonContent {
+        public static string TimerWindowRestartButtonContent {
             get {
-                return ResourceManager.GetString("TimerWindowResetButtonContent", resourceCulture);
+                return ResourceManager.GetString("TimerWindowRestartButtonContent", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Resume.
+        ///   Looks up a localized string similar to R_esume.
         /// </summary>
         public static string TimerWindowResumeButtonContent {
             get {
