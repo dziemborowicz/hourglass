@@ -2012,16 +2012,16 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Reset.
+        ///   Looks up a localized string similar to _Restart.
         /// </summary>
-        public static string TimerWindowResetButtonContent {
+        public static string TimerWindowRestartButtonContent {
             get {
-                return ResourceManager.GetString("TimerWindowResetButtonContent", resourceCulture);
+                return ResourceManager.GetString("TimerWindowRestartButtonContent", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Resume.
+        ///   Looks up a localized string similar to R_esume.
         /// </summary>
         public static string TimerWindowResumeButtonContent {
             get {

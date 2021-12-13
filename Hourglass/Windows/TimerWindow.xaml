@@ -11,7 +11,7 @@
         <CommandBinding Command="local:TimerWindow.ResumeCommand" Executed="ResumeCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.PauseResumeCommand" Executed="PauseResumeCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.StopCommand" Executed="StopCommandExecuted"/>
-        <CommandBinding Command="local:TimerWindow.ResetCommand" Executed="ResetCommandExecuted"/>
+        <CommandBinding Command="local:TimerWindow.RestartCommand" Executed="RestartCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.CloseCommand" Executed="CloseCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.CancelCommand" Executed="CancelCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.UpdateCommand" Executed="UpdateCommandExecuted"/>
@@ -22,6 +22,7 @@
         <KeyBinding Command="local:TimerWindow.PauseResumeCommand" Gesture="Space"/>
         <KeyBinding Command="local:TimerWindow.PauseResumeCommand" Gesture="Ctrl+P"/>
         <KeyBinding Command="local:TimerWindow.StopCommand" Gesture="Ctrl+S"/>
+        <KeyBinding Command="local:TimerWindow.RestartCommand" Gesture="Ctrl+R"/>
         <KeyBinding Command="local:TimerWindow.EscapeCommand" Gesture="Esc"/>
         <KeyBinding Command="local:TimerWindow.FullScreenCommand" Gesture="Alt+Enter"/>
     </Window.InputBindings>
@@ -49,7 +50,7 @@
                         <Condition Binding="{Binding ElementName=PauseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=ResumeButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=StopButton, Path=IsFocused}" Value="False"/>
-                        <Condition Binding="{Binding ElementName=ResetButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=RestartButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CloseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CancelButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=UpdateButton, Path=IsFocused}" Value="False"/>
@@ -93,7 +94,7 @@
                         <Condition Binding="{Binding ElementName=PauseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=ResumeButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=StopButton, Path=IsFocused}" Value="False"/>
-                        <Condition Binding="{Binding ElementName=ResetButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=RestartButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CloseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CancelButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=UpdateButton, Path=IsFocused}" Value="False"/>
@@ -168,7 +169,7 @@
                         <Condition Binding="{Binding ElementName=PauseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=ResumeButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=StopButton, Path=IsFocused}" Value="False"/>
-                        <Condition Binding="{Binding ElementName=ResetButton, Path=IsFocused}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=RestartButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CloseButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=CancelButton, Path=IsFocused}" Value="False"/>
                         <Condition Binding="{Binding ElementName=UpdateButton, Path=IsFocused}" Value="False"/>
@@ -243,7 +244,7 @@
                         <Button x:Name="PauseButton" Command="local:TimerWindow.PauseCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
                         <Button x:Name="ResumeButton" Command="local:TimerWindow.ResumeCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
                         <Button x:Name="StopButton" Command="local:TimerWindow.StopCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
-                        <Button x:Name="ResetButton" Command="local:TimerWindow.ResetCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="RestartButton" Command="local:TimerWindow.RestartCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
                         <Button x:Name="CloseButton" Command="local:TimerWindow.CloseCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
                         <Button x:Name="CancelButton" Command="local:TimerWindow.CancelCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
                         <Button x:Name="UpdateButton" Command="local:TimerWindow.UpdateCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>

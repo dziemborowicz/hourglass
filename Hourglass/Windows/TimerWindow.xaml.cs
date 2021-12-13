@@ -70,9 +70,9 @@ namespace Hourglass.Windows
         public static readonly RoutedCommand StopCommand = new RoutedCommand();
 
         /// <summary>
-        /// Enters input mode.
+        /// Restarts the timer.
         /// </summary>
-        public static readonly RoutedCommand ResetCommand = new RoutedCommand();
+        public static readonly RoutedCommand RestartCommand = new RoutedCommand();
 
         /// <summary>
         /// Closes the window.
@@ -692,7 +692,7 @@ namespace Hourglass.Windows
                 || this.PauseButton.Unfocus()
                 || this.ResumeButton.Unfocus()
                 || this.StopButton.Unfocus()
-                || this.ResetButton.Unfocus()
+                || this.RestartButton.Unfocus()
                 || this.CloseButton.Unfocus()
                 || this.CancelButton.Unfocus()
                 || this.UpdateButton.Unfocus();
@@ -714,7 +714,7 @@ namespace Hourglass.Windows
             this.PauseButton.Content = Properties.Resources.TimerWindowPauseButtonContent;
             this.ResumeButton.Content = Properties.Resources.TimerWindowResumeButtonContent;
             this.StopButton.Content = Properties.Resources.TimerWindowStopButtonContent;
-            this.ResetButton.Content = Properties.Resources.TimerWindowResetButtonContent;
+            this.RestartButton.Content = Properties.Resources.TimerWindowRestartButtonContent;
             this.CloseButton.Content = Properties.Resources.TimerWindowCloseButtonContent;
             this.CancelButton.Content = Properties.Resources.TimerWindowCancelButtonContent;
             this.UpdateButton.Content = Properties.Resources.TimerWindowUpdateButtonContent;
@@ -1047,7 +1047,7 @@ namespace Hourglass.Windows
                     this.PauseButton.IsEnabled = false;
                     this.ResumeButton.IsEnabled = false;
                     this.StopButton.IsEnabled = false;
-                    this.ResetButton.IsEnabled = false;
+                    this.RestartButton.IsEnabled = false;
                     this.CloseButton.IsEnabled = false;
                     this.CancelButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
                     this.UpdateButton.IsEnabled = UpdateManager.Instance.HasUpdates;
@@ -1100,7 +1100,7 @@ namespace Hourglass.Windows
                         this.PauseButton.IsEnabled = false;
                         this.ResumeButton.IsEnabled = false;
                         this.StopButton.IsEnabled = false;
-                        this.ResetButton.IsEnabled = false;
+                        this.RestartButton.IsEnabled = false;
                         this.CloseButton.IsEnabled = this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired;
                         this.CancelButton.IsEnabled = false;
                         this.UpdateButton.IsEnabled = false;
@@ -1120,7 +1120,7 @@ namespace Hourglass.Windows
                         this.PauseButton.IsEnabled = this.Timer.State == TimerState.Running && this.Timer.SupportsPause;
                         this.ResumeButton.IsEnabled = this.Timer.State == TimerState.Paused;
                         this.StopButton.IsEnabled = this.Timer.State != TimerState.Stopped && this.Timer.State != TimerState.Expired;
-                        this.ResetButton.IsEnabled = this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired;
+                        this.RestartButton.IsEnabled = this.Timer.SupportsRestart;
                         this.CloseButton.IsEnabled = this.Timer.State == TimerState.Stopped || this.Timer.State == TimerState.Expired;
                         this.CancelButton.IsEnabled = false;
                         this.UpdateButton.IsEnabled = UpdateManager.Instance.HasUpdates;
@@ -1619,20 +1619,20 @@ namespace Hourglass.Windows
         }
 
         /// <summary>
-        /// Invoked when the <see cref="ResetCommand"/> is executed.
+        /// Invoked when the <see cref="RestartCommand"/> is executed.
         /// </summary>
         /// <param name="sender">The <see cref="TimerWindow"/>.</param>
         /// <param name="e">The event data.</param>
-        private void ResetCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        private void RestartCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if (this.Options.LockInterface)
+            if (this.Options.LockInterface || !this.Timer.SupportsRestart)
             {
                 return;
             }
 
-            this.Timer.Stop();
-            this.SwitchToInputMode();
-            this.ResetButton.Unfocus();
+            this.Timer.Restart();
+            this.SwitchToStatusMode();
+            this.RestartButton.Unfocus();
         }
 
         /// <summary>
