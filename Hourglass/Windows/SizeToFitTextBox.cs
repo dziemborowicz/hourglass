@@ -122,13 +122,16 @@ namespace Hourglass.Windows
                 this.FontWeight,
                 this.FontStretch);
 
+            double pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+
             FormattedText formattedText = new FormattedText(
                 this.Text,
                 CultureInfo.CurrentCulture,
                 this.FlowDirection,
                 typeface,
                 this.FontSize,
-                this.Foreground);
+                this.Foreground,
+                pixelsPerDip);
 
             return formattedText.WidthIncludingTrailingWhitespace;
         }
