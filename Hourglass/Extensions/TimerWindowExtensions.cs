@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Interop;
+using System.Windows.Shell;
 
 using Hourglass.Properties;
 using Hourglass.Timing;
@@ -68,6 +71,39 @@ public static class TimerWindowExtensions
         }
     }
 
+    public static void UpdateJumpList(this TimerWindow window) =>
+        window.UpdateJumpList(false);
+
+    public static void UpdateJumpList(this TimerWindow window, bool force)
+    {
+        if(!force && (TimerWindow.LastActivatedID != window.ID ||
+                      !window.ShowInTaskbar ||
+                      !window.IsVisible))
+        {
+            return;
+        }
+
+        var jumpList = JumpList.GetJumpList(Application.Current);
+
+        if (jumpList is null)
+        {
+            JumpList.SetJumpList(Application.Current, jumpList = new());
+        }
+
+        jumpList.JumpItems.Clear();
+
+        foreach (var jumpItem in window.JumpListButtons.Where(static jlb => jlb.Button.IsEnabled))
+        {
+            jumpList.JumpItems.Add(new JumpTask
+            {
+                Title = jumpItem.Text,
+                Arguments = $"jump-list {new WindowInteropHelper(window).Handle} {jumpItem.Index}"
+            });
+        }
+
+        jumpList.Apply();
+    }
+
     private static string? Title(TimerWindow window) =>
         window.Timer.Options.Title;
 
@@ -114,18 +150,18 @@ public static class TimerWindowExtensions
             TimeSpan.FromSeconds(Math.Round((timeSpan ?? TimeSpan.Zero).TotalSeconds));
     }
 
-    public static void AddWindowProcHook(this TimerWindow timerWindow)
+    public static void AddWindowProcHook(this TimerWindow window)
     {
-        var handle = new WindowInteropHelper(timerWindow).Handle;
+        var handle = new WindowInteropHelper(window).Handle;
 
         var hwndSource = HwndSource.FromHwnd(handle);
         hwndSource?.AddHook(WindowProc);
 
-        timerWindow.Closed += TimerWindowClosed;
+        window.Closed += TimerWindowClosed;
 
         void TimerWindowClosed(object sender, EventArgs e)
         {
-            timerWindow.Closed -= TimerWindowClosed;
+            window.Closed -= TimerWindowClosed;
 
             // ReSharper disable AccessToDisposedClosure
             hwndSource?.RemoveHook(WindowProc);
@@ -145,13 +181,19 @@ public static class TimerWindowExtensions
                 handled = WmGetMinMaxInfo(hwnd, lParam);
             }
 
+            if (msg == CommandLineArguments.JumpListMsg)
+            {
+                ExecuteJumpCommand(wParam.ToInt32());
+                handled = true;
+            }
+
             return IntPtr.Zero;
         }
 
         bool WmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
         {
-            if (timerWindow.WindowState == WindowState.Normal ||
-                timerWindow.IsFullScreen)
+            if (window.WindowState == WindowState.Normal ||
+                window.IsFullScreen)
             {
                 return false;
             }
@@ -191,6 +233,19 @@ public static class TimerWindowExtensions
 
             [DllImport("user32.dll")]
             static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+        }
+
+        void ExecuteJumpCommand(int commandIndex)
+        {
+            try
+            {
+                var button = window.JumpListButtons[commandIndex];
+                (new ButtonAutomationPeer(button.Button).GetPattern(PatternInterface.Invoke) as IInvokeProvider)?.Invoke();
+            }
+            catch
+            {
+                // Ignore.
+            }
         }
     }
 
