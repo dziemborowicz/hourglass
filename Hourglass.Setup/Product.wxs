@@ -1,19 +1,19 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
-     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-    <Product Id="*" Name="Hourglass" Language="1033" Version="1.15.53.0" Manufacturer="Chris Dziemborowicz, Ivan Ivon" UpgradeCode="172d3713-8820-4374-8195-3e2374e7724f">
-        <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:netfx="http://wixtoolset.org/schemas/v4/wxs/netfx">
+    <Package Name="Hourglass" Language="1033" Version="1.15.53.0" Manufacturer="Chris Dziemborowicz, Ivan Ivon" UpgradeCode="172d3713-8820-4374-8195-3e2374e7724f" InstallerVersion="200" Compressed="yes" Scope="perMachine">
+        <Icon Id="AppIcon.exe" SourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico" />
+        <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+        <MediaTemplate EmbedCab="yes" />
+        <Property Id="ARPPRODUCTICON" Value="AppIcon.exe" />
+        <Property Id="ApplicationFolderName" Value="Hourglass" />
+        <Property Id="ApplicationExe" Value="Hourglass.exe" />
+        <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
 
-        <Icon Id="AppIcon.exe" SourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico"/>
-        <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
-        <MediaTemplate EmbedCab="yes"/>
-        <Property Id="ARPPRODUCTICON" Value="AppIcon.exe"/>
-        <Property Id="ApplicationFolderName" Value="Hourglass"/>
-        <Property Id="ApplicationExe" Value="Hourglass.exe"/>
-        <Property Id="WixAppFolder" Value="WixPerMachineFolder"/>
+        <Feature Id="ProductFeature" Title="Hourglass" Level="1">
+            <ComponentRef Id="ApplicationExecutableComponent" />
+            <ComponentRef Id="ApplicationShortcutFolderComponent" />
+        </Feature>
 
-        <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="ProgramFilesFolder">
+        <StandardDirectory Id="ProgramFilesFolder">
                 <Directory Id="APPLICATIONFOLDER" Name="Hourglass">
                     <Component Id="ApplicationExecutableComponent" Guid="e34f576c-a189-4e71-a417-34fe00a557b0">
                         <File Id="ApplicationExecutableFile" Source="$(var.Hourglass.TargetPath)" Checksum="yes" KeyPath="yes">
@@ -26,20 +26,14 @@
                         </RegistryKey>
                     </Component>
                 </Directory>
-            </Directory>
-            <Directory Id="ProgramMenuFolder">
+            </StandardDirectory>
+        <StandardDirectory Id="ProgramMenuFolder">
                 <Directory Id="ApplicationShortcutFolder" Name="Hourglass">
                     <Component Id="ApplicationShortcutFolderComponent" Guid="83c157e7-a7c1-451e-8410-07ad3eca786a">
                         <RegistryValue Root="HKMU" Key="Software\[Manufacturer]\[ProductName]" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
                         <RemoveFolder Id="ApplicationShortcutFolder" On="uninstall"/>
                     </Component>
                 </Directory>
-            </Directory>
-        </Directory>
-
-        <Feature Id="ProductFeature" Title="Hourglass" Level="1">
-            <ComponentRef Id="ApplicationExecutableComponent"/>
-            <ComponentRef Id="ApplicationShortcutFolderComponent"/>
-        </Feature>
-    </Product>
+            </StandardDirectory>
+    </Package>
 </Wix>

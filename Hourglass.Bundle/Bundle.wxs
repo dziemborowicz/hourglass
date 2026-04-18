@@ -1,19 +1,17 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
-     xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
-  <Bundle Name="Hourglass"
-          Version="1.15.53.0"
-          Manufacturer="2021 Chris Dziemborowicz, 2024-2025 Ivan Ivon"
-          UpgradeCode="f1d002c9-cfc9-40fb-84af-96e7aec26e0b"
-          IconSourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal">
+  <Bundle
+    Name="Hourglass"
+    Version="1.15.53.0"
+    Manufacturer="2021 Chris Dziemborowicz, 2024-2025 Ivan Ivon"
+    UpgradeCode="f1d002c9-cfc9-40fb-84af-96e7aec26e0b"
+    IconSourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico">
 
     <!-- Specify a "sensible default" install location -->
-    <Variable Name="InstallFolder" Type="string" Value="[ProgramFilesFolder]Hourglass" />
+    <Variable Name="InstallFolder" Type="formatted" Value="[ProgramFilesFolder]Hourglass" />
 
-    <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
-      <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" />
-    </BootstrapperApplicationRef>
+    <BootstrapperApplication>
+      <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" Theme="rtfLicense" />
+    </BootstrapperApplication>
     <Chain>
       <PackageGroupRef Id="NetFx48Web" />
       <MsiPackage Id="HourglassSetup" SourceFile="$(var.Hourglass.Setup.TargetPath)">
