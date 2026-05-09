@@ -8,6 +8,7 @@ namespace Hourglass;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
@@ -62,6 +63,16 @@ public sealed class AppEntry : WindowsFormsApplicationBase
     /// <inheritdoc />
     protected override bool OnStartup(StartupEventArgs eventArgs)
     {
+        try
+        {
+            CopyConfigFile(CommandLineArguments.GetConfigFilePath(eventArgs.CommandLine));
+        }
+        catch (Exception e) when (e is CommandLineArguments.ParseException or IOException or UnauthorizedAccessException)
+        {
+            CommandLineArguments.ShowUsage(e.Message);
+            return false;
+        }
+
         AppManager.Instance.Initialize();
 
         CommandLineArguments arguments = CommandLineArguments.Parse(eventArgs.CommandLine);
@@ -102,6 +113,12 @@ public sealed class AppEntry : WindowsFormsApplicationBase
         if (arguments.ShouldShowUsage || arguments.HasParseError)
         {
             CommandLineArguments.ShowUsage(arguments.ParseErrorMessage);
+            return;
+        }
+
+        if (arguments.HasCopyConfig)
+        {
+            CommandLineArguments.ShowUsage(Resources.CommandLineArgumentsParseExceptionConfigFileAlreadyRunning);
             return;
         }
 
@@ -206,5 +223,32 @@ public sealed class AppEntry : WindowsFormsApplicationBase
         Settings.Default.ActivateNextWindow = arguments.ActivateNextWindow;
         Settings.Default.OrderByTitleFirst = arguments.OrderByTitleFirst;
         Settings.Default.DigitalClockTime = arguments.DigitalClockTime;
+    }
+
+    /// <summary>
+    /// Copies the specified config file over the current settings file, if the paths differ.
+    /// </summary>
+    /// <param name="configFilePath">The path to the config file, or <c>null</c> to do nothing.</param>
+    private static void CopyConfigFile(string? configFilePath)
+    {
+        if (configFilePath is null)
+        {
+            return;
+        }
+
+        string settingsFilePath = SettingsManager.GetSettingsFilePath();
+
+        if (string.Equals(Path.GetFullPath(configFilePath), Path.GetFullPath(settingsFilePath), StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        string? settingsDirectory = Path.GetDirectoryName(settingsFilePath);
+        if (settingsDirectory is not null)
+        {
+            Directory.CreateDirectory(settingsDirectory);
+        }
+
+        File.Copy(configFilePath, settingsFilePath, true);
     }
 }

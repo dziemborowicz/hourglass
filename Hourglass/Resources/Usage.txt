@@ -354,6 +354,15 @@ Options:
         Default value   off
         Alias           -z, /z
 
+  --copy-config <path>
+        Replaces the current settings file with the specified config file.
+
+        This option is processed before the application settings are loaded.
+        All running timers must be closed before using this option.
+
+        Required        no
+        Alias           -cf, /cf
+
   --use-factory-defaults
         If specified, any options that are not explicitly set with another
         switch are set to their factory default setting rather than the last

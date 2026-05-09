@@ -224,6 +224,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Config file not found &quot;{0}&quot;.
+        /// </summary>
+        public static string CommandLineArgumentsParseExceptionConfigFileNotFoundFormatString {
+            get {
+                return ResourceManager.GetString("CommandLineArgumentsParseExceptionConfigFileNotFoundFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot copy config while Hourglass is running. Close all running timers first.
+        /// </summary>
+        public static string CommandLineArgumentsParseExceptionConfigFileAlreadyRunning {
+            get {
+                return ResourceManager.GetString("CommandLineArgumentsParseExceptionConfigFileAlreadyRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to hh&apos;:&apos;mm&apos;:&apos;ss.
         /// </summary>
         public static string CompactTimeSpanFormat {

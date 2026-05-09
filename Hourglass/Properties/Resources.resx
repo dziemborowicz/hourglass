@@ -790,6 +790,14 @@ $</value>
     <value>Unrecognized switch "{0}"</value>
     <comment>A format string for the error message displayed when a command-line argument switch is unrecognized, where {0} is the unrecognized switch (e.g., "Unrecognized switch '{0}'." is "Unrecognized switch '--junk'.")</comment>
   </data>
+  <data name="CommandLineArgumentsParseExceptionConfigFileNotFoundFormatString" xml:space="preserve">
+    <value>Config file not found "{0}"</value>
+    <comment>A format string for the error message displayed when the config file specified on the command line is not found, where {0} is the file path (e.g., "Config file not found '{0}'." is "Config file not found 'C:\settings.config'.")</comment>
+  </data>
+  <data name="CommandLineArgumentsParseExceptionConfigFileAlreadyRunning" xml:space="preserve">
+    <value>Cannot copy config while Hourglass is running. Close all running timers first</value>
+    <comment>The error message displayed when the --copy-config option is used while the application is already running</comment>
+  </data>
   <data name="ContextMenuAlwaysOnTopMenuItem" xml:space="preserve">
     <value>Al_ways on top</value>
     <comment>The text for the always on top menu item, where the character following the optional underscore (_) is the access key</comment>

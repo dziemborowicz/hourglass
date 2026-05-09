@@ -239,6 +239,15 @@ public sealed class CommandLineArguments
     /// </summary>
     public bool ResumeAll { get; private set; }
 
+    /// <summary>
+    /// Gets a value indicating whether a copy-config option was specified on the command line.
+    /// </summary>
+    public bool HasCopyConfig { get; private set; }
+
+    private const string CopyConfigCommand     = "--copy-config";
+    private const string CopyConfigShortSwitch = "-cf";
+    private const string CopyConfigSlashSwitch = "/cf";
+
     private const string JumpListCommand = "jump-list";
 
     /// <summary>
@@ -286,6 +295,51 @@ public sealed class CommandLineArguments
 
         [DllImport("user32.dll")]
         static extern IntPtr SendMessage(IntPtr hWnd, uint wMsg, IntPtr wParam, IntPtr lParam);
+    }
+
+    /// <summary>
+    /// Extracts the config file path from the <c>--copy-config</c> command-line argument, if present.
+    /// </summary>
+    /// <param name="args">The command-line arguments.</param>
+    /// <returns>The config file path, or <c>null</c> if the argument is not present.</returns>
+    /// <exception cref="ParseException">If the config file path is missing or the file does not exist.</exception>
+    public static string? GetConfigFilePath(IList<string> args)
+    {
+        for (int i = 0; i < args.Count; i++)
+        {
+            string arg = args[i];
+
+            if (arg is not (CopyConfigCommand or CopyConfigShortSwitch or CopyConfigSlashSwitch))
+            {
+                continue;
+            }
+
+            if (i + 1 >= args.Count || IsSwitch(args[i + 1]))
+            {
+                string message = string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(),
+                    Resources.CommandLineArgumentsParseExceptionMissingValueForSwitchFormatString,
+                    arg);
+
+                throw new ParseException(message);
+            }
+
+            string configFilePath = args[i + 1];
+
+            if (!File.Exists(configFilePath))
+            {
+                string message = string.Format(
+                    Resources.ResourceManager.GetEffectiveProvider(),
+                    Resources.CommandLineArgumentsParseExceptionConfigFileNotFoundFormatString,
+                    configFilePath);
+
+                throw new ParseException(message);
+            }
+
+            return configFilePath;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -933,6 +987,17 @@ public sealed class CommandLineArguments
 
                     argumentsBasedOnMostRecentOptions.LockInterface = lockInterface;
                     argumentsBasedOnFactoryDefaults.LockInterface = lockInterface;
+                    break;
+
+                case CopyConfigCommand:
+                case CopyConfigShortSwitch:
+                case CopyConfigSlashSwitch:
+                    ThrowIfDuplicateSwitch(specifiedSwitches, CopyConfigCommand);
+
+                    GetRequiredValue(arg, remainingArgs);
+
+                    argumentsBasedOnMostRecentOptions.HasCopyConfig = true;
+                    argumentsBasedOnFactoryDefaults.HasCopyConfig = true;
                     break;
 
                 case "--use-factory-defaults":
